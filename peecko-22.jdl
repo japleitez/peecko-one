@@ -1,0 +1,658 @@
+application {
+  config {
+    baseName admin
+	applicationType monolith
+    packageName com.peecko.one
+    authenticationType jwt
+    prodDatabaseType postgresql
+	cacheProvider ehcache
+    buildTool maven
+    clientFramework angular
+    enableTranslation false
+    nativeLanguage en
+  }
+  entities * except SecuredRequest, VideoStat, ArticleStat, LikedVideo, LikedArticle, ViewedNotification, ViewedArticle, ViewedArticleSeries
+  paginate * with pagination except Agency, Staff, Contact, ApsPlan, ApsOrder, ApsMembership, VideoCategory, ArticleCategory, Invoice, InvoiceItem
+}
+
+/*
+* ApsAccount
+* App users
+* -------------------------------------------------------
+* name: the full user name
+* username: the work email
+* verified: indicates if the work email has been verified
+* language: the user language
+* privateEmail: the private user email
+* privateVerified: yes if the private email has been verified
+* license: the 20 digit membership code
+* active: to indicate if the user is active to use the app
+* password: the user password encrypted 
+* created: the date of record creation
+* updated: the date of last record update
+*/
+entity ApsUser {
+  name String required,
+  username String required,
+  usernameVerified Boolean required,
+  privateEmail String required,
+  privateVerified Boolean required,
+  language Language required,
+  license String,
+  active Boolean required,
+  password String,
+  created Instant,
+  updated Instant
+}
+
+/*
+* The Secured Request
+* Short-lived request with expired pin code
+* This can be used to update person accounts info
+* -------------------------------------------------------
+* requestId: the request id used to change some person's profile value
+* pinCode: the secret pin code used as 2nd step authetication
+* email: the requestor
+* created: the timestamp the request is created
+* expires: the timestamp the pin code expires
+*/
+entity SecuredRequest {
+  requestId String required,
+  pinCode String required,
+  email String required,
+  created Instant required,
+  expires Instant
+}
+
+/*
+* Device
+* The device where the app is installed
+* -------------------------------------------------------
+* username: the business user email using the device
+* deviceId: the device identifier
+* phoneModel: the device model
+* osVersion: the operating system version
+* installedOn: the timestamp when the app was installed on the device
+*/
+entity ApsDevice {
+  username String required,
+  deviceId String required,
+  phoneModel String,
+  osVersion String,
+  installedOn Instant
+}
+
+
+/*
+* Agency
+* The Agency Service Provider
+* -------------------------------------------------------
+* code: country + sequence
+* name: the registered business name
+* line1: address line 1
+* line2: address line 2
+* zip: address post code
+* city: address region + city
+* country: the agency country
+* language: the agency language
+* email: the agency email for info
+* phone: the agency phone number for info
+* billingEmail: the agency email for billing inquiries
+* billingPhone: the agency phone number for billing inquiries
+* bank: the agency bank name for invoice payments
+* iban: the agency iban number for invoice payments
+* rcs: registre de commerce et des sociétés (optional)
+* vatId: the agency vat number
+* notes: general comments
+* created: the date of record creation
+* updated: the date of last record update
+*/
+entity Agency {
+  code String required,
+  name String required,
+  line1 String,
+  line2 String,
+  zip String,
+  city String required,
+  country String required,
+  language Language required,
+  email String,
+  phone String,
+  billingEmail String,
+  billingPhone String,
+  bank String,
+  iban String,
+  rcs String,
+  vatId String,
+  vatRate Double,
+  notes String,
+  created Instant,
+  updated Instant
+}
+
+/*
+* Staff
+* Agency Staff
+* -------------------------------------------------------
+*/
+entity Staff {
+  userId Long required,
+  role String required
+}
+
+/*
+* The Customer
+* Business Clients
+* -------------------------------------------------------
+* code: mnemonic code + [group-based-sequence] e.g. 0000 refers to parent company 
+* name: registered business name
+* country: the customer country
+* license: the latest 20 digit membership code
+* state: new, trial, active, closed
+* closeReason: reason why client declines offer or terminates contract
+* emailDomains: comma-separated email domains of the client
+* vatId: the customer vat number
+* bank: the custome bank name
+* iban: the customer iban number 
+* logo: the customer's logo url
+* notes: general comments
+* created: the date of record creation
+* updated: the date of last record update
+* trialed: the date customer starts service trial
+* declined: the date customer declines offer (after trial)
+* activated: the date customer sign service contract
+* closed: the date customer terminates service contract
+*/
+entity Customer {
+  code String required,
+  name String required,
+  country String required,
+  membership String,
+  state CustomerState required,
+  closeReason String,
+  emailDomains String,
+  vatId String,
+  bank String,
+  iban String,
+  logo String,
+  notes String,
+  created Instant,
+  updated Instant,
+  trialed Instant,
+  declined Instant,
+  activated Instant,
+  closed Instant
+}
+
+
+/*
+* Contact
+* Business Contacts with an address
+* -------------------------------------------------------
+* type: primary, billing, other
+* name: the contact name
+* address: consist of line1, line2, zip, city, country
+* email: the contact email
+* phone: the contact phone number
+* notes: general comments
+* created: the date of record creation
+* updated: the date of last record update
+*/
+entity Contact {
+  type ContactType required,
+  name String required,
+  line1 String,
+  line2 String,
+  zip String,
+  city String,
+  country String,
+  email String,
+  phone String,
+  notes String,
+  created Instant,
+  updated Instant
+}
+
+/*
+* App Subscription Plan
+* -------------------------------------------------------
+* contract: customer's code + year + sequence
+* pricing: fixed, bracket 
+* state: new, trial, active, close
+* license: 20 digit code membership
+* starts: the starting date of the app subscription plan
+* ends: the ending date of the app subscription plan
+* trialStarts: the starting date of the trial
+* trialEnds: the ending date of the trial
+* unitPrice: the unit price (one user subscription)
+* notes: general comments
+* created: the date of record creation
+* updated: the date of last record update
+*/
+entity ApsPlan {
+  contract String required,
+  pricing PricingType required,
+  state PlanState required,
+  license String,
+  starts LocalDate,
+  ends LocalDate,
+  trialStarts LocalDate,
+  trialEnds LocalDate,
+  unitPrice Double required,
+  notes String,
+  created Instant,
+  updated Instant
+}
+
+/*
+* App Subscription Order
+* Monthly-based order from a app subscription plan
+* -------------------------------------------------------
+* contract: ApsPlan.contract
+* period: year + month
+* license: membership number
+* numberOfUsers: number of users
+* invoiceNumber: generated
+*/
+entity ApsOrder {
+  period Integer required,
+  license String required,
+  unitPrice Double required,
+  vatRate Double required,
+  numberOfUsers Integer required,
+  invoiceNumber String,
+}
+
+/*
+* App Subscription Membership
+* Monthl-based members of an app subscription order
+* -------------------------------------------------------
+* customerId: customer ID
+* apsPlanId: app subscription plan ID
+* apsOrderId: app subscription order ID
+* contract: from parent app subscription plan ID
+* period: year + month
+* license: 20 digit membership number
+* username: email of member
+*/
+entity ApsMembership {
+  period Integer required,
+  license String required,
+  username String required
+}
+
+/*
+ * App Subscription Pricing Bracket
+* -------------------------------------------------------
+ * customer: null or specific customer ID
+ * index: bracket index 0,1,2...
+ * minQuantity: minimum quantity of licenses
+ * unitPrice: unit price in the bracket
+ */
+entity ApsPricing {
+  customerId Long required,
+  index Integer required,
+  minQuantity Integer required,
+  unitPrice Double required
+}
+
+/*
+ * Video
+ */
+entity Video {
+  code String required,
+  title String required,
+  duration Integer,
+  language Language required,
+  tags String,
+  player Player required,
+  thumbnail String,
+  url String,
+  audience String,
+  intensity Intensity,
+  filename String,
+  description String,
+  created Instant,
+  released Instant,
+  archived Instant
+}
+
+/*
+ * Video's Category
+ */
+entity VideoCategory {
+  code String required,
+  title String required,
+  label String required,
+  created Instant,
+  released Instant,
+  archived Instant
+}
+
+/*
+ * Article
+ * ---------------
+ */
+entity Article {
+  code String required,
+  title String required,
+  subtitle String,
+  summary String,
+  language Language required,
+  tags String,
+  duration Integer,
+  thumbnail String,
+  audioUrl String,
+  content String,
+  seriesId Long,
+  chapter Integer,
+  created Instant,
+  updated Instant,
+  released Instant,
+  archived Instant
+}
+
+/*
+ * Article Series
+ * --------------
+ */
+entity ArticleSeries {
+  code String required,
+  title String required,
+  subtitle String,
+  summary String,
+  language Language required,
+  tags String,
+  thumbnail String,
+  counter Integer required,
+  created Instant,
+  updated Instant,
+  released Instant,
+  archived Instant
+}
+
+/*
+ * Article's Category
+ */
+entity ArticleCategory {
+  code String required,
+  title String required,
+  label String required,
+  created Instant,
+  release Instant,
+  archived Instant
+}
+
+/*
+ * Notification
+ * ------------
+ * companyId: all or specific company
+ * message: the news to notify
+ * image: the url of the image (optional)
+ * video: the url of the video (optional)
+ * starts: when the notification must be sent
+ * expires: when the notifications must be removed
+ */
+entity Notification {
+  companyId Long required,
+  title String required,
+  message String required,
+  language Language required,
+  imageUrl String,
+  videoUrl String,
+  starts LocalDate,
+  expires LocalDate
+}
+
+/*
+ * Label translations
+ * Translations for labels using property format style
+ * --------------------------------------------------
+ * code: source entity + coded label
+ * lang: language code
+ * translation: the actual text translation
+ */
+entity LabelTranslation {
+  label String required,
+  lang Language required,
+  translation String required
+}
+
+/*
+ * Video Playlist
+ * --------------
+ */
+entity PlayList {
+  name String required,
+  counter Integer required,
+  created Instant required,
+  updated Instant required
+}
+
+
+/*
+* VideoItem
+* Playlist's video items
+* ----------------------
+* previous: previous video code
+* code: current video code
+* next: next video code
+*/
+entity VideoItem {
+  previous String,
+  code String,
+  next String
+}
+
+/*
+ * Coach
+ * -----
+ */
+entity Coach {
+  type CoachType required,
+  name String required,
+  email String,
+  website String,
+  instagram String,
+  phoneNumber String,
+  country String,
+  speaks String,
+  resume String,
+  notes String,
+  created Instant,
+  updated Instant
+}
+
+/*
+ * Invoice
+ * -------
+ * Link to Agency, Customer, Plan and Order
+ */
+entity Invoice {
+  number String required,
+  issued Instant required,
+  dueDate LocalDate required,
+  saleDate LocalDate required,
+  subtotal Double required,
+  vat Double required,
+  total Double required,
+  paid Double,
+  paidDate LocalDate,
+  diff Double,
+  notes String
+}
+
+/*
+ * Invoice Items
+ * ------------------------------
+ * type: AMS (app monthly subscription)
+ * description: generated
+ * unitPrice: ApsOrder.unitPrice
+ * numberOfUsers: ApsOrder.numberOfUsers
+ * extendedPrice: unitPrice * numberOfUsers
+ * vatRate: ApsOrder.vatRate
+ * vatAmount: vatRate * extendedPrice
+ * total: extendedPrice - vatAmount
+ */
+entity InvoiceItem {
+  type ProductType required,
+  description String required,
+  quantity Integer required,
+  priceUnit Double required,
+  priceExtended Double required,
+  disRate Double required,
+  disAmount Double required,
+  finalPrice Double required,
+  vatRate Double required,
+  vatAmount Double required,
+  total Double required
+}
+
+/*
+* Video Statistics
+* ----------------
+*/
+entity VideoStat {
+  videoId Long required,
+  categoryId Long required,
+  coachId Long required,
+  liked Integer required,
+  viewed Integer required
+}
+
+/*
+* Article Statistics
+* ------------------
+*/
+entity ArticleStat {
+  articleId Long required,
+  categoryId Long required,
+  liked Integer required,
+  viewed Integer required
+}
+
+/*
+* LikedVideo
+* Videos liked by ApsUsers
+* ------------------------
+*/
+entity LikedVideo {
+  userId Long required,
+  videoId Long required,
+  coachId Long required,
+  created Instant required
+}
+
+/*
+* LikedVideo
+* Videos liked by ApsUsers
+* ------------------------
+*/
+entity LikedArticle {
+  userId Long required,
+  articleId Long required,
+  coachId Long required,
+  created Instant required
+}
+
+/*
+* ApsViewedNotification
+* Notifications viewed by ApsUsers
+* -------------------------------------
+*/
+entity ViewedNotification {
+  userId Long required,
+  notificationId Long required
+}
+
+entity ViewedArticle {
+  userId Long required,
+  articleId Long required,
+  viewedOn Instant,
+  finishedOn Instant
+}
+
+entity ViewedArticleSeries {
+  userId Long required,
+  seriesId Long required,
+  startedOn Instant,
+  finishedOn Instant
+}
+
+/*
+ * Product Type for Invoice Items
+ * ------------------------------
+ * AMS: App Monthly Subscription
+ */
+enum ProductType {
+  AMS
+}
+
+enum Player {
+  PEECKO,
+  YOUTUBE
+}
+
+
+enum Intensity {
+  BEGINNER,
+  INTERMEDIATE,
+  ADVANCED
+}
+
+enum CustomerState {
+  NEW,
+  TRIAL,
+  ACTIVE,
+  CLOSED
+}
+
+enum ContactType {
+  PRIMARY,
+  PAYMENT,
+  OTHER
+}
+
+enum CoachType {
+  FITNESS,
+  WELLNESS
+}
+
+enum PlanState {
+  NEW,
+  TRIAL,
+  ACTIVE,
+  CLOSED
+}
+
+enum PricingType {
+  FIXED,
+  BRACKET
+}
+
+enum Language {
+  EN,
+  FR,
+  DE,
+  ES
+}
+
+relationship OneToMany {
+	ApsUser to ApsDevice,
+    ApsUser to PlayList,
+	Agency to Staff,
+    Agency to Customer,
+    Agency to ApsPricing,
+	Customer to Contact,
+    Customer to ApsPlan,
+	ApsPlan to ApsOrder,
+    ApsOrder to ApsMembership,
+    ApsOrder to Invoice,
+    Invoice to InvoiceItem,
+	VideoCategory to Video,
+    ArticleCategory to Article,
+	Coach to Video,
+    Coach to Article,
+	PlayList to VideoItem,
+}
+
