@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (invoiceItem) {
+      <div>
+        <h2 data-cy="invoiceItemDetailsHeading"><span>Invoice Item</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ invoiceItem.id }}</span>
+          </dd>
+          <dt><span>Type</span></dt>
+          <dd>
+            <span>{{ invoiceItem.type }}</span>
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ invoiceItem.description }}</span>
+          </dd>
+          <dt><span>Quantity</span></dt>
+          <dd>
+            <span>{{ invoiceItem.quantity }}</span>
+          </dd>
+          <dt><span>Price Unit</span></dt>
+          <dd>
+            <span>{{ invoiceItem.priceUnit }}</span>
+          </dd>
+          <dt><span>Price Extended</span></dt>
+          <dd>
+            <span>{{ invoiceItem.priceExtended }}</span>
+          </dd>
+          <dt><span>Dis Rate</span></dt>
+          <dd>
+            <span>{{ invoiceItem.disRate }}</span>
+          </dd>
+          <dt><span>Dis Amount</span></dt>
+          <dd>
+            <span>{{ invoiceItem.disAmount }}</span>
+          </dd>
+          <dt><span>Final Price</span></dt>
+          <dd>
+            <span>{{ invoiceItem.finalPrice }}</span>
+          </dd>
+          <dt><span>Vat Rate</span></dt>
+          <dd>
+            <span>{{ invoiceItem.vatRate }}</span>
+          </dd>
+          <dt><span>Vat Amount</span></dt>
+          <dd>
+            <span>{{ invoiceItem.vatAmount }}</span>
+          </dd>
+          <dt><span>Total</span></dt>
+          <dd>
+            <span>{{ invoiceItem.total }}</span>
+          </dd>
+          <dt><span>Invoice</span></dt>
+          <dd>
+            @if (invoiceItem.invoice) {
+              <div>
+                <a [routerLink]="['/invoice', invoiceItem.invoice.id, 'view']">{{ invoiceItem.invoice.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/invoice-item', invoiceItem.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (notification) {
+      <div>
+        <h2 data-cy="notificationDetailsHeading"><span>Notification</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ notification.id }}</span>
+          </dd>
+          <dt><span>Company Id</span></dt>
+          <dd>
+            <span>{{ notification.companyId }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ notification.title }}</span>
+          </dd>
+          <dt><span>Message</span></dt>
+          <dd>
+            <span>{{ notification.message }}</span>
+          </dd>
+          <dt><span>Language</span></dt>
+          <dd>
+            <span>{{ notification.language }}</span>
+          </dd>
+          <dt><span>Image Url</span></dt>
+          <dd>
+            <span>{{ notification.imageUrl }}</span>
+          </dd>
+          <dt><span>Video Url</span></dt>
+          <dd>
+            <span>{{ notification.videoUrl }}</span>
+          </dd>
+          <dt><span>Starts</span></dt>
+          <dd>
+            <span>{{ notification.starts | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Expires</span></dt>
+          <dd>
+            <span>{{ notification.expires | formatMediumDate }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/notification', notification.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

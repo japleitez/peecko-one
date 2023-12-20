@@ -1,0 +1,95 @@
+{
+  "annotations": {
+    "changelogDate": "20231220182356"
+  },
+  "applications": ["admin"],
+  "entityTableName": "video",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "language",
+      "fieldType": "Language",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EN,FR,DE,ES"
+    },
+    {
+      "fieldName": "tags",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "player",
+      "fieldType": "Player",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "PEECKO,YOUTUBE"
+    },
+    {
+      "fieldName": "thumbnail",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "url",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "audience",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "intensity",
+      "fieldType": "Intensity",
+      "fieldValues": "BEGINNER,INTERMEDIATE,ADVANCED"
+    },
+    {
+      "fieldName": "filename",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "released",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "archived",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Video",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "videoCategory",
+      "otherEntityRelationshipName": "video",
+      "relationshipName": "videoCategory",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "coach",
+      "otherEntityRelationshipName": "video",
+      "relationshipName": "coach",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

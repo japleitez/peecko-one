@@ -1,0 +1,43 @@
+{
+  "annotations": {
+    "changelogDate": "20231220181456"
+  },
+  "applications": ["admin"],
+  "entityTableName": "aps_device",
+  "fields": [
+    {
+      "fieldName": "username",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "deviceId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "phoneModel",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "osVersion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "installedOn",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "ApsDevice",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "apsUser",
+      "otherEntityRelationshipName": "apsDevice",
+      "relationshipName": "apsUser",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

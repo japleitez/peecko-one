@@ -1,0 +1,112 @@
+{
+  "annotations": {
+    "changelogDate": "20231220181756"
+  },
+  "applications": ["admin"],
+  "entityTableName": "customer",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "country",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "membership",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "CustomerState",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,TRIAL,ACTIVE,CLOSED"
+    },
+    {
+      "fieldName": "closeReason",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "emailDomains",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "vatId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "bank",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "iban",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "logo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updated",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "trialed",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "declined",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "activated",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "closed",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "Customer",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "contact",
+      "otherEntityRelationshipName": "customer",
+      "relationshipName": "contact",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "apsPlan",
+      "otherEntityRelationshipName": "customer",
+      "relationshipName": "apsPlan",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "agency",
+      "otherEntityRelationshipName": "customer",
+      "relationshipName": "agency",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

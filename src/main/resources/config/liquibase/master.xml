@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql"/>
+    <property name="clobType" value="clob" dbms="postgresql"/>
+    <property name="blobType" value="blob" dbms="postgresql"/>
+    <property name="uuidType" value="uuid" dbms="postgresql"/>
+    <property name="datetimeType" value="datetime" dbms="postgresql"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181356_added_entity_ApsUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181456_added_entity_ApsDevice.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181556_added_entity_Agency.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181656_added_entity_Staff.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181756_added_entity_Customer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181856_added_entity_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181956_added_entity_ApsPlan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182056_added_entity_ApsOrder.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182156_added_entity_ApsMembership.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182256_added_entity_ApsPricing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182356_added_entity_Video.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182456_added_entity_VideoCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182556_added_entity_Article.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182656_added_entity_ArticleSeries.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182756_added_entity_ArticleCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182856_added_entity_Notification.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182956_added_entity_LabelTranslation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183056_added_entity_PlayList.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183156_added_entity_VideoItem.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183256_added_entity_Coach.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183356_added_entity_Invoice.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183456_added_entity_InvoiceItem.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20231220181456_added_entity_constraints_ApsDevice.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181656_added_entity_constraints_Staff.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181756_added_entity_constraints_Customer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181856_added_entity_constraints_Contact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220181956_added_entity_constraints_ApsPlan.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182056_added_entity_constraints_ApsOrder.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182156_added_entity_constraints_ApsMembership.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182256_added_entity_constraints_ApsPricing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182356_added_entity_constraints_Video.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220182556_added_entity_constraints_Article.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183056_added_entity_constraints_PlayList.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183156_added_entity_constraints_VideoItem.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183356_added_entity_constraints_Invoice.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183456_added_entity_constraints_InvoiceItem.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+</databaseChangeLog>

@@ -1,0 +1,110 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (article) {
+      <div>
+        <h2 data-cy="articleDetailsHeading"><span>Article</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ article.id }}</span>
+          </dd>
+          <dt><span>Code</span></dt>
+          <dd>
+            <span>{{ article.code }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ article.title }}</span>
+          </dd>
+          <dt><span>Subtitle</span></dt>
+          <dd>
+            <span>{{ article.subtitle }}</span>
+          </dd>
+          <dt><span>Summary</span></dt>
+          <dd>
+            <span>{{ article.summary }}</span>
+          </dd>
+          <dt><span>Language</span></dt>
+          <dd>
+            <span>{{ article.language }}</span>
+          </dd>
+          <dt><span>Tags</span></dt>
+          <dd>
+            <span>{{ article.tags }}</span>
+          </dd>
+          <dt><span>Duration</span></dt>
+          <dd>
+            <span>{{ article.duration }}</span>
+          </dd>
+          <dt><span>Thumbnail</span></dt>
+          <dd>
+            <span>{{ article.thumbnail }}</span>
+          </dd>
+          <dt><span>Audio Url</span></dt>
+          <dd>
+            <span>{{ article.audioUrl }}</span>
+          </dd>
+          <dt><span>Content</span></dt>
+          <dd>
+            <span>{{ article.content }}</span>
+          </dd>
+          <dt><span>Series Id</span></dt>
+          <dd>
+            <span>{{ article.seriesId }}</span>
+          </dd>
+          <dt><span>Chapter</span></dt>
+          <dd>
+            <span>{{ article.chapter }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ article.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated</span></dt>
+          <dd>
+            <span>{{ article.updated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Released</span></dt>
+          <dd>
+            <span>{{ article.released | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Archived</span></dt>
+          <dd>
+            <span>{{ article.archived | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Article Category</span></dt>
+          <dd>
+            @if (article.articleCategory) {
+              <div>
+                <a [routerLink]="['/article-category', article.articleCategory.id, 'view']">{{ article.articleCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Coach</span></dt>
+          <dd>
+            @if (article.coach) {
+              <div>
+                <a [routerLink]="['/coach', article.coach.id, 'view']">{{ article.coach.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/article', article.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

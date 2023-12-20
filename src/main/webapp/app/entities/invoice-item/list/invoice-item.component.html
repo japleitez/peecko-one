@@ -1,0 +1,179 @@
+<div>
+  <h2 id="page-heading" data-cy="InvoiceItemHeading">
+    <span>Invoice Items</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-invoice-item"
+        [routerLink]="['/invoice-item/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Invoice Item</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (invoiceItems?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Invoice Items found</span>
+    </div>
+  }
+
+  @if (invoiceItems && invoiceItems.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span>Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span>Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="quantity">
+              <div class="d-flex">
+                <span>Quantity</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="priceUnit">
+              <div class="d-flex">
+                <span>Price Unit</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="priceExtended">
+              <div class="d-flex">
+                <span>Price Extended</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="disRate">
+              <div class="d-flex">
+                <span>Dis Rate</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="disAmount">
+              <div class="d-flex">
+                <span>Dis Amount</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="finalPrice">
+              <div class="d-flex">
+                <span>Final Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="vatRate">
+              <div class="d-flex">
+                <span>Vat Rate</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="vatAmount">
+              <div class="d-flex">
+                <span>Vat Amount</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="total">
+              <div class="d-flex">
+                <span>Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="invoice.id">
+              <div class="d-flex">
+                <span>Invoice</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (invoiceItem of invoiceItems; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/invoice-item', invoiceItem.id, 'view']">{{ invoiceItem.id }}</a>
+              </td>
+              <td>{{ invoiceItem.type }}</td>
+              <td>{{ invoiceItem.description }}</td>
+              <td>{{ invoiceItem.quantity }}</td>
+              <td>{{ invoiceItem.priceUnit }}</td>
+              <td>{{ invoiceItem.priceExtended }}</td>
+              <td>{{ invoiceItem.disRate }}</td>
+              <td>{{ invoiceItem.disAmount }}</td>
+              <td>{{ invoiceItem.finalPrice }}</td>
+              <td>{{ invoiceItem.vatRate }}</td>
+              <td>{{ invoiceItem.vatAmount }}</td>
+              <td>{{ invoiceItem.total }}</td>
+              <td>
+                @if (invoiceItem.invoice) {
+                  <div>
+                    <a [routerLink]="['/invoice', invoiceItem.invoice.id, 'view']">{{ invoiceItem.invoice.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/invoice-item', invoiceItem.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/invoice-item', invoiceItem.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(invoiceItem)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

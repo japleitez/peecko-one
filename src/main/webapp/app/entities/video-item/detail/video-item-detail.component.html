@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (videoItem) {
+      <div>
+        <h2 data-cy="videoItemDetailsHeading"><span>Video Item</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ videoItem.id }}</span>
+          </dd>
+          <dt><span>Previous</span></dt>
+          <dd>
+            <span>{{ videoItem.previous }}</span>
+          </dd>
+          <dt><span>Code</span></dt>
+          <dd>
+            <span>{{ videoItem.code }}</span>
+          </dd>
+          <dt><span>Next</span></dt>
+          <dd>
+            <span>{{ videoItem.next }}</span>
+          </dd>
+          <dt><span>Play List</span></dt>
+          <dd>
+            @if (videoItem.playList) {
+              <div>
+                <a [routerLink]="['/play-list', videoItem.playList.id, 'view']">{{ videoItem.playList.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/video-item', videoItem.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

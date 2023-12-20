@@ -1,0 +1,187 @@
+<div>
+  <h2 id="page-heading" data-cy="ApsPlanHeading">
+    <span>Aps Plans</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-aps-plan"
+        [routerLink]="['/aps-plan/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Aps Plan</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (apsPlans?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Aps Plans found</span>
+    </div>
+  }
+
+  @if (apsPlans && apsPlans.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contract">
+              <div class="d-flex">
+                <span>Contract</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pricing">
+              <div class="d-flex">
+                <span>Pricing</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="state">
+              <div class="d-flex">
+                <span>State</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="license">
+              <div class="d-flex">
+                <span>License</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="starts">
+              <div class="d-flex">
+                <span>Starts</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="ends">
+              <div class="d-flex">
+                <span>Ends</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="trialStarts">
+              <div class="d-flex">
+                <span>Trial Starts</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="trialEnds">
+              <div class="d-flex">
+                <span>Trial Ends</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="unitPrice">
+              <div class="d-flex">
+                <span>Unit Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="notes">
+              <div class="d-flex">
+                <span>Notes</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="created">
+              <div class="d-flex">
+                <span>Created</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="updated">
+              <div class="d-flex">
+                <span>Updated</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="customer.id">
+              <div class="d-flex">
+                <span>Customer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (apsPlan of apsPlans; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/aps-plan', apsPlan.id, 'view']">{{ apsPlan.id }}</a>
+              </td>
+              <td>{{ apsPlan.contract }}</td>
+              <td>{{ apsPlan.pricing }}</td>
+              <td>{{ apsPlan.state }}</td>
+              <td>{{ apsPlan.license }}</td>
+              <td>{{ apsPlan.starts | formatMediumDate }}</td>
+              <td>{{ apsPlan.ends | formatMediumDate }}</td>
+              <td>{{ apsPlan.trialStarts | formatMediumDate }}</td>
+              <td>{{ apsPlan.trialEnds | formatMediumDate }}</td>
+              <td>{{ apsPlan.unitPrice }}</td>
+              <td>{{ apsPlan.notes }}</td>
+              <td>{{ apsPlan.created | formatMediumDatetime }}</td>
+              <td>{{ apsPlan.updated | formatMediumDatetime }}</td>
+              <td>
+                @if (apsPlan.customer) {
+                  <div>
+                    <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/aps-plan', apsPlan.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/aps-plan', apsPlan.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(apsPlan)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

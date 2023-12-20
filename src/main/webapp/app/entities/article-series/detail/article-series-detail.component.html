@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (articleSeries) {
+      <div>
+        <h2 data-cy="articleSeriesDetailsHeading"><span>Article Series</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ articleSeries.id }}</span>
+          </dd>
+          <dt><span>Code</span></dt>
+          <dd>
+            <span>{{ articleSeries.code }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ articleSeries.title }}</span>
+          </dd>
+          <dt><span>Subtitle</span></dt>
+          <dd>
+            <span>{{ articleSeries.subtitle }}</span>
+          </dd>
+          <dt><span>Summary</span></dt>
+          <dd>
+            <span>{{ articleSeries.summary }}</span>
+          </dd>
+          <dt><span>Language</span></dt>
+          <dd>
+            <span>{{ articleSeries.language }}</span>
+          </dd>
+          <dt><span>Tags</span></dt>
+          <dd>
+            <span>{{ articleSeries.tags }}</span>
+          </dd>
+          <dt><span>Thumbnail</span></dt>
+          <dd>
+            <span>{{ articleSeries.thumbnail }}</span>
+          </dd>
+          <dt><span>Counter</span></dt>
+          <dd>
+            <span>{{ articleSeries.counter }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ articleSeries.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated</span></dt>
+          <dd>
+            <span>{{ articleSeries.updated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Released</span></dt>
+          <dd>
+            <span>{{ articleSeries.released | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Archived</span></dt>
+          <dd>
+            <span>{{ articleSeries.archived | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/article-series', articleSeries.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

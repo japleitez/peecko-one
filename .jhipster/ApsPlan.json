@@ -1,0 +1,81 @@
+{
+  "annotations": {
+    "changelogDate": "20231220181956"
+  },
+  "applications": ["admin"],
+  "entityTableName": "aps_plan",
+  "fields": [
+    {
+      "fieldName": "contract",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "pricing",
+      "fieldType": "PricingType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "FIXED,BRACKET"
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "PlanState",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "NEW,TRIAL,ACTIVE,CLOSED"
+    },
+    {
+      "fieldName": "license",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "starts",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "ends",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "trialStarts",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "trialEnds",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "unitPrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updated",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "ApsPlan",
+  "relationships": [
+    {
+      "otherEntityName": "apsOrder",
+      "otherEntityRelationshipName": "apsPlan",
+      "relationshipName": "apsOrder",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "customer",
+      "otherEntityRelationshipName": "apsPlan",
+      "relationshipName": "customer",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

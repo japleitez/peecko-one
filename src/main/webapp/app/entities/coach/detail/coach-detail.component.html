@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (coach) {
+      <div>
+        <h2 data-cy="coachDetailsHeading"><span>Coach</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ coach.id }}</span>
+          </dd>
+          <dt><span>Type</span></dt>
+          <dd>
+            <span>{{ coach.type }}</span>
+          </dd>
+          <dt><span>Name</span></dt>
+          <dd>
+            <span>{{ coach.name }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ coach.email }}</span>
+          </dd>
+          <dt><span>Website</span></dt>
+          <dd>
+            <span>{{ coach.website }}</span>
+          </dd>
+          <dt><span>Instagram</span></dt>
+          <dd>
+            <span>{{ coach.instagram }}</span>
+          </dd>
+          <dt><span>Phone Number</span></dt>
+          <dd>
+            <span>{{ coach.phoneNumber }}</span>
+          </dd>
+          <dt><span>Country</span></dt>
+          <dd>
+            <span>{{ coach.country }}</span>
+          </dd>
+          <dt><span>Speaks</span></dt>
+          <dd>
+            <span>{{ coach.speaks }}</span>
+          </dd>
+          <dt><span>Resume</span></dt>
+          <dd>
+            <span>{{ coach.resume }}</span>
+          </dd>
+          <dt><span>Notes</span></dt>
+          <dd>
+            <span>{{ coach.notes }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ coach.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated</span></dt>
+          <dd>
+            <span>{{ coach.updated | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/coach', coach.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

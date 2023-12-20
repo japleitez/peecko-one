@@ -1,0 +1,107 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-aps-device-heading" data-cy="ApsDeviceCreateUpdateHeading">Create or edit a Aps Device</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_username">Username</label>
+          <input type="text" class="form-control" name="username" id="field_username" data-cy="username" formControlName="username" />
+          @if (editForm.get('username')!.invalid && (editForm.get('username')!.dirty || editForm.get('username')!.touched)) {
+            <div>
+              @if (editForm.get('username')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deviceId">Device Id</label>
+          <input type="text" class="form-control" name="deviceId" id="field_deviceId" data-cy="deviceId" formControlName="deviceId" />
+          @if (editForm.get('deviceId')!.invalid && (editForm.get('deviceId')!.dirty || editForm.get('deviceId')!.touched)) {
+            <div>
+              @if (editForm.get('deviceId')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_phoneModel">Phone Model</label>
+          <input
+            type="text"
+            class="form-control"
+            name="phoneModel"
+            id="field_phoneModel"
+            data-cy="phoneModel"
+            formControlName="phoneModel"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_osVersion">Os Version</label>
+          <input type="text" class="form-control" name="osVersion" id="field_osVersion" data-cy="osVersion" formControlName="osVersion" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_installedOn">Installed On</label>
+          <div class="d-flex">
+            <input
+              id="field_installedOn"
+              data-cy="installedOn"
+              type="datetime-local"
+              class="form-control"
+              name="installedOn"
+              formControlName="installedOn"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_apsUser">Aps User</label>
+          <select
+            class="form-control"
+            id="field_apsUser"
+            data-cy="apsUser"
+            name="apsUser"
+            formControlName="apsUser"
+            [compareWith]="compareApsUser"
+          >
+            <option [ngValue]="null"></option>
+            @for (apsUserOption of apsUsersSharedCollection; track $index) {
+              <option [ngValue]="apsUserOption">{{ apsUserOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

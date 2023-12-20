@@ -1,0 +1,29 @@
+{
+  "annotations": {
+    "changelogDate": "20231220182956"
+  },
+  "applications": ["admin"],
+  "entityTableName": "label_translation",
+  "fields": [
+    {
+      "fieldName": "label",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lang",
+      "fieldType": "Language",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EN,FR,DE,ES"
+    },
+    {
+      "fieldName": "translation",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "LabelTranslation",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no"
+}

@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (labelTranslation) {
+      <div>
+        <h2 data-cy="labelTranslationDetailsHeading"><span>Label Translation</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ labelTranslation.id }}</span>
+          </dd>
+          <dt><span>Label</span></dt>
+          <dd>
+            <span>{{ labelTranslation.label }}</span>
+          </dd>
+          <dt><span>Lang</span></dt>
+          <dd>
+            <span>{{ labelTranslation.lang }}</span>
+          </dd>
+          <dt><span>Translation</span></dt>
+          <dd>
+            <span>{{ labelTranslation.translation }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/label-translation', labelTranslation.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

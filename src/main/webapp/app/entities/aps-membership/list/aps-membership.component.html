@@ -1,0 +1,115 @@
+<div>
+  <h2 id="page-heading" data-cy="ApsMembershipHeading">
+    <span>Aps Memberships</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-aps-membership"
+        [routerLink]="['/aps-membership/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create a new Aps Membership</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (apsMemberships?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Aps Memberships found</span>
+    </div>
+  }
+
+  @if (apsMemberships && apsMemberships.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span>ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="period">
+              <div class="d-flex">
+                <span>Period</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="license">
+              <div class="d-flex">
+                <span>License</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="username">
+              <div class="d-flex">
+                <span>Username</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="apsOrder.id">
+              <div class="d-flex">
+                <span>Aps Order</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (apsMembership of apsMemberships; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/aps-membership', apsMembership.id, 'view']">{{ apsMembership.id }}</a>
+              </td>
+              <td>{{ apsMembership.period }}</td>
+              <td>{{ apsMembership.license }}</td>
+              <td>{{ apsMembership.username }}</td>
+              <td>
+                @if (apsMembership.apsOrder) {
+                  <div>
+                    <a [routerLink]="['/aps-order', apsMembership.apsOrder.id, 'view']">{{ apsMembership.apsOrder.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/aps-membership', apsMembership.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline">View</span>
+                  </a>
+
+                  <a [routerLink]="['/aps-membership', apsMembership.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(apsMembership)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

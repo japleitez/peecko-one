@@ -1,0 +1,106 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (video) {
+      <div>
+        <h2 data-cy="videoDetailsHeading"><span>Video</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ video.id }}</span>
+          </dd>
+          <dt><span>Code</span></dt>
+          <dd>
+            <span>{{ video.code }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ video.title }}</span>
+          </dd>
+          <dt><span>Duration</span></dt>
+          <dd>
+            <span>{{ video.duration }}</span>
+          </dd>
+          <dt><span>Language</span></dt>
+          <dd>
+            <span>{{ video.language }}</span>
+          </dd>
+          <dt><span>Tags</span></dt>
+          <dd>
+            <span>{{ video.tags }}</span>
+          </dd>
+          <dt><span>Player</span></dt>
+          <dd>
+            <span>{{ video.player }}</span>
+          </dd>
+          <dt><span>Thumbnail</span></dt>
+          <dd>
+            <span>{{ video.thumbnail }}</span>
+          </dd>
+          <dt><span>Url</span></dt>
+          <dd>
+            <span>{{ video.url }}</span>
+          </dd>
+          <dt><span>Audience</span></dt>
+          <dd>
+            <span>{{ video.audience }}</span>
+          </dd>
+          <dt><span>Intensity</span></dt>
+          <dd>
+            <span>{{ video.intensity }}</span>
+          </dd>
+          <dt><span>Filename</span></dt>
+          <dd>
+            <span>{{ video.filename }}</span>
+          </dd>
+          <dt><span>Description</span></dt>
+          <dd>
+            <span>{{ video.description }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ video.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Released</span></dt>
+          <dd>
+            <span>{{ video.released | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Archived</span></dt>
+          <dd>
+            <span>{{ video.archived | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Video Category</span></dt>
+          <dd>
+            @if (video.videoCategory) {
+              <div>
+                <a [routerLink]="['/video-category', video.videoCategory.id, 'view']">{{ video.videoCategory.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span>Coach</span></dt>
+          <dd>
+            @if (video.coach) {
+              <div>
+                <a [routerLink]="['/coach', video.coach.id, 'view']">{{ video.coach.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/video', video.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

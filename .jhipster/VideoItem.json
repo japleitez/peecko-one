@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20231220183156"
+  },
+  "applications": ["admin"],
+  "entityTableName": "video_item",
+  "fields": [
+    {
+      "fieldName": "previous",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "next",
+      "fieldType": "String"
+    }
+  ],
+  "name": "VideoItem",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "playList",
+      "otherEntityRelationshipName": "videoItem",
+      "relationshipName": "playList",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (videoCategory) {
+      <div>
+        <h2 data-cy="videoCategoryDetailsHeading"><span>Video Category</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ videoCategory.id }}</span>
+          </dd>
+          <dt><span>Code</span></dt>
+          <dd>
+            <span>{{ videoCategory.code }}</span>
+          </dd>
+          <dt><span>Title</span></dt>
+          <dd>
+            <span>{{ videoCategory.title }}</span>
+          </dd>
+          <dt><span>Label</span></dt>
+          <dd>
+            <span>{{ videoCategory.label }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ videoCategory.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Released</span></dt>
+          <dd>
+            <span>{{ videoCategory.released | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Archived</span></dt>
+          <dd>
+            <span>{{ videoCategory.archived | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/video-category', videoCategory.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

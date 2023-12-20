@@ -1,0 +1,110 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (agency) {
+      <div>
+        <h2 data-cy="agencyDetailsHeading"><span>Agency</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ agency.id }}</span>
+          </dd>
+          <dt><span>Code</span></dt>
+          <dd>
+            <span>{{ agency.code }}</span>
+          </dd>
+          <dt><span>Name</span></dt>
+          <dd>
+            <span>{{ agency.name }}</span>
+          </dd>
+          <dt><span>Line 1</span></dt>
+          <dd>
+            <span>{{ agency.line1 }}</span>
+          </dd>
+          <dt><span>Line 2</span></dt>
+          <dd>
+            <span>{{ agency.line2 }}</span>
+          </dd>
+          <dt><span>Zip</span></dt>
+          <dd>
+            <span>{{ agency.zip }}</span>
+          </dd>
+          <dt><span>City</span></dt>
+          <dd>
+            <span>{{ agency.city }}</span>
+          </dd>
+          <dt><span>Country</span></dt>
+          <dd>
+            <span>{{ agency.country }}</span>
+          </dd>
+          <dt><span>Language</span></dt>
+          <dd>
+            <span>{{ agency.language }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ agency.email }}</span>
+          </dd>
+          <dt><span>Phone</span></dt>
+          <dd>
+            <span>{{ agency.phone }}</span>
+          </dd>
+          <dt><span>Billing Email</span></dt>
+          <dd>
+            <span>{{ agency.billingEmail }}</span>
+          </dd>
+          <dt><span>Billing Phone</span></dt>
+          <dd>
+            <span>{{ agency.billingPhone }}</span>
+          </dd>
+          <dt><span>Bank</span></dt>
+          <dd>
+            <span>{{ agency.bank }}</span>
+          </dd>
+          <dt><span>Iban</span></dt>
+          <dd>
+            <span>{{ agency.iban }}</span>
+          </dd>
+          <dt><span>Rcs</span></dt>
+          <dd>
+            <span>{{ agency.rcs }}</span>
+          </dd>
+          <dt><span>Vat Id</span></dt>
+          <dd>
+            <span>{{ agency.vatId }}</span>
+          </dd>
+          <dt><span>Vat Rate</span></dt>
+          <dd>
+            <span>{{ agency.vatRate }}</span>
+          </dd>
+          <dt><span>Notes</span></dt>
+          <dd>
+            <span>{{ agency.notes }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ agency.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated</span></dt>
+          <dd>
+            <span>{{ agency.updated | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/agency', agency.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

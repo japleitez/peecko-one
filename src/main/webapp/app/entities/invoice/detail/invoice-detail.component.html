@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (invoice) {
+      <div>
+        <h2 data-cy="invoiceDetailsHeading"><span>Invoice</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ invoice.id }}</span>
+          </dd>
+          <dt><span>Number</span></dt>
+          <dd>
+            <span>{{ invoice.number }}</span>
+          </dd>
+          <dt><span>Issued</span></dt>
+          <dd>
+            <span>{{ invoice.issued | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Due Date</span></dt>
+          <dd>
+            <span>{{ invoice.dueDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Sale Date</span></dt>
+          <dd>
+            <span>{{ invoice.saleDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Subtotal</span></dt>
+          <dd>
+            <span>{{ invoice.subtotal }}</span>
+          </dd>
+          <dt><span>Vat</span></dt>
+          <dd>
+            <span>{{ invoice.vat }}</span>
+          </dd>
+          <dt><span>Total</span></dt>
+          <dd>
+            <span>{{ invoice.total }}</span>
+          </dd>
+          <dt><span>Paid</span></dt>
+          <dd>
+            <span>{{ invoice.paid }}</span>
+          </dd>
+          <dt><span>Paid Date</span></dt>
+          <dd>
+            <span>{{ invoice.paidDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Diff</span></dt>
+          <dd>
+            <span>{{ invoice.diff }}</span>
+          </dd>
+          <dt><span>Notes</span></dt>
+          <dd>
+            <span>{{ invoice.notes }}</span>
+          </dd>
+          <dt><span>Aps Order</span></dt>
+          <dd>
+            @if (invoice.apsOrder) {
+              <div>
+                <a [routerLink]="['/aps-order', invoice.apsOrder.id, 'view']">{{ invoice.apsOrder.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/invoice', invoice.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

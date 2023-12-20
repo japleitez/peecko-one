@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (apsOrder) {
+      <div>
+        <h2 data-cy="apsOrderDetailsHeading"><span>Aps Order</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ apsOrder.id }}</span>
+          </dd>
+          <dt><span>Period</span></dt>
+          <dd>
+            <span>{{ apsOrder.period }}</span>
+          </dd>
+          <dt><span>License</span></dt>
+          <dd>
+            <span>{{ apsOrder.license }}</span>
+          </dd>
+          <dt><span>Unit Price</span></dt>
+          <dd>
+            <span>{{ apsOrder.unitPrice }}</span>
+          </dd>
+          <dt><span>Vat Rate</span></dt>
+          <dd>
+            <span>{{ apsOrder.vatRate }}</span>
+          </dd>
+          <dt><span>Number Of Users</span></dt>
+          <dd>
+            <span>{{ apsOrder.numberOfUsers }}</span>
+          </dd>
+          <dt><span>Invoice Number</span></dt>
+          <dd>
+            <span>{{ apsOrder.invoiceNumber }}</span>
+          </dd>
+          <dt><span>Aps Plan</span></dt>
+          <dd>
+            @if (apsOrder.apsPlan) {
+              <div>
+                <a [routerLink]="['/aps-plan', apsOrder.apsPlan.id, 'view']">{{ apsOrder.apsPlan.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/aps-order', apsOrder.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

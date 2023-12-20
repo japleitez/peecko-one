@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (apsUser) {
+      <div>
+        <h2 data-cy="apsUserDetailsHeading"><span>Aps User</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ apsUser.id }}</span>
+          </dd>
+          <dt><span>Name</span></dt>
+          <dd>
+            <span>{{ apsUser.name }}</span>
+          </dd>
+          <dt><span>Username</span></dt>
+          <dd>
+            <span>{{ apsUser.username }}</span>
+          </dd>
+          <dt><span>Username Verified</span></dt>
+          <dd>
+            <span>{{ apsUser.usernameVerified }}</span>
+          </dd>
+          <dt><span>Private Email</span></dt>
+          <dd>
+            <span>{{ apsUser.privateEmail }}</span>
+          </dd>
+          <dt><span>Private Verified</span></dt>
+          <dd>
+            <span>{{ apsUser.privateVerified }}</span>
+          </dd>
+          <dt><span>Language</span></dt>
+          <dd>
+            <span>{{ apsUser.language }}</span>
+          </dd>
+          <dt><span>License</span></dt>
+          <dd>
+            <span>{{ apsUser.license }}</span>
+          </dd>
+          <dt><span>Active</span></dt>
+          <dd>
+            <span>{{ apsUser.active }}</span>
+          </dd>
+          <dt><span>Password</span></dt>
+          <dd>
+            <span>{{ apsUser.password }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ apsUser.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated</span></dt>
+          <dd>
+            <span>{{ apsUser.updated | formatMediumDatetime }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/aps-user', apsUser.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

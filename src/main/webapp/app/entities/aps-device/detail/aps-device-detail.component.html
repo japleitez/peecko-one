@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (apsDevice) {
+      <div>
+        <h2 data-cy="apsDeviceDetailsHeading"><span>Aps Device</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ apsDevice.id }}</span>
+          </dd>
+          <dt><span>Username</span></dt>
+          <dd>
+            <span>{{ apsDevice.username }}</span>
+          </dd>
+          <dt><span>Device Id</span></dt>
+          <dd>
+            <span>{{ apsDevice.deviceId }}</span>
+          </dd>
+          <dt><span>Phone Model</span></dt>
+          <dd>
+            <span>{{ apsDevice.phoneModel }}</span>
+          </dd>
+          <dt><span>Os Version</span></dt>
+          <dd>
+            <span>{{ apsDevice.osVersion }}</span>
+          </dd>
+          <dt><span>Installed On</span></dt>
+          <dd>
+            <span>{{ apsDevice.installedOn | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Aps User</span></dt>
+          <dd>
+            @if (apsDevice.apsUser) {
+              <div>
+                <a [routerLink]="['/aps-user', apsDevice.apsUser.id, 'view']">{{ apsDevice.apsUser.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/aps-device', apsDevice.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

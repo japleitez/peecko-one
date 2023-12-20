@@ -1,0 +1,110 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (customer) {
+      <div>
+        <h2 data-cy="customerDetailsHeading"><span>Customer</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ customer.id }}</span>
+          </dd>
+          <dt><span>Code</span></dt>
+          <dd>
+            <span>{{ customer.code }}</span>
+          </dd>
+          <dt><span>Name</span></dt>
+          <dd>
+            <span>{{ customer.name }}</span>
+          </dd>
+          <dt><span>Country</span></dt>
+          <dd>
+            <span>{{ customer.country }}</span>
+          </dd>
+          <dt><span>Membership</span></dt>
+          <dd>
+            <span>{{ customer.membership }}</span>
+          </dd>
+          <dt><span>State</span></dt>
+          <dd>
+            <span>{{ customer.state }}</span>
+          </dd>
+          <dt><span>Close Reason</span></dt>
+          <dd>
+            <span>{{ customer.closeReason }}</span>
+          </dd>
+          <dt><span>Email Domains</span></dt>
+          <dd>
+            <span>{{ customer.emailDomains }}</span>
+          </dd>
+          <dt><span>Vat Id</span></dt>
+          <dd>
+            <span>{{ customer.vatId }}</span>
+          </dd>
+          <dt><span>Bank</span></dt>
+          <dd>
+            <span>{{ customer.bank }}</span>
+          </dd>
+          <dt><span>Iban</span></dt>
+          <dd>
+            <span>{{ customer.iban }}</span>
+          </dd>
+          <dt><span>Logo</span></dt>
+          <dd>
+            <span>{{ customer.logo }}</span>
+          </dd>
+          <dt><span>Notes</span></dt>
+          <dd>
+            <span>{{ customer.notes }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ customer.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated</span></dt>
+          <dd>
+            <span>{{ customer.updated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Trialed</span></dt>
+          <dd>
+            <span>{{ customer.trialed | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Declined</span></dt>
+          <dd>
+            <span>{{ customer.declined | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Activated</span></dt>
+          <dd>
+            <span>{{ customer.activated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Closed</span></dt>
+          <dd>
+            <span>{{ customer.closed | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Agency</span></dt>
+          <dd>
+            @if (customer.agency) {
+              <div>
+                <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/customer', customer.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

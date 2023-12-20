@@ -1,0 +1,50 @@
+{
+  "annotations": {
+    "changelogDate": "20231220182856"
+  },
+  "applications": ["admin"],
+  "entityTableName": "notification",
+  "fields": [
+    {
+      "fieldName": "companyId",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "message",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "language",
+      "fieldType": "Language",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EN,FR,DE,ES"
+    },
+    {
+      "fieldName": "imageUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "videoUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "starts",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "expires",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "name": "Notification",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no"
+}

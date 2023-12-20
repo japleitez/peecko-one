@@ -1,0 +1,86 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (apsPlan) {
+      <div>
+        <h2 data-cy="apsPlanDetailsHeading"><span>Aps Plan</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ apsPlan.id }}</span>
+          </dd>
+          <dt><span>Contract</span></dt>
+          <dd>
+            <span>{{ apsPlan.contract }}</span>
+          </dd>
+          <dt><span>Pricing</span></dt>
+          <dd>
+            <span>{{ apsPlan.pricing }}</span>
+          </dd>
+          <dt><span>State</span></dt>
+          <dd>
+            <span>{{ apsPlan.state }}</span>
+          </dd>
+          <dt><span>License</span></dt>
+          <dd>
+            <span>{{ apsPlan.license }}</span>
+          </dd>
+          <dt><span>Starts</span></dt>
+          <dd>
+            <span>{{ apsPlan.starts | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Ends</span></dt>
+          <dd>
+            <span>{{ apsPlan.ends | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Trial Starts</span></dt>
+          <dd>
+            <span>{{ apsPlan.trialStarts | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Trial Ends</span></dt>
+          <dd>
+            <span>{{ apsPlan.trialEnds | formatMediumDate }}</span>
+          </dd>
+          <dt><span>Unit Price</span></dt>
+          <dd>
+            <span>{{ apsPlan.unitPrice }}</span>
+          </dd>
+          <dt><span>Notes</span></dt>
+          <dd>
+            <span>{{ apsPlan.notes }}</span>
+          </dd>
+          <dt><span>Created</span></dt>
+          <dd>
+            <span>{{ apsPlan.created | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Updated</span></dt>
+          <dd>
+            <span>{{ apsPlan.updated | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Customer</span></dt>
+          <dd>
+            @if (apsPlan.customer) {
+              <div>
+                <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/aps-plan', apsPlan.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

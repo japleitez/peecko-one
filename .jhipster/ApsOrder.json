@@ -1,0 +1,63 @@
+{
+  "annotations": {
+    "changelogDate": "20231220182056"
+  },
+  "applications": ["admin"],
+  "entityTableName": "aps_order",
+  "fields": [
+    {
+      "fieldName": "period",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "license",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "unitPrice",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "vatRate",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "numberOfUsers",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "invoiceNumber",
+      "fieldType": "String"
+    }
+  ],
+  "name": "ApsOrder",
+  "relationships": [
+    {
+      "otherEntityName": "apsMembership",
+      "otherEntityRelationshipName": "apsOrder",
+      "relationshipName": "apsMembership",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "invoice",
+      "otherEntityRelationshipName": "apsOrder",
+      "relationshipName": "invoice",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "apsPlan",
+      "otherEntityRelationshipName": "apsOrder",
+      "relationshipName": "apsPlan",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

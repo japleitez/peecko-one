@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (apsPricing) {
+      <div>
+        <h2 data-cy="apsPricingDetailsHeading"><span>Aps Pricing</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>ID</span></dt>
+          <dd>
+            <span>{{ apsPricing.id }}</span>
+          </dd>
+          <dt><span>Customer Id</span></dt>
+          <dd>
+            <span>{{ apsPricing.customerId }}</span>
+          </dd>
+          <dt><span>Index</span></dt>
+          <dd>
+            <span>{{ apsPricing.index }}</span>
+          </dd>
+          <dt><span>Min Quantity</span></dt>
+          <dd>
+            <span>{{ apsPricing.minQuantity }}</span>
+          </dd>
+          <dt><span>Unit Price</span></dt>
+          <dd>
+            <span>{{ apsPricing.unitPrice }}</span>
+          </dd>
+          <dt><span>Agency</span></dt>
+          <dd>
+            @if (apsPricing.agency) {
+              <div>
+                <a [routerLink]="['/agency', apsPricing.agency.id, 'view']">{{ apsPricing.agency.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/aps-pricing', apsPricing.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
