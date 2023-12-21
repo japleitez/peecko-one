@@ -69,6 +69,7 @@
     "packaging": "jar"
   },
   "dependencies": {
+    "@angular/animations": "^17.0.7",
     "@angular/common": "17.0.7",
     "@angular/compiler": "17.0.7",
     "@angular/core": "17.0.7",
