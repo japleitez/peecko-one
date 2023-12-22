@@ -2,11 +2,15 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.security.SecurityUtils;
+import com.peecko.one.service.ApsOrderService;
+import com.peecko.one.utils.PeriodUtils;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,8 +40,11 @@ public class ApsOrderResource {
 
     private final ApsOrderRepository apsOrderRepository;
 
-    public ApsOrderResource(ApsOrderRepository apsOrderRepository) {
+    private final ApsOrderService apsOrderService;
+
+    public ApsOrderResource(ApsOrderRepository apsOrderRepository, ApsOrderService apsOrderService) {
         this.apsOrderRepository = apsOrderRepository;
+        this.apsOrderService = apsOrderService;
     }
 
     /**
@@ -162,7 +169,18 @@ public class ApsOrderResource {
     @GetMapping("")
     public List<ApsOrder> getAllApsOrders() {
         log.debug("REST request to get all ApsOrders");
-        return apsOrderRepository.findAll();
+        YearMonth yearMonth = YearMonth.now();
+        Integer period = PeriodUtils.getPeriod(yearMonth);
+        Long agencyId = SecurityUtils.getCurrentUserAgencyId();
+        return apsOrderRepository.findByPeriod(agencyId, period);
+    }
+
+    @GetMapping("/batch/generate")
+    public List<ApsOrder> batchGenerate() {
+        log.debug("REST request to batch generate ApsOrders");
+        YearMonth yearMonth = YearMonth.now();
+        Long agencyId = SecurityUtils.getCurrentUserAgencyId();
+        return apsOrderService.batchGenerate(agencyId, yearMonth);
     }
 
     /**

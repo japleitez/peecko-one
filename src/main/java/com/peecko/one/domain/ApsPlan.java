@@ -298,6 +298,12 @@ public class ApsPlan implements Serializable {
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
+    public static ApsPlan of(Long id) {
+        ApsPlan apsPlan = new ApsPlan();
+        apsPlan.setId(id);
+        return apsPlan;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

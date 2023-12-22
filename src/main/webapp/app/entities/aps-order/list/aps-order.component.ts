@@ -35,6 +35,10 @@ export class ApsOrderComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
+  loadAction = '';
+  DEFAULT_LOAD = 'default-load';
+  BATCH_LOAD = 'batch-load';
+
   constructor(
     protected apsOrderService: ApsOrderService,
     protected activatedRoute: ActivatedRoute,
@@ -66,6 +70,18 @@ export class ApsOrderComponent implements OnInit {
   }
 
   load(): void {
+    this.loadAction = this.DEFAULT_LOAD;
+    console.log(this.loadAction)
+    this.executeLoad();
+  }
+
+  batch(): void {
+    this.loadAction = this.BATCH_LOAD;
+    console.log(this.loadAction)
+    this.executeLoad();
+  }
+
+  executeLoad(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
@@ -108,7 +124,11 @@ export class ApsOrderComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    return this.apsOrderService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    if (this.loadAction === this.BATCH_LOAD) {
+      return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
+    } else {
+      return this.apsOrderService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    }
   }
 
   protected handleNavigation(predicate?: string, ascending?: boolean): void {

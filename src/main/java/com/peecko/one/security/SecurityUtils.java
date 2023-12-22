@@ -22,6 +22,9 @@ public final class SecurityUtils {
 
     private SecurityUtils() {}
 
+    public static Long getCurrentUserAgencyId() {
+        return 1L;
+    }
     /**
      * Get the login of the current user.
      *
