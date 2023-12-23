@@ -8,6 +8,10 @@ public abstract class PeriodUtils {
         return Integer.parseInt(yearMonth.toString().replace("-", ""));
     }
 
+    public static YearMonth getYearMonth(Integer period) {
+        return getYearMonth(String.valueOf(period));
+    }
+
     public static YearMonth getYearMonth(String period) {
         String value = period.replace("-", "");
         int year = Integer.parseInt(value.substring(0,4));

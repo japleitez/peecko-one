@@ -4,6 +4,7 @@ import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsOrderService;
+import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.utils.PeriodUtils;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -167,16 +168,16 @@ public class ApsOrderResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrders in body.
      */
     @GetMapping("")
-    public List<ApsOrder> getAllApsOrders() {
+    public List<ApsOrderInfo> getAllApsOrders() {
         log.debug("REST request to get all ApsOrders");
         YearMonth yearMonth = YearMonth.now();
         Integer period = PeriodUtils.getPeriod(yearMonth);
         Long agencyId = SecurityUtils.getCurrentUserAgencyId();
-        return apsOrderRepository.findByPeriod(agencyId, period);
+        return apsOrderRepository.findByPeriod(agencyId, period).stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
     @GetMapping("/batch/generate")
-    public List<ApsOrder> batchGenerate() {
+    public List<ApsOrderInfo> batchGenerate() {
         log.debug("REST request to batch generate ApsOrders");
         YearMonth yearMonth = YearMonth.now();
         Long agencyId = SecurityUtils.getCurrentUserAgencyId();

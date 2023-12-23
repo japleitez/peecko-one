@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IApsOrder, NewApsOrder } from '../aps-order.model';
+import { IApsOrder, IApsOrderInfo, NewApsOrder } from '../aps-order.model';
 
 export type PartialUpdateApsOrder = Partial<IApsOrder> & Pick<IApsOrder, 'id'>;
 
 export type EntityResponseType = HttpResponse<IApsOrder>;
 export type EntityArrayResponseType = HttpResponse<IApsOrder[]>;
+export type EntityInfoArrayResponseType = HttpResponse<IApsOrderInfo[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsOrderService {
@@ -37,14 +38,14 @@ export class ApsOrderService {
     return this.http.get<IApsOrder>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<EntityInfoArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IApsOrder[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<IApsOrderInfo[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  batchGenerate(req?: any): Observable<EntityArrayResponseType> {
+  batchGenerate(req?: any): Observable<EntityInfoArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IApsOrder[]>(`${this.resourceUrl}/batch/generate`, { params: options, observe: 'response' });
+    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/generate`, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
