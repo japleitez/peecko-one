@@ -47,6 +47,33 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <!-- reference info -->
+            <th scope="col">
+              <div class="d-flex">
+                <span class="badge bg-info">Customer</span>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span class="badge bg-info">C-State</span>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span class="badge bg-info">P-State</span>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span class="badge bg-info">P-Pricing</span>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span class="badge bg-info">P-Contract</span>
+              </div>
+            </th>
+            <!-- order info -->
             <th scope="col" jhiSortBy="period">
               <div class="d-flex">
                 <span>Period</span>
@@ -70,28 +97,22 @@
             </th>
             <th scope="col" jhiSortBy="vatRate">
               <div class="d-flex">
-                <span>Vat Rate</span>
+                <span>VAT Rate</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="numberOfUsers">
               <div class="d-flex">
-                <span>Number Of Users</span>
+                <span>Users</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="invoiceNumber">
               <div class="d-flex">
-                <span>Invoice Number</span>
+                <span>Invoice</span>
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="apsPlan.id">
-              <div class="d-flex">
-                <span>Aps Plan</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -104,19 +125,25 @@
               <td>
                 <a [routerLink]="['/aps-order', apsOrder.id, 'view']">{{ apsOrder.id }}</a>
               </td>
+              <!-- reference info -->
+              <td>{{ apsOrder.cstName }}</td>
+              <td>{{ apsOrder.cstState }}</td>
+              <td>{{ apsOrder.plnState }}</td>
+              <td>{{ apsOrder.pricing }}</td>
+              <td>
+                @if (apsOrder.plnId) {
+                  <div>
+                    <a [routerLink]="['/aps-plan', apsOrder.plnId, 'view']">{{ apsOrder.contract }}</a>
+                  </div>
+                }
+              </td>
+              <!-- order info -->
               <td>{{ apsOrder.period }}</td>
               <td>{{ apsOrder.license }}</td>
               <td>{{ apsOrder.unitPrice }}</td>
               <td>{{ apsOrder.vatRate }}</td>
               <td>{{ apsOrder.numberOfUsers }}</td>
               <td>{{ apsOrder.invoiceNumber }}</td>
-              <td>
-                @if (apsOrder.apsPlan) {
-                  <div>
-                    <a [routerLink]="['/aps-plan', apsOrder.apsPlan.id, 'view']">{{ apsOrder.apsPlan.id }}</a>
-                  </div>
-                }
-              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/aps-order', apsOrder.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

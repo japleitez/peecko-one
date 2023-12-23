@@ -1,6 +1,7 @@
 package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.peecko.one.service.info.ApsOrderInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -229,6 +230,10 @@ public class ApsOrder implements Serializable {
     public ApsOrder apsPlan(ApsPlan apsPlan) {
         this.setApsPlan(apsPlan);
         return this;
+    }
+
+    public ApsOrderInfo toApsOrderInfo() {
+        return ApsOrderInfo.of(this);
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
