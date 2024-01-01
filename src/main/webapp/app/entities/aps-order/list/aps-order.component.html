@@ -1,29 +1,50 @@
 <div>
   <h2 id="page-heading" data-cy="ApsOrderHeading">
     <span>Aps Orders</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="batch()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Generate</span>
-      </button>
-
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-aps-order"
-        [routerLink]="['/aps-order/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Aps Order</span>
-      </button>
-    </div>
   </h2>
+
+  <div class="d-flex justify-content-end">
+    <form class="aps-orders-search-form">
+      <mat-form-field class="w-50" subscriptSizing="dynamic">
+        <mat-label>Customer</mat-label>
+        <input type="text" matInput placeholder="Pick one" aria-label="Customer"  [formControl]="customerCtr" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomerName">
+          @for (cst of filteredCustomers | async; track cst) {
+            <mat-option [value]="cst" >{{cst.name}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="w-20" subscriptSizing="dynamic">
+        <mat-label>From</mat-label>
+        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" aria-label="Pick month" [formControl]="startCtr" required="true">
+      </mat-form-field>
+      <mat-form-field class="w-20" subscriptSizing="dynamic">
+        <mat-label>To</mat-label>
+        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" aria-label="Pick month" [formControl]="endCtr" >
+      </mat-form-field>
+    </form>
+
+    <button class="btn btn-info me-2" (click)="batchGenerate()" [disabled]="isLoading">
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <span>Generate</span>
+    </button>
+
+    <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading">
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <span>Refresh</span>
+    </button>
+
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-aps-order"
+      [routerLink]="['/aps-order/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>New Aps Order</span>
+    </button>
+  </div>
+
 
   <jhi-alert-error></jhi-alert-error>
 

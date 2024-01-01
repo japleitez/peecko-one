@@ -1,7 +1,10 @@
 package com.peecko.one.web.rest;
 
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Customer;
+import com.peecko.one.domain.enumeration.CustomerState;
 import com.peecko.one.repository.CustomerRepository;
+import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -204,11 +207,20 @@ public class CustomerResource {
     @GetMapping("")
     public ResponseEntity<List<Customer>> getAllCustomers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Customers");
-        Page<Customer> page = customerRepository.findAll(pageable);
+        Agency agency = SecurityUtils.getCurrentUserAgency();
+        Page<Customer> page = customerRepository.findByAgency(agency, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<List<Customer>> findActiveCustomers() {
+        log.debug("REST request to get active Customers");
+        Agency agency = SecurityUtils.getCurrentUserAgency();
+        List<Customer> customers = customerRepository.findByAgencyAndCustomerState(agency, CustomerState.ACTIVE);
+        List<Customer> list = customers.stream().map(Customer::cloneForSelection).toList();
+        return ResponseEntity.ok().body(list);
+    }
     /**
      * {@code GET  /customers/:id} : get the "id" customer.
      *

@@ -1,6 +1,8 @@
 package com.peecko.one.utils;
 
 import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 public abstract class PeriodUtils {
 
@@ -17,6 +19,15 @@ public abstract class PeriodUtils {
         int year = Integer.parseInt(value.substring(0,4));
         int month = Integer.parseInt(value.substring(4));
         return YearMonth.of(year, month);
+    }
+
+    public static Optional<YearMonth> parseYearMonth(String period) {
+        try {
+            YearMonth yearMonth = YearMonth.parse(period);
+            return Optional.of(yearMonth);
+        } catch (DateTimeParseException e) {
+            return Optional.empty();
+        }
     }
 
 }
