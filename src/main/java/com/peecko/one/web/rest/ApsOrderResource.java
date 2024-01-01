@@ -2,11 +2,13 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsOrderService;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.utils.PeriodUtils;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
+import com.peecko.one.web.rest.errors.ErrorConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -32,6 +34,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @Transactional
 public class ApsOrderResource {
 
+    public static final String ERR_VALIDATION = ErrorConstants.ERR_VALIDATION;
     private final Logger log = LoggerFactory.getLogger(ApsOrderResource.class);
 
     private static final String ENTITY_NAME = "apsOrder";
@@ -43,9 +46,12 @@ public class ApsOrderResource {
 
     private final ApsOrderService apsOrderService;
 
-    public ApsOrderResource(ApsOrderRepository apsOrderRepository, ApsOrderService apsOrderService) {
+    private final CustomerRepository customerRepository;
+
+    public ApsOrderResource(ApsOrderRepository apsOrderRepository, ApsOrderService apsOrderService, CustomerRepository customerRepository) {
         this.apsOrderRepository = apsOrderRepository;
         this.apsOrderService = apsOrderService;
+        this.customerRepository = customerRepository;
     }
 
     /**
@@ -168,12 +174,32 @@ public class ApsOrderResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrders in body.
      */
     @GetMapping("")
-    public List<ApsOrderInfo> getAllApsOrders() {
-        log.debug("REST request to get all ApsOrders");
-        YearMonth yearMonth = YearMonth.now();
-        Integer period = PeriodUtils.getPeriod(yearMonth);
+    public List<ApsOrderInfo> getApsOrders(
+        @RequestParam(required = false) Long customerId,
+        @RequestParam(required = false) String startYearMonth,
+        @RequestParam(required = false) String endYearMonth) {
+        log.debug("REST request to get ApsOrders");
+        Integer startPeriod = null;
+        Integer endPeriod = null;
+        if (Objects.nonNull(customerId)) {
+            customerRepository.findById(customerId).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "customer.invalid"));
+        }
+        if (Objects.nonNull(startYearMonth)) {
+            startPeriod = PeriodUtils.parseYearMonth(startYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "start.period.invalid"));
+        }
+        if (Objects.nonNull(endYearMonth)) {
+            endPeriod = PeriodUtils.parseYearMonth(endYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "end.period.invalid"));
+        }
+        final List<ApsOrder> orders;
         Long agencyId = SecurityUtils.getCurrentUserAgencyId();
-        return apsOrderRepository.findByPeriod(agencyId, period).stream().map(ApsOrder::toApsOrderInfo).toList();
+        if (customerId != null && startPeriod != null && endPeriod != null) {
+            orders =  apsOrderRepository.findByCustomerAndBetweenPeriods(customerId, startPeriod, endPeriod);
+        } else if (customerId != null && startPeriod != null ) {
+            orders = apsOrderRepository.findByCustomerAndStartPeriod(customerId, startPeriod);
+        } else {
+            orders = apsOrderRepository.findByPeriod(agencyId, startPeriod);
+        }
+        return orders.stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
     @GetMapping("/batch/generate")

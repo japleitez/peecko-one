@@ -427,6 +427,15 @@ public class Customer implements Serializable {
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
+    public Customer cloneForSelection() {
+        Customer clone = new Customer();
+        clone.id = this.id;
+        clone.code = this.code;
+        clone.name = this.name;
+        clone.state = this.state;
+        return clone;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

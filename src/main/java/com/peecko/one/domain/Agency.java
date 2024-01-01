@@ -479,6 +479,12 @@ public class Agency implements Serializable {
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
+    public static Agency of(Long id) {
+        Agency agency = new Agency();
+        agency.id = id;
+        return agency;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

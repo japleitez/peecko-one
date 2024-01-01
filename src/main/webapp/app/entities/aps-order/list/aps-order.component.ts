@@ -1,17 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
-import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { FormsModule } from '@angular/forms';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { SortByDirective, SortDirective } from 'app/shared/sort';
+import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { IApsOrder, IApsOrderInfo } from '../aps-order.model';
-import { EntityInfoArrayResponseType, ApsOrderService } from '../service/aps-order.service';
+import { ApsOrderService, EntityInfoArrayResponseType } from '../service/aps-order.service';
 import { ApsOrderDeleteDialogComponent } from '../delete/aps-order-delete-dialog.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ICustomer } from '../../customer/customer.model';
+import { CustomerService, EntityArrayResponseType } from '../../customer/service/customer.service';
 
 @Component({
   standalone: true,
@@ -26,9 +33,22 @@ import { ApsOrderDeleteDialogComponent } from '../delete/aps-order-delete-dialog
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-  ],
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+  ]
 })
 export class ApsOrderComponent implements OnInit {
+  // search form controls
+  customers!: ICustomer[];
+  filteredCustomers!: Observable<ICustomer[]>;
+  customerCtr = new FormControl<string | ICustomer>('');
+  startCtr = new FormControl<string>('2023-12');
+  endCtr = new FormControl<string>('');
+
+  // list controls
   apsOrders?: IApsOrderInfo[];
   isLoading = false;
 
@@ -36,22 +56,58 @@ export class ApsOrderComponent implements OnInit {
   ascending = true;
 
   loadAction = '';
-  DEFAULT_LOAD = 'default-load';
-  BATCH_LOAD = 'batch-load';
+  REFRESH = 'REFRESH';
+  BATCH_GENERATE = 'BATCH_GENERATE';
 
   constructor(
     protected apsOrderService: ApsOrderService,
+    protected customerService: CustomerService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
+    protected fb: FormBuilder,
   ) {}
 
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
 
   ngOnInit(): void {
-    this.load();
+    this._loadCustomers();
+    this.refresh();
   }
+
+  /*
+  search actions
+   */
+  private _loadCustomers(): void {
+    this.isLoading = true;
+    this.customerService.queryActive().pipe(tap(() => (this.isLoading = false))).subscribe({
+      next: (res: EntityArrayResponseType) => {
+        this.customers = res.body ?? [];
+        this.filteredCustomers = this.customerCtr.valueChanges.pipe(
+          startWith(''),
+          map(value => {
+            const name = typeof value === 'string' ? value : value?.name;
+            return name ? this._filterCustomers(name as string) : this.customers.slice();
+          }),
+        );
+      },
+    });
+  }
+
+  displayCustomerName(cst: ICustomer): string {
+    return cst && cst.name? cst.name : '';
+  }
+  private _filterCustomers(name: string): ICustomer[] {
+    const value = name.toLowerCase();
+    return this.customers.filter(c => {
+      return c.name?.toLowerCase().includes(value);
+    });
+  }
+
+  /*
+  list actions
+   */
 
   delete(apsOrder: IApsOrder): void {
     const modalRef = this.modalService.open(ApsOrderDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
@@ -69,19 +125,17 @@ export class ApsOrderComponent implements OnInit {
       });
   }
 
-  load(): void {
-    this.loadAction = this.DEFAULT_LOAD;
-    console.log(this.loadAction)
-    this.executeLoad();
+  refresh(): void {
+    this.loadAction = this.REFRESH;
+    this._executeLoad();
   }
 
-  batch(): void {
-    this.loadAction = this.BATCH_LOAD;
-    console.log(this.loadAction)
-    this.executeLoad();
+  batchGenerate(): void {
+    this.loadAction = this.BATCH_GENERATE;
+    this._executeLoad();
   }
 
-  executeLoad(): void {
+  private _executeLoad(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityInfoArrayResponseType) => {
         this.onResponseSuccess(res);
@@ -124,8 +178,19 @@ export class ApsOrderComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    const executeBatch = (this.loadAction === this.BATCH_LOAD);
-    this.loadAction = this.DEFAULT_LOAD; // reset load action
+    let customer = this.customerCtr.value;
+    let customerId = typeof customer === 'string' ? null : customer?.id;
+    if (customerId) {
+      queryObject.customerId = customerId;
+    }
+    if (this.startCtr.value) {
+      queryObject.startYearMonth = this.startCtr.value;
+    }
+    if (this.endCtr.value) {
+      queryObject.endYearMonth = this.endCtr.value;
+    }
+    const executeBatch = (this.loadAction === this.BATCH_GENERATE);
+    this.loadAction = this.REFRESH; // reset load action
     if (executeBatch) {
       return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else {
