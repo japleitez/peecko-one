@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { IApsOrder, IApsOrderInfo } from '../aps-order.model';
@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ICustomer } from '../../customer/customer.model';
 import { CustomerService, EntityArrayResponseType } from '../../customer/service/customer.service';
+import { currentYearMonth, YearMonthValidator } from '../../../shared/validate/validate.service';
 
 @Component({
   standalone: true,
@@ -45,7 +46,7 @@ export class ApsOrderComponent implements OnInit {
   customers!: ICustomer[];
   filteredCustomers!: Observable<ICustomer[]>;
   customerCtr = new FormControl<string | ICustomer>('');
-  startCtr = new FormControl<string>('2023-12');
+  startCtr = new FormControl<string>('');
   endCtr = new FormControl<string>('');
 
   // list controls
@@ -72,15 +73,18 @@ export class ApsOrderComponent implements OnInit {
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
 
   ngOnInit(): void {
-    this._loadCustomers();
+    this._initForm();
     this.refresh();
   }
 
   /*
   search actions
    */
-  private _loadCustomers(): void {
+  private _initForm(): void {
     this.isLoading = true;
+    this.startCtr.setValue(currentYearMonth());
+    this.startCtr.setValidators([Validators.required, YearMonthValidator]);
+    this.endCtr.setValidators([YearMonthValidator]);
     this.customerService.queryActive().pipe(tap(() => (this.isLoading = false))).subscribe({
       next: (res: EntityArrayResponseType) => {
         this.customers = res.body ?? [];
@@ -108,7 +112,6 @@ export class ApsOrderComponent implements OnInit {
   /*
   list actions
    */
-
   delete(apsOrder: IApsOrder): void {
     const modalRef = this.modalService.open(ApsOrderDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.apsOrder = apsOrder;
@@ -217,4 +220,5 @@ export class ApsOrderComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
 }
