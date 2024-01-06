@@ -22,12 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.peecko.one.domain.ApsOrder}.
+ * REST controller for managing {@link ApsOrder}.
  */
 @RestController
 @RequestMapping("/api/aps-orders")
@@ -179,25 +180,29 @@ public class ApsOrderResource {
         @RequestParam(required = false) String startYearMonth,
         @RequestParam(required = false) String endYearMonth) {
         log.debug("REST request to get ApsOrders");
-        Integer startPeriod = null;
+        Integer startPeriod;
         Integer endPeriod = null;
         if (Objects.nonNull(customerId)) {
             customerRepository.findById(customerId).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "customer.invalid"));
         }
-        if (Objects.nonNull(startYearMonth)) {
+        if (!StringUtils.hasText(startYearMonth)) {
+            throw new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "start.period.invalid");
+        } else {
             startPeriod = PeriodUtils.parseYearMonth(startYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "start.period.invalid"));
         }
         if (Objects.nonNull(endYearMonth)) {
             endPeriod = PeriodUtils.parseYearMonth(endYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "end.period.invalid"));
         }
         final List<ApsOrder> orders;
-        Long agencyId = SecurityUtils.getCurrentUserAgencyId();
         if (customerId != null && startPeriod != null && endPeriod != null) {
             orders =  apsOrderRepository.findByCustomerAndBetweenPeriods(customerId, startPeriod, endPeriod);
         } else if (customerId != null && startPeriod != null ) {
             orders = apsOrderRepository.findByCustomerAndStartPeriod(customerId, startPeriod);
+        } else if (customerId != null && endPeriod != null ) {
+            orders = apsOrderRepository.findByCustomerAndEndPeriod(customerId, endPeriod);
         } else {
-            orders = apsOrderRepository.findByPeriod(agencyId, startPeriod);
+            Long agencyId = SecurityUtils.getCurrentUserAgencyId();
+            orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, startPeriod);
         }
         return orders.stream().map(ApsOrder::toApsOrderInfo).toList();
     }

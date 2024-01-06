@@ -8,7 +8,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule, ValidationErrors, ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { IApsOrder, IApsOrderInfo } from '../aps-order.model';
@@ -19,7 +26,27 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ICustomer } from '../../customer/customer.model';
 import { CustomerService, EntityArrayResponseType } from '../../customer/service/customer.service';
-import { currentYearMonth, YearMonthValidator } from '../../../shared/validate/validate.service';
+import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/validate/custom-validator.directive';
+
+function searchFormValidator(): ValidatorFn {
+  return (c: AbstractControl): ValidationErrors | null => {
+    let start = c.get('start')?.value;
+    if (!start) {
+      return { invalidForm: true };
+    }
+    let end = c.get('end')?.value;
+    if (start && end) {
+      if (end < start) {
+        return { invalidForm: true };
+      }
+    }
+    let customer = c.get('customer')?.value;
+    if (!customer && end) {
+      return { invalidForm: true };
+    }
+    return null;
+  }
+}
 
 @Component({
   standalone: true,
@@ -43,11 +70,9 @@ import { currentYearMonth, YearMonthValidator } from '../../../shared/validate/v
 })
 export class ApsOrderComponent implements OnInit {
   // search form controls
+  searchForm!: FormGroup;
   customers!: ICustomer[];
   filteredCustomers!: Observable<ICustomer[]>;
-  customerCtr = new FormControl<string | ICustomer>('');
-  startCtr = new FormControl<string>('');
-  endCtr = new FormControl<string>('');
 
   // list controls
   apsOrders?: IApsOrderInfo[];
@@ -82,13 +107,15 @@ export class ApsOrderComponent implements OnInit {
    */
   private _initForm(): void {
     this.isLoading = true;
-    this.startCtr.setValue(currentYearMonth());
-    this.startCtr.setValidators([Validators.required, YearMonthValidator]);
-    this.endCtr.setValidators([YearMonthValidator]);
+    this.searchForm = this.fb.group({
+      'customer': [''],
+      'start': [currentYearMonth(), Validators.compose([Validators.required, periodValidator()])],
+      'end': [null, periodValidator()],
+    }, { validators: [searchFormValidator()] });
     this.customerService.queryActive().pipe(tap(() => (this.isLoading = false))).subscribe({
       next: (res: EntityArrayResponseType) => {
         this.customers = res.body ?? [];
-        this.filteredCustomers = this.customerCtr.valueChanges.pipe(
+        this.filteredCustomers = this.searchForm.controls['customer'].valueChanges.pipe(
           startWith(''),
           map(value => {
             const name = typeof value === 'string' ? value : value?.name;
@@ -97,6 +124,10 @@ export class ApsOrderComponent implements OnInit {
         );
       },
     });
+  }
+
+  isStartYearMonthValid(): boolean {
+    return this.searchForm.controls['start'].valid;
   }
 
   displayCustomerName(cst: ICustomer): string {
@@ -181,16 +212,16 @@ export class ApsOrderComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    let customer = this.customerCtr.value;
+    let customer = this.searchForm.controls['customer'].value;
     let customerId = typeof customer === 'string' ? null : customer?.id;
     if (customerId) {
       queryObject.customerId = customerId;
     }
-    if (this.startCtr.value) {
-      queryObject.startYearMonth = this.startCtr.value;
+    if (this.searchForm.controls['start'].value) {
+      queryObject.startYearMonth = this.searchForm.controls['start'].value;
     }
-    if (this.endCtr.value) {
-      queryObject.endYearMonth = this.endCtr.value;
+    if (this.searchForm.controls['end'].value) {
+      queryObject.endYearMonth = this.searchForm.controls['end'].value;
     }
     const executeBatch = (this.loadAction === this.BATCH_GENERATE);
     this.loadAction = this.REFRESH; // reset load action
