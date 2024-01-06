@@ -24,7 +24,7 @@ public class ApsOrderService {
     public List<ApsOrderInfo> batchGenerate(Long agencyId, YearMonth yearMonth) {
         Integer period = PeriodUtils.getPeriod(yearMonth);
         List<ApsPlan> plans = apsPlanRepository.currentActivePlans(agencyId, yearMonth.atEndOfMonth());
-        List<ApsOrder> orders = apsOrderRepository.findByPeriod(agencyId, period);
+        List<ApsOrder> orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, period);
         return plans.stream().map(plan -> createOrderIfMissing(plan, orders, period)).toList();
     }
 

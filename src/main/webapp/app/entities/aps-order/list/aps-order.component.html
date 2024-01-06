@@ -4,10 +4,10 @@
   </h2>
 
   <div class="d-flex justify-content-end">
-    <form class="aps-orders-search-form">
+    <form class="aps-orders-search-form" [formGroup]="searchForm">
       <mat-form-field class="w-50" subscriptSizing="dynamic">
         <mat-label>Customer</mat-label>
-        <input type="text" matInput placeholder="Pick one" aria-label="Customer"  [formControl]="customerCtr" [matAutocomplete]="auto">
+        <input type="text" matInput placeholder="Pick one" aria-label="Customer" formControlName="customer" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomerName">
           @for (cst of filteredCustomers | async; track cst) {
             <mat-option [value]="cst" >{{cst.name}}</mat-option>
@@ -16,20 +16,20 @@
       </mat-form-field>
       <mat-form-field class="w-20" subscriptSizing="dynamic">
         <mat-label>From</mat-label>
-        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" [formControl]="startCtr" required="true">
+        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" formControlName="start" required="true">
       </mat-form-field>
       <mat-form-field class="w-20" subscriptSizing="dynamic">
         <mat-label>To</mat-label>
-        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" [formControl]="endCtr" >
+        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" formControlName="end" >
       </mat-form-field>
     </form>
 
-    <button class="btn btn-info me-2" (click)="batchGenerate()" [disabled]="isLoading">
+    <button class="btn btn-info me-2" (click)="batchGenerate()" [disabled]="isLoading || !isStartYearMonthValid()">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-      <span>Generate</span>
+      <span>Generate (From)</span>
     </button>
 
-    <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading">
+    <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading || !searchForm.valid">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
       <span>Refresh</span>
     </button>
