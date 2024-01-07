@@ -39,7 +39,7 @@ type CustomerFormGroupContent = {
   code: FormControl<CustomerFormRawValue['code']>;
   name: FormControl<CustomerFormRawValue['name']>;
   country: FormControl<CustomerFormRawValue['country']>;
-  membership: FormControl<CustomerFormRawValue['membership']>;
+  license: FormControl<CustomerFormRawValue['license']>;
   state: FormControl<CustomerFormRawValue['state']>;
   closeReason: FormControl<CustomerFormRawValue['closeReason']>;
   emailDomains: FormControl<CustomerFormRawValue['emailDomains']>;
@@ -83,7 +83,7 @@ export class CustomerFormService {
       country: new FormControl(customerRawValue.country, {
         validators: [Validators.required],
       }),
-      membership: new FormControl(customerRawValue.membership),
+      license: new FormControl(customerRawValue.license),
       state: new FormControl(customerRawValue.state, {
         validators: [Validators.required],
       }),

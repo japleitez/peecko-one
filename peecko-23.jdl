@@ -27,7 +27,7 @@ application {
 * privateVerified: yes if the private email has been verified
 * license: the 20 digit membership code
 * active: to indicate if the user is active to use the app
-* password: the user password encrypted 
+* password: the user password encrypted
 * created: the date of record creation
 * updated: the date of last record update
 */
@@ -144,7 +144,7 @@ entity Staff {
 * The Customer
 * Business Clients
 * -------------------------------------------------------
-* code: mnemonic code + [group-based-sequence] e.g. 0000 refers to parent company 
+* code: mnemonic code + [group-based-sequence] e.g. 0000 refers to parent company
 * name: registered business name
 * country: the customer country
 * license: the latest 20 digit membership code
@@ -152,8 +152,8 @@ entity Staff {
 * closeReason: reason why client declines offer or terminates contract
 * emailDomains: comma-separated email domains of the client
 * vatId: the customer vat number
-* bank: the custome bank name
-* iban: the customer iban number 
+* bank: the customer bank name
+* iban: the customer iban number
 * logo: the customer's logo url
 * notes: general comments
 * created: the date of record creation
@@ -167,7 +167,7 @@ entity Customer {
   code String required,
   name String required,
   country String required,
-  membership String,
+  license String,
   state CustomerState required,
   closeReason String,
   emailDomains String,
@@ -217,7 +217,7 @@ entity Contact {
 * App Subscription Plan
 * -------------------------------------------------------
 * contract: customer's code + year + sequence
-* pricing: fixed, bracket 
+* pricing: fixed, bracket
 * state: new, trial, active, close
 * license: 20 digit code membership
 * starts: the starting date of the app subscription plan

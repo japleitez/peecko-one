@@ -142,8 +142,8 @@ public class CustomerResource {
                 if (customer.getCountry() != null) {
                     existingCustomer.setCountry(customer.getCountry());
                 }
-                if (customer.getMembership() != null) {
-                    existingCustomer.setMembership(customer.getMembership());
+                if (customer.getLicense() != null) {
+                    existingCustomer.setLicense(customer.getLicense());
                 }
                 if (customer.getState() != null) {
                     existingCustomer.setState(customer.getState());

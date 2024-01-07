@@ -9,7 +9,7 @@ export interface ICustomer {
   code?: string | null;
   name?: string | null;
   country?: string | null;
-  membership?: string | null;
+  license?: string | null;
   state?: keyof typeof CustomerState | null;
   closeReason?: string | null;
   emailDomains?: string | null;
