@@ -40,8 +40,8 @@ public class Customer implements Serializable {
     @Column(name = "country", nullable = false)
     private String country;
 
-    @Column(name = "membership")
-    private String membership;
+    @Column(name = "license")
+    private String license;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -155,17 +155,17 @@ public class Customer implements Serializable {
         this.country = country;
     }
 
-    public String getMembership() {
-        return this.membership;
+    public String getLicense() {
+        return this.license;
     }
 
-    public Customer membership(String membership) {
-        this.setMembership(membership);
+    public Customer license(String license) {
+        this.setLicense(license);
         return this;
     }
 
-    public void setMembership(String membership) {
-        this.membership = membership;
+    public void setLicense(String license) {
+        this.license = license;
     }
 
     public CustomerState getState() {
@@ -461,7 +461,7 @@ public class Customer implements Serializable {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", country='" + getCountry() + "'" +
-            ", membership='" + getMembership() + "'" +
+            ", license='" + getLicense() + "'" +
             ", state='" + getState() + "'" +
             ", closeReason='" + getCloseReason() + "'" +
             ", emailDomains='" + getEmailDomains() + "'" +

@@ -23,7 +23,7 @@
             <column name="country" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="membership" type="varchar(255)">
+            <column name="license" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="state" type="varchar(255)">
@@ -101,7 +101,7 @@
             <column name="code" type="string"/>
             <column name="name" type="string"/>
             <column name="country" type="string"/>
-            <column name="membership" type="string"/>
+            <column name="license" type="string"/>
             <column name="state" type="string"/>
             <column name="close_reason" type="string"/>
             <column name="email_domains" type="string"/>
