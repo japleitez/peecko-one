@@ -24,11 +24,11 @@ public final class SecurityUtils {
 
     private SecurityUtils() {}
 
-    public static Long getCurrentUserAgencyId() {
+    public static Long getCurrentAgencyId() {
         return 1L;
     }
     public static Agency getCurrentUserAgency() {
-        return Agency.of(getCurrentUserAgencyId());
+        return Agency.of(getCurrentAgencyId());
     }
 
     /**

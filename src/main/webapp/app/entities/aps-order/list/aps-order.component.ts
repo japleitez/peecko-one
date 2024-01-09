@@ -209,21 +209,25 @@ export class ApsOrderComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityInfoArrayResponseType> {
     this.isLoading = true;
+    const executeBatch = (this.loadAction === this.BATCH_GENERATE);
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    let customer = this.searchForm.controls['customer'].value;
-    let customerId = typeof customer === 'string' ? null : customer?.id;
-    if (customerId) {
-      queryObject.customerId = customerId;
+    if (executeBatch) {
+      queryObject.period = this.searchForm.controls['start'].value;
+    } else {
+      let customer = this.searchForm.controls['customer'].value;
+      let customerId = typeof customer === 'string' ? null : customer?.id;
+      if (customerId) {
+        queryObject.customerId = customerId;
+      }
+      if (this.searchForm.controls['start'].value) {
+        queryObject.startYearMonth = this.searchForm.controls['start'].value;
+      }
+      if (this.searchForm.controls['end'].value) {
+        queryObject.endYearMonth = this.searchForm.controls['end'].value;
+      }
     }
-    if (this.searchForm.controls['start'].value) {
-      queryObject.startYearMonth = this.searchForm.controls['start'].value;
-    }
-    if (this.searchForm.controls['end'].value) {
-      queryObject.endYearMonth = this.searchForm.controls['end'].value;
-    }
-    const executeBatch = (this.loadAction === this.BATCH_GENERATE);
     this.loadAction = this.REFRESH; // reset load action
     if (executeBatch) {
       return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));

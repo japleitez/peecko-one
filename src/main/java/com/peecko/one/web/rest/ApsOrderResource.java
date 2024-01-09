@@ -201,17 +201,18 @@ public class ApsOrderResource {
         } else if (customerId != null && endPeriod != null ) {
             orders = apsOrderRepository.findByCustomerAndEndPeriod(customerId, endPeriod);
         } else {
-            Long agencyId = SecurityUtils.getCurrentUserAgencyId();
+            Long agencyId = SecurityUtils.getCurrentAgencyId();
             orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, startPeriod);
         }
         return orders.stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
     @GetMapping("/batch/generate")
-    public List<ApsOrderInfo> batchGenerate() {
+    public List<ApsOrderInfo> batchGenerate(@RequestParam() String period) {
         log.debug("REST request to batch generate ApsOrders");
-        YearMonth yearMonth = YearMonth.now();
-        Long agencyId = SecurityUtils.getCurrentUserAgencyId();
+        YearMonth yearMonth = PeriodUtils.parseYearMonth(period)
+            .orElseThrow(() -> new BadRequestAlertException("Cannot generate orders due to invalid period", ENTITY_NAME, "invalid.period"));
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
         return apsOrderService.batchGenerate(agencyId, yearMonth);
     }
 
