@@ -25,20 +25,18 @@ public class ApsOrderService {
 
     public List<ApsOrderInfo> batchGenerate(Long agencyId, YearMonth yearMonth) {
         Integer period = PeriodUtils.getPeriod(yearMonth);
+        LocalDate endOfMonth = PeriodUtils.getYearMonth(period).atEndOfMonth();
         List<ApsPlan> plans = apsPlanRepository.currentPaidActivePlans(agencyId);
         List<ApsOrder> orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, period);
         return plans.stream()
-            .map(plan -> getOrCreateApsOrder(plan, orders, period))
-            .filter(Objects::nonNull)
+            .filter(p -> betweenPlanValidity(endOfMonth, p.getStarts(), p.getEnds()))
+            .map(p -> getOrCreateApsOrder(p, orders, period))
             .toList();
     }
 
     private ApsOrderInfo getOrCreateApsOrder(ApsPlan apsPlan, List<ApsOrder> apsOrders, Integer period) {
-        ApsOrder apsOrder = apsOrders.stream().filter(order -> apsPlan.equals(order.getApsPlan())).findAny().orElse(new ApsOrder());
+        ApsOrder apsOrder = apsOrders.stream().filter(o -> apsPlan.equals(o.getApsPlan())).findAny().orElse(new ApsOrder());
         if (apsOrder.getId() == null) {
-            if (!betweenPlanValidity(period, apsPlan)) {
-                return null;
-            }
             apsOrder.setApsPlan(apsPlan);
             apsOrder.setPeriod(period);
             apsOrder.setLicense(apsPlan.getLicense());
@@ -50,13 +48,11 @@ public class ApsOrderService {
         return ApsOrderInfo.of(apsOrder);
     }
 
-    private boolean betweenPlanValidity(Integer period, ApsPlan apsPlan) {
-        LocalDate endOfMonth = PeriodUtils.getYearMonth(period).atEndOfMonth();
-        if (endOfMonth.isBefore(apsPlan.getStarts())) {
+    private boolean betweenPlanValidity(LocalDate endOfMonth, LocalDate starts, LocalDate ends) {
+        if (endOfMonth.isBefore(starts)) {
             return false;
         }
-        LocalDate ends = apsPlan.getEnds();
-        return ends == null || endOfMonth.isBefore(ends) || endOfMonth.isEqual(ends);
+        return ends == null || endOfMonth.isEqual(ends) || endOfMonth.isBefore(ends);
     }
 
 }

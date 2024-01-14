@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -188,7 +187,7 @@ public class ApsPlanResource {
     public List<ApsPlan> getAllApsPlans() {
         log.debug("REST request to get all ApsPlans");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsPlanRepository.currentActivePlans(agencyId);
+        return apsPlanRepository.getPlansForAgency(agencyId);
     }
 
     /**
