@@ -2,12 +2,14 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.repository.ApsPlanRepository;
+import com.peecko.one.security.SecurityUtils;
+import com.peecko.one.service.ApsLicenseService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
+import com.peecko.one.web.rest.payload.request.ActivateTrialPlanRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,8 +39,11 @@ public class ApsPlanResource {
 
     private final ApsPlanRepository apsPlanRepository;
 
-    public ApsPlanResource(ApsPlanRepository apsPlanRepository) {
+    private final ApsLicenseService apsLicenseService;
+
+    public ApsPlanResource(ApsPlanRepository apsPlanRepository, ApsLicenseService apsLicenseService) {
         this.apsPlanRepository = apsPlanRepository;
+        this.apsLicenseService = apsLicenseService;
     }
 
     /**
@@ -181,8 +186,8 @@ public class ApsPlanResource {
     @GetMapping("")
     public List<ApsPlan> getAllApsPlans() {
         log.debug("REST request to get all ApsPlans");
-        YearMonth yearMonth = YearMonth.now();
-        return apsPlanRepository.currentActivePlans(1L, yearMonth.atEndOfMonth());
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        return apsPlanRepository.getPlansForAgency(agencyId);
     }
 
     /**
@@ -212,5 +217,19 @@ public class ApsPlanResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/activateTrialPlan")
+    public ResponseEntity<ApsPlan> activateTrialPlan(@RequestBody ActivateTrialPlanRequest request) {
+        log.debug("REST request to activate Trial Plan for customer {}", request.getCustomerId());
+        List<ApsPlan> overlapping = apsPlanRepository.overlappingTrialPlans(request.getCustomerId(), request.getStart(), request.getEnds());
+        if (!overlapping.isEmpty()) {
+            throw new BadRequestAlertException("Cannot activate trial plan because it overlaps an existing one", ENTITY_NAME, "overlapping.trial.plan");
+        }
+        Optional<ApsPlan> result = apsLicenseService.activateApsPlanForTrial(request.getCustomerId(), request.getStart(), request.getEnds());
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, "failed.trial.plan.activation")
+        );
     }
 }

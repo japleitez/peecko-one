@@ -1,189 +1,11 @@
+
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-aps-plan-heading" data-cy="ApsPlanCreateUpdateHeading">Create or edit a Aps Plan</h2>
 
+  <!-- left form -->
+  <div class="col-3 child-inline">
       <div>
-        <jhi-alert-error></jhi-alert-error>
-
-        @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
-            <label class="form-label" for="field_id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
-        }
-
-        <div class="mb-3">
-          <label class="form-label" for="field_contract">Contract</label>
-          <input type="text" class="form-control" name="contract" id="field_contract" data-cy="contract" formControlName="contract" />
-          @if (editForm.get('contract')!.invalid && (editForm.get('contract')!.dirty || editForm.get('contract')!.touched)) {
-            <div>
-              @if (editForm.get('contract')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_pricing">Pricing</label>
-          <select class="form-control" name="pricing" formControlName="pricing" id="field_pricing" data-cy="pricing">
-            <option [ngValue]="null"></option>
-            @for (pricingType of pricingTypeValues; track $index) {
-              <option [value]="pricingType">{{ pricingType }}</option>
-            }
-          </select>
-          @if (editForm.get('pricing')!.invalid && (editForm.get('pricing')!.dirty || editForm.get('pricing')!.touched)) {
-            <div>
-              @if (editForm.get('pricing')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_state">State</label>
-          <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
-            <option [ngValue]="null"></option>
-            @for (planState of planStateValues; track $index) {
-              <option [value]="planState">{{ planState }}</option>
-            }
-          </select>
-          @if (editForm.get('state')!.invalid && (editForm.get('state')!.dirty || editForm.get('state')!.touched)) {
-            <div>
-              @if (editForm.get('state')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_license">License</label>
-          <input type="text" class="form-control" name="license" id="field_license" data-cy="license" formControlName="license" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_starts">Starts</label>
-          <div class="input-group">
-            <input
-              id="field_starts"
-              data-cy="starts"
-              type="text"
-              class="form-control"
-              name="starts"
-              ngbDatepicker
-              #startsDp="ngbDatepicker"
-              formControlName="starts"
-            />
-            <button type="button" class="btn btn-secondary" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_ends">Ends</label>
-          <div class="input-group">
-            <input
-              id="field_ends"
-              data-cy="ends"
-              type="text"
-              class="form-control"
-              name="ends"
-              ngbDatepicker
-              #endsDp="ngbDatepicker"
-              formControlName="ends"
-            />
-            <button type="button" class="btn btn-secondary" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_trialStarts">Trial Starts</label>
-          <div class="input-group">
-            <input
-              id="field_trialStarts"
-              data-cy="trialStarts"
-              type="text"
-              class="form-control"
-              name="trialStarts"
-              ngbDatepicker
-              #trialStartsDp="ngbDatepicker"
-              formControlName="trialStarts"
-            />
-            <button type="button" class="btn btn-secondary" (click)="trialStartsDp.toggle()">
-              <fa-icon icon="calendar-alt"></fa-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_trialEnds">Trial Ends</label>
-          <div class="input-group">
-            <input
-              id="field_trialEnds"
-              data-cy="trialEnds"
-              type="text"
-              class="form-control"
-              name="trialEnds"
-              ngbDatepicker
-              #trialEndsDp="ngbDatepicker"
-              formControlName="trialEnds"
-            />
-            <button type="button" class="btn btn-secondary" (click)="trialEndsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_unitPrice">Unit Price</label>
-          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
-          @if (editForm.get('unitPrice')!.invalid && (editForm.get('unitPrice')!.dirty || editForm.get('unitPrice')!.touched)) {
-            <div>
-              @if (editForm.get('unitPrice')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('unitPrice')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_notes">Notes</label>
-          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_created">Created</label>
-          <div class="d-flex">
-            <input
-              id="field_created"
-              data-cy="created"
-              type="datetime-local"
-              class="form-control"
-              name="created"
-              formControlName="created"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_updated">Updated</label>
-          <div class="d-flex">
-            <input
-              id="field_updated"
-              data-cy="updated"
-              type="datetime-local"
-              class="form-control"
-              name="updated"
-              formControlName="updated"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
         <div class="mb-3">
           <label class="form-label" for="field_customer">Customer</label>
           <select
@@ -200,23 +22,148 @@
             }
           </select>
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_contract">Contract</label>
+          <input type="text" class="form-control" name="contract" id="field_contract" data-cy="contract" formControlName="contract" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_license">License</label>
+          <input type="text" class="form-control" name="license" id="field_license" data-cy="license" formControlName="license" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_state">State</label>
+          <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
+            <option [ngValue]="null"></option>
+            @for (planState of planStateValues; track $index) {
+              <option [value]="planState">{{ planState }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pricing">Pricing</label>
+          <select class="form-control" name="pricing" formControlName="pricing" id="field_pricing" data-cy="pricing">
+            <option [ngValue]="null"></option>
+            @for (pricingType of pricingTypeValues; track $index) {
+              <option [value]="pricingType">{{ pricingType }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_unitPrice">Unit Price</label>
+          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
+        </div>
+
       </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
-        </button>
-      </div>
-    </form>
   </div>
+
+  <!-- right form -->
+  <div class="col-3 child-inline">
+    <div class="mb-3">
+      <label class="form-label" for="field_starts">Starts</label>
+      <div class="input-group">
+        <input
+          id="field_starts"
+          data-cy="starts"
+          type="text"
+          class="form-control"
+          name="starts"
+          ngbDatepicker
+          #startsDp="ngbDatepicker"
+          formControlName="starts"
+        />
+        <button type="button" class="btn btn-secondary" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="field_ends">Ends</label>
+      <div class="input-group">
+        <input
+          id="field_ends"
+          data-cy="ends"
+          type="text"
+          class="form-control"
+          name="ends"
+          ngbDatepicker
+          #endsDp="ngbDatepicker"
+          formControlName="ends"
+        />
+        <button type="button" class="btn btn-secondary" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="field_trialStarts">Trial Starts</label>
+      <div class="input-group">
+        <input
+          id="field_trialStarts"
+          data-cy="trialStarts"
+          type="text"
+          class="form-control"
+          name="trialStarts"
+          ngbDatepicker
+          #trialStartsDp="ngbDatepicker"
+          formControlName="trialStarts"
+        />
+        <button type="button" class="btn btn-secondary" (click)="trialStartsDp.toggle()">
+          <fa-icon icon="calendar-alt"></fa-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="field_trialEnds">Trial Ends</label>
+      <div class="input-group">
+        <input
+          id="field_trialEnds"
+          data-cy="trialEnds"
+          type="text"
+          class="form-control"
+          name="trialEnds"
+          ngbDatepicker
+          #trialEndsDp="ngbDatepicker"
+          formControlName="trialEnds"
+        />
+        <button type="button" class="btn btn-secondary" (click)="trialEndsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="field_notes">Notes</label>
+      <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" cols="40" rows="4"></textarea>
+    </div>
+  </div>
+
+  <!-- 3rd panel -->
+  <div class="col-2 child-inline">
+    <div class="mb-3">
+      <label class="form-label" for="field_id">Aps Plan ID</label>
+      <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+    </div>
+
+    <div>
+      <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+      </button>
+
+      <button
+        type="submit"
+        id="save-entity"
+        data-cy="entityCreateSaveButton"
+        [disabled]="editForm.invalid || isSaving"
+        class="btn btn-primary"
+      >
+        <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+      </button>
+    </div>
+
+  </div>
+
 </div>
+</form>

@@ -5,15 +5,9 @@
 
   <div class="d-flex justify-content-end">
     <form class="aps-orders-search-form" [formGroup]="searchForm">
-      <mat-form-field class="w-50" subscriptSizing="dynamic">
-        <mat-label>Customer</mat-label>
-        <input type="text" matInput placeholder="Pick one" aria-label="Customer" formControlName="customer" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomerName">
-          @for (cst of filteredCustomers | async; track cst) {
-            <mat-option [value]="cst" >{{cst.name}}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
+
+      <customer-selector [control]="fc('customer')" [required]="false"></customer-selector>
+
       <mat-form-field class="w-20" subscriptSizing="dynamic">
         <mat-label>From</mat-label>
         <input type="text" matInput placeholder="YYYY-MM" maxlength="7" formControlName="start" required="true">

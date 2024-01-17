@@ -5,7 +5,7 @@ import { IApsPlan, NewApsPlan } from './aps-plan.model';
 export const sampleWithRequiredData: IApsPlan = {
   id: 4303,
   contract: 'override huzzah rigidly',
-  pricing: 'FIXED',
+  pricing: 'FREE_TRIAL',
   state: 'ACTIVE',
   unitPrice: 30999.2,
 };

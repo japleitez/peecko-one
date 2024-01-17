@@ -10,7 +10,7 @@ import { SortByDirective, SortDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import {
   AbstractControl,
-  FormBuilder,
+  FormBuilder, FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule, ValidationErrors, ValidatorFn,
@@ -27,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ICustomer } from '../../customer/customer.model';
 import { CustomerService, EntityArrayResponseType } from '../../customer/service/customer.service';
 import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/validate/custom-validator.directive';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 
 function searchFormValidator(): ValidatorFn {
   return (c: AbstractControl): ValidationErrors | null => {
@@ -66,13 +67,12 @@ function searchFormValidator(): ValidatorFn {
     MatAutocompleteModule,
     ReactiveFormsModule,
     AsyncPipe,
+    CustomerSelectorComponent
   ]
 })
 export class ApsOrderComponent implements OnInit {
   // search form controls
   searchForm!: FormGroup;
-  customers!: ICustomer[];
-  filteredCustomers!: Observable<ICustomer[]>;
 
   // list controls
   apsOrders?: IApsOrderInfo[];
@@ -98,6 +98,7 @@ export class ApsOrderComponent implements OnInit {
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
 
   ngOnInit(): void {
+    this.isLoading = true;
     this._initForm();
     this.refresh();
   }
@@ -106,38 +107,19 @@ export class ApsOrderComponent implements OnInit {
   search actions
    */
   private _initForm(): void {
-    this.isLoading = true;
     this.searchForm = this.fb.group({
       'customer': [''],
       'start': [currentYearMonth(), Validators.compose([Validators.required, periodValidator()])],
       'end': [null, periodValidator()],
     }, { validators: [searchFormValidator()] });
-    this.customerService.queryActive().pipe(tap(() => (this.isLoading = false))).subscribe({
-      next: (res: EntityArrayResponseType) => {
-        this.customers = res.body ?? [];
-        this.filteredCustomers = this.searchForm.controls['customer'].valueChanges.pipe(
-          startWith(''),
-          map(value => {
-            const name = typeof value === 'string' ? value : value?.name;
-            return name ? this._filterCustomers(name as string) : this.customers.slice();
-          }),
-        );
-      },
-    });
+  }
+
+  fc(name: string) {
+    return this.searchForm.get(name) as FormControl<ICustomer | string | null>;
   }
 
   isStartYearMonthValid(): boolean {
     return this.searchForm.controls['start'].valid;
-  }
-
-  displayCustomerName(cst: ICustomer): string {
-    return cst && cst.name? cst.name : '';
-  }
-  private _filterCustomers(name: string): ICustomer[] {
-    const value = name.toLowerCase();
-    return this.customers.filter(c => {
-      return c.name?.toLowerCase().includes(value);
-    });
   }
 
   /*
@@ -209,21 +191,25 @@ export class ApsOrderComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityInfoArrayResponseType> {
     this.isLoading = true;
+    const executeBatch = (this.loadAction === this.BATCH_GENERATE);
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    let customer = this.searchForm.controls['customer'].value;
-    let customerId = typeof customer === 'string' ? null : customer?.id;
-    if (customerId) {
-      queryObject.customerId = customerId;
+    if (executeBatch) {
+      queryObject.period = this.searchForm.controls['start'].value;
+    } else {
+      let customer = this.searchForm.controls['customer'].value;
+      let customerId = typeof customer === 'string' ? null : customer?.id;
+      if (customerId) {
+        queryObject.customerId = customerId;
+      }
+      if (this.searchForm.controls['start'].value) {
+        queryObject.startYearMonth = this.searchForm.controls['start'].value;
+      }
+      if (this.searchForm.controls['end'].value) {
+        queryObject.endYearMonth = this.searchForm.controls['end'].value;
+      }
     }
-    if (this.searchForm.controls['start'].value) {
-      queryObject.startYearMonth = this.searchForm.controls['start'].value;
-    }
-    if (this.searchForm.controls['end'].value) {
-      queryObject.endYearMonth = this.searchForm.controls['end'].value;
-    }
-    const executeBatch = (this.loadAction === this.BATCH_GENERATE);
     this.loadAction = this.REFRESH; // reset load action
     if (executeBatch) {
       return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
