@@ -4,14 +4,15 @@ import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
-import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
+import { SortByDirective, SortDirective } from 'app/shared/sort';
+import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
 import { FormsModule } from '@angular/forms';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IAgency } from '../agency.model';
-import { EntityArrayResponseType, AgencyService } from '../service/agency.service';
+import { AGENCY_USER_ACCESS, AgencyAccess, IAgency } from '../agency.model';
+import { AgencyService, EntityArrayResponseType } from '../service/agency.service';
 import { AgencyDeleteDialogComponent } from '../delete/agency-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -26,9 +27,11 @@ import { AgencyDeleteDialogComponent } from '../delete/agency-delete-dialog.comp
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-  ],
+    NgIf
+  ]
 })
 export class AgencyComponent implements OnInit {
+  ua: AgencyAccess = AGENCY_USER_ACCESS;
   agencies?: IAgency[];
   isLoading = false;
 
@@ -46,6 +49,7 @@ export class AgencyComponent implements OnInit {
   trackId = (_index: number, item: IAgency): number => this.agencyService.getAgencyIdentifier(item);
 
   ngOnInit(): void {
+    this.ua = this.getAgencyUserAccess();
     this.load();
   }
 
@@ -130,4 +134,9 @@ export class AgencyComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getAgencyUserAccess(): AgencyAccess {
+    return AGENCY_USER_ACCESS
+  }
+
 }

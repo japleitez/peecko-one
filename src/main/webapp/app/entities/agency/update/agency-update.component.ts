@@ -8,7 +8,7 @@ import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Language } from 'app/entities/enumerations/language.model';
-import { IAgency } from '../agency.model';
+import { AGENCY_USER_ACCESS, AgencyAccess, IAgency } from '../agency.model';
 import { AgencyService } from '../service/agency.service';
 import { AgencyFormService, AgencyFormGroup } from './agency-form.service';
 
@@ -23,7 +23,7 @@ export class AgencyUpdateComponent implements OnInit {
   agency: IAgency | null = null;
   languageValues = Object.keys(Language);
 
-  editForm: AgencyFormGroup = this.agencyFormService.createAgencyFormGroup();
+  editForm: AgencyFormGroup = this.agencyFormService.createAgencyFormGroup(undefined, this.getAgencyUserAccess());
 
   constructor(
     protected agencyService: AgencyService,
@@ -77,4 +77,9 @@ export class AgencyUpdateComponent implements OnInit {
     this.agency = agency;
     this.agencyFormService.resetForm(this.editForm, agency);
   }
+
+  protected getAgencyUserAccess(): AgencyAccess {
+    return AGENCY_USER_ACCESS
+  }
+
 }
