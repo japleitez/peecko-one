@@ -12,9 +12,11 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { ICustomer } from '../customer.model';
+import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
 import { EntityArrayResponseType, CustomerService } from '../service/customer.service';
 import { CustomerDeleteDialogComponent } from '../delete/customer-delete-dialog.component';
+import { NgIf } from '@angular/common';
+
 
 @Component({
   standalone: true,
@@ -30,9 +32,11 @@ import { CustomerDeleteDialogComponent } from '../delete/customer-delete-dialog.
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-  ],
+    NgIf
+  ]
 })
 export class CustomerComponent implements OnInit {
+  ua: CustomerAccess = this.getCustomerUserAccess();
   customers?: ICustomer[];
   isLoading = false;
 
@@ -148,5 +152,9 @@ export class CustomerComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getCustomerUserAccess(): CustomerAccess {
+    return CUSTOMER_USER_ACCESS;
   }
 }

@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/customer/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Customer</span>
+        <span>New Customer</span>
       </button>
     </div>
   </h2>
@@ -35,140 +35,140 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="code">
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="name">
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
               <div class="d-flex">
                 <span>Name</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="country">
+            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
               <div class="d-flex">
                 <span>Country</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="license">
+            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
               <div class="d-flex">
                 <span>License</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="state">
+            <th scope="col" jhiSortBy="state" *ngIf="ua.state.listable">
               <div class="d-flex">
                 <span>State</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="closeReason">
+            <th scope="col" jhiSortBy="closeReason" *ngIf="ua.closeReason.listable">
               <div class="d-flex">
                 <span>Close Reason</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="emailDomains">
+            <th scope="col" jhiSortBy="emailDomains" *ngIf="ua.emailDomains.listable">
               <div class="d-flex">
                 <span>Email Domains</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vatId">
+            <th scope="col" jhiSortBy="vatId" *ngIf="ua.vatId.listable">
               <div class="d-flex">
                 <span>Vat Id</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="bank">
+            <th scope="col" jhiSortBy="bank" *ngIf="ua.bank.listable">
               <div class="d-flex">
                 <span>Bank</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="iban">
+            <th scope="col" jhiSortBy="iban" *ngIf="ua.iban.listable">
               <div class="d-flex">
                 <span>Iban</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="logo">
+            <th scope="col" jhiSortBy="logo" *ngIf="ua.logo.listable">
               <div class="d-flex">
                 <span>Logo</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="notes">
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
               <div class="d-flex">
                 <span>Notes</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updated">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="trialed">
+            <th scope="col" jhiSortBy="trialed" *ngIf="ua.trialed.listable">
               <div class="d-flex">
                 <span>Trialed</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="declined">
+            <th scope="col" jhiSortBy="declined" *ngIf="ua.declined.listable">
               <div class="d-flex">
                 <span>Declined</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="activated">
+            <th scope="col" jhiSortBy="activated" *ngIf="ua.activated.listable">
               <div class="d-flex">
                 <span>Activated</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="closed">
+            <th scope="col" jhiSortBy="closed" *ngIf="ua.closed.listable">
               <div class="d-flex">
                 <span>Closed</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="agency.id">
+            <th scope="col" jhiSortBy="agency.id" *ngIf="ua.agency.listable">
               <div class="d-flex">
                 <span>Agency</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -180,28 +180,28 @@
         <tbody>
           @for (customer of customers; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/customer', customer.id, 'view']">{{ customer.id }}</a>
               </td>
-              <td>{{ customer.code }}</td>
-              <td>{{ customer.name }}</td>
-              <td>{{ customer.country }}</td>
-              <td>{{ customer.license }}</td>
-              <td>{{ customer.state }}</td>
-              <td>{{ customer.closeReason }}</td>
-              <td>{{ customer.emailDomains }}</td>
-              <td>{{ customer.vatId }}</td>
-              <td>{{ customer.bank }}</td>
-              <td>{{ customer.iban }}</td>
-              <td>{{ customer.logo }}</td>
-              <td>{{ customer.notes }}</td>
-              <td>{{ customer.created | formatMediumDatetime }}</td>
-              <td>{{ customer.updated | formatMediumDatetime }}</td>
-              <td>{{ customer.trialed | formatMediumDatetime }}</td>
-              <td>{{ customer.declined | formatMediumDatetime }}</td>
-              <td>{{ customer.activated | formatMediumDatetime }}</td>
-              <td>{{ customer.closed | formatMediumDatetime }}</td>
-              <td>
+              <td *ngIf="ua.code.listable">{{ customer.code }}</td>
+              <td *ngIf="ua.name.listable">{{ customer.name }}</td>
+              <td *ngIf="ua.country.listable">{{ customer.country }}</td>
+              <td *ngIf="ua.license.listable">{{ customer.license }}</td>
+              <td *ngIf="ua.state.listable">{{ customer.state }}</td>
+              <td *ngIf="ua.closeReason.listable">{{ customer.closeReason }}</td>
+              <td *ngIf="ua.emailDomains.listable">{{ customer.emailDomains }}</td>
+              <td *ngIf="ua.vatId.listable">{{ customer.vatId }}</td>
+              <td *ngIf="ua.bank.listable">{{ customer.bank }}</td>
+              <td *ngIf="ua.iban.listable">{{ customer.iban }}</td>
+              <td *ngIf="ua.logo.listable">{{ customer.logo }}</td>
+              <td *ngIf="ua.notes.listable">{{ customer.notes }}</td>
+              <td *ngIf="ua.created.listable">{{ customer.created | formatMediumDate }}</td>
+              <td *ngIf="ua.updated.listable">{{ customer.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.trialed.listable">{{ customer.trialed | formatMediumDate }}</td>
+              <td *ngIf="ua.declined.listable">{{ customer.declined | formatMediumDate }}</td>
+              <td *ngIf="ua.activated.listable">{{ customer.activated | formatMediumDate }}</td>
+              <td *ngIf="ua.closed.listable">{{ customer.closed | formatMediumDate }}</td>
+              <td *ngIf="ua.agency.listable">
                 @if (customer.agency) {
                   <div>
                     <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.id }}</a>
@@ -212,17 +212,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/customer', customer.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/customer', customer.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(customer)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

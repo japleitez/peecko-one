@@ -3,6 +3,7 @@ import { IContact } from 'app/entities/contact/contact.model';
 import { IApsPlan } from 'app/entities/aps-plan/aps-plan.model';
 import { IAgency } from 'app/entities/agency/agency.model';
 import { CustomerState } from 'app/entities/enumerations/customer-state.model';
+import { IFieldAccess } from '../../shared/profile/view.models';
 
 export interface ICustomer {
   id: number;
@@ -30,3 +31,55 @@ export interface ICustomer {
 }
 
 export type NewCustomer = Omit<ICustomer, 'id'> & { id: null };
+
+export interface CustomerAccess {
+  id: IFieldAccess;
+  code: IFieldAccess;
+  name: IFieldAccess;
+  country: IFieldAccess;
+  license: IFieldAccess;
+  state: IFieldAccess;
+  closeReason: IFieldAccess;
+  emailDomains: IFieldAccess;
+  vatId: IFieldAccess;
+  bank: IFieldAccess;
+  iban: IFieldAccess;
+  logo: IFieldAccess;
+  notes: IFieldAccess;
+  created: IFieldAccess;
+  updated: IFieldAccess;
+  trialed: IFieldAccess;
+  declined: IFieldAccess;
+  activated: IFieldAccess;
+  closed: IFieldAccess;
+  contacts: IFieldAccess;
+  apsPlans: IFieldAccess;
+  agency: IFieldAccess;
+}
+
+export let CUSTOMER_USER_ACCESS: CustomerAccess;
+
+CUSTOMER_USER_ACCESS = {
+  activated: { listable: true, visible: true, disabled: false },
+  agency: { listable: false, visible: true, disabled: false },
+  apsPlans: { listable: false, visible: true, disabled: false },
+  bank: { listable: false, visible: true, disabled: false },
+  closeReason: { listable: false, visible: true, disabled: false },
+  closed: { listable: true, visible: true, disabled: false },
+  code: { listable: true, visible: true, disabled: false },
+  contacts: { listable: false, visible: true, disabled: false },
+  country: { listable: false, visible: true, disabled: false },
+  created: { listable: true, visible: true, disabled: false },
+  declined: { listable: false, visible: true, disabled: false },
+  emailDomains: { listable: false, visible: true, disabled: false },
+  iban: { listable: false, visible: true, disabled: false },
+  id: { listable: false, visible: true, disabled: false },
+  license: { listable: true, visible: true, disabled: false },
+  logo: { listable: false, visible: true, disabled: false },
+  name: { listable: true, visible: true, disabled: false },
+  notes: { listable: false, visible: true, disabled: false },
+  state: { listable: true, visible: true, disabled: false },
+  trialed: { listable: false, visible: true, disabled: false },
+  updated: { listable: false, visible: true, disabled: false },
+  vatId: { listable: true, visible: true, disabled: false }
+};

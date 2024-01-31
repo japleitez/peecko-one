@@ -62,6 +62,7 @@ export interface AgencyAccess {
 }
 
 export let AGENCY_USER_ACCESS: AgencyAccess;
+
 AGENCY_USER_ACCESS = {
   apsPricings: { listable: false, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },

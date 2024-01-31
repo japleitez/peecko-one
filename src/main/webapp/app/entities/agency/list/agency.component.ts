@@ -31,7 +31,7 @@ import { NgIf } from '@angular/common';
   ]
 })
 export class AgencyComponent implements OnInit {
-  ua: AgencyAccess = AGENCY_USER_ACCESS;
+  ua: AgencyAccess = this.getAgencyUserAccess();
   agencies?: IAgency[];
   isLoading = false;
 
@@ -49,7 +49,6 @@ export class AgencyComponent implements OnInit {
   trackId = (_index: number, item: IAgency): number => this.agencyService.getAgencyIdentifier(item);
 
   ngOnInit(): void {
-    this.ua = this.getAgencyUserAccess();
     this.load();
   }
 

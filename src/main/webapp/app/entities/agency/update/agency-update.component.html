@@ -13,7 +13,7 @@
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
           @if (editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.name.visible">
           <label class="form-label" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
           @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
@@ -37,22 +37,22 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.line1.visible">
           <label class="form-label" for="field_line1">Line 1</label>
           <input type="text" class="form-control" name="line1" id="field_line1" data-cy="line1" formControlName="line1" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.line2.visible">
           <label class="form-label" for="field_line2">Line 2</label>
           <input type="text" class="form-control" name="line2" id="field_line2" data-cy="line2" formControlName="line2" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.zip.visible">
           <label class="form-label" for="field_zip">Zip</label>
           <input type="text" class="form-control" name="zip" id="field_zip" data-cy="zip" formControlName="zip" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.city.visible">
           <label class="form-label" for="field_city">City</label>
           <input type="text" class="form-control" name="city" id="field_city" data-cy="city" formControlName="city" />
           @if (editForm.get('city')!.invalid && (editForm.get('city')!.dirty || editForm.get('city')!.touched)) {
@@ -64,7 +64,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.country.visible">
           <label class="form-label" for="field_country">Country</label>
           <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
           @if (editForm.get('country')!.invalid && (editForm.get('country')!.dirty || editForm.get('country')!.touched)) {
@@ -76,7 +76,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.language.visible">
           <label class="form-label" for="field_language">Language</label>
           <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
             <option [ngValue]="null"></option>
@@ -93,17 +93,17 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.email.visible">
           <label class="form-label" for="field_email">Email</label>
           <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.phone.visible">
           <label class="form-label" for="field_phone">Phone</label>
           <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.billingEmail.visible">
           <label class="form-label" for="field_billingEmail">Billing Email</label>
           <input
             type="text"
@@ -115,7 +115,7 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.billingPhone.visible">
           <label class="form-label" for="field_billingPhone">Billing Phone</label>
           <input
             type="text"
@@ -127,37 +127,37 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.bank.visible">
           <label class="form-label" for="field_bank">Bank</label>
           <input type="text" class="form-control" name="bank" id="field_bank" data-cy="bank" formControlName="bank" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.iban.visible">
           <label class="form-label" for="field_iban">Iban</label>
           <input type="text" class="form-control" name="iban" id="field_iban" data-cy="iban" formControlName="iban" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.rcs.visible">
           <label class="form-label" for="field_rcs">Rcs</label>
           <input type="text" class="form-control" name="rcs" id="field_rcs" data-cy="rcs" formControlName="rcs" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.vatId.visible">
           <label class="form-label" for="field_vatId">Vat Id</label>
           <input type="text" class="form-control" name="vatId" id="field_vatId" data-cy="vatId" formControlName="vatId" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.vatRate.visible">
           <label class="form-label" for="field_vatRate">Vat Rate</label>
           <input type="number" class="form-control" name="vatRate" id="field_vatRate" data-cy="vatRate" formControlName="vatRate" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.notes.visible">
           <label class="form-label" for="field_notes">Notes</label>
           <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">
             <input
@@ -172,7 +172,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.updated.visible">
           <label class="form-label" for="field_updated">Updated</label>
           <div class="d-flex">
             <input

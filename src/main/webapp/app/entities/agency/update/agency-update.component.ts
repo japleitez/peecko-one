@@ -19,6 +19,7 @@ import { AgencyFormService, AgencyFormGroup } from './agency-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class AgencyUpdateComponent implements OnInit {
+  ua: AgencyAccess = this.getAgencyUserAccess();
   isSaving = false;
   agency: IAgency | null = null;
   languageValues = Object.keys(Language);
