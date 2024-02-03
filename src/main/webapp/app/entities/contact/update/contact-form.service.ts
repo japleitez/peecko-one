@@ -3,7 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IContact, NewContact } from '../contact.model';
+import { CONTACT_USER_ACCESS, ContactAccess, IContact, NewContact } from '../contact.model';
+import { CustomerAccess } from '../../customer/customer.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -51,36 +52,36 @@ export type ContactFormGroup = FormGroup<ContactFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ContactFormService {
-  createContactFormGroup(contact: ContactFormGroupInput = { id: null }): ContactFormGroup {
+  createContactFormGroup(contact: ContactFormGroupInput = { id: null }, ua: ContactAccess = CONTACT_USER_ACCESS): ContactFormGroup {
     const contactRawValue = this.convertContactToContactRawValue({
       ...this.getFormDefaults(),
       ...contact,
     });
     return new FormGroup<ContactFormGroupContent>({
       id: new FormControl(
-        { value: contactRawValue.id, disabled: true },
+        { value: contactRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      type: new FormControl(contactRawValue.type, {
-        validators: [Validators.required],
+      type: new FormControl( { value: contactRawValue.type, disabled: ua.type.disabled},
+        { validators: [Validators.required],
       }),
-      name: new FormControl(contactRawValue.name, {
-        validators: [Validators.required],
+      name: new FormControl({ value: contactRawValue.name, disabled: ua.name.disabled},
+        { validators: [Validators.required],
       }),
-      line1: new FormControl(contactRawValue.line1),
-      line2: new FormControl(contactRawValue.line2),
-      zip: new FormControl(contactRawValue.zip),
-      city: new FormControl(contactRawValue.city),
-      country: new FormControl(contactRawValue.country),
-      email: new FormControl(contactRawValue.email),
-      phone: new FormControl(contactRawValue.phone),
-      notes: new FormControl(contactRawValue.notes),
-      created: new FormControl(contactRawValue.created),
-      updated: new FormControl(contactRawValue.updated),
-      customer: new FormControl(contactRawValue.customer),
+      line1: new FormControl({ value: contactRawValue.line1, disabled: ua.line1.disabled}),
+      line2: new FormControl({ value: contactRawValue.line2, disabled: ua.line2.disabled}),
+      zip: new FormControl({ value: contactRawValue.zip, disabled: ua.zip.disabled}),
+      city: new FormControl({ value: contactRawValue.city, disabled: ua.city.disabled}),
+      country: new FormControl({ value: contactRawValue.country, disabled: ua.country.disabled}),
+      email: new FormControl({ value: contactRawValue.email, disabled: ua.email.disabled}),
+      phone: new FormControl({ value: contactRawValue.phone, disabled: ua.phone.disabled}),
+      notes: new FormControl({ value: contactRawValue.notes, disabled: ua.notes.disabled}),
+      created: new FormControl({ value: contactRawValue.created, disabled: ua.created.disabled}),
+      updated: new FormControl({ value: contactRawValue.updated, disabled: ua.updated.disabled}),
+      customer: new FormControl({ value: contactRawValue.customer, disabled: ua.customer.disabled}),
     });
   }
 

@@ -3,7 +3,7 @@ import { IContact } from 'app/entities/contact/contact.model';
 import { IApsPlan } from 'app/entities/aps-plan/aps-plan.model';
 import { IAgency } from 'app/entities/agency/agency.model';
 import { CustomerState } from 'app/entities/enumerations/customer-state.model';
-import { IFieldAccess } from '../../shared/profile/view.models';
+import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface ICustomer {
   id: number;
@@ -33,28 +33,28 @@ export interface ICustomer {
 export type NewCustomer = Omit<ICustomer, 'id'> & { id: null };
 
 export interface CustomerAccess {
-  id: IFieldAccess;
-  code: IFieldAccess;
-  name: IFieldAccess;
-  country: IFieldAccess;
-  license: IFieldAccess;
-  state: IFieldAccess;
-  closeReason: IFieldAccess;
-  emailDomains: IFieldAccess;
-  vatId: IFieldAccess;
-  bank: IFieldAccess;
-  iban: IFieldAccess;
-  logo: IFieldAccess;
-  notes: IFieldAccess;
-  created: IFieldAccess;
-  updated: IFieldAccess;
-  trialed: IFieldAccess;
-  declined: IFieldAccess;
-  activated: IFieldAccess;
-  closed: IFieldAccess;
-  contacts: IFieldAccess;
-  apsPlans: IFieldAccess;
-  agency: IFieldAccess;
+  id: FieldAccess;
+  code: FieldAccess;
+  name: FieldAccess;
+  country: FieldAccess;
+  license: FieldAccess;
+  state: FieldAccess;
+  closeReason: FieldAccess;
+  emailDomains: FieldAccess;
+  vatId: FieldAccess;
+  bank: FieldAccess;
+  iban: FieldAccess;
+  logo: FieldAccess;
+  notes: FieldAccess;
+  created: FieldAccess;
+  updated: FieldAccess;
+  trialed: FieldAccess;
+  declined: FieldAccess;
+  activated: FieldAccess;
+  closed: FieldAccess;
+  contacts: FieldAccess;
+  apsPlans: FieldAccess;
+  agency: FieldAccess;
 }
 
 export let CUSTOMER_USER_ACCESS: CustomerAccess;

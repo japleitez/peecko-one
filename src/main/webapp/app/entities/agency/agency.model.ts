@@ -3,7 +3,7 @@ import { IStaff } from 'app/entities/staff/staff.model';
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { IApsPricing } from 'app/entities/aps-pricing/aps-pricing.model';
 import { Language } from 'app/entities/enumerations/language.model';
-import { IFieldAccess } from '../../shared/profile/view.models';
+import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface IAgency {
   id: number;
@@ -35,30 +35,30 @@ export interface IAgency {
 export type NewAgency = Omit<IAgency, 'id'> & { id: null };
 
 export interface AgencyAccess {
-  id: IFieldAccess;
-  code: IFieldAccess;
-  name: IFieldAccess;
-  line1: IFieldAccess;
-  line2: IFieldAccess;
-  zip: IFieldAccess;
-  city: IFieldAccess;
-  country: IFieldAccess;
-  language: IFieldAccess;
-  email: IFieldAccess;
-  phone: IFieldAccess;
-  billingEmail: IFieldAccess;
-  billingPhone: IFieldAccess;
-  bank: IFieldAccess;
-  iban: IFieldAccess;
-  rcs: IFieldAccess;
-  vatId: IFieldAccess;
-  vatRate: IFieldAccess;
-  notes: IFieldAccess;
-  created: IFieldAccess;
-  updated: IFieldAccess;
-  staff: IFieldAccess;
-  customers: IFieldAccess;
-  apsPricings: IFieldAccess;
+  id: FieldAccess;
+  code: FieldAccess;
+  name: FieldAccess;
+  line1: FieldAccess;
+  line2: FieldAccess;
+  zip: FieldAccess;
+  city: FieldAccess;
+  country: FieldAccess;
+  language: FieldAccess;
+  email: FieldAccess;
+  phone: FieldAccess;
+  billingEmail: FieldAccess;
+  billingPhone: FieldAccess;
+  bank: FieldAccess;
+  iban: FieldAccess;
+  rcs: FieldAccess;
+  vatId: FieldAccess;
+  vatRate: FieldAccess;
+  notes: FieldAccess;
+  created: FieldAccess;
+  updated: FieldAccess;
+  staff: FieldAccess;
+  customers: FieldAccess;
+  apsPricings: FieldAccess;
 }
 
 export let AGENCY_USER_ACCESS: AgencyAccess;
