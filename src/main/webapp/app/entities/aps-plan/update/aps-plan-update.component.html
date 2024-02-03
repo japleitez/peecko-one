@@ -6,7 +6,7 @@
   <!-- left form -->
   <div class="col-3 child-inline">
       <div>
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.customer.visible">
           <label class="form-label" for="field_customer">Customer</label>
           <select
             class="form-control"
@@ -23,17 +23,17 @@
           </select>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.contract.visible">
           <label class="form-label" for="field_contract">Contract</label>
           <input type="text" class="form-control" name="contract" id="field_contract" data-cy="contract" formControlName="contract" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.license.visible">
           <label class="form-label" for="field_license">License</label>
           <input type="text" class="form-control" name="license" id="field_license" data-cy="license" formControlName="license" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.state.visible">
           <label class="form-label" for="field_state">State</label>
           <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
             <option [ngValue]="null"></option>
@@ -43,7 +43,7 @@
           </select>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.pricing.visible">
           <label class="form-label" for="field_pricing">Pricing</label>
           <select class="form-control" name="pricing" formControlName="pricing" id="field_pricing" data-cy="pricing">
             <option [ngValue]="null"></option>
@@ -53,7 +53,7 @@
           </select>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.unitPrice.visible">
           <label class="form-label" for="field_unitPrice">Unit Price</label>
           <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
         </div>
@@ -64,7 +64,7 @@
 
   <!-- right form -->
   <div class="col-3 child-inline">
-    <div class="mb-3">
+    <div class="mb-3" *ngIf="ua.starts.visible">
       <label class="form-label" for="field_starts">Starts</label>
       <div class="input-group">
         <input
@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" *ngIf="ua.ends.visible">
       <label class="form-label" for="field_ends">Ends</label>
       <div class="input-group">
         <input
@@ -98,7 +98,7 @@
       </div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" *ngIf="ua.trialStarts.visible">
       <label class="form-label" for="field_trialStarts">Trial Starts</label>
       <div class="input-group">
         <input
@@ -117,7 +117,7 @@
       </div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" *ngIf="ua.trialEnds.visible">
       <label class="form-label" for="field_trialEnds">Trial Ends</label>
       <div class="input-group">
         <input
@@ -134,7 +134,7 @@
       </div>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" *ngIf="ua.notes.visible">
       <label class="form-label" for="field_notes">Notes</label>
       <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" cols="40" rows="4"></textarea>
     </div>
@@ -142,7 +142,7 @@
 
   <!-- 3rd panel -->
   <div class="col-2 child-inline">
-    <div class="mb-3">
+    <div class="mb-3" *ngIf="ua.id.visible">
       <label class="form-label" for="field_id">Aps Plan ID</label>
       <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
     </div>

@@ -11,36 +11,36 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ apsOrder.id }}</span>
           </dd>
-          <dt><span>Period</span></dt>
-          <dd>
+          <dt *ngIf="ua.period.visible"><span>Period</span></dt>
+          <dd *ngIf="ua.period.visible">
             <span>{{ apsOrder.period }}</span>
           </dd>
-          <dt><span>License</span></dt>
-          <dd>
+          <dt *ngIf="ua.license.visible"><span>License</span></dt>
+          <dd *ngIf="ua.license.visible">
             <span>{{ apsOrder.license }}</span>
           </dd>
-          <dt><span>Unit Price</span></dt>
-          <dd>
+          <dt *ngIf="ua.unitPrice.visible"><span>Unit Price</span></dt>
+          <dd *ngIf="ua.unitPrice.visible">
             <span>{{ apsOrder.unitPrice }}</span>
           </dd>
-          <dt><span>Vat Rate</span></dt>
-          <dd>
+          <dt *ngIf="ua.vatRate.visible"><span>Vat Rate</span></dt>
+          <dd *ngIf="ua.vatRate.visible">
             <span>{{ apsOrder.vatRate }}</span>
           </dd>
-          <dt><span>Number Of Users</span></dt>
-          <dd>
+          <dt *ngIf="ua.numberOfUsers.visible"><span>Number Of Users</span></dt>
+          <dd *ngIf="ua.numberOfUsers.visible">
             <span>{{ apsOrder.numberOfUsers }}</span>
           </dd>
-          <dt><span>Invoice Number</span></dt>
-          <dd>
+          <dt *ngIf="ua.invoiceNumber.visible"><span>Invoice Number</span></dt>
+          <dd *ngIf="ua.invoiceNumber.visible">
             <span>{{ apsOrder.invoiceNumber }}</span>
           </dd>
-          <dt><span>Aps Plan</span></dt>
-          <dd>
+          <dt *ngIf="ua.plan.visible"><span>Aps Plan</span></dt>
+          <dd *ngIf="ua.plan.visible">
             @if (apsOrder.apsPlan) {
               <div>
                 <a [routerLink]="['/aps-plan', apsOrder.apsPlan.id, 'view']">{{ apsOrder.apsPlan.id }}</a>

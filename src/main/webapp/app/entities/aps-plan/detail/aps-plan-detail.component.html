@@ -11,60 +11,60 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ apsPlan.id }}</span>
           </dd>
-          <dt><span>Contract</span></dt>
-          <dd>
+          <dt *ngIf="ua.contract.visible"><span>Contract</span></dt>
+          <dd *ngIf="ua.contract.visible">
             <span>{{ apsPlan.contract }}</span>
           </dd>
-          <dt><span>Pricing</span></dt>
-          <dd>
+          <dt *ngIf="ua.pricing.visible"><span>Pricing</span></dt>
+          <dd *ngIf="ua.pricing.visible">
             <span>{{ apsPlan.pricing }}</span>
           </dd>
-          <dt><span>State</span></dt>
-          <dd>
+          <dt *ngIf="ua.state.visible"><span>State</span></dt>
+          <dd *ngIf="ua.state.visible">
             <span>{{ apsPlan.state }}</span>
           </dd>
-          <dt><span>License</span></dt>
-          <dd>
+          <dt *ngIf="ua.license.visible"><span>License</span></dt>
+          <dd *ngIf="ua.license.visible">
             <span>{{ apsPlan.license }}</span>
           </dd>
-          <dt><span>Starts</span></dt>
-          <dd>
+          <dt *ngIf="ua.starts.visible"><span>Starts</span></dt>
+          <dd *ngIf="ua.starts.visible">
             <span>{{ apsPlan.starts | formatMediumDate }}</span>
           </dd>
-          <dt><span>Ends</span></dt>
-          <dd>
+          <dt *ngIf="ua.ends.visible"><span>Ends</span></dt>
+          <dd *ngIf="ua.ends.visible">
             <span>{{ apsPlan.ends | formatMediumDate }}</span>
           </dd>
-          <dt><span>Trial Starts</span></dt>
-          <dd>
+          <dt *ngIf="ua.trialStarts.visible"><span>Trial Starts</span></dt>
+          <dd *ngIf="ua.trialStarts.visible">
             <span>{{ apsPlan.trialStarts | formatMediumDate }}</span>
           </dd>
-          <dt><span>Trial Ends</span></dt>
-          <dd>
+          <dt *ngIf="ua.trialEnds.visible"><span>Trial Ends</span></dt>
+          <dd *ngIf="ua.trialEnds.visible">
             <span>{{ apsPlan.trialEnds | formatMediumDate }}</span>
           </dd>
-          <dt><span>Unit Price</span></dt>
-          <dd>
+          <dt *ngIf="ua.unitPrice.visible"><span>Unit Price</span></dt>
+          <dd *ngIf="ua.unitPrice.visible">
             <span>{{ apsPlan.unitPrice }}</span>
           </dd>
-          <dt><span>Notes</span></dt>
-          <dd>
+          <dt *ngIf="ua.notes.visible"><span>Notes</span></dt>
+          <dd *ngIf="ua.notes.visible">
             <span>{{ apsPlan.notes }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ apsPlan.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ apsPlan.updated | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Customer</span></dt>
-          <dd>
+          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
+          <dd *ngIf="ua.customer.visible">
             @if (apsPlan.customer) {
               <div>
                 <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.id }}</a>

@@ -9,17 +9,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IApsPlan } from 'app/entities/aps-plan/aps-plan.model';
 import { ApsPlanService } from 'app/entities/aps-plan/service/aps-plan.service';
-import { IApsOrder } from '../aps-order.model';
+import { APS_ORDER_USER_ACCESS, ApsOrderAccess, IApsOrder } from '../aps-order.model';
 import { ApsOrderService } from '../service/aps-order.service';
 import { ApsOrderFormService, ApsOrderFormGroup } from './aps-order-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-aps-order-update',
   templateUrl: './aps-order-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ApsOrderUpdateComponent implements OnInit {
+  ua: ApsOrderAccess = this.getApsOrderAccess();
   isSaving = false;
   apsOrder: IApsOrder | null = null;
 
@@ -97,4 +99,9 @@ export class ApsOrderUpdateComponent implements OnInit {
       .pipe(map((apsPlans: IApsPlan[]) => this.apsPlanService.addApsPlanToCollectionIfMissing<IApsPlan>(apsPlans, this.apsOrder?.apsPlan)))
       .subscribe((apsPlans: IApsPlan[]) => (this.apsPlansSharedCollection = apsPlans));
   }
+
+  protected getApsOrderAccess(): ApsOrderAccess {
+    return APS_ORDER_USER_ACCESS;
+  }
+
 }
