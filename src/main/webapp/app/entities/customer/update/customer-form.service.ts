@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { ICustomer, NewCustomer } from '../customer.model';
+import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer, NewCustomer } from '../customer.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -61,7 +61,7 @@ export type CustomerFormGroup = FormGroup<CustomerFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class CustomerFormService {
-  createCustomerFormGroup(customer: CustomerFormGroupInput = { id: null }): CustomerFormGroup {
+  createCustomerFormGroup(customer: CustomerFormGroupInput = { id: null }, ua: CustomerAccess = CUSTOMER_USER_ACCESS): CustomerFormGroup {
     const customerRawValue = this.convertCustomerToCustomerRawValue({
       ...this.getFormDefaults(),
       ...customer,
@@ -74,33 +74,33 @@ export class CustomerFormService {
           validators: [Validators.required],
         },
       ),
-      code: new FormControl(customerRawValue.code, {
-        validators: [Validators.required],
+      code: new FormControl( { value: customerRawValue.code, disabled: ua.code.disabled },
+      { validators: [Validators.required],
       }),
-      name: new FormControl(customerRawValue.name, {
-        validators: [Validators.required],
+      name: new FormControl( { value: customerRawValue.name, disabled: ua.name.disabled },
+        { validators: [Validators.required],
       }),
-      country: new FormControl(customerRawValue.country, {
-        validators: [Validators.required],
+      country: new FormControl({ value: customerRawValue.country, disabled: ua.country.disabled },
+        { validators: [Validators.required],
       }),
-      license: new FormControl(customerRawValue.license),
-      state: new FormControl(customerRawValue.state, {
-        validators: [Validators.required],
+      license: new FormControl({ value: customerRawValue.license, disabled: ua.license.disabled }),
+      state: new FormControl({ value: customerRawValue.state, disabled: ua.state.disabled },
+        { validators: [Validators.required],
       }),
-      closeReason: new FormControl(customerRawValue.closeReason),
-      emailDomains: new FormControl(customerRawValue.emailDomains),
-      vatId: new FormControl(customerRawValue.vatId),
-      bank: new FormControl(customerRawValue.bank),
-      iban: new FormControl(customerRawValue.iban),
-      logo: new FormControl(customerRawValue.logo),
-      notes: new FormControl(customerRawValue.notes),
-      created: new FormControl(customerRawValue.created),
-      updated: new FormControl(customerRawValue.updated),
-      trialed: new FormControl(customerRawValue.trialed),
-      declined: new FormControl(customerRawValue.declined),
-      activated: new FormControl(customerRawValue.activated),
-      closed: new FormControl(customerRawValue.closed),
-      agency: new FormControl(customerRawValue.agency),
+      closeReason: new FormControl({ value: customerRawValue.closeReason, disabled: ua.closeReason.disabled }),
+      emailDomains: new FormControl({ value: customerRawValue.emailDomains, disabled: ua.emailDomains.disabled }),
+      vatId: new FormControl({ value: customerRawValue.vatId, disabled: ua.vatId.disabled }),
+      bank: new FormControl({ value: customerRawValue.bank, disabled: ua.bank.disabled }),
+      iban: new FormControl({ value: customerRawValue.iban, disabled: ua.iban.disabled }),
+      logo: new FormControl({ value: customerRawValue.logo, disabled: ua.logo.disabled }),
+      notes: new FormControl({ value: customerRawValue.notes, disabled: ua.notes.disabled }),
+      created: new FormControl({ value: customerRawValue.created, disabled: ua.created.disabled }),
+      updated: new FormControl({ value: customerRawValue.updated, disabled: ua.updated.disabled }),
+      trialed: new FormControl({ value: customerRawValue.trialed, disabled: ua.trialed.disabled }),
+      declined: new FormControl({ value: customerRawValue.declined, disabled: ua.declined.disabled }),
+      activated: new FormControl({ value: customerRawValue.activated, disabled: ua.activated.disabled }),
+      closed: new FormControl({ value: customerRawValue.closed, disabled: ua.closed.disabled }),
+      agency: new FormControl({ value: customerRawValue.agency, disabled: ua.agency.disabled }),
     });
   }
 

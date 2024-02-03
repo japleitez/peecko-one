@@ -60,17 +60,17 @@ export interface CustomerAccess {
 export let CUSTOMER_USER_ACCESS: CustomerAccess;
 
 CUSTOMER_USER_ACCESS = {
-  activated: { listable: true, visible: true, disabled: false },
-  agency: { listable: false, visible: true, disabled: false },
+  activated: { listable: true, visible: true, disabled: true },
+  agency: { listable: false, visible: true, disabled: true },
   apsPlans: { listable: false, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
   closeReason: { listable: false, visible: true, disabled: false },
-  closed: { listable: true, visible: true, disabled: false },
+  closed: { listable: true, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   contacts: { listable: false, visible: true, disabled: false },
   country: { listable: false, visible: true, disabled: false },
-  created: { listable: true, visible: true, disabled: false },
-  declined: { listable: false, visible: true, disabled: false },
+  created: { listable: true, visible: true, disabled: true },
+  declined: { listable: false, visible: true, disabled: true },
   emailDomains: { listable: false, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
   id: { listable: false, visible: true, disabled: false },
@@ -79,7 +79,7 @@ CUSTOMER_USER_ACCESS = {
   name: { listable: true, visible: true, disabled: false },
   notes: { listable: false, visible: true, disabled: false },
   state: { listable: true, visible: true, disabled: false },
-  trialed: { listable: false, visible: true, disabled: false },
-  updated: { listable: false, visible: true, disabled: false },
+  trialed: { listable: false, visible: true, disabled: true },
+  updated: { listable: false, visible: true, disabled: true },
   vatId: { listable: true, visible: true, disabled: false }
 };

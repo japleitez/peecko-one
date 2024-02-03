@@ -11,7 +11,7 @@ import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
 import { CustomerState } from 'app/entities/enumerations/customer-state.model';
 import { CustomerService } from '../service/customer.service';
-import { ICustomer } from '../customer.model';
+import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
 import { CustomerFormService, CustomerFormGroup } from './customer-form.service';
 
 @Component({
@@ -21,13 +21,14 @@ import { CustomerFormService, CustomerFormGroup } from './customer-form.service'
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class CustomerUpdateComponent implements OnInit {
+  ua: CustomerAccess = this.getCustomerUserAccess();
   isSaving = false;
   customer: ICustomer | null = null;
   customerStateValues = Object.keys(CustomerState);
 
   agenciesSharedCollection: IAgency[] = [];
 
-  editForm: CustomerFormGroup = this.customerFormService.createCustomerFormGroup();
+  editForm: CustomerFormGroup = this.customerFormService.createCustomerFormGroup(undefined, this.getCustomerUserAccess());
 
   constructor(
     protected customerService: CustomerService,
@@ -99,4 +100,9 @@ export class CustomerUpdateComponent implements OnInit {
       .pipe(map((agencies: IAgency[]) => this.agencyService.addAgencyToCollectionIfMissing<IAgency>(agencies, this.customer?.agency)))
       .subscribe((agencies: IAgency[]) => (this.agenciesSharedCollection = agencies));
   }
+
+  protected getCustomerUserAccess(): CustomerAccess {
+    return CUSTOMER_USER_ACCESS
+  }
+
 }
