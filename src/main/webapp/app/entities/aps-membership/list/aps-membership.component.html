@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/aps-membership/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Aps Membership</span>
+        <span>New Aps Membership</span>
       </button>
     </div>
   </h2>
@@ -35,35 +35,35 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="period">
+            <th scope="col" jhiSortBy="period" *ngIf="ua.period.listable">
               <div class="d-flex">
                 <span>Period</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="license">
+            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
               <div class="d-flex">
                 <span>License</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="username">
+            <th scope="col" jhiSortBy="username" *ngIf="ua.username.listable">
               <div class="d-flex">
                 <span>Username</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="apsOrder.id">
+            <th scope="col" jhiSortBy="apsOrder.id" *ngIf="ua.apsOrder.listable">
               <div class="d-flex">
                 <span>Aps Order</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -75,13 +75,13 @@
         <tbody>
           @for (apsMembership of apsMemberships; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-membership', apsMembership.id, 'view']">{{ apsMembership.id }}</a>
               </td>
-              <td>{{ apsMembership.period }}</td>
-              <td>{{ apsMembership.license }}</td>
-              <td>{{ apsMembership.username }}</td>
-              <td>
+              <td *ngIf="ua.period.listable">{{ apsMembership.period }}</td>
+              <td *ngIf="ua.license.listable">{{ apsMembership.license }}</td>
+              <td *ngIf="ua.username.listable">{{ apsMembership.username }}</td>
+              <td *ngIf="ua.apsOrder.listable">
                 @if (apsMembership.apsOrder) {
                   <div>
                     <a [routerLink]="['/aps-order', apsMembership.apsOrder.id, 'view']">{{ apsMembership.apsOrder.id }}</a>
@@ -92,17 +92,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/aps-membership', apsMembership.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/aps-membership', apsMembership.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(apsMembership)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.period.visible">
           <label class="form-label" for="field_period">Period</label>
           <input type="number" class="form-control" name="period" id="field_period" data-cy="period" formControlName="period" />
           @if (editForm.get('period')!.invalid && (editForm.get('period')!.dirty || editForm.get('period')!.touched)) {
@@ -26,7 +26,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.license.visible">
           <label class="form-label" for="field_license">License</label>
           <input type="text" class="form-control" name="license" id="field_license" data-cy="license" formControlName="license" />
           @if (editForm.get('license')!.invalid && (editForm.get('license')!.dirty || editForm.get('license')!.touched)) {
@@ -38,7 +38,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.username.visible">
           <label class="form-label" for="field_username">Username</label>
           <input type="text" class="form-control" name="username" id="field_username" data-cy="username" formControlName="username" />
           @if (editForm.get('username')!.invalid && (editForm.get('username')!.dirty || editForm.get('username')!.touched)) {
@@ -50,7 +50,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.apsOrder.visible">
           <label class="form-label" for="field_apsOrder">Aps Order</label>
           <select
             class="form-control"
