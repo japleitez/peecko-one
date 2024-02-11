@@ -217,7 +217,7 @@ export class ApsOrderComponent implements OnInit {
     if (executeBatch) {
       return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else {
-      return this.apsOrderService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+      return this.apsOrderService.queryInfo(queryObject).pipe(tap(() => (this.isLoading = false)));
     }
   }
 
