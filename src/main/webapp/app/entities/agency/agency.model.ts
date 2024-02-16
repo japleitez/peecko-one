@@ -67,13 +67,13 @@ AGENCY_USER_ACCESS = {
   apsPricings: { listable: false, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
   billingEmail: { listable: false, visible: true, disabled: false },
-  billingPhone: { listable: true, visible: true, disabled: false },
+  billingPhone: { listable: false, visible: true, disabled: false },
   city: { listable: true, visible: true, disabled: false },
   code: { listable: true, visible: true, disabled: false },
   country: { listable: true, visible: true, disabled: false },
   created: { listable: false, visible: true, disabled: true },
   customers: { listable: false, visible: true, disabled: false },
-  email: { listable: true, visible: true, disabled: false },
+  email: { listable: false, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
   id: { listable: true, visible: true, disabled: true },
   language: { listable: false, visible: true, disabled: false },
@@ -86,6 +86,6 @@ AGENCY_USER_ACCESS = {
   staff: { listable: false, visible: true, disabled: false },
   updated: { listable: false, visible: true, disabled: true },
   vatId: { listable: false, visible: true, disabled: false },
-  vatRate: { listable: true, visible: true, disabled: false },
+  vatRate: { listable: false, visible: true, disabled: false },
   zip: { listable: false, visible: true, disabled: false }
 };

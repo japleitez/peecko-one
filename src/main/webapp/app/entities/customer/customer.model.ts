@@ -68,12 +68,12 @@ CUSTOMER_USER_ACCESS = {
   closed: { listable: true, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   contacts: { listable: false, visible: true, disabled: false },
-  country: { listable: false, visible: true, disabled: false },
+  country: { listable: true, visible: true, disabled: false },
   created: { listable: true, visible: true, disabled: true },
   declined: { listable: false, visible: true, disabled: true },
   emailDomains: { listable: false, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
-  id: { listable: false, visible: true, disabled: false },
+  id: { listable: true, visible: true, disabled: false },
   license: { listable: true, visible: true, disabled: false },
   logo: { listable: false, visible: true, disabled: false },
   name: { listable: true, visible: true, disabled: false },
@@ -81,5 +81,5 @@ CUSTOMER_USER_ACCESS = {
   state: { listable: true, visible: true, disabled: false },
   trialed: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
-  vatId: { listable: true, visible: true, disabled: false }
+  vatId: { listable: false, visible: true, disabled: false }
 };
