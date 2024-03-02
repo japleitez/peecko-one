@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IApsUser, NewApsUser } from '../aps-user.model';
+import { APS_USER_ACCESS, ApsUserAccess, IApsUser, NewApsUser } from '../aps-user.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -49,7 +49,7 @@ export type ApsUserFormGroup = FormGroup<ApsUserFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsUserFormService {
-  createApsUserFormGroup(apsUser: ApsUserFormGroupInput = { id: null }): ApsUserFormGroup {
+  createApsUserFormGroup(apsUser: ApsUserFormGroupInput = { id: null }, ua: ApsUserAccess = APS_USER_ACCESS): ApsUserFormGroup {
     const apsUserRawValue = this.convertApsUserToApsUserRawValue({
       ...this.getFormDefaults(),
       ...apsUser,
@@ -62,31 +62,24 @@ export class ApsUserFormService {
           validators: [Validators.required],
         },
       ),
-      name: new FormControl(apsUserRawValue.name, {
-        validators: [Validators.required],
-      }),
-      username: new FormControl(apsUserRawValue.username, {
-        validators: [Validators.required],
-      }),
-      usernameVerified: new FormControl(apsUserRawValue.usernameVerified, {
-        validators: [Validators.required],
-      }),
-      privateEmail: new FormControl(apsUserRawValue.privateEmail, {
-        validators: [Validators.required],
-      }),
-      privateVerified: new FormControl(apsUserRawValue.privateVerified, {
-        validators: [Validators.required],
-      }),
-      language: new FormControl(apsUserRawValue.language, {
-        validators: [Validators.required],
-      }),
-      license: new FormControl(apsUserRawValue.license),
-      active: new FormControl(apsUserRawValue.active, {
-        validators: [Validators.required],
-      }),
-      password: new FormControl(apsUserRawValue.password),
-      created: new FormControl(apsUserRawValue.created),
-      updated: new FormControl(apsUserRawValue.updated),
+      name: new FormControl({ value: apsUserRawValue.name, disabled: ua.name.disabled },
+        { validators: [Validators.required], }),
+      username: new FormControl({ value: apsUserRawValue.username, disabled: ua.username.disabled },
+        { validators: [Validators.required], }),
+      usernameVerified: new FormControl({ value: apsUserRawValue.usernameVerified, disabled: ua.usernameVerified.disabled },
+        { validators: [Validators.required], }),
+      privateEmail: new FormControl({ value: apsUserRawValue.privateEmail, disabled: ua.privateEmail.disabled },
+        { validators: [Validators.required], }),
+      privateVerified: new FormControl({ value: apsUserRawValue.privateVerified, disabled: ua.privateVerified.disabled },
+        { validators: [Validators.required], }),
+      language: new FormControl({ value: apsUserRawValue.language, disabled: ua.language.disabled },
+        { validators: [Validators.required], }),
+      license: new FormControl({ value: apsUserRawValue.license, disabled: ua.license.disabled }),
+      active: new FormControl({ value: apsUserRawValue.active, disabled: ua.active.disabled },
+        { validators: [Validators.required], }),
+      password: new FormControl({ value: apsUserRawValue.password, disabled: ua.password.disabled }),
+      created: new FormControl({ value: apsUserRawValue.created, disabled: ua.created.disabled }),
+      updated: new FormControl({ value: apsUserRawValue.updated, disabled: ua.updated.disabled }),
     });
   }
 

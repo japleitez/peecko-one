@@ -38,8 +38,6 @@ type ApsPlanFormGroupContent = {
   license: FormControl<ApsPlanFormRawValue['license']>;
   starts: FormControl<ApsPlanFormRawValue['starts']>;
   ends: FormControl<ApsPlanFormRawValue['ends']>;
-  trialStarts: FormControl<ApsPlanFormRawValue['trialStarts']>;
-  trialEnds: FormControl<ApsPlanFormRawValue['trialEnds']>;
   unitPrice: FormControl<ApsPlanFormRawValue['unitPrice']>;
   notes: FormControl<ApsPlanFormRawValue['notes']>;
   created: FormControl<ApsPlanFormRawValue['created']>;
@@ -76,8 +74,6 @@ export class ApsPlanFormService {
       license: new FormControl({ value: apsPlanRawValue.license, disabled: ua.license.disabled }),
       starts: new FormControl({ value: apsPlanRawValue.starts, disabled: ua.starts.disabled }),
       ends: new FormControl({ value: apsPlanRawValue.ends, disabled: ua.ends.disabled }),
-      trialStarts: new FormControl({ value: apsPlanRawValue.trialStarts, disabled: ua.trialStarts.disabled }),
-      trialEnds: new FormControl({ value: apsPlanRawValue.trialEnds, disabled: ua.trialEnds.disabled }),
       unitPrice: new FormControl({ value: apsPlanRawValue.unitPrice, disabled: ua.unitPrice.disabled },
         { validators: [Validators.required],
       }),

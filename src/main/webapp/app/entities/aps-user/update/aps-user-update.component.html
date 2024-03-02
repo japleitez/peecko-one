@@ -13,7 +13,7 @@
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.name.visible">
           <label class="form-label" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
           @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.username.visible">
           <label class="form-label" for="field_username">Username</label>
           <input type="text" class="form-control" name="username" id="field_username" data-cy="username" formControlName="username" />
           @if (editForm.get('username')!.invalid && (editForm.get('username')!.dirty || editForm.get('username')!.touched)) {
@@ -37,7 +37,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.usernameVerified.visible">
           <label class="form-label" for="field_usernameVerified">Username Verified</label>
           <input
             type="checkbox"
@@ -59,7 +59,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.privateEmail.visible">
           <label class="form-label" for="field_privateEmail">Private Email</label>
           <input
             type="text"
@@ -78,7 +78,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.privateVerified.visible">
           <label class="form-label" for="field_privateVerified">Private Verified</label>
           <input
             type="checkbox"
@@ -99,7 +99,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.language.visible">
           <label class="form-label" for="field_language">Language</label>
           <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
             <option [ngValue]="null"></option>
@@ -116,12 +116,12 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.license.visible">
           <label class="form-label" for="field_license">License</label>
           <input type="text" class="form-control" name="license" id="field_license" data-cy="license" formControlName="license" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.active.visible">
           <label class="form-label" for="field_active">Active</label>
           <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
           @if (editForm.get('active')!.invalid && (editForm.get('active')!.dirty || editForm.get('active')!.touched)) {
@@ -133,12 +133,12 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.password.visible">
           <label class="form-label" for="field_password">Password</label>
           <input type="text" class="form-control" name="password" id="field_password" data-cy="password" formControlName="password" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">
             <input
@@ -153,7 +153,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.updated.visible">
           <label class="form-label" for="field_updated">Updated</label>
           <div class="d-flex">
             <input

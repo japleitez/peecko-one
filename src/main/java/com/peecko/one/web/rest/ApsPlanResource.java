@@ -149,12 +149,6 @@ public class ApsPlanResource {
                 if (apsPlan.getEnds() != null) {
                     existingApsPlan.setEnds(apsPlan.getEnds());
                 }
-                if (apsPlan.getTrialStarts() != null) {
-                    existingApsPlan.setTrialStarts(apsPlan.getTrialStarts());
-                }
-                if (apsPlan.getTrialEnds() != null) {
-                    existingApsPlan.setTrialEnds(apsPlan.getTrialEnds());
-                }
                 if (apsPlan.getUnitPrice() != null) {
                     existingApsPlan.setUnitPrice(apsPlan.getUnitPrice());
                 }

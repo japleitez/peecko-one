@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/aps-user/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Aps User</span>
+        <span>New App User</span>
       </button>
     </div>
   </h2>
@@ -26,7 +26,7 @@
 
   @if (apsUsers?.length === 0) {
     <div class="alert alert-warning" id="no-result">
-      <span>No Aps Users found</span>
+      <span>No App Users found</span>
     </div>
   }
 
@@ -35,84 +35,77 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="name">
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
               <div class="d-flex">
                 <span>Name</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="username">
+            <th scope="col" jhiSortBy="username" *ngIf="ua.username.listable">
               <div class="d-flex">
-                <span>Username</span>
+                <span>Email</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="usernameVerified">
+            <th scope="col" jhiSortBy="usernameVerified" *ngIf="ua.usernameVerified.listable">
               <div class="d-flex">
-                <span>Username Verified</span>
+                <span>Verified</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="privateEmail">
+            <th scope="col" jhiSortBy="privateEmail" *ngIf="ua.privateEmail.listable">
               <div class="d-flex">
-                <span>Private Email</span>
+                <span>Private</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="privateVerified">
+            <th scope="col" jhiSortBy="privateVerified" *ngIf="ua.privateVerified.listable">
               <div class="d-flex">
-                <span>Private Verified</span>
+                <span>Verified</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="language">
+            <th scope="col" jhiSortBy="language" *ngIf="ua.language.listable">
               <div class="d-flex">
-                <span>Language</span>
+                <span>Lang</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="license">
+            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
               <div class="d-flex">
                 <span>License</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="active">
+            <th scope="col" jhiSortBy="active" *ngIf="ua.active.listable">
               <div class="d-flex">
                 <span>Active</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="password">
-              <div class="d-flex">
-                <span>Password</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updated">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 
@@ -125,35 +118,31 @@
         <tbody>
           @for (apsUser of apsUsers; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-user', apsUser.id, 'view']">{{ apsUser.id }}</a>
               </td>
-              <td>{{ apsUser.name }}</td>
-              <td>{{ apsUser.username }}</td>
-              <td>{{ apsUser.usernameVerified }}</td>
-              <td>{{ apsUser.privateEmail }}</td>
-              <td>{{ apsUser.privateVerified }}</td>
-              <td>{{ apsUser.language }}</td>
-              <td>{{ apsUser.license }}</td>
-              <td>{{ apsUser.active }}</td>
-              <td>{{ apsUser.password }}</td>
-              <td>{{ apsUser.created | formatMediumDatetime }}</td>
-              <td>{{ apsUser.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.name.listable">{{ apsUser.name }}</td>
+              <td *ngIf="ua.username.listable">{{ apsUser.username }}</td>
+              <td *ngIf="ua.usernameVerified.listable">{{ apsUser.usernameVerified }}</td>
+              <td *ngIf="ua.privateEmail.listable">{{ apsUser.privateEmail }}</td>
+              <td *ngIf="ua.privateVerified.listable">{{ apsUser.privateVerified }}</td>
+              <td *ngIf="ua.language.listable">{{ apsUser.language }}</td>
+              <td *ngIf="ua.license.listable">{{ apsUser.license }}</td>
+              <td *ngIf="ua.active.listable">{{ apsUser.active }}</td>
+              <td *ngIf="ua.created.listable">{{ apsUser.created | formatMediumDatetime }}</td>
+              <td *ngIf="ua.updated.listable">{{ apsUser.updated | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/aps-user', apsUser.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/aps-user', apsUser.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(apsUser)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

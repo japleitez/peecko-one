@@ -14,6 +14,9 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="country" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="customer_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -25,9 +28,6 @@
             </column>
             <column name="unit_price" type="double">
                 <constraints nullable="false" />
-            </column>
-            <column name="agency_id" type="bigint">
-                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -50,6 +50,7 @@
                   tableName="aps_pricing"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="country" type="string"/>
             <column name="customer_id" type="numeric"/>
             <column name="index" type="numeric"/>
             <column name="min_quantity" type="numeric"/>

@@ -6,8 +6,6 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
-import { IAgency } from 'app/entities/agency/agency.model';
-import { AgencyService } from 'app/entities/agency/service/agency.service';
 import { ApsPricingService } from '../service/aps-pricing.service';
 import { IApsPricing } from '../aps-pricing.model';
 import { ApsPricingFormService } from './aps-pricing-form.service';
@@ -20,7 +18,6 @@ describe('ApsPricing Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let apsPricingFormService: ApsPricingFormService;
   let apsPricingService: ApsPricingService;
-  let agencyService: AgencyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,45 +39,8 @@ describe('ApsPricing Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     apsPricingFormService = TestBed.inject(ApsPricingFormService);
     apsPricingService = TestBed.inject(ApsPricingService);
-    agencyService = TestBed.inject(AgencyService);
 
     comp = fixture.componentInstance;
-  });
-
-  describe('ngOnInit', () => {
-    it('Should call Agency query and add missing value', () => {
-      const apsPricing: IApsPricing = { id: 456 };
-      const agency: IAgency = { id: 23212 };
-      apsPricing.agency = agency;
-
-      const agencyCollection: IAgency[] = [{ id: 18007 }];
-      jest.spyOn(agencyService, 'query').mockReturnValue(of(new HttpResponse({ body: agencyCollection })));
-      const additionalAgencies = [agency];
-      const expectedCollection: IAgency[] = [...additionalAgencies, ...agencyCollection];
-      jest.spyOn(agencyService, 'addAgencyToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ apsPricing });
-      comp.ngOnInit();
-
-      expect(agencyService.query).toHaveBeenCalled();
-      expect(agencyService.addAgencyToCollectionIfMissing).toHaveBeenCalledWith(
-        agencyCollection,
-        ...additionalAgencies.map(expect.objectContaining),
-      );
-      expect(comp.agenciesSharedCollection).toEqual(expectedCollection);
-    });
-
-    it('Should update editForm', () => {
-      const apsPricing: IApsPricing = { id: 456 };
-      const agency: IAgency = { id: 30377 };
-      apsPricing.agency = agency;
-
-      activatedRoute.data = of({ apsPricing });
-      comp.ngOnInit();
-
-      expect(comp.agenciesSharedCollection).toContain(agency);
-      expect(comp.apsPricing).toEqual(apsPricing);
-    });
   });
 
   describe('save', () => {
@@ -151,15 +111,4 @@ describe('ApsPricing Management Update Component', () => {
     });
   });
 
-  describe('Compare relationships', () => {
-    describe('compareAgency', () => {
-      it('Should forward to agencyService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(agencyService, 'compareAgency');
-        comp.compareAgency(entity, entity2);
-        expect(agencyService.compareAgency).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-  });
 });

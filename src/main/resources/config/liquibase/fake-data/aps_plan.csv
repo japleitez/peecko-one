@@ -1,11 +1,2 @@
-id;contract;pricing;state;license;starts;ends;trial_starts;trial_ends;unit_price;notes;created;updated
-1;incidentally loyally ouch;BRACKET;CLOSED;inasmuch zowie repentant;2023-12-20;2023-12-19;2023-12-20;2023-12-20;27856.92;pointed hearty;2023-12-19T20:49:24;2023-12-20T07:55:16
-2;neatly;BRACKET;CLOSED;forenenst lest spring;2023-12-20;2023-12-20;2023-12-20;2023-12-20;11360.5;atop phooey decrease;2023-12-19T22:38:41;2023-12-19T21:22:41
-3;times;FIXED;NEW;measly;2023-12-20;2023-12-20;2023-12-19;2023-12-20;2357.41;elegantly dismount before;2023-12-19T22:43:20;2023-12-20T09:43:20
-4;because sharply;BRACKET;ACTIVE;hm inside;2023-12-20;2023-12-20;2023-12-19;2023-12-20;20097.05;powerfully huzzah with;2023-12-20T06:31:01;2023-12-20T14:09:56
-5;thankfully now;BRACKET;CLOSED;like eek floor;2023-12-19;2023-12-20;2023-12-19;2023-12-19;17825.93;fiercely er dashboard;2023-12-19T22:22:08;2023-12-19T23:41:40
-6;often ew beloved;BRACKET;ACTIVE;while;2023-12-20;2023-12-20;2023-12-19;2023-12-20;28899.38;astride worrisome for;2023-12-20T10:18:51;2023-12-20T08:17:10
-7;multicolored remarry;BRACKET;TRIAL;trembling alongside expose;2023-12-19;2023-12-20;2023-12-20;2023-12-20;6856.88;down yuck till;2023-12-20T10:07:38;2023-12-19T19:57:10
-8;yahoo psst;BRACKET;NEW;elastic authentic;2023-12-20;2023-12-20;2023-12-20;2023-12-20;21675.65;bridge;2023-12-20T07:47:13;2023-12-20T17:29:04
-9;patiently supposing;FIXED;TRIAL;gee;2023-12-19;2023-12-20;2023-12-20;2023-12-20;19172.18;thorn unbuckle zowie;2023-12-20T16:50:58;2023-12-20T11:56:20
-10;ick externalise instead;BRACKET;CLOSED;jaggedly toil;2023-12-20;2023-12-19;2023-12-20;2023-12-19;15108.5;sugary adolescent pfft;2023-12-20T11:45:20;2023-12-19T18:32:18
+id;contract;pricing;state;license;starts;ends;unit_price;notes;created;updated
+1;LU-ARH-2024-0001;TRIAL;ACTIVE;LU001111000022220000;2024-01-01;;12.50;;2024-01-01T10:00:00;2024-01-01T10:00:00

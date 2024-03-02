@@ -112,8 +112,6 @@ export class ApsPlanService {
       ...apsPlan,
       starts: apsPlan.starts?.format(DATE_FORMAT) ?? null,
       ends: apsPlan.ends?.format(DATE_FORMAT) ?? null,
-      trialStarts: apsPlan.trialStarts?.format(DATE_FORMAT) ?? null,
-      trialEnds: apsPlan.trialEnds?.format(DATE_FORMAT) ?? null,
       created: apsPlan.created?.toJSON() ?? null,
       updated: apsPlan.updated?.toJSON() ?? null,
     };
@@ -124,8 +122,6 @@ export class ApsPlanService {
       ...restApsPlan,
       starts: restApsPlan.starts ? dayjs(restApsPlan.starts) : undefined,
       ends: restApsPlan.ends ? dayjs(restApsPlan.ends) : undefined,
-      trialStarts: restApsPlan.trialStarts ? dayjs(restApsPlan.trialStarts) : undefined,
-      trialEnds: restApsPlan.trialEnds ? dayjs(restApsPlan.trialEnds) : undefined,
       created: restApsPlan.created ? dayjs(restApsPlan.created) : undefined,
       updated: restApsPlan.updated ? dayjs(restApsPlan.updated) : undefined,
     };

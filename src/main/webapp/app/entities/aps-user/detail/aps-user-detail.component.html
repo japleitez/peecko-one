@@ -11,52 +11,52 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ apsUser.id }}</span>
           </dd>
-          <dt><span>Name</span></dt>
-          <dd>
+          <dt *ngIf="ua.name.visible"><span>Name</span></dt>
+          <dd *ngIf="ua.name.visible">
             <span>{{ apsUser.name }}</span>
           </dd>
-          <dt><span>Username</span></dt>
-          <dd>
+          <dt *ngIf="ua.username.visible"><span>Username</span></dt>
+          <dd *ngIf="ua.username.visible">
             <span>{{ apsUser.username }}</span>
           </dd>
-          <dt><span>Username Verified</span></dt>
-          <dd>
+          <dt *ngIf="ua.usernameVerified.visible"><span>Username Verified</span></dt>
+          <dd *ngIf="ua.usernameVerified.visible">
             <span>{{ apsUser.usernameVerified }}</span>
           </dd>
-          <dt><span>Private Email</span></dt>
-          <dd>
+          <dt *ngIf="ua.privateEmail.visible"><span>Private Email</span></dt>
+          <dd *ngIf="ua.privateEmail.visible">
             <span>{{ apsUser.privateEmail }}</span>
           </dd>
-          <dt><span>Private Verified</span></dt>
-          <dd>
+          <dt *ngIf="ua.privateVerified.visible"><span>Private Verified</span></dt>
+          <dd *ngIf="ua.privateVerified.visible">
             <span>{{ apsUser.privateVerified }}</span>
           </dd>
-          <dt><span>Language</span></dt>
-          <dd>
+          <dt *ngIf="ua.language.visible"><span>Language</span></dt>
+          <dd *ngIf="ua.language.visible">
             <span>{{ apsUser.language }}</span>
           </dd>
-          <dt><span>License</span></dt>
-          <dd>
+          <dt *ngIf="ua.license.visible"><span>License</span></dt>
+          <dd *ngIf="ua.license.visible">
             <span>{{ apsUser.license }}</span>
           </dd>
-          <dt><span>Active</span></dt>
-          <dd>
+          <dt *ngIf="ua.active.visible"><span>Active</span></dt>
+          <dd *ngIf="ua.active.visible">
             <span>{{ apsUser.active }}</span>
           </dd>
-          <dt><span>Password</span></dt>
-          <dd>
+          <dt *ngIf="ua.password.visible"><span>Password</span></dt>
+          <dd *ngIf="ua.password.visible">
             <span>{{ apsUser.password }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ apsUser.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ apsUser.updated | formatMediumDatetime }}</span>
           </dd>
         </dl>

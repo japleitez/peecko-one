@@ -71,6 +71,9 @@
             <column name="agency_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="dummy" type="boolean">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="customer" columnName="created" columnDataType="${datetimeType}"/>
@@ -116,6 +119,7 @@
             <column name="declined" type="date"/>
             <column name="activated" type="date"/>
             <column name="closed" type="date"/>
+            <column name="dummy" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

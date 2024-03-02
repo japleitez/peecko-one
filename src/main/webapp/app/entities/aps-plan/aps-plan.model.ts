@@ -13,8 +13,6 @@ export interface IApsPlan {
   license?: string | null;
   starts?: dayjs.Dayjs | null;
   ends?: dayjs.Dayjs | null;
-  trialStarts?: dayjs.Dayjs | null;
-  trialEnds?: dayjs.Dayjs | null;
   unitPrice?: number | null;
   notes?: string | null;
   created?: dayjs.Dayjs | null;
@@ -33,8 +31,6 @@ export interface ApsPlanAccess {
   license: FieldAccess;
   starts: FieldAccess;
   ends: FieldAccess;
-  trialStarts: FieldAccess;
-  trialEnds: FieldAccess;
   unitPrice: FieldAccess;
   notes: FieldAccess;
   created: FieldAccess;
@@ -57,8 +53,6 @@ APS_PLAN_USER_ACCESS = {
   pricing: { listable: true, visible: true, disabled: false },
   starts: { listable: true, visible: true, disabled: false },
   state: { listable: true, visible: true, disabled: false },
-  trialEnds: { listable: true, visible: true, disabled: false },
-  trialStarts: { listable: true, visible: true, disabled: false },
   unitPrice: { listable: true, visible: true, disabled: false },
   updated: { listable: false, visible: true, disabled: false }
 }

@@ -84,20 +84,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="trialStarts" *ngIf="ua.trialStarts.listable">
-              <div class="d-flex">
-                <span>Trial Starts</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="trialEnds" *ngIf="ua.trialEnds.listable">
-              <div class="d-flex">
-                <span>Trial Ends</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="unitPrice"*ngIf="ua.unitPrice.listable">
               <div class="d-flex">
                 <span>Unit Price</span>
@@ -147,8 +133,6 @@
               <td *ngIf="ua.license.listable">{{ apsPlan.license }}</td>
               <td *ngIf="ua.starts.listable">{{ apsPlan.starts | formatMediumDate }}</td>
               <td *ngIf="ua.ends.listable">{{ apsPlan.ends | formatMediumDate }}</td>
-              <td *ngIf="ua.trialStarts.listable">{{ apsPlan.trialStarts | formatMediumDate }}</td>
-              <td *ngIf="ua.trialEnds.listable">{{ apsPlan.trialEnds | formatMediumDate }}</td>
               <td *ngIf="ua.unitPrice.listable">{{ apsPlan.unitPrice }}</td>
               <td *ngIf="ua.notes.listable">{{ apsPlan.notes }}</td>
               <td *ngIf="ua.created.listable">{{ apsPlan.created | formatMediumDatetime }}</td>

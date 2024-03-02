@@ -53,12 +53,6 @@ public class ApsPlan implements Serializable {
     @Column(name = "ends")
     private LocalDate ends;
 
-    @Column(name = "trial_starts")
-    private LocalDate trialStarts;
-
-    @Column(name = "trial_ends")
-    private LocalDate trialEnds;
-
     @NotNull
     @Column(name = "unit_price", nullable = false)
     private Double unitPrice;
@@ -172,32 +166,6 @@ public class ApsPlan implements Serializable {
 
     public void setEnds(LocalDate ends) {
         this.ends = ends;
-    }
-
-    public LocalDate getTrialStarts() {
-        return this.trialStarts;
-    }
-
-    public ApsPlan trialStarts(LocalDate trialStarts) {
-        this.setTrialStarts(trialStarts);
-        return this;
-    }
-
-    public void setTrialStarts(LocalDate trialStarts) {
-        this.trialStarts = trialStarts;
-    }
-
-    public LocalDate getTrialEnds() {
-        return this.trialEnds;
-    }
-
-    public ApsPlan trialEnds(LocalDate trialEnds) {
-        this.setTrialEnds(trialEnds);
-        return this;
-    }
-
-    public void setTrialEnds(LocalDate trialEnds) {
-        this.trialEnds = trialEnds;
     }
 
     public Double getUnitPrice() {
@@ -332,8 +300,6 @@ public class ApsPlan implements Serializable {
             ", license='" + getLicense() + "'" +
             ", starts='" + getStarts() + "'" +
             ", ends='" + getEnds() + "'" +
-            ", trialStarts='" + getTrialStarts() + "'" +
-            ", trialEnds='" + getTrialEnds() + "'" +
             ", unitPrice=" + getUnitPrice() +
             ", notes='" + getNotes() + "'" +
             ", created='" + getCreated() + "'" +

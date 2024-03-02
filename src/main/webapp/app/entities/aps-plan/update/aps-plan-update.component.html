@@ -98,42 +98,6 @@
       </div>
     </div>
 
-    <div class="mb-3" *ngIf="ua.trialStarts.visible">
-      <label class="form-label" for="field_trialStarts">Trial Starts</label>
-      <div class="input-group">
-        <input
-          id="field_trialStarts"
-          data-cy="trialStarts"
-          type="text"
-          class="form-control"
-          name="trialStarts"
-          ngbDatepicker
-          #trialStartsDp="ngbDatepicker"
-          formControlName="trialStarts"
-        />
-        <button type="button" class="btn btn-secondary" (click)="trialStartsDp.toggle()">
-          <fa-icon icon="calendar-alt"></fa-icon>
-        </button>
-      </div>
-    </div>
-
-    <div class="mb-3" *ngIf="ua.trialEnds.visible">
-      <label class="form-label" for="field_trialEnds">Trial Ends</label>
-      <div class="input-group">
-        <input
-          id="field_trialEnds"
-          data-cy="trialEnds"
-          type="text"
-          class="form-control"
-          name="trialEnds"
-          ngbDatepicker
-          #trialEndsDp="ngbDatepicker"
-          formControlName="trialEnds"
-        />
-        <button type="button" class="btn btn-secondary" (click)="trialEndsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-      </div>
-    </div>
-
     <div class="mb-3" *ngIf="ua.notes.visible">
       <label class="form-label" for="field_notes">Notes</label>
       <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" cols="40" rows="4"></textarea>

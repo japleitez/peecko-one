@@ -20,11 +20,11 @@ describe('ApsPricing Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            country: expect.any(Object),
             customerId: expect.any(Object),
             index: expect.any(Object),
             minQuantity: expect.any(Object),
             unitPrice: expect.any(Object),
-            agency: expect.any(Object),
           }),
         );
       });
@@ -35,11 +35,11 @@ describe('ApsPricing Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            country: expect.any(Object),
             customerId: expect.any(Object),
             index: expect.any(Object),
             minQuantity: expect.any(Object),
             unitPrice: expect.any(Object),
-            agency: expect.any(Object),
           }),
         );
       });

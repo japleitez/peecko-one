@@ -14,6 +14,18 @@
         }
 
         <div class="mb-3">
+          <label class="form-label" for="field_country">Country</label>
+          <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
+          @if (editForm.get('country')!.invalid && (editForm.get('country')!.dirty || editForm.get('country')!.touched)) {
+            <div>
+              @if (editForm.get('country')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_customerId">Customer Id</label>
           <input
             type="number"
@@ -85,22 +97,6 @@
           }
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="field_agency">Agency</label>
-          <select
-            class="form-control"
-            id="field_agency"
-            data-cy="agency"
-            name="agency"
-            formControlName="agency"
-            [compareWith]="compareAgency"
-          >
-            <option [ngValue]="null"></option>
-            @for (agencyOption of agenciesSharedCollection; track $index) {
-              <option [ngValue]="agencyOption">{{ agencyOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>
