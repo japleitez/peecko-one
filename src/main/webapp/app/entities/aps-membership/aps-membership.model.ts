@@ -22,9 +22,9 @@ export interface ApsMembershipAccess {
 export let APS_MEMBERSHIP_USER_ACCESS: ApsMembershipAccess;
 
 APS_MEMBERSHIP_USER_ACCESS = {
-  apsOrder: { listable: false, visible: true, disabled: false },
-  id: { listable: true, visible: true, disabled: false },
+  id: { listable: false, visible: true, disabled: true },
+  period: { listable: true, visible: true, disabled: false },
   license: { listable: true, visible: true, disabled: false },
-  period: { listable: true, visible: true, disabled: true },
-  username: { listable: true, visible: true, disabled: false }
+  username: { listable: true, visible: true, disabled: false },
+  apsOrder: { listable: false, visible: true, disabled: false }
 }

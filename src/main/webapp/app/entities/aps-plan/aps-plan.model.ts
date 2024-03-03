@@ -42,17 +42,17 @@ export interface ApsPlanAccess {
 export let APS_PLAN_USER_ACCESS: ApsPlanAccess;
 
 APS_PLAN_USER_ACCESS = {
-  apsOrders: { listable: true, visible: true, disabled: false },
-  contract: { listable: true, visible: true, disabled: false },
-  created: { listable: false, visible: true, disabled: false },
-  customer: { listable: false, visible: true, disabled: true },
-  ends: { listable: true, visible: true, disabled: false },
   id: { listable: true, visible: true, disabled: false },
-  license: { listable: true, visible: true, disabled: false },
-  notes: { listable: false, visible: true, disabled: false },
+  contract: { listable: true, visible: true, disabled: false },
   pricing: { listable: true, visible: true, disabled: false },
-  starts: { listable: true, visible: true, disabled: false },
   state: { listable: true, visible: true, disabled: false },
+  license: { listable: true, visible: true, disabled: false },
+  starts: { listable: true, visible: true, disabled: false },
+  ends: { listable: true, visible: true, disabled: false },
   unitPrice: { listable: true, visible: true, disabled: false },
-  updated: { listable: false, visible: true, disabled: false }
+  notes: { listable: false, visible: true, disabled: false },
+  created: { listable: false, visible: true, disabled: false },
+  updated: { listable: false, visible: true, disabled: false },
+  apsOrders: { listable: true, visible: true, disabled: false },
+  customer: { listable: false, visible: true, disabled: true }
 }

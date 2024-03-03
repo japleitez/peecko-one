@@ -49,11 +49,11 @@ export let APS_ORDER_USER_ACCESS: ApsOrderAccess;
 
 APS_ORDER_USER_ACCESS = {
   id: { listable: false, visible: true, disabled: true },
-  invoiceNumber: { listable: true, visible: true, disabled: false },
-  license: { listable: true, visible: true, disabled: false },
-  numberOfUsers: { listable: true, visible: true, disabled: true },
   period: { listable: true, visible: true, disabled: false },
-  plan: { listable: true, visible: true, disabled: true },
+  license: { listable: true, visible: true, disabled: false },
   unitPrice: { listable: true, visible: true, disabled: false },
-  vatRate: { listable: true, visible: true, disabled: false }
+  vatRate: { listable: true, visible: true, disabled: false },
+  numberOfUsers: { listable: true, visible: true, disabled: true },
+  invoiceNumber: { listable: true, visible: true, disabled: false },
+  plan: { listable: true, visible: true, disabled: false },
 }

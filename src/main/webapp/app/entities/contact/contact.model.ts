@@ -42,18 +42,18 @@ export interface ContactAccess {
 export let CONTACT_USER_ACCESS: ContactAccess;
 
 CONTACT_USER_ACCESS = {
-  city: { listable: true, visible: true, disabled: false },
-  country: { listable: true, visible: true, disabled: false },
-  created: { listable: false, visible: true, disabled: true },
-  customer: { listable: false, visible: true, disabled: true },
-  email: { listable: true, visible: true, disabled: false },
   id: { listable: false, visible: true, disabled: true },
+  type: { listable: true, visible: true, disabled: false },
+  name: { listable: true, visible: true, disabled: false },
   line1: { listable: true, visible: true, disabled: false },
   line2: { listable: true, visible: true, disabled: false },
-  name: { listable: true, visible: true, disabled: false },
-  notes: { listable: false, visible: true, disabled: false },
+  zip: { listable: true, visible: true, disabled: false },
+  city: { listable: true, visible: true, disabled: false },
+  country: { listable: true, visible: true, disabled: false },
+  email: { listable: true, visible: true, disabled: false },
   phone: { listable: true, visible: true, disabled: false },
-  type: { listable: true, visible: true, disabled: false },
+  notes: { listable: false, visible: true, disabled: false },
+  created: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
-  zip: { listable: true, visible: true, disabled: false }
+  customer: { listable: false, visible: true, disabled: false }
 }
