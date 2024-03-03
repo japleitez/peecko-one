@@ -12,9 +12,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IApsDevice } from '../aps-device.model';
+import { APS_DEVICE_ACCESS, ApsDeviceAccess, IApsDevice } from '../aps-device.model';
 import { EntityArrayResponseType, ApsDeviceService } from '../service/aps-device.service';
 import { ApsDeviceDeleteDialogComponent } from '../delete/aps-device-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -30,9 +31,11 @@ import { ApsDeviceDeleteDialogComponent } from '../delete/aps-device-delete-dial
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-  ],
+    NgIf
+  ]
 })
 export class ApsDeviceComponent implements OnInit {
+  ua: ApsDeviceAccess = this.getApsDeviceAccess();
   apsDevices?: IApsDevice[];
   isLoading = false;
 
@@ -149,4 +152,9 @@ export class ApsDeviceComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getApsDeviceAccess(): ApsDeviceAccess {
+    return APS_DEVICE_ACCESS;
+  }
+
 }

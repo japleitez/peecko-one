@@ -11,32 +11,32 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ apsDevice.id }}</span>
           </dd>
-          <dt><span>Username</span></dt>
-          <dd>
+          <dt *ngIf="ua.username.visible"><span>Email</span></dt>
+          <dd *ngIf="ua.username.visible">
             <span>{{ apsDevice.username }}</span>
           </dd>
-          <dt><span>Device Id</span></dt>
-          <dd>
+          <dt *ngIf="ua.deviceId.visible"><span>Device Id</span></dt>
+          <dd *ngIf="ua.deviceId.visible">
             <span>{{ apsDevice.deviceId }}</span>
           </dd>
-          <dt><span>Phone Model</span></dt>
-          <dd>
+          <dt *ngIf="ua.phoneModel.visible"><span>Phone Model</span></dt>
+          <dd *ngIf="ua.phoneModel.visible">
             <span>{{ apsDevice.phoneModel }}</span>
           </dd>
-          <dt><span>Os Version</span></dt>
-          <dd>
+          <dt *ngIf="ua.osVersion.visible"><span>Os Version</span></dt>
+          <dd *ngIf="ua.osVersion.visible">
             <span>{{ apsDevice.osVersion }}</span>
           </dd>
-          <dt><span>Installed On</span></dt>
-          <dd>
+          <dt *ngIf="ua.installedOn.visible"><span>Installed On</span></dt>
+          <dd *ngIf="ua.installedOn.visible">
             <span>{{ apsDevice.installedOn | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Aps User</span></dt>
-          <dd>
+          <dt *ngIf="ua.apsUser.visible"><span>Aps User</span></dt>
+          <dd *ngIf="ua.apsUser.visible">
             @if (apsDevice.apsUser) {
               <div>
                 <a [routerLink]="['/aps-user', apsDevice.apsUser.id, 'view']">{{ apsDevice.apsUser.id }}</a>

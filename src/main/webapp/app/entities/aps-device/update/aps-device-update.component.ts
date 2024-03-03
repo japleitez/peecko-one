@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IApsUser } from 'app/entities/aps-user/aps-user.model';
 import { ApsUserService } from 'app/entities/aps-user/service/aps-user.service';
-import { IApsDevice } from '../aps-device.model';
+import { APS_DEVICE_ACCESS, ApsDeviceAccess, IApsDevice } from '../aps-device.model';
 import { ApsDeviceService } from '../service/aps-device.service';
 import { ApsDeviceFormService, ApsDeviceFormGroup } from './aps-device-form.service';
 
@@ -20,6 +20,7 @@ import { ApsDeviceFormService, ApsDeviceFormGroup } from './aps-device-form.serv
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ApsDeviceUpdateComponent implements OnInit {
+  ua: ApsDeviceAccess = this.getApsDeviceAccess();
   isSaving = false;
   apsDevice: IApsDevice | null = null;
 
@@ -97,4 +98,9 @@ export class ApsDeviceUpdateComponent implements OnInit {
       .pipe(map((apsUsers: IApsUser[]) => this.apsUserService.addApsUserToCollectionIfMissing<IApsUser>(apsUsers, this.apsDevice?.apsUser)))
       .subscribe((apsUsers: IApsUser[]) => (this.apsUsersSharedCollection = apsUsers));
   }
+
+  protected getApsDeviceAccess(): ApsDeviceAccess {
+    return APS_DEVICE_ACCESS;
+  }
+
 }
