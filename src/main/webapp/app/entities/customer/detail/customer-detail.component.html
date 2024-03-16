@@ -11,84 +11,84 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ customer.id }}</span>
           </dd>
-          <dt><span>Code</span></dt>
-          <dd>
+          <dt *ngIf="ua.code.visible"><span>Code</span></dt>
+          <dd *ngIf="ua.code.visible">
             <span>{{ customer.code }}</span>
           </dd>
-          <dt><span>Name</span></dt>
-          <dd>
+          <dt *ngIf="ua.name.visible"><span>Name</span></dt>
+          <dd *ngIf="ua.name.visible">
             <span>{{ customer.name }}</span>
           </dd>
-          <dt><span>Country</span></dt>
-          <dd>
+          <dt *ngIf="ua.country.visible"><span>Country</span></dt>
+          <dd *ngIf="ua.country.visible">
             <span>{{ customer.country }}</span>
           </dd>
-          <dt><span>License</span></dt>
-          <dd>
+          <dt *ngIf="ua.license.visible"><span>License</span></dt>
+          <dd *ngIf="ua.license.visible">
             <span>{{ customer.license }}</span>
           </dd>
-          <dt><span>State</span></dt>
-          <dd>
+          <dt *ngIf="ua.state.visible"><span>State</span></dt>
+          <dd *ngIf="ua.state.visible">
             <span>{{ customer.state }}</span>
           </dd>
-          <dt><span>Close Reason</span></dt>
-          <dd>
+          <dt *ngIf="ua.closeReason.visible"><span>Close Reason</span></dt>
+          <dd *ngIf="ua.closeReason.visible">
             <span>{{ customer.closeReason }}</span>
           </dd>
-          <dt><span>Email Domains</span></dt>
-          <dd>
+          <dt *ngIf="ua.emailDomains.visible"><span>Email Domains</span></dt>
+          <dd *ngIf="ua.emailDomains.visible">
             <span>{{ customer.emailDomains }}</span>
           </dd>
-          <dt><span>Vat Id</span></dt>
-          <dd>
+          <dt *ngIf="ua.vatId.visible"><span>Vat Id</span></dt>
+          <dd *ngIf="ua.vatId.visible">
             <span>{{ customer.vatId }}</span>
           </dd>
-          <dt><span>Bank</span></dt>
-          <dd>
+          <dt *ngIf="ua.bank.visible"><span>Bank</span></dt>
+          <dd *ngIf="ua.bank.visible">
             <span>{{ customer.bank }}</span>
           </dd>
-          <dt><span>Iban</span></dt>
-          <dd>
+          <dt *ngIf="ua.iban.visible"><span>Iban</span></dt>
+          <dd *ngIf="ua.iban.visible">
             <span>{{ customer.iban }}</span>
           </dd>
-          <dt><span>Logo</span></dt>
-          <dd>
+          <dt *ngIf="ua.logo.visible"><span>Logo</span></dt>
+          <dd *ngIf="ua.logo.visible">
             <span>{{ customer.logo }}</span>
           </dd>
-          <dt><span>Notes</span></dt>
-          <dd>
+          <dt *ngIf="ua.notes.visible"><span>Notes</span></dt>
+          <dd *ngIf="ua.notes.visible">
             <span>{{ customer.notes }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ customer.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ customer.updated | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Trialed</span></dt>
-          <dd>
+          <dt *ngIf="ua.trialed.visible"><span>Trialed</span></dt>
+          <dd *ngIf="ua.trialed.visible">
             <span>{{ customer.trialed | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Declined</span></dt>
-          <dd>
+          <dt *ngIf="ua.declined.visible"><span>Declined</span></dt>
+          <dd *ngIf="ua.declined.visible">
             <span>{{ customer.declined | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Activated</span></dt>
-          <dd>
+          <dt *ngIf="ua.activated.visible"><span>Activated</span></dt>
+          <dd *ngIf="ua.activated.visible">
             <span>{{ customer.activated | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Closed</span></dt>
-          <dd>
+          <dt *ngIf="ua.closed.visible"><span>Closed</span></dt>
+          <dd *ngIf="ua.closed.visible">
             <span>{{ customer.closed | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Agency</span></dt>
-          <dd>
+          <dt *ngIf="ua.agency.visible"><span>Agency</span></dt>
+          <dd *ngIf="ua.agency.visible">
             @if (customer.agency) {
               <div>
                 <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.id }}</a>

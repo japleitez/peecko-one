@@ -11,23 +11,25 @@ import { ICustomer } from 'app/entities/customer/customer.model';
 import { CustomerService } from 'app/entities/customer/service/customer.service';
 import { ContactType } from 'app/entities/enumerations/contact-type.model';
 import { ContactService } from '../service/contact.service';
-import { IContact } from '../contact.model';
+import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
 import { ContactFormService, ContactFormGroup } from './contact-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-contact-update',
   templateUrl: './contact-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ContactUpdateComponent implements OnInit {
+  ua: ContactAccess = this.getContactUserAccess();
   isSaving = false;
   contact: IContact | null = null;
   contactTypeValues = Object.keys(ContactType);
 
   customersSharedCollection: ICustomer[] = [];
 
-  editForm: ContactFormGroup = this.contactFormService.createContactFormGroup();
+  editForm: ContactFormGroup = this.contactFormService.createContactFormGroup(undefined, this.getContactUserAccess());
 
   constructor(
     protected contactService: ContactService,
@@ -102,5 +104,9 @@ export class ContactUpdateComponent implements OnInit {
         ),
       )
       .subscribe((customers: ICustomer[]) => (this.customersSharedCollection = customers));
+  }
+
+  protected getContactUserAccess(): ContactAccess {
+    return CONTACT_USER_ACCESS;
   }
 }

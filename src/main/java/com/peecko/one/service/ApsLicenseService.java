@@ -5,7 +5,6 @@ import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
 import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.domain.enumeration.PricingType;
-import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.utils.UUIDUtils;
@@ -27,7 +26,7 @@ public class ApsLicenseService {
         this.customerRepository = customerRepository;
     }
 
-    public Optional<ApsPlan> activateApsPlanForTrial(Long customerId, LocalDate trialStarts, LocalDate trialEnds) {
+    public Optional<ApsPlan> activateApsPlanForTrial(Long customerId, LocalDate starts, LocalDate ends) {
         return Optional.ofNullable(customerRepository
                 .findById(customerId)
                 .map(customer -> {
@@ -37,7 +36,7 @@ public class ApsLicenseService {
                     return customer;
                 })
                 .map(customerRepository::save)
-                .map(customer -> createApsPlanForTrial(customer, trialStarts, trialEnds))
+                .map(customer -> createApsPlanForTrial(customer, starts, ends))
                 .orElseThrow(() -> new RuntimeException("Failed to activate trial plan for customer " + customerId)));
     }
 
@@ -45,14 +44,12 @@ public class ApsLicenseService {
         ApsPlan apsPlan = new ApsPlan();
         apsPlan.setCustomer(Customer.of(customer.getId()));
         apsPlan.setLicense(customer.getLicense());
-        apsPlan.setPricing(PricingType.FREE_TRIAL);
+        apsPlan.setPricing(PricingType.FIXED);
         apsPlan.setState(PlanState.TRIAL);
         apsPlan.setUnitPrice(0.0);
         apsPlan.setCreated(Instant.now());
         apsPlan.setLicense(customer.getLicense());
         apsPlan.setContract("NC");
-        apsPlan.setTrialStarts(trialStarts);
-        apsPlan.setTrialEnds(trialEnds);
         apsPlan.setUpdated(null);
         apsPlanRepository.save(apsPlan);
         return apsPlan;

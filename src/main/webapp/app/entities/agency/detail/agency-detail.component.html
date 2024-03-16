@@ -11,88 +11,88 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ agency.id }}</span>
           </dd>
-          <dt><span>Code</span></dt>
-          <dd>
+          <dt *ngIf="ua.code.visible"><span>Code</span></dt>
+          <dd  *ngIf="ua.code.visible">
             <span>{{ agency.code }}</span>
           </dd>
-          <dt><span>Name</span></dt>
-          <dd>
+          <dt *ngIf="ua.name.visible"><span>Name</span></dt>
+          <dd *ngIf="ua.name.visible">
             <span>{{ agency.name }}</span>
           </dd>
-          <dt><span>Line 1</span></dt>
-          <dd>
+          <dt *ngIf="ua.line1.visible"><span>Line 1</span></dt>
+          <dd *ngIf="ua.line1.visible">
             <span>{{ agency.line1 }}</span>
           </dd>
-          <dt><span>Line 2</span></dt>
-          <dd>
+          <dt *ngIf="ua.line2.visible"><span>Line 2</span></dt>
+          <dd *ngIf="ua.line2.visible">
             <span>{{ agency.line2 }}</span>
           </dd>
-          <dt><span>Zip</span></dt>
-          <dd>
+          <dt *ngIf="ua.zip.visible"><span>Zip</span></dt>
+          <dd *ngIf="ua.zip.visible">
             <span>{{ agency.zip }}</span>
           </dd>
-          <dt><span>City</span></dt>
-          <dd>
+          <dt *ngIf="ua.city.visible"><span>City</span></dt>
+          <dd *ngIf="ua.city.visible">
             <span>{{ agency.city }}</span>
           </dd>
-          <dt><span>Country</span></dt>
-          <dd>
+          <dt *ngIf="ua.country.visible"><span>Country</span></dt>
+          <dd *ngIf="ua.country.visible">
             <span>{{ agency.country }}</span>
           </dd>
-          <dt><span>Language</span></dt>
-          <dd>
+          <dt *ngIf="ua.language.visible"><span>Language</span></dt>
+          <dd *ngIf="ua.language.visible">
             <span>{{ agency.language }}</span>
           </dd>
-          <dt><span>Email</span></dt>
-          <dd>
+          <dt *ngIf="ua.email.visible"><span>Email</span></dt>
+          <dd *ngIf="ua.email.visible">
             <span>{{ agency.email }}</span>
           </dd>
-          <dt><span>Phone</span></dt>
-          <dd>
+          <dt *ngIf="ua.phone.visible"><span>Phone</span></dt>
+          <dd *ngIf="ua.phone.visible">
             <span>{{ agency.phone }}</span>
           </dd>
-          <dt><span>Billing Email</span></dt>
-          <dd>
+          <dt *ngIf="ua.billingEmail.visible"><span>Billing Email</span></dt>
+          <dd *ngIf="ua.billingEmail.visible">
             <span>{{ agency.billingEmail }}</span>
           </dd>
-          <dt><span>Billing Phone</span></dt>
-          <dd>
+          <dt *ngIf="ua.billingPhone.visible"><span>Billing Phone</span></dt>
+          <dd *ngIf="ua.billingPhone.visible">
             <span>{{ agency.billingPhone }}</span>
           </dd>
-          <dt><span>Bank</span></dt>
-          <dd>
+          <dt *ngIf="ua.bank.visible"><span>Bank</span></dt>
+          <dd *ngIf="ua.bank.visible">
             <span>{{ agency.bank }}</span>
           </dd>
-          <dt><span>Iban</span></dt>
-          <dd>
+          <dt *ngIf="ua.iban.visible"><span>Iban</span></dt>
+          <dd *ngIf="ua.iban.visible">
             <span>{{ agency.iban }}</span>
           </dd>
-          <dt><span>Rcs</span></dt>
-          <dd>
+          <dt *ngIf="ua.rcs.visible"><span>Rcs</span></dt>
+          <dd *ngIf="ua.rcs.visible">
             <span>{{ agency.rcs }}</span>
           </dd>
-          <dt><span>Vat Id</span></dt>
-          <dd>
+          <dt *ngIf="ua.vatId.visible"><span>Vat Id</span></dt>
+          <dd *ngIf="ua.vatId.visible">
             <span>{{ agency.vatId }}</span>
           </dd>
-          <dt><span>Vat Rate</span></dt>
-          <dd>
+          <dt *ngIf="ua.vatRate.visible"><span>Vat Rate</span></dt>
+          <dd *ngIf="ua.vatRate.visible">
             <span>{{ agency.vatRate }}</span>
           </dd>
-          <dt><span>Notes</span></dt>
-          <dd>
+          <dt *ngIf="ua.notes.visible"><span>Notes</span></dt>
+          <dd *ngIf="ua.notes.visible">
             <span>{{ agency.notes }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ agency.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ agency.updated | formatMediumDatetime }}</span>
           </dd>
         </dl>

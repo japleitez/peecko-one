@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/aps-device/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Aps Device</span>
+        <span>New Aps Device</span>
       </button>
     </div>
   </h2>
@@ -35,49 +35,49 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="username">
+            <th scope="col" jhiSortBy="username" *ngIf="ua.username.listable">
               <div class="d-flex">
-                <span>Username</span>
+                <span>Email</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="deviceId">
+            <th scope="col" jhiSortBy="deviceId" *ngIf="ua.deviceId.listable">
               <div class="d-flex">
                 <span>Device Id</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="phoneModel">
+            <th scope="col" jhiSortBy="phoneModel" *ngIf="ua.phoneModel.listable">
               <div class="d-flex">
                 <span>Phone Model</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="osVersion">
+            <th scope="col" jhiSortBy="osVersion" *ngIf="ua.osVersion.listable">
               <div class="d-flex">
                 <span>Os Version</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="installedOn">
+            <th scope="col" jhiSortBy="installedOn" *ngIf="ua.installedOn.listable">
               <div class="d-flex">
                 <span>Installed On</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="apsUser.id">
+            <th scope="col" jhiSortBy="apsUser.id" *ngIf="ua.apsUser.listable">
               <div class="d-flex">
                 <span>Aps User</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -89,15 +89,15 @@
         <tbody>
           @for (apsDevice of apsDevices; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-device', apsDevice.id, 'view']">{{ apsDevice.id }}</a>
               </td>
-              <td>{{ apsDevice.username }}</td>
-              <td>{{ apsDevice.deviceId }}</td>
-              <td>{{ apsDevice.phoneModel }}</td>
-              <td>{{ apsDevice.osVersion }}</td>
-              <td>{{ apsDevice.installedOn | formatMediumDatetime }}</td>
-              <td>
+              <td *ngIf="ua.username.listable">{{ apsDevice.username }}</td>
+              <td *ngIf="ua.deviceId.listable">{{ apsDevice.deviceId }}</td>
+              <td *ngIf="ua.phoneModel.listable">{{ apsDevice.phoneModel }}</td>
+              <td *ngIf="ua.osVersion.listable">{{ apsDevice.osVersion }}</td>
+              <td *ngIf="ua.installedOn.listable">{{ apsDevice.installedOn | formatMediumDatetime }}</td>
+              <td *ngIf="ua.apsUser.listable">
                 @if (apsDevice.apsUser) {
                   <div>
                     <a [routerLink]="['/aps-user', apsDevice.apsUser.id, 'view']">{{ apsDevice.apsUser.id }}</a>
@@ -108,17 +108,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/aps-device', apsDevice.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/aps-device', apsDevice.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(apsDevice)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

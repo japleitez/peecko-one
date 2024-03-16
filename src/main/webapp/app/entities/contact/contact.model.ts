@@ -1,6 +1,7 @@
 import dayjs from 'dayjs/esm';
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { ContactType } from 'app/entities/enumerations/contact-type.model';
+import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface IContact {
   id: number;
@@ -20,3 +21,39 @@ export interface IContact {
 }
 
 export type NewContact = Omit<IContact, 'id'> & { id: null };
+
+export interface ContactAccess {
+  id: FieldAccess;
+  type: FieldAccess;
+  name: FieldAccess;
+  line1: FieldAccess;
+  line2: FieldAccess;
+  zip: FieldAccess;
+  city: FieldAccess;
+  country: FieldAccess;
+  email: FieldAccess;
+  phone: FieldAccess;
+  notes: FieldAccess;
+  created: FieldAccess;
+  updated: FieldAccess;
+  customer: FieldAccess;
+}
+
+export let CONTACT_USER_ACCESS: ContactAccess;
+
+CONTACT_USER_ACCESS = {
+  id: { listable: false, visible: true, disabled: true },
+  type: { listable: true, visible: true, disabled: false },
+  name: { listable: true, visible: true, disabled: false },
+  line1: { listable: true, visible: true, disabled: false },
+  line2: { listable: true, visible: true, disabled: false },
+  zip: { listable: true, visible: true, disabled: false },
+  city: { listable: true, visible: true, disabled: false },
+  country: { listable: true, visible: true, disabled: false },
+  email: { listable: true, visible: true, disabled: false },
+  phone: { listable: true, visible: true, disabled: false },
+  notes: { listable: false, visible: true, disabled: false },
+  created: { listable: false, visible: true, disabled: true },
+  updated: { listable: false, visible: true, disabled: true },
+  customer: { listable: false, visible: true, disabled: false }
+}

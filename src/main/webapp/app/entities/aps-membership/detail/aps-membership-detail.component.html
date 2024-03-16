@@ -11,24 +11,24 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ apsMembership.id }}</span>
           </dd>
-          <dt><span>Period</span></dt>
-          <dd>
+          <dt *ngIf="ua.period.visible"><span>Period</span></dt>
+          <dd *ngIf="ua.period.visible">
             <span>{{ apsMembership.period }}</span>
           </dd>
-          <dt><span>License</span></dt>
-          <dd>
+          <dt *ngIf="ua.license.visible"><span>License</span></dt>
+          <dd *ngIf="ua.license.visible">
             <span>{{ apsMembership.license }}</span>
           </dd>
-          <dt><span>Username</span></dt>
-          <dd>
+          <dt *ngIf="ua.username.visible"><span>Username</span></dt>
+          <dd *ngIf="ua.username.visible">
             <span>{{ apsMembership.username }}</span>
           </dd>
-          <dt><span>Aps Order</span></dt>
-          <dd>
+          <dt *ngIf="ua.apsOrder.visible"><span>Aps Order</span></dt>
+          <dd *ngIf="ua.apsOrder.visible">
             @if (apsMembership.apsOrder) {
               <div>
                 <a [routerLink]="['/aps-order', apsMembership.apsOrder.id, 'view']">{{ apsMembership.apsOrder.id }}</a>

@@ -3,7 +3,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { IApsUser } from '../aps-user.model';
+import { APS_USER_ACCESS, ApsUserAccess, IApsUser } from '../aps-user.model';
+import { CUSTOMER_USER_ACCESS } from '../../customer/customer.model';
 
 @Component({
   standalone: true,
@@ -12,6 +13,7 @@ import { IApsUser } from '../aps-user.model';
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class ApsUserDetailComponent {
+  ua: ApsUserAccess = APS_USER_ACCESS;
   @Input() apsUser: IApsUser | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}

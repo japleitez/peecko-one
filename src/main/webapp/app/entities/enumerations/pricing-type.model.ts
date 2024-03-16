@@ -1,5 +1,5 @@
 export enum PricingType {
-  FREE_TRIAL = 'FREE_TRIAL',
+  TRIAL = 'TRIAL',
   FIXED = 'FIXED',
   BRACKET = 'BRACKET',
 }

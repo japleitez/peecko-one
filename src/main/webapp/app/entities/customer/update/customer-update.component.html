@@ -13,7 +13,7 @@
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
           @if (editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.name.visible">
           <label class="form-label" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
           @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
@@ -37,7 +37,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.country.visible">
           <label class="form-label" for="field_country">Country</label>
           <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
           @if (editForm.get('country')!.invalid && (editForm.get('country')!.dirty || editForm.get('country')!.touched)) {
@@ -49,7 +49,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.license.visible">
           <label class="form-label" for="field_license">License</label>
           <input
             type="text"
@@ -61,7 +61,7 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.state.visible">
           <label class="form-label" for="field_state">State</label>
           <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
             <option [ngValue]="null"></option>
@@ -78,7 +78,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.closeReason.visible">
           <label class="form-label" for="field_closeReason">Close Reason</label>
           <input
             type="text"
@@ -90,7 +90,7 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.emailDomains.visible">
           <label class="form-label" for="field_emailDomains">Email Domains</label>
           <input
             type="text"
@@ -102,32 +102,32 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.vatId.visible">
           <label class="form-label" for="field_vatId">Vat Id</label>
           <input type="text" class="form-control" name="vatId" id="field_vatId" data-cy="vatId" formControlName="vatId" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.bank.visible">
           <label class="form-label" for="field_bank">Bank</label>
           <input type="text" class="form-control" name="bank" id="field_bank" data-cy="bank" formControlName="bank" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.iban.visible">
           <label class="form-label" for="field_iban">Iban</label>
           <input type="text" class="form-control" name="iban" id="field_iban" data-cy="iban" formControlName="iban" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.logo.visible">
           <label class="form-label" for="field_logo">Logo</label>
           <input type="text" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.notes.visible">
           <label class="form-label" for="field_notes">Notes</label>
           <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">
             <input
@@ -142,7 +142,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.updated.visible">
           <label class="form-label" for="field_updated">Updated</label>
           <div class="d-flex">
             <input
@@ -157,7 +157,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.trialed.visible">
           <label class="form-label" for="field_trialed">Trialed</label>
           <div class="d-flex">
             <input
@@ -172,7 +172,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.declined.visible">
           <label class="form-label" for="field_declined">Declined</label>
           <div class="d-flex">
             <input
@@ -187,7 +187,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.activated.visible">
           <label class="form-label" for="field_activated">Activated</label>
           <div class="d-flex">
             <input
@@ -202,7 +202,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.closed.visible">
           <label class="form-label" for="field_closed">Closed</label>
           <div class="d-flex">
             <input
@@ -217,7 +217,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.agency.visible">
           <label class="form-label" for="field_agency">Agency</label>
           <select
             class="form-control"

@@ -9,9 +9,10 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IApsPlan } from '../aps-plan.model';
+import { APS_PLAN_USER_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
 import { EntityArrayResponseType, ApsPlanService } from '../service/aps-plan.service';
 import { ApsPlanDeleteDialogComponent } from '../delete/aps-plan-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -26,9 +27,11 @@ import { ApsPlanDeleteDialogComponent } from '../delete/aps-plan-delete-dialog.c
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-  ],
+    NgIf
+  ]
 })
 export class ApsPlanComponent implements OnInit {
+  ua: ApsPlanAccess = this.getApsPlanUserAccess();
   apsPlans?: IApsPlan[];
   isLoading = false;
 
@@ -130,4 +133,9 @@ export class ApsPlanComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getApsPlanUserAccess(): ApsPlanAccess {
+    return APS_PLAN_USER_ACCESS;
+  }
+
 }

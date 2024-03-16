@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
@@ -18,7 +18,7 @@ import {
 } from '@angular/forms';
 import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IApsOrder, IApsOrderInfo } from '../aps-order.model';
+import { APS_ORDER_USER_ACCESS, ApsOrderAccess, IApsOrder, IApsOrderInfo } from '../aps-order.model';
 import { ApsOrderService, EntityInfoArrayResponseType } from '../service/aps-order.service';
 import { ApsOrderDeleteDialogComponent } from '../delete/aps-order-delete-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -67,10 +67,13 @@ function searchFormValidator(): ValidatorFn {
     MatAutocompleteModule,
     ReactiveFormsModule,
     AsyncPipe,
-    CustomerSelectorComponent
+    CustomerSelectorComponent,
+    NgIf
   ]
 })
 export class ApsOrderComponent implements OnInit {
+  ua: ApsOrderAccess = this.getPlanOrderAccess();
+
   // search form controls
   searchForm!: FormGroup;
 
@@ -214,7 +217,7 @@ export class ApsOrderComponent implements OnInit {
     if (executeBatch) {
       return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else {
-      return this.apsOrderService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+      return this.apsOrderService.queryInfo(queryObject).pipe(tap(() => (this.isLoading = false)));
     }
   }
 
@@ -236,6 +239,10 @@ export class ApsOrderComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getPlanOrderAccess(): ApsOrderAccess {
+    return APS_ORDER_USER_ACCESS;
   }
 
 }

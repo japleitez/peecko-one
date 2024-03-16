@@ -9,9 +9,10 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IContact } from '../contact.model';
+import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
 import { EntityArrayResponseType, ContactService } from '../service/contact.service';
 import { ContactDeleteDialogComponent } from '../delete/contact-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -26,9 +27,11 @@ import { ContactDeleteDialogComponent } from '../delete/contact-delete-dialog.co
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-  ],
+    NgIf
+  ]
 })
 export class ContactComponent implements OnInit {
+  ua: ContactAccess = this.getContactUserAccess();
   contacts?: IContact[];
   isLoading = false;
 
@@ -130,4 +133,9 @@ export class ContactComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getContactUserAccess(): ContactAccess {
+    return CONTACT_USER_ACCESS;
+}
+
 }

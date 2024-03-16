@@ -23,8 +23,6 @@ export class ApsPricingUpdateComponent implements OnInit {
   isSaving = false;
   apsPricing: IApsPricing | null = null;
 
-  agenciesSharedCollection: IAgency[] = [];
-
   editForm: ApsPricingFormGroup = this.apsPricingFormService.createApsPricingFormGroup();
 
   constructor(
@@ -42,8 +40,6 @@ export class ApsPricingUpdateComponent implements OnInit {
       if (apsPricing) {
         this.updateForm(apsPricing);
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -83,18 +79,6 @@ export class ApsPricingUpdateComponent implements OnInit {
   protected updateForm(apsPricing: IApsPricing): void {
     this.apsPricing = apsPricing;
     this.apsPricingFormService.resetForm(this.editForm, apsPricing);
-
-    this.agenciesSharedCollection = this.agencyService.addAgencyToCollectionIfMissing<IAgency>(
-      this.agenciesSharedCollection,
-      apsPricing.agency,
-    );
   }
 
-  protected loadRelationshipsOptions(): void {
-    this.agencyService
-      .query()
-      .pipe(map((res: HttpResponse<IAgency[]>) => res.body ?? []))
-      .pipe(map((agencies: IAgency[]) => this.agencyService.addAgencyToCollectionIfMissing<IAgency>(agencies, this.apsPricing?.agency)))
-      .subscribe((agencies: IAgency[]) => (this.agenciesSharedCollection = agencies));
-  }
 }

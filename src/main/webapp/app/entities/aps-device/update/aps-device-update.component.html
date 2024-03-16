@@ -13,8 +13,8 @@
           </div>
         }
 
-        <div class="mb-3">
-          <label class="form-label" for="field_username">Username</label>
+        <div class="mb-3" *ngIf="ua.username.visible">
+          <label class="form-label" for="field_username">Email</label>
           <input type="text" class="form-control" name="username" id="field_username" data-cy="username" formControlName="username" />
           @if (editForm.get('username')!.invalid && (editForm.get('username')!.dirty || editForm.get('username')!.touched)) {
             <div>
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.deviceId.visible">
           <label class="form-label" for="field_deviceId">Device Id</label>
           <input type="text" class="form-control" name="deviceId" id="field_deviceId" data-cy="deviceId" formControlName="deviceId" />
           @if (editForm.get('deviceId')!.invalid && (editForm.get('deviceId')!.dirty || editForm.get('deviceId')!.touched)) {
@@ -37,7 +37,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.phoneModel.visible">
           <label class="form-label" for="field_phoneModel">Phone Model</label>
           <input
             type="text"
@@ -49,12 +49,12 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.osVersion.visible">
           <label class="form-label" for="field_osVersion">Os Version</label>
           <input type="text" class="form-control" name="osVersion" id="field_osVersion" data-cy="osVersion" formControlName="osVersion" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.installedOn.visible">
           <label class="form-label" for="field_installedOn">Installed On</label>
           <div class="d-flex">
             <input
@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.apsUser.visible">
           <label class="form-label" for="field_apsUser">Aps User</label>
           <select
             class="form-control"

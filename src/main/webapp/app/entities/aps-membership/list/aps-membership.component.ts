@@ -9,9 +9,10 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IApsMembership } from '../aps-membership.model';
+import { APS_MEMBERSHIP_USER_ACCESS, ApsMembershipAccess, IApsMembership } from '../aps-membership.model';
 import { EntityArrayResponseType, ApsMembershipService } from '../service/aps-membership.service';
 import { ApsMembershipDeleteDialogComponent } from '../delete/aps-membership-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -26,9 +27,11 @@ import { ApsMembershipDeleteDialogComponent } from '../delete/aps-membership-del
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-  ],
+    NgIf
+  ]
 })
 export class ApsMembershipComponent implements OnInit {
+  ua: ApsMembershipAccess = this.getApsMembershipAccess();
   apsMemberships?: IApsMembership[];
   isLoading = false;
 
@@ -130,4 +133,9 @@ export class ApsMembershipComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getApsMembershipAccess(): ApsMembershipAccess {
+    return APS_MEMBERSHIP_USER_ACCESS;
+  }
+
 }

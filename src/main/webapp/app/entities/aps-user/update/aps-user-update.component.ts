@@ -8,7 +8,7 @@ import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Language } from 'app/entities/enumerations/language.model';
-import { IApsUser } from '../aps-user.model';
+import { APS_USER_ACCESS, ApsUserAccess, IApsUser } from '../aps-user.model';
 import { ApsUserService } from '../service/aps-user.service';
 import { ApsUserFormService, ApsUserFormGroup } from './aps-user-form.service';
 
@@ -19,11 +19,12 @@ import { ApsUserFormService, ApsUserFormGroup } from './aps-user-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ApsUserUpdateComponent implements OnInit {
+  ua: ApsUserAccess = this.getApsUserAccess();
   isSaving = false;
   apsUser: IApsUser | null = null;
   languageValues = Object.keys(Language);
 
-  editForm: ApsUserFormGroup = this.apsUserFormService.createApsUserFormGroup();
+  editForm: ApsUserFormGroup = this.apsUserFormService.createApsUserFormGroup(undefined, this.getApsUserAccess());
 
   constructor(
     protected apsUserService: ApsUserService,
@@ -77,4 +78,9 @@ export class ApsUserUpdateComponent implements OnInit {
     this.apsUser = apsUser;
     this.apsUserFormService.resetForm(this.editForm, apsUser);
   }
+
+  protected getApsUserAccess(): ApsUserAccess {
+    return APS_USER_ACCESS;
+  }
+
 }

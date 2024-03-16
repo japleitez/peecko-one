@@ -9,23 +9,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IApsOrder } from 'app/entities/aps-order/aps-order.model';
 import { ApsOrderService } from 'app/entities/aps-order/service/aps-order.service';
-import { IApsMembership } from '../aps-membership.model';
+import { APS_MEMBERSHIP_USER_ACCESS, ApsMembershipAccess, IApsMembership } from '../aps-membership.model';
 import { ApsMembershipService } from '../service/aps-membership.service';
 import { ApsMembershipFormService, ApsMembershipFormGroup } from './aps-membership-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-aps-membership-update',
   templateUrl: './aps-membership-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ApsMembershipUpdateComponent implements OnInit {
+  ua: ApsMembershipAccess = this.getApsMembershipAccess();
   isSaving = false;
   apsMembership: IApsMembership | null = null;
 
   apsOrdersSharedCollection: IApsOrder[] = [];
 
-  editForm: ApsMembershipFormGroup = this.apsMembershipFormService.createApsMembershipFormGroup();
+  editForm: ApsMembershipFormGroup = this.apsMembershipFormService.createApsMembershipFormGroup(undefined, this.getApsMembershipAccess());
 
   constructor(
     protected apsMembershipService: ApsMembershipService,
@@ -101,4 +103,9 @@ export class ApsMembershipUpdateComponent implements OnInit {
       )
       .subscribe((apsOrders: IApsOrder[]) => (this.apsOrdersSharedCollection = apsOrders));
   }
+
+  protected getApsMembershipAccess(): ApsMembershipAccess {
+    return APS_MEMBERSHIP_USER_ACCESS;
+  }
+
 }

@@ -175,7 +175,18 @@ public class ApsOrderResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrders in body.
      */
     @GetMapping("")
-    public List<ApsOrderInfo> getApsOrders(
+    public List<ApsOrder> getAllApsOrders() {
+        log.debug("REST request to get all InvoiceItems");
+        return apsOrderRepository.findAll();
+    }
+
+    /**
+     * {@code GET  /aps-orders/filtered} : get the apsOrdersInfo filtered by customer and periods.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrderInfos in body.
+     */
+    @GetMapping("/info")
+    public List<ApsOrderInfo> getFilteredApsOrders(
         @RequestParam(required = false) Long customerId,
         @RequestParam(required = false) String startYearMonth,
         @RequestParam(required = false) String endYearMonth) {

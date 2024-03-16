@@ -11,60 +11,60 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ contact.id }}</span>
           </dd>
-          <dt><span>Type</span></dt>
-          <dd>
+          <dt *ngIf="ua.type.visible"><span>Type</span></dt>
+          <dd *ngIf="ua.type.visible">
             <span>{{ contact.type }}</span>
           </dd>
-          <dt><span>Name</span></dt>
-          <dd>
+          <dt *ngIf="ua.name.visible"><span>Name</span></dt>
+          <dd *ngIf="ua.name.visible">
             <span>{{ contact.name }}</span>
           </dd>
-          <dt><span>Line 1</span></dt>
-          <dd>
+          <dt *ngIf="ua.line1.visible"><span>Line 1</span></dt>
+          <dd *ngIf="ua.line1.visible">
             <span>{{ contact.line1 }}</span>
           </dd>
-          <dt><span>Line 2</span></dt>
-          <dd>
+          <dt *ngIf="ua.line2.visible"><span>Line 2</span></dt>
+          <dd *ngIf="ua.line2.visible">
             <span>{{ contact.line2 }}</span>
           </dd>
-          <dt><span>Zip</span></dt>
-          <dd>
+          <dt *ngIf="ua.zip.visible"><span>Zip</span></dt>
+          <dd *ngIf="ua.zip.visible">
             <span>{{ contact.zip }}</span>
           </dd>
-          <dt><span>City</span></dt>
-          <dd>
+          <dt *ngIf="ua.city.visible"><span>City</span></dt>
+          <dd *ngIf="ua.city.visible">
             <span>{{ contact.city }}</span>
           </dd>
-          <dt><span>Country</span></dt>
-          <dd>
+          <dt *ngIf="ua.country.visible"><span>Country</span></dt>
+          <dd *ngIf="ua.country.visible">
             <span>{{ contact.country }}</span>
           </dd>
-          <dt><span>Email</span></dt>
-          <dd>
+          <dt *ngIf="ua.email.visible"><span>Email</span></dt>
+          <dd *ngIf="ua.email.visible">
             <span>{{ contact.email }}</span>
           </dd>
-          <dt><span>Phone</span></dt>
-          <dd>
+          <dt *ngIf="ua.phone.visible"><span>Phone</span></dt>
+          <dd *ngIf="ua.phone.visible">
             <span>{{ contact.phone }}</span>
           </dd>
-          <dt><span>Notes</span></dt>
-          <dd>
+          <dt *ngIf="ua.notes.visible"><span>Notes</span></dt>
+          <dd *ngIf="ua.notes.visible">
             <span>{{ contact.notes }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ contact.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ contact.updated | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Customer</span></dt>
-          <dd>
+          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
+          <dd *ngIf="ua.customer.visible">
             @if (contact.customer) {
               <div>
                 <a [routerLink]="['/customer', contact.customer.id, 'view']">{{ contact.customer.id }}</a>

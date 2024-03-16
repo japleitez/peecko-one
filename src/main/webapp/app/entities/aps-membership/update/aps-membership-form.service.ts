@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IApsMembership, NewApsMembership } from '../aps-membership.model';
+import {
+  APS_MEMBERSHIP_USER_ACCESS,
+  ApsMembershipAccess,
+  IApsMembership,
+  NewApsMembership
+} from '../aps-membership.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -28,7 +33,7 @@ export type ApsMembershipFormGroup = FormGroup<ApsMembershipFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsMembershipFormService {
-  createApsMembershipFormGroup(apsMembership: ApsMembershipFormGroupInput = { id: null }): ApsMembershipFormGroup {
+  createApsMembershipFormGroup(apsMembership: ApsMembershipFormGroupInput = { id: null }, ua: ApsMembershipAccess = APS_MEMBERSHIP_USER_ACCESS): ApsMembershipFormGroup {
     const apsMembershipRawValue = {
       ...this.getFormDefaults(),
       ...apsMembership,
@@ -41,16 +46,16 @@ export class ApsMembershipFormService {
           validators: [Validators.required],
         },
       ),
-      period: new FormControl(apsMembershipRawValue.period, {
-        validators: [Validators.required],
+      period: new FormControl({ value: apsMembershipRawValue.period, disabled: ua.period.disabled },
+        { validators: [Validators.required],
       }),
-      license: new FormControl(apsMembershipRawValue.license, {
-        validators: [Validators.required],
+      license: new FormControl({ value: apsMembershipRawValue.license, disabled: ua.license.disabled },
+        { validators: [Validators.required],
       }),
-      username: new FormControl(apsMembershipRawValue.username, {
-        validators: [Validators.required],
+      username: new FormControl({ value: apsMembershipRawValue.username, disabled: ua.username.disabled },
+        { validators: [Validators.required],
       }),
-      apsOrder: new FormControl(apsMembershipRawValue.apsOrder),
+      apsOrder: new FormControl({ value: apsMembershipRawValue.apsOrder, disabled: ua.apsOrder.disabled }),
     });
   }
 

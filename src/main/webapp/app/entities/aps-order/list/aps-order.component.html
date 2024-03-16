@@ -55,7 +55,7 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
@@ -89,42 +89,42 @@
               </div>
             </th>
             <!-- order info -->
-            <th scope="col" jhiSortBy="period">
+            <th scope="col" jhiSortBy="period" *ngIf="ua.period.listable">
               <div class="d-flex">
                 <span>Period</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="license">
+            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
               <div class="d-flex">
                 <span>License</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="unitPrice">
+            <th scope="col" jhiSortBy="unitPrice" *ngIf="ua.unitPrice.listable">
               <div class="d-flex">
                 <span>Unit Price</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vatRate">
+            <th scope="col" jhiSortBy="vatRate"  *ngIf="ua.vatRate.listable">
               <div class="d-flex">
                 <span>VAT Rate</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="numberOfUsers">
+            <th scope="col" jhiSortBy="numberOfUsers" *ngIf="ua.numberOfUsers.listable">
               <div class="d-flex">
                 <span>Users</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="invoiceNumber">
+            <th scope="col" jhiSortBy="invoiceNumber" *ngIf="ua.invoiceNumber.listable">
               <div class="d-flex">
                 <span>Invoice</span>
 
@@ -137,7 +137,7 @@
         <tbody>
           @for (apsOrder of apsOrders; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-order', apsOrder.id, 'view']">{{ apsOrder.id }}</a>
               </td>
               <!-- reference info -->
@@ -153,27 +153,24 @@
                 }
               </td>
               <!-- order info -->
-              <td>{{ apsOrder.period }}</td>
-              <td>{{ apsOrder.license }}</td>
-              <td>{{ apsOrder.unitPrice }}</td>
-              <td>{{ apsOrder.vatRate }}</td>
-              <td>{{ apsOrder.numberOfUsers }}</td>
-              <td>{{ apsOrder.invoiceNumber }}</td>
+              <td *ngIf="ua.period.listable">{{ apsOrder.period }}</td>
+              <td *ngIf="ua.license.listable">{{ apsOrder.license }}</td>
+              <td *ngIf="ua.unitPrice.listable">{{ apsOrder.unitPrice }}</td>
+              <td *ngIf="ua.vatRate.listable">{{ apsOrder.vatRate }}</td>
+              <td *ngIf="ua.numberOfUsers.listable">{{ apsOrder.numberOfUsers }}</td>
+              <td *ngIf="ua.invoiceNumber.listable">{{ apsOrder.invoiceNumber }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/aps-order', apsOrder.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/aps-order', apsOrder.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(apsOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

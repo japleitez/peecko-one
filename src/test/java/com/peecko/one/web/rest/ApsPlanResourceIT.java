@@ -102,8 +102,6 @@ class ApsPlanResourceIT {
             .license(DEFAULT_LICENSE)
             .starts(DEFAULT_STARTS)
             .ends(DEFAULT_ENDS)
-            .trialStarts(DEFAULT_TRIAL_STARTS)
-            .trialEnds(DEFAULT_TRIAL_ENDS)
             .unitPrice(DEFAULT_UNIT_PRICE)
             .notes(DEFAULT_NOTES)
             .created(DEFAULT_CREATED)
@@ -125,8 +123,6 @@ class ApsPlanResourceIT {
             .license(UPDATED_LICENSE)
             .starts(UPDATED_STARTS)
             .ends(UPDATED_ENDS)
-            .trialStarts(UPDATED_TRIAL_STARTS)
-            .trialEnds(UPDATED_TRIAL_ENDS)
             .unitPrice(UPDATED_UNIT_PRICE)
             .notes(UPDATED_NOTES)
             .created(UPDATED_CREATED)
@@ -158,8 +154,6 @@ class ApsPlanResourceIT {
         assertThat(testApsPlan.getLicense()).isEqualTo(DEFAULT_LICENSE);
         assertThat(testApsPlan.getStarts()).isEqualTo(DEFAULT_STARTS);
         assertThat(testApsPlan.getEnds()).isEqualTo(DEFAULT_ENDS);
-        assertThat(testApsPlan.getTrialStarts()).isEqualTo(DEFAULT_TRIAL_STARTS);
-        assertThat(testApsPlan.getTrialEnds()).isEqualTo(DEFAULT_TRIAL_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(DEFAULT_NOTES);
         assertThat(testApsPlan.getCreated()).isEqualTo(DEFAULT_CREATED);
@@ -330,8 +324,6 @@ class ApsPlanResourceIT {
             .license(UPDATED_LICENSE)
             .starts(UPDATED_STARTS)
             .ends(UPDATED_ENDS)
-            .trialStarts(UPDATED_TRIAL_STARTS)
-            .trialEnds(UPDATED_TRIAL_ENDS)
             .unitPrice(UPDATED_UNIT_PRICE)
             .notes(UPDATED_NOTES)
             .created(UPDATED_CREATED)
@@ -355,8 +347,6 @@ class ApsPlanResourceIT {
         assertThat(testApsPlan.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testApsPlan.getStarts()).isEqualTo(UPDATED_STARTS);
         assertThat(testApsPlan.getEnds()).isEqualTo(UPDATED_ENDS);
-        assertThat(testApsPlan.getTrialStarts()).isEqualTo(UPDATED_TRIAL_STARTS);
-        assertThat(testApsPlan.getTrialEnds()).isEqualTo(UPDATED_TRIAL_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(UPDATED_NOTES);
         assertThat(testApsPlan.getCreated()).isEqualTo(UPDATED_CREATED);
@@ -435,9 +425,7 @@ class ApsPlanResourceIT {
             .contract(UPDATED_CONTRACT)
             .pricing(UPDATED_PRICING)
             .license(UPDATED_LICENSE)
-            .starts(UPDATED_STARTS)
-            .trialStarts(UPDATED_TRIAL_STARTS)
-            .trialEnds(UPDATED_TRIAL_ENDS);
+            .starts(UPDATED_STARTS);
 
         restApsPlanMockMvc
             .perform(
@@ -457,8 +445,6 @@ class ApsPlanResourceIT {
         assertThat(testApsPlan.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testApsPlan.getStarts()).isEqualTo(UPDATED_STARTS);
         assertThat(testApsPlan.getEnds()).isEqualTo(DEFAULT_ENDS);
-        assertThat(testApsPlan.getTrialStarts()).isEqualTo(UPDATED_TRIAL_STARTS);
-        assertThat(testApsPlan.getTrialEnds()).isEqualTo(UPDATED_TRIAL_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(DEFAULT_NOTES);
         assertThat(testApsPlan.getCreated()).isEqualTo(DEFAULT_CREATED);
@@ -484,8 +470,6 @@ class ApsPlanResourceIT {
             .license(UPDATED_LICENSE)
             .starts(UPDATED_STARTS)
             .ends(UPDATED_ENDS)
-            .trialStarts(UPDATED_TRIAL_STARTS)
-            .trialEnds(UPDATED_TRIAL_ENDS)
             .unitPrice(UPDATED_UNIT_PRICE)
             .notes(UPDATED_NOTES)
             .created(UPDATED_CREATED)
@@ -509,8 +493,6 @@ class ApsPlanResourceIT {
         assertThat(testApsPlan.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testApsPlan.getStarts()).isEqualTo(UPDATED_STARTS);
         assertThat(testApsPlan.getEnds()).isEqualTo(UPDATED_ENDS);
-        assertThat(testApsPlan.getTrialStarts()).isEqualTo(UPDATED_TRIAL_STARTS);
-        assertThat(testApsPlan.getTrialEnds()).isEqualTo(UPDATED_TRIAL_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(UPDATED_NOTES);
         assertThat(testApsPlan.getCreated()).isEqualTo(UPDATED_CREATED);

@@ -12,9 +12,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IApsUser } from '../aps-user.model';
+import { APS_USER_ACCESS, ApsUserAccess, IApsUser } from '../aps-user.model';
 import { EntityArrayResponseType, ApsUserService } from '../service/aps-user.service';
 import { ApsUserDeleteDialogComponent } from '../delete/aps-user-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -30,9 +31,11 @@ import { ApsUserDeleteDialogComponent } from '../delete/aps-user-delete-dialog.c
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-  ],
+    NgIf
+  ]
 })
 export class ApsUserComponent implements OnInit {
+  ua: ApsUserAccess = this.getApsUserAccess();
   apsUsers?: IApsUser[];
   isLoading = false;
 
@@ -149,4 +152,9 @@ export class ApsUserComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getApsUserAccess(): ApsUserAccess {
+    return APS_USER_ACCESS;
+  }
+
 }

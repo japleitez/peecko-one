@@ -12,16 +12,18 @@ import { CustomerService } from 'app/entities/customer/service/customer.service'
 import { PricingType } from 'app/entities/enumerations/pricing-type.model';
 import { PlanState } from 'app/entities/enumerations/plan-state.model';
 import { ApsPlanService } from '../service/aps-plan.service';
-import { IApsPlan } from '../aps-plan.model';
+import { APS_PLAN_USER_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
 import { ApsPlanFormService, ApsPlanFormGroup } from './aps-plan-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-aps-plan-update',
   templateUrl: './aps-plan-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ApsPlanUpdateComponent implements OnInit {
+  ua: ApsPlanAccess = this.getApsPlanAccess();
   isSaving = false;
   apsPlan: IApsPlan | null = null;
   pricingTypeValues = Object.keys(PricingType);
@@ -105,4 +107,9 @@ export class ApsPlanUpdateComponent implements OnInit {
       )
       .subscribe((customers: ICustomer[]) => (this.customersSharedCollection = customers));
   }
+
+  protected getApsPlanAccess(): ApsPlanAccess {
+    return APS_PLAN_USER_ACCESS;
+  }
+
 }

@@ -181,7 +181,8 @@ entity Customer {
   trialed Instant,
   declined Instant,
   activated Instant,
-  closed Instant
+  closed Instant,
+  dummy Boolean required
 }
 
 
@@ -236,8 +237,6 @@ entity ApsPlan {
   license String,
   starts LocalDate,
   ends LocalDate,
-  trialStarts LocalDate,
-  trialEnds LocalDate,
   unitPrice Double required,
   notes String,
   created Instant,
@@ -642,7 +641,6 @@ relationship OneToMany {
     ApsUser to PlayList,
 	Agency to Staff,
     Agency to Customer,
-    Agency to ApsPricing,
 	Customer to Contact,
     Customer to ApsPlan,
 	ApsPlan to ApsOrder,

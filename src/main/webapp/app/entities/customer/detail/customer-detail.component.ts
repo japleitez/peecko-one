@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { ICustomer } from '../customer.model';
+import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
 
 @Component({
   standalone: true,
@@ -12,6 +12,7 @@ import { ICustomer } from '../customer.model';
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class CustomerDetailComponent {
+  ua: CustomerAccess = CUSTOMER_USER_ACCESS;
   @Input() customer: ICustomer | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}

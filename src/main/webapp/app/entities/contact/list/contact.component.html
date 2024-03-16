@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/contact/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Contact</span>
+        <span>New Contact</span>
       </button>
     </div>
   </h2>
@@ -35,98 +35,98 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="type">
+            <th scope="col" jhiSortBy="type" *ngIf="ua.type.listable">
               <div class="d-flex">
                 <span>Type</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="name">
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
               <div class="d-flex">
                 <span>Name</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="line1">
+            <th scope="col" jhiSortBy="line1" *ngIf="ua.line1.listable">
               <div class="d-flex">
                 <span>Line 1</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="line2">
+            <th scope="col" jhiSortBy="line2" *ngIf="ua.line2.listable">
               <div class="d-flex">
                 <span>Line 2</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="zip">
+            <th scope="col" jhiSortBy="zip" *ngIf="ua.zip.listable">
               <div class="d-flex">
                 <span>Zip</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="city">
+            <th scope="col" jhiSortBy="city" *ngIf="ua.city.listable">
               <div class="d-flex">
                 <span>City</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="country">
+            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
               <div class="d-flex">
                 <span>Country</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="email">
+            <th scope="col" jhiSortBy="email" *ngIf="ua.email.listable">
               <div class="d-flex">
                 <span>Email</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="phone">
+            <th scope="col" jhiSortBy="phone" *ngIf="ua.phone.listable">
               <div class="d-flex">
                 <span>Phone</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="notes">
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
               <div class="d-flex">
                 <span>Notes</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updated">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="customer.id">
+            <th scope="col" jhiSortBy="customer.id" *ngIf="ua.customer.listable">
               <div class="d-flex">
                 <span>Customer</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -138,22 +138,22 @@
         <tbody>
           @for (contact of contacts; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/contact', contact.id, 'view']">{{ contact.id }}</a>
               </td>
-              <td>{{ contact.type }}</td>
-              <td>{{ contact.name }}</td>
-              <td>{{ contact.line1 }}</td>
-              <td>{{ contact.line2 }}</td>
-              <td>{{ contact.zip }}</td>
-              <td>{{ contact.city }}</td>
-              <td>{{ contact.country }}</td>
-              <td>{{ contact.email }}</td>
-              <td>{{ contact.phone }}</td>
-              <td>{{ contact.notes }}</td>
-              <td>{{ contact.created | formatMediumDatetime }}</td>
-              <td>{{ contact.updated | formatMediumDatetime }}</td>
-              <td>
+              <td *ngIf="ua.type.listable">{{ contact.type }}</td>
+              <td *ngIf="ua.name.listable">{{ contact.name }}</td>
+              <td *ngIf="ua.line1.listable">{{ contact.line1 }}</td>
+              <td *ngIf="ua.line2.listable">{{ contact.line2 }}</td>
+              <td *ngIf="ua.zip.listable">{{ contact.zip }}</td>
+              <td *ngIf="ua.city.listable">{{ contact.city }}</td>
+              <td *ngIf="ua.country.listable">{{ contact.country }}</td>
+              <td *ngIf="ua.email.listable">{{ contact.email }}</td>
+              <td *ngIf="ua.phone.listable">{{ contact.phone }}</td>
+              <td *ngIf="ua.notes.listable">{{ contact.notes }}</td>
+              <td *ngIf="ua.created.listable">{{ contact.created | formatMediumDatetime }}</td>
+              <td *ngIf="ua.updated.listable">{{ contact.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.customer.listable">
                 @if (contact.customer) {
                   <div>
                     <a [routerLink]="['/customer', contact.customer.id, 'view']">{{ contact.customer.id }}</a>
@@ -164,17 +164,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/contact', contact.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/contact', contact.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(contact)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

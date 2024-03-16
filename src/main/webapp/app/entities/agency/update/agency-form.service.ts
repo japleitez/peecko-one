@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IAgency, NewAgency } from '../agency.model';
+import { AGENCY_USER_ACCESS, AgencyAccess, IAgency, NewAgency } from '../agency.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -58,7 +58,7 @@ export type AgencyFormGroup = FormGroup<AgencyFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class AgencyFormService {
-  createAgencyFormGroup(agency: AgencyFormGroupInput = { id: null }): AgencyFormGroup {
+  createAgencyFormGroup(agency: AgencyFormGroupInput = { id: null }, ua: AgencyAccess = AGENCY_USER_ACCESS): AgencyFormGroup {
     const agencyRawValue = this.convertAgencyToAgencyRawValue({
       ...this.getFormDefaults(),
       ...agency,
@@ -71,36 +71,36 @@ export class AgencyFormService {
           validators: [Validators.required],
         },
       ),
-      code: new FormControl(agencyRawValue.code, {
-        validators: [Validators.required],
+      code: new FormControl( { value: agencyRawValue.code, disabled: ua.code.disabled },
+        { validators: [Validators.required],
       }),
-      name: new FormControl(agencyRawValue.name, {
-        validators: [Validators.required],
+      name: new FormControl({ value: agencyRawValue.name, disabled: ua.name.disabled },
+        { validators: [Validators.required],
       }),
-      line1: new FormControl(agencyRawValue.line1),
-      line2: new FormControl(agencyRawValue.line2),
-      zip: new FormControl(agencyRawValue.zip),
-      city: new FormControl(agencyRawValue.city, {
-        validators: [Validators.required],
+      line1: new FormControl({ value: agencyRawValue.line1, disabled: ua.line1.disabled }),
+      line2: new FormControl({ value: agencyRawValue.line2, disabled: ua.line2.disabled }),
+      zip: new FormControl({ value: agencyRawValue.zip, disabled: ua.zip.disabled }),
+      city: new FormControl({ value: agencyRawValue.city, disabled: ua.city.disabled },
+        { validators: [Validators.required],
       }),
-      country: new FormControl(agencyRawValue.country, {
-        validators: [Validators.required],
+      country: new FormControl({ value: agencyRawValue.country, disabled: ua.country.disabled },
+        { validators: [Validators.required],
       }),
-      language: new FormControl(agencyRawValue.language, {
-        validators: [Validators.required],
+      language: new FormControl({ value: agencyRawValue.language, disabled: ua.language.disabled },
+        { validators: [Validators.required],
       }),
-      email: new FormControl(agencyRawValue.email),
-      phone: new FormControl(agencyRawValue.phone),
-      billingEmail: new FormControl(agencyRawValue.billingEmail),
-      billingPhone: new FormControl(agencyRawValue.billingPhone),
-      bank: new FormControl(agencyRawValue.bank),
-      iban: new FormControl(agencyRawValue.iban),
-      rcs: new FormControl(agencyRawValue.rcs),
-      vatId: new FormControl(agencyRawValue.vatId),
-      vatRate: new FormControl(agencyRawValue.vatRate),
-      notes: new FormControl(agencyRawValue.notes),
-      created: new FormControl(agencyRawValue.created),
-      updated: new FormControl(agencyRawValue.updated),
+      email: new FormControl({ value: agencyRawValue.email, disabled: ua.email.disabled }),
+      phone: new FormControl({ value: agencyRawValue.phone, disabled: ua.phone.disabled }),
+      billingEmail: new FormControl({ value: agencyRawValue.billingEmail, disabled: ua.billingEmail.disabled }),
+      billingPhone: new FormControl({ value: agencyRawValue.billingPhone, disabled: ua.billingPhone.disabled }),
+      bank: new FormControl({ value: agencyRawValue.bank, disabled: ua.bank.disabled }),
+      iban: new FormControl({ value: agencyRawValue.iban, disabled: ua.iban.disabled }),
+      rcs: new FormControl({ value: agencyRawValue.rcs, disabled: ua.rcs.disabled }),
+      vatId: new FormControl({ value: agencyRawValue.vatId, disabled: ua.vatId.disabled }),
+      vatRate: new FormControl({ value: agencyRawValue.vatRate, disabled: ua.vatRate.disabled }),
+      notes: new FormControl({ value: agencyRawValue.notes, disabled: ua.notes.disabled }),
+      created: new FormControl({ value: agencyRawValue.created, disabled: true }),
+      updated: new FormControl({ value: agencyRawValue.updated, disabled: true }),
     });
   }
 

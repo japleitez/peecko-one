@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IApsOrder, NewApsOrder } from '../aps-order.model';
+import { APS_ORDER_USER_ACCESS, ApsOrderAccess, IApsOrder, NewApsOrder } from '../aps-order.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -31,36 +31,36 @@ export type ApsOrderFormGroup = FormGroup<ApsOrderFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsOrderFormService {
-  createApsOrderFormGroup(apsOrder: ApsOrderFormGroupInput = { id: null }): ApsOrderFormGroup {
+  createApsOrderFormGroup(apsOrder: ApsOrderFormGroupInput = { id: null }, ua: ApsOrderAccess = APS_ORDER_USER_ACCESS): ApsOrderFormGroup {
     const apsOrderRawValue = {
       ...this.getFormDefaults(),
       ...apsOrder,
     };
     return new FormGroup<ApsOrderFormGroupContent>({
       id: new FormControl(
-        { value: apsOrderRawValue.id, disabled: true },
+        { value: apsOrderRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      period: new FormControl(apsOrderRawValue.period, {
-        validators: [Validators.required],
+      period: new FormControl({ value: apsOrderRawValue.period, disabled: ua.period.disabled },
+        { validators: [Validators.required],
       }),
-      license: new FormControl(apsOrderRawValue.license, {
-        validators: [Validators.required],
+      license: new FormControl({ value: apsOrderRawValue.license, disabled: ua.license.disabled },
+        { validators: [Validators.required],
       }),
-      unitPrice: new FormControl(apsOrderRawValue.unitPrice, {
-        validators: [Validators.required],
+      unitPrice: new FormControl({ value: apsOrderRawValue.unitPrice, disabled: ua.unitPrice.disabled },
+        { validators: [Validators.required],
       }),
-      vatRate: new FormControl(apsOrderRawValue.vatRate, {
-        validators: [Validators.required],
+      vatRate: new FormControl({ value: apsOrderRawValue.vatRate, disabled: ua.vatRate.disabled },
+        { validators: [Validators.required],
       }),
-      numberOfUsers: new FormControl(apsOrderRawValue.numberOfUsers, {
-        validators: [Validators.required],
+      numberOfUsers: new FormControl({ value: apsOrderRawValue.numberOfUsers, disabled: ua.numberOfUsers.disabled },
+        { validators: [Validators.required],
       }),
-      invoiceNumber: new FormControl(apsOrderRawValue.invoiceNumber),
-      apsPlan: new FormControl(apsOrderRawValue.apsPlan),
+      invoiceNumber: new FormControl({ value: apsOrderRawValue.invoiceNumber, disabled: ua.invoiceNumber.disabled }),
+      apsPlan: new FormControl( { value: apsOrderRawValue.apsPlan, disabled: ua.plan.disabled }),
     });
   }
 

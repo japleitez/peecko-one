@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IApsDevice, NewApsDevice } from '../aps-device.model';
+import { APS_DEVICE_ACCESS, ApsDeviceAccess, IApsDevice, NewApsDevice } from '../aps-device.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -43,7 +43,7 @@ export type ApsDeviceFormGroup = FormGroup<ApsDeviceFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsDeviceFormService {
-  createApsDeviceFormGroup(apsDevice: ApsDeviceFormGroupInput = { id: null }): ApsDeviceFormGroup {
+  createApsDeviceFormGroup(apsDevice: ApsDeviceFormGroupInput = { id: null }, ua: ApsDeviceAccess = APS_DEVICE_ACCESS): ApsDeviceFormGroup {
     const apsDeviceRawValue = this.convertApsDeviceToApsDeviceRawValue({
       ...this.getFormDefaults(),
       ...apsDevice,
@@ -56,16 +56,14 @@ export class ApsDeviceFormService {
           validators: [Validators.required],
         },
       ),
-      username: new FormControl(apsDeviceRawValue.username, {
-        validators: [Validators.required],
-      }),
-      deviceId: new FormControl(apsDeviceRawValue.deviceId, {
-        validators: [Validators.required],
-      }),
-      phoneModel: new FormControl(apsDeviceRawValue.phoneModel),
-      osVersion: new FormControl(apsDeviceRawValue.osVersion),
-      installedOn: new FormControl(apsDeviceRawValue.installedOn),
-      apsUser: new FormControl(apsDeviceRawValue.apsUser),
+      username: new FormControl({ value: apsDeviceRawValue.username, disabled: ua.username.disabled },
+        { validators: [Validators.required], }),
+      deviceId: new FormControl({ value: apsDeviceRawValue.deviceId, disabled: ua.deviceId.disabled },
+        { validators: [Validators.required], }),
+      phoneModel: new FormControl({ value: apsDeviceRawValue.phoneModel, disabled: ua.phoneModel.disabled }),
+      osVersion: new FormControl({ value: apsDeviceRawValue.osVersion, disabled: ua.osVersion.disabled }),
+      installedOn: new FormControl({ value: apsDeviceRawValue.installedOn, disabled: ua.installedOn.disabled }),
+      apsUser: new FormControl({ value: apsDeviceRawValue.apsUser, disabled: ua.apsUser.disabled }),
     });
   }
 
