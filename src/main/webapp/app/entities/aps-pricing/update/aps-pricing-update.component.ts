@@ -28,11 +28,8 @@ export class ApsPricingUpdateComponent implements OnInit {
   constructor(
     protected apsPricingService: ApsPricingService,
     protected apsPricingFormService: ApsPricingFormService,
-    protected agencyService: AgencyService,
     protected activatedRoute: ActivatedRoute,
   ) {}
-
-  compareAgency = (o1: IAgency | null, o2: IAgency | null): boolean => this.agencyService.compareAgency(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ apsPricing }) => {

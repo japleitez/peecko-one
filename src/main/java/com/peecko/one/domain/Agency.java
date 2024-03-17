@@ -104,11 +104,6 @@ public class Agency implements Serializable {
     @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
     private Set<Customer> customers = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "agency" }, allowSetters = true)
-    private Set<ApsPricing> apsPricings = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -443,37 +438,6 @@ public class Agency implements Serializable {
     public Agency removeCustomer(Customer customer) {
         this.customers.remove(customer);
         customer.setAgency(null);
-        return this;
-    }
-
-    public Set<ApsPricing> getApsPricings() {
-        return this.apsPricings;
-    }
-
-    public void setApsPricings(Set<ApsPricing> apsPricings) {
-        if (this.apsPricings != null) {
-            this.apsPricings.forEach(i -> i.setAgency(null));
-        }
-        if (apsPricings != null) {
-            apsPricings.forEach(i -> i.setAgency(this));
-        }
-        this.apsPricings = apsPricings;
-    }
-
-    public Agency apsPricings(Set<ApsPricing> apsPricings) {
-        this.setApsPricings(apsPricings);
-        return this;
-    }
-
-    public Agency addApsPricing(ApsPricing apsPricing) {
-        this.apsPricings.add(apsPricing);
-        apsPricing.setAgency(this);
-        return this;
-    }
-
-    public Agency removeApsPricing(ApsPricing apsPricing) {
-        this.apsPricings.remove(apsPricing);
-        apsPricing.setAgency(null);
         return this;
     }
 

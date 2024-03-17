@@ -23,15 +23,4 @@ class ApsPricingTest {
         assertThat(apsPricing1).isNotEqualTo(apsPricing2);
     }
 
-    @Test
-    void agencyTest() throws Exception {
-        ApsPricing apsPricing = getApsPricingRandomSampleGenerator();
-        Agency agencyBack = getAgencyRandomSampleGenerator();
-
-        apsPricing.setAgency(agencyBack);
-        assertThat(apsPricing.getAgency()).isEqualTo(agencyBack);
-
-        apsPricing.agency(null);
-        assertThat(apsPricing.getAgency()).isNull();
-    }
 }

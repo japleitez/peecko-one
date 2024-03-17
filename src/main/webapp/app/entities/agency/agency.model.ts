@@ -75,7 +75,7 @@ AGENCY_USER_ACCESS = {
   customers: { listable: false, visible: true, disabled: false },
   email: { listable: false, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
-  id: { listable: true, visible: true, disabled: true },
+  id: { listable: false, visible: true, disabled: true },
   language: { listable: false, visible: true, disabled: false },
   line1: { listable: false, visible: true, disabled: false },
   line2: { listable: false, visible: true, disabled: false },

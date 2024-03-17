@@ -71,25 +71,4 @@ class AgencyTest {
         assertThat(customerBack.getAgency()).isNull();
     }
 
-    @Test
-    void apsPricingTest() throws Exception {
-        Agency agency = getAgencyRandomSampleGenerator();
-        ApsPricing apsPricingBack = getApsPricingRandomSampleGenerator();
-
-        agency.addApsPricing(apsPricingBack);
-        assertThat(agency.getApsPricings()).containsOnly(apsPricingBack);
-        assertThat(apsPricingBack.getAgency()).isEqualTo(agency);
-
-        agency.removeApsPricing(apsPricingBack);
-        assertThat(agency.getApsPricings()).doesNotContain(apsPricingBack);
-        assertThat(apsPricingBack.getAgency()).isNull();
-
-        agency.apsPricings(new HashSet<>(Set.of(apsPricingBack)));
-        assertThat(agency.getApsPricings()).containsOnly(apsPricingBack);
-        assertThat(apsPricingBack.getAgency()).isEqualTo(agency);
-
-        agency.setApsPricings(new HashSet<>());
-        assertThat(agency.getApsPricings()).doesNotContain(apsPricingBack);
-        assertThat(apsPricingBack.getAgency()).isNull();
-    }
 }

@@ -7,7 +7,6 @@ export interface IApsPricing {
   index?: number | null;
   minQuantity?: number | null;
   unitPrice?: number | null;
-  agency?: IAgency | null;
 }
 
 export type NewApsPricing = Omit<IApsPricing, 'id'> & { id: null };

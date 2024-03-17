@@ -24,6 +24,9 @@ public class ApsPricing implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "country", nullable = false)
+    private String country;
+
     @NotNull
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
@@ -40,10 +43,6 @@ public class ApsPricing implements Serializable {
     @Column(name = "unit_price", nullable = false)
     private Double unitPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "staff", "customers", "apsPricings" }, allowSetters = true)
-    private Agency agency;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -57,6 +56,14 @@ public class ApsPricing implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Long getCustomerId() {
@@ -110,21 +117,6 @@ public class ApsPricing implements Serializable {
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
-
-    public Agency getAgency() {
-        return this.agency;
-    }
-
-    public void setAgency(Agency agency) {
-        this.agency = agency;
-    }
-
-    public ApsPricing agency(Agency agency) {
-        this.setAgency(agency);
-        return this;
-    }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

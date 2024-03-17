@@ -60,7 +60,7 @@ export interface CustomerAccess {
 export let CUSTOMER_USER_ACCESS: CustomerAccess;
 
 CUSTOMER_USER_ACCESS = {
-  id: { listable: true, visible: true, disabled: true },
+  id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   name: { listable: true, visible: true, disabled: false },
   country: { listable: true, visible: true, disabled: false },
