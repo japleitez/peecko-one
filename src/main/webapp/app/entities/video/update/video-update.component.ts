@@ -15,16 +15,18 @@ import { Language } from 'app/entities/enumerations/language.model';
 import { Player } from 'app/entities/enumerations/player.model';
 import { Intensity } from 'app/entities/enumerations/intensity.model';
 import { VideoService } from '../service/video.service';
-import { IVideo } from '../video.model';
+import { IVideo, VIDEO_ACCESS, VideoAccess } from '../video.model';
 import { VideoFormService, VideoFormGroup } from './video-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-video-update',
   templateUrl: './video-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class VideoUpdateComponent implements OnInit {
+  ua: VideoAccess = this.getVideoAccess();
   isSaving = false;
   video: IVideo | null = null;
   languageValues = Object.keys(Language);
@@ -34,7 +36,7 @@ export class VideoUpdateComponent implements OnInit {
   videoCategoriesSharedCollection: IVideoCategory[] = [];
   coachesSharedCollection: ICoach[] = [];
 
-  editForm: VideoFormGroup = this.videoFormService.createVideoFormGroup();
+  editForm: VideoFormGroup = this.videoFormService.createVideoFormGroup(undefined, this.getVideoAccess());
 
   constructor(
     protected videoService: VideoService,
@@ -121,4 +123,9 @@ export class VideoUpdateComponent implements OnInit {
       .pipe(map((coaches: ICoach[]) => this.coachService.addCoachToCollectionIfMissing<ICoach>(coaches, this.video?.coach)))
       .subscribe((coaches: ICoach[]) => (this.coachesSharedCollection = coaches));
   }
+
+  protected getVideoAccess(): VideoAccess {
+    return VIDEO_ACCESS;
+  }
+
 }

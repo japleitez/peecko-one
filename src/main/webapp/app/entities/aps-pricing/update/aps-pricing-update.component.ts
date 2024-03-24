@@ -9,21 +9,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
-import { IApsPricing } from '../aps-pricing.model';
+import { APS_PRICING_ACCESS, ApsPricingAccess, IApsPricing } from '../aps-pricing.model';
 import { ApsPricingService } from '../service/aps-pricing.service';
 import { ApsPricingFormService, ApsPricingFormGroup } from './aps-pricing-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-aps-pricing-update',
   templateUrl: './aps-pricing-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ApsPricingUpdateComponent implements OnInit {
+  ua: ApsPricingAccess = this.getApsPricingAccess();
   isSaving = false;
   apsPricing: IApsPricing | null = null;
 
-  editForm: ApsPricingFormGroup = this.apsPricingFormService.createApsPricingFormGroup();
+  editForm: ApsPricingFormGroup = this.apsPricingFormService.createApsPricingFormGroup(undefined, this.getApsPricingAccess());
 
   constructor(
     protected apsPricingService: ApsPricingService,
@@ -76,6 +78,10 @@ export class ApsPricingUpdateComponent implements OnInit {
   protected updateForm(apsPricing: IApsPricing): void {
     this.apsPricing = apsPricing;
     this.apsPricingFormService.resetForm(this.editForm, apsPricing);
+  }
+
+  protected getApsPricingAccess(): ApsPricingAccess {
+    return APS_PRICING_ACCESS;
   }
 
 }

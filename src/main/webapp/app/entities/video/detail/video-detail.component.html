@@ -11,80 +11,80 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ video.id }}</span>
           </dd>
-          <dt><span>Code</span></dt>
-          <dd>
+          <dt *ngIf="ua.code.visible"><span>Code</span></dt>
+          <dd *ngIf="ua.code.visible">
             <span>{{ video.code }}</span>
           </dd>
-          <dt><span>Title</span></dt>
-          <dd>
+          <dt *ngIf="ua.title.visible"><span>Title</span></dt>
+          <dd *ngIf="ua.title.visible">
             <span>{{ video.title }}</span>
           </dd>
-          <dt><span>Duration</span></dt>
-          <dd>
+          <dt *ngIf="ua.duration.visible"><span>Duration</span></dt>
+          <dd *ngIf="ua.duration.visible">
             <span>{{ video.duration }}</span>
           </dd>
-          <dt><span>Language</span></dt>
-          <dd>
+          <dt *ngIf="ua.language.visible"><span>Language</span></dt>
+          <dd *ngIf="ua.language.visible">
             <span>{{ video.language }}</span>
           </dd>
-          <dt><span>Tags</span></dt>
-          <dd>
+          <dt *ngIf="ua.tags.visible"><span>Tags</span></dt>
+          <dd *ngIf="ua.tags.visible">
             <span>{{ video.tags }}</span>
           </dd>
-          <dt><span>Player</span></dt>
-          <dd>
+          <dt *ngIf="ua.player.visible"><span>Player</span></dt>
+          <dd *ngIf="ua.player.visible">
             <span>{{ video.player }}</span>
           </dd>
-          <dt><span>Thumbnail</span></dt>
-          <dd>
+          <dt *ngIf="ua.thumbnail.visible"><span>Thumbnail</span></dt>
+          <dd *ngIf="ua.thumbnail.visible">
             <span>{{ video.thumbnail }}</span>
           </dd>
-          <dt><span>Url</span></dt>
-          <dd>
+          <dt *ngIf="ua.url.visible"><span>Url</span></dt>
+          <dd *ngIf="ua.url.visible">
             <span>{{ video.url }}</span>
           </dd>
-          <dt><span>Audience</span></dt>
-          <dd>
+          <dt *ngIf="ua.audience.visible"><span>Audience</span></dt>
+          <dd *ngIf="ua.audience.visible">
             <span>{{ video.audience }}</span>
           </dd>
-          <dt><span>Intensity</span></dt>
-          <dd>
+          <dt *ngIf="ua.intensity.visible"><span>Intensity</span></dt>
+          <dd *ngIf="ua.intensity.visible">
             <span>{{ video.intensity }}</span>
           </dd>
-          <dt><span>Filename</span></dt>
-          <dd>
+          <dt *ngIf="ua.filename.visible"><span>Filename</span></dt>
+          <dd *ngIf="ua.filename.visible">
             <span>{{ video.filename }}</span>
           </dd>
-          <dt><span>Description</span></dt>
-          <dd>
+          <dt *ngIf="ua.description.visible"><span>Description</span></dt>
+          <dd *ngIf="ua.description.visible">
             <span>{{ video.description }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ video.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Released</span></dt>
-          <dd>
+          <dt *ngIf="ua.released.visible"><span>Released</span></dt>
+          <dd *ngIf="ua.released.visible">
             <span>{{ video.released | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Archived</span></dt>
-          <dd>
+          <dt *ngIf="ua.archived.visible"><span>Archived</span></dt>
+          <dd *ngIf="ua.archived.visible">
             <span>{{ video.archived | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Video Category</span></dt>
-          <dd>
+          <dt *ngIf="ua.videoCategory.visible"><span>Video Category</span></dt>
+          <dd *ngIf="ua.videoCategory.visible">
             @if (video.videoCategory) {
               <div>
                 <a [routerLink]="['/video-category', video.videoCategory.id, 'view']">{{ video.videoCategory.id }}</a>
               </div>
             }
           </dd>
-          <dt><span>Coach</span></dt>
-          <dd>
+          <dt *ngIf="ua.coach.visible"><span>Coach</span></dt>
+          <dd *ngIf="ua.coach.visible">
             @if (video.coach) {
               <div>
                 <a [routerLink]="['/coach', video.coach.id, 'view']">{{ video.coach.id }}</a>

@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.country.visible">
           <label class="form-label" for="field_country">Country</label>
           <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
           @if (editForm.get('country')!.invalid && (editForm.get('country')!.dirty || editForm.get('country')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.customerId.visible">
           <label class="form-label" for="field_customerId">Customer Id</label>
           <input
             type="number"
@@ -47,7 +47,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.index.visible">
           <label class="form-label" for="field_index">Index</label>
           <input type="number" class="form-control" name="index" id="field_index" data-cy="index" formControlName="index" />
           @if (editForm.get('index')!.invalid && (editForm.get('index')!.dirty || editForm.get('index')!.touched)) {
@@ -60,7 +60,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.minQuantity.visible">
           <label class="form-label" for="field_minQuantity">Min Quantity</label>
           <input
             type="number"
@@ -82,7 +82,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.unitPrice.visible">
           <label class="form-label" for="field_unitPrice">Unit Price</label>
           <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
           @if (editForm.get('unitPrice')!.invalid && (editForm.get('unitPrice')!.dirty || editForm.get('unitPrice')!.touched)) {

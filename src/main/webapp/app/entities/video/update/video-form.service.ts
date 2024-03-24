@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IVideo, NewVideo } from '../video.model';
+import { IVideo, NewVideo, VIDEO_ACCESS, VideoAccess } from '../video.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -56,44 +56,44 @@ export type VideoFormGroup = FormGroup<VideoFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class VideoFormService {
-  createVideoFormGroup(video: VideoFormGroupInput = { id: null }): VideoFormGroup {
+  createVideoFormGroup(video: VideoFormGroupInput = { id: null }, ua: VideoAccess = VIDEO_ACCESS): VideoFormGroup {
     const videoRawValue = this.convertVideoToVideoRawValue({
       ...this.getFormDefaults(),
       ...video,
     });
     return new FormGroup<VideoFormGroupContent>({
       id: new FormControl(
-        { value: videoRawValue.id, disabled: true },
+        { value: videoRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      code: new FormControl(videoRawValue.code, {
-        validators: [Validators.required],
+      code: new FormControl({ value: videoRawValue.code, disabled: ua.code.disabled },
+        { validators: [Validators.required],
       }),
-      title: new FormControl(videoRawValue.title, {
-        validators: [Validators.required],
+      title: new FormControl({ value: videoRawValue.title, disabled: ua.title.disabled },
+        { validators: [Validators.required],
       }),
-      duration: new FormControl(videoRawValue.duration),
-      language: new FormControl(videoRawValue.language, {
-        validators: [Validators.required],
+      duration: new FormControl({ value: videoRawValue.duration, disabled: ua.duration.disabled }),
+      language: new FormControl({ value: videoRawValue.language, disabled: ua.language.disabled },
+        { validators: [Validators.required],
       }),
-      tags: new FormControl(videoRawValue.tags),
-      player: new FormControl(videoRawValue.player, {
-        validators: [Validators.required],
+      tags: new FormControl({ value: videoRawValue.tags, disabled: ua.tags.disabled }),
+      player: new FormControl({ value: videoRawValue.player, disabled: ua.player.disabled },
+        { validators: [Validators.required],
       }),
-      thumbnail: new FormControl(videoRawValue.thumbnail),
-      url: new FormControl(videoRawValue.url),
-      audience: new FormControl(videoRawValue.audience),
-      intensity: new FormControl(videoRawValue.intensity),
-      filename: new FormControl(videoRawValue.filename),
-      description: new FormControl(videoRawValue.description),
-      created: new FormControl(videoRawValue.created),
-      released: new FormControl(videoRawValue.released),
-      archived: new FormControl(videoRawValue.archived),
-      videoCategory: new FormControl(videoRawValue.videoCategory),
-      coach: new FormControl(videoRawValue.coach),
+      thumbnail: new FormControl({ value: videoRawValue.thumbnail, disabled: ua.thumbnail.disabled }),
+      url: new FormControl({ value: videoRawValue.url, disabled: ua.url.disabled }),
+      audience: new FormControl({ value: videoRawValue.audience, disabled: ua.audience.disabled }),
+      intensity: new FormControl({ value: videoRawValue.intensity, disabled: ua.intensity.disabled }),
+      filename: new FormControl({ value: videoRawValue.filename, disabled: ua.filename.disabled }),
+      description: new FormControl({ value: videoRawValue.description, disabled: ua.description.disabled }),
+      created: new FormControl({ value: videoRawValue.created, disabled: ua.created.disabled }),
+      released: new FormControl({ value: videoRawValue.released, disabled: ua.released.disabled }),
+      archived: new FormControl({ value: videoRawValue.archived, disabled: ua.archived.disabled }),
+      videoCategory: new FormControl({ value: videoRawValue.videoCategory, disabled: ua.videoCategory.disabled }),
+      coach: new FormControl({ value: videoRawValue.coach, disabled: ua.coach.disabled }),
     });
   }
 

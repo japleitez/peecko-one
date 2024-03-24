@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IApsPricing, NewApsPricing } from '../aps-pricing.model';
+import { APS_PRICING_ACCESS, ApsPricingAccess, IApsPricing, NewApsPricing } from '../aps-pricing.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -29,33 +29,33 @@ export type ApsPricingFormGroup = FormGroup<ApsPricingFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsPricingFormService {
-  createApsPricingFormGroup(apsPricing: ApsPricingFormGroupInput = { id: null }): ApsPricingFormGroup {
+  createApsPricingFormGroup(apsPricing: ApsPricingFormGroupInput = { id: null }, ua: ApsPricingAccess = APS_PRICING_ACCESS): ApsPricingFormGroup {
     const apsPricingRawValue = {
       ...this.getFormDefaults(),
       ...apsPricing,
     };
     return new FormGroup<ApsPricingFormGroupContent>({
       id: new FormControl(
-        { value: apsPricingRawValue.id, disabled: true },
+        { value: apsPricingRawValue.id, disabled: ua.id.disabled  },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      country: new FormControl(apsPricingRawValue.country, {
-        validators: [Validators.required],
+      country: new FormControl({ value: apsPricingRawValue.country, disabled: ua.country.disabled  },
+        { validators: [Validators.required],
       }),
-      customerId: new FormControl(apsPricingRawValue.customerId, {
-        validators: [Validators.required],
+      customerId: new FormControl({ value: apsPricingRawValue.customerId, disabled: ua.customerId.disabled  },
+        { validators: [Validators.required],
       }),
-      index: new FormControl(apsPricingRawValue.index, {
-        validators: [Validators.required],
+      index: new FormControl({ value: apsPricingRawValue.index, disabled: ua.index.disabled  },
+        { validators: [Validators.required],
       }),
-      minQuantity: new FormControl(apsPricingRawValue.minQuantity, {
-        validators: [Validators.required],
+      minQuantity: new FormControl({ value: apsPricingRawValue.minQuantity, disabled: ua.minQuantity.disabled  },
+        { validators: [Validators.required],
       }),
-      unitPrice: new FormControl(apsPricingRawValue.unitPrice, {
-        validators: [Validators.required],
+      unitPrice: new FormControl({ value: apsPricingRawValue.unitPrice, disabled: ua.unitPrice.disabled  },
+        { validators: [Validators.required],
       }),
     });
   }

@@ -35,42 +35,42 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="country">
+            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
               <div class="d-flex">
                 <span>Country</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="customerId">
+            <th scope="col" jhiSortBy="customerId" *ngIf="ua.customerId.listable">
               <div class="d-flex">
                 <span>Customer Id</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="index">
+            <th scope="col" jhiSortBy="index" *ngIf="ua.index.listable">
               <div class="d-flex">
                 <span>Index</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="minQuantity">
+            <th scope="col" jhiSortBy="minQuantity" *ngIf="ua.minQuantity.listable">
               <div class="d-flex">
                 <span>Min Quantity</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="unitPrice">
+            <th scope="col" jhiSortBy="unitPrice" *ngIf="ua.unitPrice.listable">
               <div class="d-flex">
                 <span>Unit Price</span>
 
@@ -83,14 +83,14 @@
         <tbody>
           @for (apsPricing of apsPricings; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-pricing', apsPricing.id, 'view']">{{ apsPricing.id }}</a>
               </td>
-              <td>{{ apsPricing.country }}</td>
-              <td>{{ apsPricing.customerId }}</td>
-              <td>{{ apsPricing.index }}</td>
-              <td>{{ apsPricing.minQuantity }}</td>
-              <td>{{ apsPricing.unitPrice }}</td>
+              <td *ngIf="ua.country.listable">{{ apsPricing.country }}</td>
+              <td *ngIf="ua.customerId.listable">{{ apsPricing.customerId }}</td>
+              <td *ngIf="ua.index.listable">{{ apsPricing.index }}</td>
+              <td *ngIf="ua.minQuantity.listable">{{ apsPricing.minQuantity }}</td>
+              <td *ngIf="ua.unitPrice.listable">{{ apsPricing.unitPrice }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/aps-pricing', apsPricing.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

@@ -12,9 +12,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IApsPricing } from '../aps-pricing.model';
+import { APS_PRICING_ACCESS, ApsPricingAccess, IApsPricing } from '../aps-pricing.model';
 import { EntityArrayResponseType, ApsPricingService } from '../service/aps-pricing.service';
 import { ApsPricingDeleteDialogComponent } from '../delete/aps-pricing-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -30,9 +31,11 @@ import { ApsPricingDeleteDialogComponent } from '../delete/aps-pricing-delete-di
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-  ],
+    NgIf
+  ]
 })
 export class ApsPricingComponent implements OnInit {
+  ua: ApsPricingAccess = this.getApsPricingAccess();
   apsPricings?: IApsPricing[];
   isLoading = false;
 
@@ -149,4 +152,9 @@ export class ApsPricingComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getApsPricingAccess(): ApsPricingAccess {
+    return APS_PRICING_ACCESS;
+  }
+
 }

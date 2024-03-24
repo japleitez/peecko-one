@@ -11,28 +11,28 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ apsPricing.id }}</span>
           </dd>
-          <dt><span>Country</span></dt>
-          <dd>
+          <dt *ngIf="ua.country.visible"><span>Country</span></dt>
+          <dd *ngIf="ua.country.visible">
             <span>{{ apsPricing.country }}</span>
           </dd>
-          <dt><span>Customer Id</span></dt>
-          <dd>
+          <dt *ngIf="ua.customerId.visible"><span>Customer Id</span></dt>
+          <dd *ngIf="ua.customerId.visible">
             <span>{{ apsPricing.customerId }}</span>
           </dd>
-          <dt><span>Index</span></dt>
-          <dd>
+          <dt *ngIf="ua.index.visible"><span>Index</span></dt>
+          <dd *ngIf="ua.index.visible">
             <span>{{ apsPricing.index }}</span>
           </dd>
-          <dt><span>Min Quantity</span></dt>
-          <dd>
+          <dt *ngIf="ua.minQuantity.visible"><span>Min Quantity</span></dt>
+          <dd *ngIf="ua.minQuantity.visible">
             <span>{{ apsPricing.minQuantity }}</span>
           </dd>
-          <dt><span>Unit Price</span></dt>
-          <dd>
+          <dt *ngIf="ua.unitPrice.visible"><span>Unit Price</span></dt>
+          <dd *ngIf="ua.unitPrice.visible">
             <span>{{ apsPricing.unitPrice }}</span>
           </dd>
         </dl>

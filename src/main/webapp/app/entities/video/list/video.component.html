@@ -35,125 +35,125 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="code">
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="title">
+            <th scope="col" jhiSortBy="title" *ngIf="ua.title.listable">
               <div class="d-flex">
                 <span>Title</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="duration">
+            <th scope="col" jhiSortBy="duration" *ngIf="ua.duration.listable">
               <div class="d-flex">
                 <span>Duration</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="language">
+            <th scope="col" jhiSortBy="language" *ngIf="ua.language.listable">
               <div class="d-flex">
                 <span>Language</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="tags">
+            <th scope="col" jhiSortBy="tags" *ngIf="ua.tags.listable">
               <div class="d-flex">
                 <span>Tags</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="player">
+            <th scope="col" jhiSortBy="player" *ngIf="ua.player.listable">
               <div class="d-flex">
                 <span>Player</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="thumbnail">
+            <th scope="col" jhiSortBy="thumbnail" *ngIf="ua.thumbnail.listable">
               <div class="d-flex">
                 <span>Thumbnail</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="url">
+            <th scope="col" jhiSortBy="url" *ngIf="ua.url.listable">
               <div class="d-flex">
                 <span>Url</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="audience">
+            <th scope="col" jhiSortBy="audience" *ngIf="ua.audience.listable">
               <div class="d-flex">
                 <span>Audience</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="intensity">
+            <th scope="col" jhiSortBy="intensity" *ngIf="ua.intensity.listable">
               <div class="d-flex">
                 <span>Intensity</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="filename">
+            <th scope="col" jhiSortBy="filename" *ngIf="ua.filename.listable">
               <div class="d-flex">
                 <span>Filename</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="description">
+            <th scope="col" jhiSortBy="description" *ngIf="ua.description.listable">
               <div class="d-flex">
                 <span>Description</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="released">
+            <th scope="col" jhiSortBy="released" *ngIf="ua.released.listable">
               <div class="d-flex">
                 <span>Released</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="archived">
+            <th scope="col" jhiSortBy="archived" *ngIf="ua.archived.listable">
               <div class="d-flex">
                 <span>Archived</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="videoCategory.id">
+            <th scope="col" jhiSortBy="videoCategory.id" *ngIf="ua.videoCategory.listable">
               <div class="d-flex">
                 <span>Video Category</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="coach.id">
+            <th scope="col" jhiSortBy="coach.id" *ngIf="ua.coach.listable">
               <div class="d-flex">
                 <span>Coach</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -165,32 +165,32 @@
         <tbody>
           @for (video of videos; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/video', video.id, 'view']">{{ video.id }}</a>
               </td>
-              <td>{{ video.code }}</td>
-              <td>{{ video.title }}</td>
-              <td>{{ video.duration }}</td>
-              <td>{{ video.language }}</td>
-              <td>{{ video.tags }}</td>
-              <td>{{ video.player }}</td>
-              <td>{{ video.thumbnail }}</td>
-              <td>{{ video.url }}</td>
-              <td>{{ video.audience }}</td>
-              <td>{{ video.intensity }}</td>
-              <td>{{ video.filename }}</td>
-              <td>{{ video.description }}</td>
-              <td>{{ video.created | formatMediumDatetime }}</td>
-              <td>{{ video.released | formatMediumDatetime }}</td>
-              <td>{{ video.archived | formatMediumDatetime }}</td>
-              <td>
+              <td *ngIf="ua.code.listable">{{ video.code }}</td>
+              <td *ngIf="ua.title.listable">{{ video.title }}</td>
+              <td *ngIf="ua.duration.listable">{{ video.duration }}</td>
+              <td *ngIf="ua.language.listable">{{ video.language }}</td>
+              <td *ngIf="ua.tags.listable">{{ video.tags }}</td>
+              <td *ngIf="ua.player.listable">{{ video.player }}</td>
+              <td *ngIf="ua.thumbnail.listable">{{ video.thumbnail }}</td>
+              <td *ngIf="ua.url.listable">{{ video.url }}</td>
+              <td *ngIf="ua.audience.listable">{{ video.audience }}</td>
+              <td *ngIf="ua.intensity.listable">{{ video.intensity }}</td>
+              <td *ngIf="ua.filename.listable">{{ video.filename }}</td>
+              <td *ngIf="ua.description.listable">{{ video.description }}</td>
+              <td *ngIf="ua.created.listable">{{ video.created | formatMediumDatetime }}</td>
+              <td *ngIf="ua.released.listable">{{ video.released | formatMediumDatetime }}</td>
+              <td *ngIf="ua.archived.listable">{{ video.archived | formatMediumDatetime }}</td>
+              <td *ngIf="ua.videoCategory.listable">
                 @if (video.videoCategory) {
                   <div>
                     <a [routerLink]="['/video-category', video.videoCategory.id, 'view']">{{ video.videoCategory.id }}</a>
                   </div>
                 }
               </td>
-              <td>
+              <td *ngIf="ua.coach.listable">
                 @if (video.coach) {
                   <div>
                     <a [routerLink]="['/coach', video.coach.id, 'view']">{{ video.coach.id }}</a>
@@ -201,17 +201,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/video', video.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/video', video.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(video)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
           @if (editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.title.visible">
           <label class="form-label" for="field_title">Title</label>
           <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
           @if (editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)) {
@@ -37,12 +37,12 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.duration.visible">
           <label class="form-label" for="field_duration">Duration</label>
           <input type="number" class="form-control" name="duration" id="field_duration" data-cy="duration" formControlName="duration" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.language.visible">
           <label class="form-label" for="field_language">Language</label>
           <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
             <option [ngValue]="null"></option>
@@ -59,12 +59,12 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.tags.visible">
           <label class="form-label" for="field_tags">Tags</label>
           <input type="text" class="form-control" name="tags" id="field_tags" data-cy="tags" formControlName="tags" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.player.visible">
           <label class="form-label" for="field_player">Player</label>
           <select class="form-control" name="player" formControlName="player" id="field_player" data-cy="player">
             <option [ngValue]="null"></option>
@@ -81,22 +81,22 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.thumbnail.visible">
           <label class="form-label" for="field_thumbnail">Thumbnail</label>
           <input type="text" class="form-control" name="thumbnail" id="field_thumbnail" data-cy="thumbnail" formControlName="thumbnail" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.url.visible">
           <label class="form-label" for="field_url">Url</label>
           <input type="text" class="form-control" name="url" id="field_url" data-cy="url" formControlName="url" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.audience.visible">
           <label class="form-label" for="field_audience">Audience</label>
           <input type="text" class="form-control" name="audience" id="field_audience" data-cy="audience" formControlName="audience" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.intensity.visible">
           <label class="form-label" for="field_intensity">Intensity</label>
           <select class="form-control" name="intensity" formControlName="intensity" id="field_intensity" data-cy="intensity">
             <option [ngValue]="null"></option>
@@ -106,12 +106,12 @@
           </select>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.filename.visible">
           <label class="form-label" for="field_filename">Filename</label>
           <input type="text" class="form-control" name="filename" id="field_filename" data-cy="filename" formControlName="filename" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.description.visible">
           <label class="form-label" for="field_description">Description</label>
           <input
             type="text"
@@ -123,7 +123,7 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">
             <input
@@ -138,7 +138,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.released.visible">
           <label class="form-label" for="field_released">Released</label>
           <div class="d-flex">
             <input
@@ -153,7 +153,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.archived.visible">
           <label class="form-label" for="field_archived">Archived</label>
           <div class="d-flex">
             <input
@@ -168,7 +168,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.videoCategory.visible">
           <label class="form-label" for="field_videoCategory">Video Category</label>
           <select
             class="form-control"
@@ -185,7 +185,7 @@
           </select>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.coach.visible">
           <label class="form-label" for="field_coach">Coach</label>
           <select class="form-control" id="field_coach" data-cy="coach" name="coach" formControlName="coach" [compareWith]="compareCoach">
             <option [ngValue]="null"></option>
