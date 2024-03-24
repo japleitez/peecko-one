@@ -9,9 +9,11 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IVideoCategory } from '../video-category.model';
+import { IVideoCategory, VIDEO_CATEGORY_ACCESS, VideoCategoryAccess } from '../video-category.model';
 import { EntityArrayResponseType, VideoCategoryService } from '../service/video-category.service';
 import { VideoCategoryDeleteDialogComponent } from '../delete/video-category-delete-dialog.component';
+import { VIDEO_ACCESS } from '../../video/video.model';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -26,9 +28,11 @@ import { VideoCategoryDeleteDialogComponent } from '../delete/video-category-del
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-  ],
+    NgIf
+  ]
 })
 export class VideoCategoryComponent implements OnInit {
+  ua: VideoCategoryAccess = this.getVideoCategoryAccess();
   videoCategories?: IVideoCategory[];
   isLoading = false;
 
@@ -130,4 +134,9 @@ export class VideoCategoryComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getVideoCategoryAccess(): VideoCategoryAccess {
+    return VIDEO_CATEGORY_ACCESS;
+  }
+
 }

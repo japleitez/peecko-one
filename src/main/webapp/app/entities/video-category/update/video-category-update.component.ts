@@ -7,21 +7,23 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IVideoCategory } from '../video-category.model';
+import { IVideoCategory, VIDEO_CATEGORY_ACCESS, VideoCategoryAccess } from '../video-category.model';
 import { VideoCategoryService } from '../service/video-category.service';
 import { VideoCategoryFormService, VideoCategoryFormGroup } from './video-category-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-video-category-update',
   templateUrl: './video-category-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class VideoCategoryUpdateComponent implements OnInit {
+  ua: VideoCategoryAccess = this.getVideoCategoryAccess();
   isSaving = false;
   videoCategory: IVideoCategory | null = null;
 
-  editForm: VideoCategoryFormGroup = this.videoCategoryFormService.createVideoCategoryFormGroup();
+  editForm: VideoCategoryFormGroup = this.videoCategoryFormService.createVideoCategoryFormGroup(undefined, this.getVideoCategoryAccess());
 
   constructor(
     protected videoCategoryService: VideoCategoryService,
@@ -75,4 +77,9 @@ export class VideoCategoryUpdateComponent implements OnInit {
     this.videoCategory = videoCategory;
     this.videoCategoryFormService.resetForm(this.editForm, videoCategory);
   }
+
+  protected getVideoCategoryAccess(): VideoCategoryAccess {
+    return VIDEO_CATEGORY_ACCESS;
+  }
+
 }

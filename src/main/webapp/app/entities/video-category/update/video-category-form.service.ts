@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IVideoCategory, NewVideoCategory } from '../video-category.model';
+import { IVideoCategory, NewVideoCategory, VIDEO_CATEGORY_ACCESS, VideoCategoryAccess } from '../video-category.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -45,31 +45,31 @@ export type VideoCategoryFormGroup = FormGroup<VideoCategoryFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class VideoCategoryFormService {
-  createVideoCategoryFormGroup(videoCategory: VideoCategoryFormGroupInput = { id: null }): VideoCategoryFormGroup {
+  createVideoCategoryFormGroup(videoCategory: VideoCategoryFormGroupInput = { id: null }, ua: VideoCategoryAccess = VIDEO_CATEGORY_ACCESS): VideoCategoryFormGroup {
     const videoCategoryRawValue = this.convertVideoCategoryToVideoCategoryRawValue({
       ...this.getFormDefaults(),
       ...videoCategory,
     });
     return new FormGroup<VideoCategoryFormGroupContent>({
       id: new FormControl(
-        { value: videoCategoryRawValue.id, disabled: true },
+        { value: videoCategoryRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      code: new FormControl(videoCategoryRawValue.code, {
-        validators: [Validators.required],
+      code: new FormControl({ value: videoCategoryRawValue.code, disabled: ua.code.disabled },
+        { validators: [Validators.required],
       }),
-      title: new FormControl(videoCategoryRawValue.title, {
-        validators: [Validators.required],
+      title: new FormControl({ value: videoCategoryRawValue.title, disabled: ua.title.disabled },
+        { validators: [Validators.required],
       }),
-      label: new FormControl(videoCategoryRawValue.label, {
-        validators: [Validators.required],
+      label: new FormControl({ value: videoCategoryRawValue.label, disabled: ua.label.disabled },
+        { validators: [Validators.required],
       }),
-      created: new FormControl(videoCategoryRawValue.created),
-      released: new FormControl(videoCategoryRawValue.released),
-      archived: new FormControl(videoCategoryRawValue.archived),
+      created: new FormControl({ value: videoCategoryRawValue.created, disabled: ua.created.disabled }),
+      released: new FormControl({ value: videoCategoryRawValue.released, disabled: ua.released.disabled }),
+      archived: new FormControl({ value: videoCategoryRawValue.archived, disabled: ua.archived.disabled }),
     });
   }
 
