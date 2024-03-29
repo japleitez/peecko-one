@@ -8,7 +8,7 @@ import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Language } from 'app/entities/enumerations/language.model';
-import { ILabelTranslation } from '../label-translation.model';
+import { ILabelTranslation, LABEL_ACCESS, LabelAccess } from '../label-translation.model';
 import { LabelTranslationService } from '../service/label-translation.service';
 import { LabelTranslationFormService, LabelTranslationFormGroup } from './label-translation-form.service';
 
@@ -19,11 +19,12 @@ import { LabelTranslationFormService, LabelTranslationFormGroup } from './label-
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class LabelTranslationUpdateComponent implements OnInit {
+  ua: LabelAccess = this.getLabelAccess();
   isSaving = false;
   labelTranslation: ILabelTranslation | null = null;
   languageValues = Object.keys(Language);
 
-  editForm: LabelTranslationFormGroup = this.labelTranslationFormService.createLabelTranslationFormGroup();
+  editForm: LabelTranslationFormGroup = this.labelTranslationFormService.createLabelTranslationFormGroup(undefined, this.getLabelAccess());
 
   constructor(
     protected labelTranslationService: LabelTranslationService,
@@ -76,5 +77,9 @@ export class LabelTranslationUpdateComponent implements OnInit {
   protected updateForm(labelTranslation: ILabelTranslation): void {
     this.labelTranslation = labelTranslation;
     this.labelTranslationFormService.resetForm(this.editForm, labelTranslation);
+  }
+
+  protected getLabelAccess(): LabelAccess {
+    return LABEL_ACCESS;
   }
 }

@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { ILabelTranslation } from '../label-translation.model';
+import { ILabelTranslation, LABEL_ACCESS, LabelAccess } from '../label-translation.model';
 import { EntityArrayResponseType, LabelTranslationService } from '../service/label-translation.service';
 import { LabelTranslationDeleteDialogComponent } from '../delete/label-translation-delete-dialog.component';
 
@@ -33,6 +33,7 @@ import { LabelTranslationDeleteDialogComponent } from '../delete/label-translati
   ],
 })
 export class LabelTranslationComponent implements OnInit {
+  ua: LabelAccess = this.getLabelAccess();
   labelTranslations?: ILabelTranslation[];
   isLoading = false;
 
@@ -148,5 +149,9 @@ export class LabelTranslationComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getLabelAccess(): LabelAccess {
+    return LABEL_ACCESS;
   }
 }

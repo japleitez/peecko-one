@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/label-translation/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Label Translation</span>
+        <span>New Label Translation</span>
       </button>
     </div>
   </h2>
@@ -35,28 +35,28 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="label">
+            <th scope="col" jhiSortBy="label" *ngIf="ua.label.listable">
               <div class="d-flex">
                 <span>Label</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="lang">
+            <th scope="col" jhiSortBy="lang" *ngIf="ua.lang.listable">
               <div class="d-flex">
                 <span>Lang</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="translation">
+            <th scope="col" jhiSortBy="translation" *ngIf="ua.translation.listable">
               <div class="d-flex">
                 <span>Translation</span>
 
@@ -69,12 +69,12 @@
         <tbody>
           @for (labelTranslation of labelTranslations; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/label-translation', labelTranslation.id, 'view']">{{ labelTranslation.id }}</a>
               </td>
-              <td>{{ labelTranslation.label }}</td>
-              <td>{{ labelTranslation.lang }}</td>
-              <td>{{ labelTranslation.translation }}</td>
+              <td *ngIf="ua.label.listable">{{ labelTranslation.label }}</td>
+              <td *ngIf="ua.lang.listable">{{ labelTranslation.lang }}</td>
+              <td *ngIf="ua.translation.listable">{{ labelTranslation.translation }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a
@@ -83,7 +83,6 @@
                     data-cy="entityDetailsButton"
                   >
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a
@@ -92,12 +91,10 @@
                     data-cy="entityEditButton"
                   >
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(labelTranslation)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

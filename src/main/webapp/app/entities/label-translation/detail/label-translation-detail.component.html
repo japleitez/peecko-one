@@ -11,20 +11,20 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ labelTranslation.id }}</span>
           </dd>
-          <dt><span>Label</span></dt>
-          <dd>
+          <dt *ngIf="ua.label.visible"><span>Label</span></dt>
+          <dd *ngIf="ua.label.visible">
             <span>{{ labelTranslation.label }}</span>
           </dd>
-          <dt><span>Lang</span></dt>
-          <dd>
+          <dt *ngIf="ua.lang.visible"><span>Lang</span></dt>
+          <dd *ngIf="ua.lang.visible">
             <span>{{ labelTranslation.lang }}</span>
           </dd>
-          <dt><span>Translation</span></dt>
-          <dd>
+          <dt *ngIf="ua.translation.visible"><span>Translation</span></dt>
+          <dd *ngIf="ua.translation.visible">
             <span>{{ labelTranslation.translation }}</span>
           </dd>
         </dl>

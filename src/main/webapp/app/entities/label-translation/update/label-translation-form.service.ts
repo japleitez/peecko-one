@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { ILabelTranslation, NewLabelTranslation } from '../label-translation.model';
+import { ILabelTranslation, LABEL_ACCESS, LabelAccess, NewLabelTranslation } from '../label-translation.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -27,28 +27,28 @@ export type LabelTranslationFormGroup = FormGroup<LabelTranslationFormGroupConte
 
 @Injectable({ providedIn: 'root' })
 export class LabelTranslationFormService {
-  createLabelTranslationFormGroup(labelTranslation: LabelTranslationFormGroupInput = { id: null }): LabelTranslationFormGroup {
+  createLabelTranslationFormGroup(
+    labelTranslation: LabelTranslationFormGroupInput = { id: null },
+    ua: LabelAccess = LABEL_ACCESS,
+  ): LabelTranslationFormGroup {
     const labelTranslationRawValue = {
       ...this.getFormDefaults(),
       ...labelTranslation,
     };
     return new FormGroup<LabelTranslationFormGroupContent>({
       id: new FormControl(
-        { value: labelTranslationRawValue.id, disabled: true },
+        { value: labelTranslationRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      label: new FormControl(labelTranslationRawValue.label, {
-        validators: [Validators.required],
-      }),
-      lang: new FormControl(labelTranslationRawValue.lang, {
-        validators: [Validators.required],
-      }),
-      translation: new FormControl(labelTranslationRawValue.translation, {
-        validators: [Validators.required],
-      }),
+      label: new FormControl({ value: labelTranslationRawValue.label, disabled: ua.label.disabled }, { validators: [Validators.required] }),
+      lang: new FormControl({ value: labelTranslationRawValue.lang, disabled: ua.lang.disabled }, { validators: [Validators.required] }),
+      translation: new FormControl(
+        { value: labelTranslationRawValue.translation, disabled: ua.translation.disabled },
+        { validators: [Validators.required] },
+      ),
     });
   }
 

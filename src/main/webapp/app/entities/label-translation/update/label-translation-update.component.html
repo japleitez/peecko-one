@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.label.visible">
           <label class="form-label" for="field_label">Label</label>
           <input type="text" class="form-control" name="label" id="field_label" data-cy="label" formControlName="label" />
           @if (editForm.get('label')!.invalid && (editForm.get('label')!.dirty || editForm.get('label')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.lang.visible">
           <label class="form-label" for="field_lang">Lang</label>
           <select class="form-control" name="lang" formControlName="lang" id="field_lang" data-cy="lang">
             <option [ngValue]="null"></option>
@@ -42,7 +42,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.translation.visible">
           <label class="form-label" for="field_translation">Translation</label>
           <input
             type="text"
