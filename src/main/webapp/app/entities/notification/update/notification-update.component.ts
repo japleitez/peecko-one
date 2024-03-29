@@ -8,7 +8,7 @@ import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Language } from 'app/entities/enumerations/language.model';
-import { INotification } from '../notification.model';
+import { INotification, NOTIFICATION_ACCESS, NotificationAccess } from '../notification.model';
 import { NotificationService } from '../service/notification.service';
 import { NotificationFormService, NotificationFormGroup } from './notification-form.service';
 
@@ -19,11 +19,12 @@ import { NotificationFormService, NotificationFormGroup } from './notification-f
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class NotificationUpdateComponent implements OnInit {
+  ua: NotificationAccess = this.getNotificationAccess();
   isSaving = false;
   notification: INotification | null = null;
   languageValues = Object.keys(Language);
 
-  editForm: NotificationFormGroup = this.notificationFormService.createNotificationFormGroup();
+  editForm: NotificationFormGroup = this.notificationFormService.createNotificationFormGroup(undefined, this.getNotificationAccess());
 
   constructor(
     protected notificationService: NotificationService,
@@ -76,5 +77,9 @@ export class NotificationUpdateComponent implements OnInit {
   protected updateForm(notification: INotification): void {
     this.notification = notification;
     this.notificationFormService.resetForm(this.editForm, notification);
+  }
+
+  protected getNotificationAccess(): NotificationAccess {
+    return NOTIFICATION_ACCESS;
   }
 }

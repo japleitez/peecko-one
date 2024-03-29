@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.companyId.visible">
           <label class="form-label" for="field_companyId">Company Id</label>
           <input type="number" class="form-control" name="companyId" id="field_companyId" data-cy="companyId" formControlName="companyId" />
           @if (editForm.get('companyId')!.invalid && (editForm.get('companyId')!.dirty || editForm.get('companyId')!.touched)) {
@@ -28,7 +28,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.title.visible">
           <label class="form-label" for="field_title">Title</label>
           <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
           @if (editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)) {
@@ -40,7 +40,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.message.visible">
           <label class="form-label" for="field_message">Message</label>
           <input type="text" class="form-control" name="message" id="field_message" data-cy="message" formControlName="message" />
           @if (editForm.get('message')!.invalid && (editForm.get('message')!.dirty || editForm.get('message')!.touched)) {
@@ -52,7 +52,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.language.visible">
           <label class="form-label" for="field_language">Language</label>
           <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
             <option [ngValue]="null"></option>
@@ -69,17 +69,17 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.imageUrl.visible">
           <label class="form-label" for="field_imageUrl">Image Url</label>
           <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl" formControlName="imageUrl" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.videoUrl.visible">
           <label class="form-label" for="field_videoUrl">Video Url</label>
           <input type="text" class="form-control" name="videoUrl" id="field_videoUrl" data-cy="videoUrl" formControlName="videoUrl" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.starts.visible">
           <label class="form-label" for="field_starts">Starts</label>
           <div class="input-group">
             <input
@@ -96,7 +96,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.expires.visible">
           <label class="form-label" for="field_expires">Expires</label>
           <div class="input-group">
             <input

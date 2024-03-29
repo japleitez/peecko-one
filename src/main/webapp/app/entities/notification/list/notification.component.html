@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/notification/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Notification</span>
+        <span>New Notification</span>
       </button>
     </div>
   </h2>
@@ -35,63 +35,63 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="companyId">
+            <th scope="col" jhiSortBy="companyId" *ngIf="ua.companyId.listable">
               <div class="d-flex">
                 <span>Company Id</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="title">
+            <th scope="col" jhiSortBy="title" *ngIf="ua.title.listable">
               <div class="d-flex">
                 <span>Title</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="message">
+            <th scope="col" jhiSortBy="message" *ngIf="ua.message.listable">
               <div class="d-flex">
                 <span>Message</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="language">
+            <th scope="col" jhiSortBy="language" *ngIf="ua.language.listable">
               <div class="d-flex">
                 <span>Language</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="imageUrl">
+            <th scope="col" jhiSortBy="imageUrl" *ngIf="ua.imageUrl.listable">
               <div class="d-flex">
                 <span>Image Url</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="videoUrl">
+            <th scope="col" jhiSortBy="videoUrl" *ngIf="ua.videoUrl.listable">
               <div class="d-flex">
                 <span>Video Url</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="starts">
+            <th scope="col" jhiSortBy="starts" *ngIf="ua.starts.listable">
               <div class="d-flex">
                 <span>Starts</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="expires">
+            <th scope="col" jhiSortBy="expires" *ngIf="ua.expires.listable">
               <div class="d-flex">
                 <span>Expires</span>
 
@@ -104,32 +104,29 @@
         <tbody>
           @for (notification of notifications; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/notification', notification.id, 'view']">{{ notification.id }}</a>
               </td>
-              <td>{{ notification.companyId }}</td>
-              <td>{{ notification.title }}</td>
-              <td>{{ notification.message }}</td>
-              <td>{{ notification.language }}</td>
-              <td>{{ notification.imageUrl }}</td>
-              <td>{{ notification.videoUrl }}</td>
-              <td>{{ notification.starts | formatMediumDate }}</td>
-              <td>{{ notification.expires | formatMediumDate }}</td>
+              <td *ngIf="ua.companyId.listable">{{ notification.companyId }}</td>
+              <td *ngIf="ua.title.listable">{{ notification.title }}</td>
+              <td *ngIf="ua.message.listable">{{ notification.message }}</td>
+              <td *ngIf="ua.language.listable">{{ notification.language }}</td>
+              <td *ngIf="ua.imageUrl.listable">{{ notification.imageUrl }}</td>
+              <td *ngIf="ua.videoUrl.listable">{{ notification.videoUrl }}</td>
+              <td *ngIf="ua.starts.listable">{{ notification.starts | formatMediumDate }}</td>
+              <td *ngIf="ua.expires.listable">{{ notification.expires | formatMediumDate }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/notification', notification.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/notification', notification.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(notification)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

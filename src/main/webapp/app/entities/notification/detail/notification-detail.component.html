@@ -11,40 +11,40 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ notification.id }}</span>
           </dd>
-          <dt><span>Company Id</span></dt>
-          <dd>
+          <dt *ngIf="ua.companyId.visible"><span>Company Id</span></dt>
+          <dd *ngIf="ua.companyId.visible">
             <span>{{ notification.companyId }}</span>
           </dd>
-          <dt><span>Title</span></dt>
-          <dd>
+          <dt *ngIf="ua.title.visible"><span>Title</span></dt>
+          <dd *ngIf="ua.title.visible">
             <span>{{ notification.title }}</span>
           </dd>
-          <dt><span>Message</span></dt>
-          <dd>
+          <dt *ngIf="ua.message.visible"><span>Message</span></dt>
+          <dd *ngIf="ua.message.visible">
             <span>{{ notification.message }}</span>
           </dd>
-          <dt><span>Language</span></dt>
-          <dd>
+          <dt *ngIf="ua.language.visible"><span>Language</span></dt>
+          <dd *ngIf="ua.language.visible">
             <span>{{ notification.language }}</span>
           </dd>
-          <dt><span>Image Url</span></dt>
-          <dd>
+          <dt *ngIf="ua.imageUrl.visible"><span>Image Url</span></dt>
+          <dd *ngIf="ua.imageUrl.visible">
             <span>{{ notification.imageUrl }}</span>
           </dd>
-          <dt><span>Video Url</span></dt>
-          <dd>
+          <dt *ngIf="ua.videoUrl.visible"><span>Video Url</span></dt>
+          <dd *ngIf="ua.videoUrl.visible">
             <span>{{ notification.videoUrl }}</span>
           </dd>
-          <dt><span>Starts</span></dt>
-          <dd>
+          <dt *ngIf="ua.starts.visible"><span>Starts</span></dt>
+          <dd *ngIf="ua.starts.visible">
             <span>{{ notification.starts | formatMediumDate }}</span>
           </dd>
-          <dt><span>Expires</span></dt>
-          <dd>
+          <dt *ngIf="ua.expires.visible"><span>Expires</span></dt>
+          <dd *ngIf="ua.expires.visible">
             <span>{{ notification.expires | formatMediumDate }}</span>
           </dd>
         </dl>

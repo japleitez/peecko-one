@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { INotification } from '../notification.model';
+import { INotification, NOTIFICATION_ACCESS, NotificationAccess } from '../notification.model';
 import { EntityArrayResponseType, NotificationService } from '../service/notification.service';
 import { NotificationDeleteDialogComponent } from '../delete/notification-delete-dialog.component';
 
@@ -33,6 +33,7 @@ import { NotificationDeleteDialogComponent } from '../delete/notification-delete
   ],
 })
 export class NotificationComponent implements OnInit {
+  ua: NotificationAccess = this.getNotificationAccess();
   notifications?: INotification[];
   isLoading = false;
 
@@ -148,5 +149,9 @@ export class NotificationComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getNotificationAccess(): NotificationAccess {
+    return NOTIFICATION_ACCESS;
   }
 }
