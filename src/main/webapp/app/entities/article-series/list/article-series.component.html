@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/article-series/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Article Series</span>
+        <span>New Article Series</span>
       </button>
     </div>
   </h2>
@@ -35,91 +35,91 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="code">
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="title">
+            <th scope="col" jhiSortBy="title" *ngIf="ua.title.listable">
               <div class="d-flex">
                 <span>Title</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="subtitle">
+            <th scope="col" jhiSortBy="subtitle" *ngIf="ua.subtitle.listable">
               <div class="d-flex">
                 <span>Subtitle</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="summary">
+            <th scope="col" jhiSortBy="summary" *ngIf="ua.summary.listable">
               <div class="d-flex">
                 <span>Summary</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="language">
+            <th scope="col" jhiSortBy="language" *ngIf="ua.language.listable">
               <div class="d-flex">
                 <span>Language</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="tags">
+            <th scope="col" jhiSortBy="tags" *ngIf="ua.tags.listable">
               <div class="d-flex">
                 <span>Tags</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="thumbnail">
+            <th scope="col" jhiSortBy="thumbnail" *ngIf="ua.thumbnail.listable">
               <div class="d-flex">
                 <span>Thumbnail</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="counter">
+            <th scope="col" jhiSortBy="counter" *ngIf="ua.counter.listable">
               <div class="d-flex">
                 <span>Counter</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updated">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="released">
+            <th scope="col" jhiSortBy="released" *ngIf="ua.released.listable">
               <div class="d-flex">
                 <span>Released</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="archived">
+            <th scope="col" jhiSortBy="archived" *ngIf="ua.archived.listable">
               <div class="d-flex">
                 <span>Archived</span>
 
@@ -132,36 +132,33 @@
         <tbody>
           @for (articleSeries of articleSeries; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/article-series', articleSeries.id, 'view']">{{ articleSeries.id }}</a>
               </td>
-              <td>{{ articleSeries.code }}</td>
-              <td>{{ articleSeries.title }}</td>
-              <td>{{ articleSeries.subtitle }}</td>
-              <td>{{ articleSeries.summary }}</td>
-              <td>{{ articleSeries.language }}</td>
-              <td>{{ articleSeries.tags }}</td>
-              <td>{{ articleSeries.thumbnail }}</td>
-              <td>{{ articleSeries.counter }}</td>
-              <td>{{ articleSeries.created | formatMediumDatetime }}</td>
-              <td>{{ articleSeries.updated | formatMediumDatetime }}</td>
-              <td>{{ articleSeries.released | formatMediumDatetime }}</td>
-              <td>{{ articleSeries.archived | formatMediumDatetime }}</td>
+              <td *ngIf="ua.code.listable">{{ articleSeries.code }}</td>
+              <td *ngIf="ua.title.listable">{{ articleSeries.title }}</td>
+              <td *ngIf="ua.subtitle.listable">{{ articleSeries.subtitle }}</td>
+              <td *ngIf="ua.summary.listable">{{ articleSeries.summary }}</td>
+              <td *ngIf="ua.language.listable">{{ articleSeries.language }}</td>
+              <td *ngIf="ua.tags.listable">{{ articleSeries.tags }}</td>
+              <td *ngIf="ua.thumbnail.listable">{{ articleSeries.thumbnail }}</td>
+              <td *ngIf="ua.counter.listable">{{ articleSeries.counter }}</td>
+              <td *ngIf="ua.created.listable">{{ articleSeries.created | formatMediumDatetime }}</td>
+              <td *ngIf="ua.updated.listable">{{ articleSeries.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.released.listable">{{ articleSeries.released | formatMediumDatetime }}</td>
+              <td *ngIf="ua.archived.listable">{{ articleSeries.archived | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/article-series', articleSeries.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/article-series', articleSeries.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(articleSeries)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

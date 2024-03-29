@@ -9,9 +9,11 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IArticleCategory } from '../article-category.model';
+import { ARTICLE_CATEGORY_ACCESS, ArticleCategoryAccess, IArticleCategory } from '../article-category.model';
 import { EntityArrayResponseType, ArticleCategoryService } from '../service/article-category.service';
 import { ArticleCategoryDeleteDialogComponent } from '../delete/article-category-delete-dialog.component';
+import { ARTICLE_ACCESS } from '../../article/article.model';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -26,9 +28,11 @@ import { ArticleCategoryDeleteDialogComponent } from '../delete/article-category
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-  ],
+    NgIf
+  ]
 })
 export class ArticleCategoryComponent implements OnInit {
+  ua: ArticleCategoryAccess = this.getArticleCategoryAccess();
   articleCategories?: IArticleCategory[];
   isLoading = false;
 
@@ -130,4 +134,9 @@ export class ArticleCategoryComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getArticleCategoryAccess(): ArticleCategoryAccess {
+    return ARTICLE_CATEGORY_ACCESS;
+  }
+
 }

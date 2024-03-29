@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IArticle, NewArticle } from '../article.model';
+import { ARTICLE_ACCESS, ArticleAccess, IArticle, NewArticle } from '../article.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -58,43 +58,43 @@ export type ArticleFormGroup = FormGroup<ArticleFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ArticleFormService {
-  createArticleFormGroup(article: ArticleFormGroupInput = { id: null }): ArticleFormGroup {
+  createArticleFormGroup(article: ArticleFormGroupInput = { id: null }, ua: ArticleAccess = ARTICLE_ACCESS): ArticleFormGroup {
     const articleRawValue = this.convertArticleToArticleRawValue({
       ...this.getFormDefaults(),
       ...article,
     });
     return new FormGroup<ArticleFormGroupContent>({
       id: new FormControl(
-        { value: articleRawValue.id, disabled: true },
+        { value: articleRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      code: new FormControl(articleRawValue.code, {
-        validators: [Validators.required],
+      code: new FormControl({ value: articleRawValue.code, disabled: ua.code.disabled },
+        { validators: [Validators.required],
       }),
-      title: new FormControl(articleRawValue.title, {
-        validators: [Validators.required],
+      title: new FormControl({ value: articleRawValue.title, disabled: ua.title.disabled },
+        { validators: [Validators.required],
       }),
-      subtitle: new FormControl(articleRawValue.subtitle),
-      summary: new FormControl(articleRawValue.summary),
-      language: new FormControl(articleRawValue.language, {
-        validators: [Validators.required],
+      subtitle: new FormControl({ value: articleRawValue.subtitle, disabled: ua.subtitle.disabled }),
+      summary: new FormControl({ value: articleRawValue.summary, disabled: ua.summary.disabled }),
+      language: new FormControl({ value: articleRawValue.language, disabled: ua.language.disabled },
+        { validators: [Validators.required],
       }),
-      tags: new FormControl(articleRawValue.tags),
-      duration: new FormControl(articleRawValue.duration),
-      thumbnail: new FormControl(articleRawValue.thumbnail),
-      audioUrl: new FormControl(articleRawValue.audioUrl),
-      content: new FormControl(articleRawValue.content),
-      seriesId: new FormControl(articleRawValue.seriesId),
-      chapter: new FormControl(articleRawValue.chapter),
-      created: new FormControl(articleRawValue.created),
-      updated: new FormControl(articleRawValue.updated),
-      released: new FormControl(articleRawValue.released),
-      archived: new FormControl(articleRawValue.archived),
-      articleCategory: new FormControl(articleRawValue.articleCategory),
-      coach: new FormControl(articleRawValue.coach),
+      tags: new FormControl({ value: articleRawValue.tags, disabled: ua.tags.disabled }),
+      duration: new FormControl({ value: articleRawValue.duration, disabled: ua.duration.disabled }),
+      thumbnail: new FormControl({ value: articleRawValue.thumbnail, disabled: ua.thumbnail.disabled }),
+      audioUrl: new FormControl({ value: articleRawValue.audioUrl, disabled: ua.audioUrl.disabled }),
+      content: new FormControl({ value: articleRawValue.content, disabled: ua.content.disabled }),
+      seriesId: new FormControl({ value: articleRawValue.seriesId, disabled: ua.seriesId.disabled }),
+      chapter: new FormControl({ value: articleRawValue.chapter, disabled: ua.chapter.disabled }),
+      created: new FormControl({ value: articleRawValue.created, disabled: ua.created.disabled }),
+      updated: new FormControl({ value: articleRawValue.updated, disabled: ua.updated.disabled }),
+      released: new FormControl({ value: articleRawValue.released, disabled: ua.released.disabled }),
+      archived: new FormControl({ value: articleRawValue.archived, disabled: ua.archived.disabled }),
+      articleCategory: new FormControl({ value: articleRawValue.articleCategory, disabled: ua.articleCategory.disabled }),
+      coach: new FormControl({ value: articleRawValue.coach, disabled: ua.coach.disabled }),
     });
   }
 

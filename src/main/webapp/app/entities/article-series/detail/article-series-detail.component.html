@@ -11,56 +11,56 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ articleSeries.id }}</span>
           </dd>
-          <dt><span>Code</span></dt>
-          <dd>
+          <dt *ngIf="ua.code.visible"><span>Code</span></dt>
+          <dd *ngIf="ua.code.visible">
             <span>{{ articleSeries.code }}</span>
           </dd>
-          <dt><span>Title</span></dt>
-          <dd>
+          <dt *ngIf="ua.title.visible"><span>Title</span></dt>
+          <dd *ngIf="ua.title.visible">
             <span>{{ articleSeries.title }}</span>
           </dd>
-          <dt><span>Subtitle</span></dt>
-          <dd>
+          <dt *ngIf="ua.subtitle.visible"><span>Subtitle</span></dt>
+          <dd *ngIf="ua.subtitle.visible">
             <span>{{ articleSeries.subtitle }}</span>
           </dd>
-          <dt><span>Summary</span></dt>
-          <dd>
+          <dt *ngIf="ua.summary.visible"><span>Summary</span></dt>
+          <dd *ngIf="ua.summary.visible">
             <span>{{ articleSeries.summary }}</span>
           </dd>
-          <dt><span>Language</span></dt>
-          <dd>
+          <dt *ngIf="ua.language.visible"><span>Language</span></dt>
+          <dd *ngIf="ua.language.visible">
             <span>{{ articleSeries.language }}</span>
           </dd>
-          <dt><span>Tags</span></dt>
-          <dd>
+          <dt *ngIf="ua.tags.visible"><span>Tags</span></dt>
+          <dd *ngIf="ua.tags.visible">
             <span>{{ articleSeries.tags }}</span>
           </dd>
-          <dt><span>Thumbnail</span></dt>
-          <dd>
+          <dt *ngIf="ua.thumbnail.visible"><span>Thumbnail</span></dt>
+          <dd *ngIf="ua.thumbnail.visible">
             <span>{{ articleSeries.thumbnail }}</span>
           </dd>
-          <dt><span>Counter</span></dt>
-          <dd>
+          <dt *ngIf="ua.counter.visible"><span>Counter</span></dt>
+          <dd *ngIf="ua.counter.visible">
             <span>{{ articleSeries.counter }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ articleSeries.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ articleSeries.updated | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Released</span></dt>
-          <dd>
+          <dt *ngIf="ua.released.visible"><span>Released</span></dt>
+          <dd *ngIf="ua.released.visible">
             <span>{{ articleSeries.released | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Archived</span></dt>
-          <dd>
+          <dt *ngIf="ua.archived.visible"><span>Archived</span></dt>
+          <dd *ngIf="ua.archived.visible">
             <span>{{ articleSeries.archived | formatMediumDatetime }}</span>
           </dd>
         </dl>

@@ -3,7 +3,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IArticleCategory, NewArticleCategory } from '../article-category.model';
+import {
+  ARTICLE_CATEGORY_ACCESS,
+  ArticleCategoryAccess,
+  IArticleCategory,
+  NewArticleCategory
+} from '../article-category.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -45,31 +50,31 @@ export type ArticleCategoryFormGroup = FormGroup<ArticleCategoryFormGroupContent
 
 @Injectable({ providedIn: 'root' })
 export class ArticleCategoryFormService {
-  createArticleCategoryFormGroup(articleCategory: ArticleCategoryFormGroupInput = { id: null }): ArticleCategoryFormGroup {
+  createArticleCategoryFormGroup(articleCategory: ArticleCategoryFormGroupInput = { id: null }, ua: ArticleCategoryAccess =  ARTICLE_CATEGORY_ACCESS): ArticleCategoryFormGroup {
     const articleCategoryRawValue = this.convertArticleCategoryToArticleCategoryRawValue({
       ...this.getFormDefaults(),
       ...articleCategory,
     });
     return new FormGroup<ArticleCategoryFormGroupContent>({
       id: new FormControl(
-        { value: articleCategoryRawValue.id, disabled: true },
+        { value: articleCategoryRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      code: new FormControl(articleCategoryRawValue.code, {
-        validators: [Validators.required],
+      code: new FormControl({ value: articleCategoryRawValue.code, disabled: ua.code.disabled },
+        { validators: [Validators.required],
       }),
-      title: new FormControl(articleCategoryRawValue.title, {
-        validators: [Validators.required],
+      title: new FormControl({ value: articleCategoryRawValue.title, disabled: ua.title.disabled },
+        { validators: [Validators.required],
       }),
-      label: new FormControl(articleCategoryRawValue.label, {
-        validators: [Validators.required],
+      label: new FormControl({ value: articleCategoryRawValue.label, disabled: ua.label.disabled },
+        { validators: [Validators.required],
       }),
-      created: new FormControl(articleCategoryRawValue.created),
-      release: new FormControl(articleCategoryRawValue.release),
-      archived: new FormControl(articleCategoryRawValue.archived),
+      created: new FormControl({ value: articleCategoryRawValue.created, disabled: ua.created.disabled }),
+      release: new FormControl({ value: articleCategoryRawValue.release, disabled: ua.release.disabled }),
+      archived: new FormControl({ value: articleCategoryRawValue.archived, disabled: ua.archived.disabled }),
     });
   }
 

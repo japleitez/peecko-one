@@ -12,9 +12,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IArticle } from '../article.model';
+import { ARTICLE_ACCESS, ArticleAccess, IArticle } from '../article.model';
 import { EntityArrayResponseType, ArticleService } from '../service/article.service';
 import { ArticleDeleteDialogComponent } from '../delete/article-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -30,9 +31,11 @@ import { ArticleDeleteDialogComponent } from '../delete/article-delete-dialog.co
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-  ],
+    NgIf
+  ]
 })
 export class ArticleComponent implements OnInit {
+  ua: ArticleAccess = this.getArticleAccess();
   articles?: IArticle[];
   isLoading = false;
 
@@ -149,4 +152,9 @@ export class ArticleComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getArticleAccess(): ArticleAccess {
+    return ARTICLE_ACCESS;
+  }
+
 }

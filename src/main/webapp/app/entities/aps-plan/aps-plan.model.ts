@@ -54,5 +54,5 @@ APS_PLAN_USER_ACCESS = {
   created: { listable: false, visible: true, disabled: false },
   updated: { listable: false, visible: true, disabled: false },
   apsOrders: { listable: true, visible: true, disabled: false },
-  customer: { listable: false, visible: true, disabled: true }
+  customer: { listable: true, visible: true, disabled: true }
 }

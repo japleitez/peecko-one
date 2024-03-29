@@ -8,17 +8,19 @@ import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Language } from 'app/entities/enumerations/language.model';
-import { IArticleSeries } from '../article-series.model';
+import { ARTICLE_SERIES_ACCESS, ArticleSeriesAccess, IArticleSeries } from '../article-series.model';
 import { ArticleSeriesService } from '../service/article-series.service';
 import { ArticleSeriesFormService, ArticleSeriesFormGroup } from './article-series-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-article-series-update',
   templateUrl: './article-series-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ArticleSeriesUpdateComponent implements OnInit {
+  ua: ArticleSeriesAccess = this.getArticleSeriesAccess()
   isSaving = false;
   articleSeries: IArticleSeries | null = null;
   languageValues = Object.keys(Language);
@@ -77,4 +79,9 @@ export class ArticleSeriesUpdateComponent implements OnInit {
     this.articleSeries = articleSeries;
     this.articleSeriesFormService.resetForm(this.editForm, articleSeries);
   }
+
+  protected getArticleSeriesAccess(): ArticleSeriesAccess {
+    return ARTICLE_SERIES_ACCESS;
+  }
+
 }

@@ -13,16 +13,18 @@ import { ICoach } from 'app/entities/coach/coach.model';
 import { CoachService } from 'app/entities/coach/service/coach.service';
 import { Language } from 'app/entities/enumerations/language.model';
 import { ArticleService } from '../service/article.service';
-import { IArticle } from '../article.model';
+import { ARTICLE_ACCESS, ArticleAccess, IArticle } from '../article.model';
 import { ArticleFormService, ArticleFormGroup } from './article-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-article-update',
   templateUrl: './article-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ArticleUpdateComponent implements OnInit {
+  ua: ArticleAccess = this.getArticleAccess();
   isSaving = false;
   article: IArticle | null = null;
   languageValues = Object.keys(Language);
@@ -30,7 +32,7 @@ export class ArticleUpdateComponent implements OnInit {
   articleCategoriesSharedCollection: IArticleCategory[] = [];
   coachesSharedCollection: ICoach[] = [];
 
-  editForm: ArticleFormGroup = this.articleFormService.createArticleFormGroup();
+  editForm: ArticleFormGroup = this.articleFormService.createArticleFormGroup(undefined, this.getArticleAccess());
 
   constructor(
     protected articleService: ArticleService,
@@ -120,4 +122,9 @@ export class ArticleUpdateComponent implements OnInit {
       .pipe(map((coaches: ICoach[]) => this.coachService.addCoachToCollectionIfMissing<ICoach>(coaches, this.article?.coach)))
       .subscribe((coaches: ICoach[]) => (this.coachesSharedCollection = coaches));
   }
+
+  protected getArticleAccess(): ArticleAccess {
+    return ARTICLE_ACCESS;
+  }
+
 }

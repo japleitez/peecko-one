@@ -7,21 +7,23 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IArticleCategory } from '../article-category.model';
+import { ARTICLE_CATEGORY_ACCESS, ArticleCategoryAccess, IArticleCategory } from '../article-category.model';
 import { ArticleCategoryService } from '../service/article-category.service';
 import { ArticleCategoryFormService, ArticleCategoryFormGroup } from './article-category-form.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'jhi-article-category-update',
   templateUrl: './article-category-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
 })
 export class ArticleCategoryUpdateComponent implements OnInit {
+  ua: ArticleCategoryAccess = this.getArticleCategoryAccess();
   isSaving = false;
   articleCategory: IArticleCategory | null = null;
 
-  editForm: ArticleCategoryFormGroup = this.articleCategoryFormService.createArticleCategoryFormGroup();
+  editForm: ArticleCategoryFormGroup = this.articleCategoryFormService.createArticleCategoryFormGroup(undefined, this.getArticleCategoryAccess());
 
   constructor(
     protected articleCategoryService: ArticleCategoryService,
@@ -75,4 +77,9 @@ export class ArticleCategoryUpdateComponent implements OnInit {
     this.articleCategory = articleCategory;
     this.articleCategoryFormService.resetForm(this.editForm, articleCategory);
   }
+
+  protected getArticleCategoryAccess(): ArticleCategoryAccess {
+    return ARTICLE_CATEGORY_ACCESS;
+  }
+
 }

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IArticleSeries, NewArticleSeries } from '../article-series.model';
+import { ARTICLE_SERIES_ACCESS, ArticleSeriesAccess, IArticleSeries, NewArticleSeries } from '../article-series.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -52,39 +52,39 @@ export type ArticleSeriesFormGroup = FormGroup<ArticleSeriesFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ArticleSeriesFormService {
-  createArticleSeriesFormGroup(articleSeries: ArticleSeriesFormGroupInput = { id: null }): ArticleSeriesFormGroup {
+  createArticleSeriesFormGroup(articleSeries: ArticleSeriesFormGroupInput = { id: null }, ua: ArticleSeriesAccess = ARTICLE_SERIES_ACCESS): ArticleSeriesFormGroup {
     const articleSeriesRawValue = this.convertArticleSeriesToArticleSeriesRawValue({
       ...this.getFormDefaults(),
       ...articleSeries,
     });
     return new FormGroup<ArticleSeriesFormGroupContent>({
       id: new FormControl(
-        { value: articleSeriesRawValue.id, disabled: true },
+        { value: articleSeriesRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      code: new FormControl(articleSeriesRawValue.code, {
-        validators: [Validators.required],
+      code: new FormControl({ value: articleSeriesRawValue.code, disabled: ua.code.disabled },
+        { validators: [Validators.required],
       }),
-      title: new FormControl(articleSeriesRawValue.title, {
-        validators: [Validators.required],
+      title: new FormControl({ value: articleSeriesRawValue.title, disabled: ua.title.disabled },
+        { validators: [Validators.required],
       }),
-      subtitle: new FormControl(articleSeriesRawValue.subtitle),
-      summary: new FormControl(articleSeriesRawValue.summary),
-      language: new FormControl(articleSeriesRawValue.language, {
-        validators: [Validators.required],
+      subtitle: new FormControl({ value: articleSeriesRawValue.subtitle, disabled: ua.subtitle.disabled }),
+      summary: new FormControl({ value: articleSeriesRawValue.summary, disabled: ua.summary.disabled }),
+      language: new FormControl({ value: articleSeriesRawValue.language, disabled: ua.language.disabled },
+        { validators: [Validators.required],
       }),
-      tags: new FormControl(articleSeriesRawValue.tags),
-      thumbnail: new FormControl(articleSeriesRawValue.thumbnail),
-      counter: new FormControl(articleSeriesRawValue.counter, {
-        validators: [Validators.required],
+      tags: new FormControl({ value: articleSeriesRawValue.tags, disabled: ua.tags.disabled }),
+      thumbnail: new FormControl({ value: articleSeriesRawValue.thumbnail, disabled: ua.thumbnail.disabled }),
+      counter: new FormControl({ value: articleSeriesRawValue.counter, disabled: ua.counter.disabled },
+        { validators: [Validators.required],
       }),
-      created: new FormControl(articleSeriesRawValue.created),
-      updated: new FormControl(articleSeriesRawValue.updated),
-      released: new FormControl(articleSeriesRawValue.released),
-      archived: new FormControl(articleSeriesRawValue.archived),
+      created: new FormControl({ value: articleSeriesRawValue.created, disabled: ua.created.disabled }),
+      updated: new FormControl({ value: articleSeriesRawValue.updated, disabled: ua.updated.disabled }),
+      released: new FormControl({ value: articleSeriesRawValue.released, disabled: ua.released.disabled }),
+      archived: new FormControl({ value: articleSeriesRawValue.archived, disabled: ua.archived.disabled }),
     });
   }
 

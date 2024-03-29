@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
           @if (editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.title.visible">
           <label class="form-label" for="field_title">Title</label>
           <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
           @if (editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)) {
@@ -37,17 +37,17 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.subtitle.visible">
           <label class="form-label" for="field_subtitle">Subtitle</label>
           <input type="text" class="form-control" name="subtitle" id="field_subtitle" data-cy="subtitle" formControlName="subtitle" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.summary.visible">
           <label class="form-label" for="field_summary">Summary</label>
           <input type="text" class="form-control" name="summary" id="field_summary" data-cy="summary" formControlName="summary" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.language.visible">
           <label class="form-label" for="field_language">Language</label>
           <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
             <option [ngValue]="null"></option>
@@ -64,17 +64,17 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.tags.visible">
           <label class="form-label" for="field_tags">Tags</label>
           <input type="text" class="form-control" name="tags" id="field_tags" data-cy="tags" formControlName="tags" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.thumbnail.visible">
           <label class="form-label" for="field_thumbnail">Thumbnail</label>
           <input type="text" class="form-control" name="thumbnail" id="field_thumbnail" data-cy="thumbnail" formControlName="thumbnail" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.counter.visible">
           <label class="form-label" for="field_counter">Counter</label>
           <input type="number" class="form-control" name="counter" id="field_counter" data-cy="counter" formControlName="counter" />
           @if (editForm.get('counter')!.invalid && (editForm.get('counter')!.dirty || editForm.get('counter')!.touched)) {
@@ -89,7 +89,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">
             <input
@@ -104,7 +104,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.updated.visible">
           <label class="form-label" for="field_updated">Updated</label>
           <div class="d-flex">
             <input
@@ -119,7 +119,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.released.visible">
           <label class="form-label" for="field_released">Released</label>
           <div class="d-flex">
             <input
@@ -134,7 +134,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.archived.visible">
           <label class="form-label" for="field_archived">Archived</label>
           <div class="d-flex">
             <input

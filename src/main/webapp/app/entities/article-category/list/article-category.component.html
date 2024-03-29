@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/article-category/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Article Category</span>
+        <span>New Article Category</span>
       </button>
     </div>
   </h2>
@@ -35,49 +35,49 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="code">
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="title">
+            <th scope="col" jhiSortBy="title" *ngIf="ua.title.listable">
               <div class="d-flex">
                 <span>Title</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="label">
+            <th scope="col" jhiSortBy="label" *ngIf="ua.label.listable">
               <div class="d-flex">
                 <span>Label</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="release">
+            <th scope="col" jhiSortBy="release" *ngIf="ua.release.listable">
               <div class="d-flex">
                 <span>Release</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="archived">
+            <th scope="col" jhiSortBy="archived" *ngIf="ua.archived.listable">
               <div class="d-flex">
                 <span>Archived</span>
 
@@ -90,15 +90,15 @@
         <tbody>
           @for (articleCategory of articleCategories; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/article-category', articleCategory.id, 'view']">{{ articleCategory.id }}</a>
               </td>
-              <td>{{ articleCategory.code }}</td>
-              <td>{{ articleCategory.title }}</td>
-              <td>{{ articleCategory.label }}</td>
-              <td>{{ articleCategory.created | formatMediumDatetime }}</td>
-              <td>{{ articleCategory.release | formatMediumDatetime }}</td>
-              <td>{{ articleCategory.archived | formatMediumDatetime }}</td>
+              <td *ngIf="ua.code.listable">{{ articleCategory.code }}</td>
+              <td *ngIf="ua.title.listable">{{ articleCategory.title }}</td>
+              <td *ngIf="ua.label.listable">{{ articleCategory.label }}</td>
+              <td *ngIf="ua.created.listable">{{ articleCategory.created | formatMediumDatetime }}</td>
+              <td *ngIf="ua.release.listable">{{ articleCategory.release | formatMediumDatetime }}</td>
+              <td *ngIf="ua.archived.listable">{{ articleCategory.archived | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a
@@ -107,7 +107,6 @@
                     data-cy="entityDetailsButton"
                   >
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a
@@ -116,12 +115,10 @@
                     data-cy="entityEditButton"
                   >
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(articleCategory)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

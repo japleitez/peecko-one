@@ -12,9 +12,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IArticleSeries } from '../article-series.model';
+import { ARTICLE_SERIES_ACCESS, ArticleSeriesAccess, IArticleSeries } from '../article-series.model';
 import { EntityArrayResponseType, ArticleSeriesService } from '../service/article-series.service';
 import { ArticleSeriesDeleteDialogComponent } from '../delete/article-series-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -30,9 +31,11 @@ import { ArticleSeriesDeleteDialogComponent } from '../delete/article-series-del
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-  ],
+    NgIf
+  ]
 })
 export class ArticleSeriesComponent implements OnInit {
+  ua: ArticleSeriesAccess = this.getArticleSeriesAccess();
   articleSeries?: IArticleSeries[];
   isLoading = false;
 
@@ -149,4 +152,9 @@ export class ArticleSeriesComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getArticleSeriesAccess(): ArticleSeriesAccess {
+    return ARTICLE_SERIES_ACCESS;
+  }
+
 }
