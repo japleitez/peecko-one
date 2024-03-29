@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.name.visible">
           <label class="form-label" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
           @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.counter.visible">
           <label class="form-label" for="field_counter">Counter</label>
           <input type="number" class="form-control" name="counter" id="field_counter" data-cy="counter" formControlName="counter" />
           @if (editForm.get('counter')!.invalid && (editForm.get('counter')!.dirty || editForm.get('counter')!.touched)) {
@@ -40,7 +40,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">
             <input
@@ -65,7 +65,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.updated.visible">
           <label class="form-label" for="field_updated">Updated</label>
           <div class="d-flex">
             <input
@@ -90,7 +90,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.apsUser.visible">
           <label class="form-label" for="field_apsUser">Aps User</label>
           <select
             class="form-control"

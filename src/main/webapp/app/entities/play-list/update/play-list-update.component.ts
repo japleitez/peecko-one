@@ -9,23 +9,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IApsUser } from 'app/entities/aps-user/aps-user.model';
 import { ApsUserService } from 'app/entities/aps-user/service/aps-user.service';
-import { IPlayList } from '../play-list.model';
+import { IPlayList, PLAYLIST_ACCESS, PlayListAccess } from '../play-list.model';
 import { PlayListService } from '../service/play-list.service';
 import { PlayListFormService, PlayListFormGroup } from './play-list-form.service';
+import SortByDirective from '../../../shared/sort/sort-by.directive';
 
 @Component({
   standalone: true,
   selector: 'jhi-play-list-update',
   templateUrl: './play-list-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, SortByDirective],
 })
 export class PlayListUpdateComponent implements OnInit {
+  ua: PlayListAccess = this.getPlayListAccess();
   isSaving = false;
   playList: IPlayList | null = null;
 
   apsUsersSharedCollection: IApsUser[] = [];
 
-  editForm: PlayListFormGroup = this.playListFormService.createPlayListFormGroup();
+  editForm: PlayListFormGroup = this.playListFormService.createPlayListFormGroup(undefined, this.getPlayListAccess());
 
   constructor(
     protected playListService: PlayListService,
@@ -96,5 +98,9 @@ export class PlayListUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IApsUser[]>) => res.body ?? []))
       .pipe(map((apsUsers: IApsUser[]) => this.apsUserService.addApsUserToCollectionIfMissing<IApsUser>(apsUsers, this.playList?.apsUser)))
       .subscribe((apsUsers: IApsUser[]) => (this.apsUsersSharedCollection = apsUsers));
+  }
+
+  protected getPlayListAccess(): PlayListAccess {
+    return PLAYLIST_ACCESS;
   }
 }

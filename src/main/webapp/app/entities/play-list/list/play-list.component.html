@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/play-list/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Play List</span>
+        <span>New Play List</span>
       </button>
     </div>
   </h2>
@@ -35,42 +35,42 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="name">
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
               <div class="d-flex">
                 <span>Name</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="counter">
+            <th scope="col" jhiSortBy="counter" *ngIf="ua.counter.listable">
               <div class="d-flex">
                 <span>Counter</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updated">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="apsUser.id">
+            <th scope="col" jhiSortBy="apsUser.id" *ngIf="ua.apsUser.listable">
               <div class="d-flex">
                 <span>Aps User</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -82,14 +82,14 @@
         <tbody>
           @for (playList of playLists; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/play-list', playList.id, 'view']">{{ playList.id }}</a>
               </td>
-              <td>{{ playList.name }}</td>
-              <td>{{ playList.counter }}</td>
-              <td>{{ playList.created | formatMediumDatetime }}</td>
-              <td>{{ playList.updated | formatMediumDatetime }}</td>
-              <td>
+              <td *ngIf="ua.name.listable">{{ playList.name }}</td>
+              <td *ngIf="ua.counter.listable">{{ playList.counter }}</td>
+              <td *ngIf="ua.created.listable">{{ playList.created | formatMediumDatetime }}</td>
+              <td *ngIf="ua.updated.listable">{{ playList.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.apsUser.listable">
                 @if (playList.apsUser) {
                   <div>
                     <a [routerLink]="['/aps-user', playList.apsUser.id, 'view']">{{ playList.apsUser.id }}</a>
@@ -100,17 +100,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/play-list', playList.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/play-list', playList.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(playList)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

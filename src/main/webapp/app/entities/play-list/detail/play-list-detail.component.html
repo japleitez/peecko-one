@@ -11,28 +11,28 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ playList.id }}</span>
           </dd>
-          <dt><span>Name</span></dt>
-          <dd>
+          <dt *ngIf="ua.name.visible"><span>Name</span></dt>
+          <dd *ngIf="ua.name.visible">
             <span>{{ playList.name }}</span>
           </dd>
-          <dt><span>Counter</span></dt>
-          <dd>
+          <dt *ngIf="ua.counter.visible"><span>Counter</span></dt>
+          <dd *ngIf="ua.counter.visible">
             <span>{{ playList.counter }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ playList.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ playList.updated | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Aps User</span></dt>
-          <dd>
+          <dt *ngIf="ua.apsUser.visible"><span>Aps User</span></dt>
+          <dd *ngIf="ua.apsUser.visible">
             @if (playList.apsUser) {
               <div>
                 <a [routerLink]="['/aps-user', playList.apsUser.id, 'view']">{{ playList.apsUser.id }}</a>

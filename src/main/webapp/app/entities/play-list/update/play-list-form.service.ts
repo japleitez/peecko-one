@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IPlayList, NewPlayList } from '../play-list.model';
+import { IPlayList, NewPlayList, PLAYLIST_ACCESS, PlayListAccess } from '../play-list.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -43,32 +43,24 @@ export type PlayListFormGroup = FormGroup<PlayListFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class PlayListFormService {
-  createPlayListFormGroup(playList: PlayListFormGroupInput = { id: null }): PlayListFormGroup {
+  createPlayListFormGroup(playList: PlayListFormGroupInput = { id: null }, ua: PlayListAccess = PLAYLIST_ACCESS): PlayListFormGroup {
     const playListRawValue = this.convertPlayListToPlayListRawValue({
       ...this.getFormDefaults(),
       ...playList,
     });
     return new FormGroup<PlayListFormGroupContent>({
       id: new FormControl(
-        { value: playListRawValue.id, disabled: true },
+        { value: playListRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      name: new FormControl(playListRawValue.name, {
-        validators: [Validators.required],
-      }),
-      counter: new FormControl(playListRawValue.counter, {
-        validators: [Validators.required],
-      }),
-      created: new FormControl(playListRawValue.created, {
-        validators: [Validators.required],
-      }),
-      updated: new FormControl(playListRawValue.updated, {
-        validators: [Validators.required],
-      }),
-      apsUser: new FormControl(playListRawValue.apsUser),
+      name: new FormControl({ value: playListRawValue.name, disabled: ua.name.disabled }, { validators: [Validators.required] }),
+      counter: new FormControl({ value: playListRawValue.counter, disabled: ua.counter.disabled }, { validators: [Validators.required] }),
+      created: new FormControl({ value: playListRawValue.created, disabled: ua.created.disabled }, { validators: [Validators.required] }),
+      updated: new FormControl({ value: playListRawValue.updated, disabled: ua.updated.disabled }, { validators: [Validators.required] }),
+      apsUser: new FormControl({ value: playListRawValue.apsUser, disabled: ua.apsUser.disabled }),
     });
   }
 

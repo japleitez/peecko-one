@@ -3,7 +3,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { IPlayList } from '../play-list.model';
+import { IPlayList, PLAYLIST_ACCESS, PlayListAccess } from '../play-list.model';
+import { NOTIFICATION_ACCESS } from '../../notification/notification.model';
 
 @Component({
   standalone: true,
@@ -12,6 +13,7 @@ import { IPlayList } from '../play-list.model';
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class PlayListDetailComponent {
+  ua: PlayListAccess = PLAYLIST_ACCESS;
   @Input() playList: IPlayList | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}

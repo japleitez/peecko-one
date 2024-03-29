@@ -12,9 +12,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IPlayList } from '../play-list.model';
+import { IPlayList, PLAYLIST_ACCESS, PlayListAccess } from '../play-list.model';
 import { EntityArrayResponseType, PlayListService } from '../service/play-list.service';
 import { PlayListDeleteDialogComponent } from '../delete/play-list-delete-dialog.component';
+import { NOTIFICATION_ACCESS } from '../../notification/notification.model';
 
 @Component({
   standalone: true,
@@ -33,6 +34,7 @@ import { PlayListDeleteDialogComponent } from '../delete/play-list-delete-dialog
   ],
 })
 export class PlayListComponent implements OnInit {
+  ua: PlayListAccess = this.getPlayListAccess();
   playLists?: IPlayList[];
   isLoading = false;
 
@@ -148,5 +150,9 @@ export class PlayListComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getPlayListAccess(): PlayListAccess {
+    return PLAYLIST_ACCESS;
   }
 }
