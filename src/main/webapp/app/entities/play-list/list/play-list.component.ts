@@ -16,6 +16,7 @@ import { IPlayList, PLAYLIST_ACCESS, PlayListAccess } from '../play-list.model';
 import { EntityArrayResponseType, PlayListService } from '../service/play-list.service';
 import { PlayListDeleteDialogComponent } from '../delete/play-list-delete-dialog.component';
 import { NOTIFICATION_ACCESS } from '../../notification/notification.model';
+import { STAFF_ACCESS, StaffAccess } from '../../staff/staff.model';
 
 @Component({
   standalone: true,
@@ -155,4 +156,5 @@ export class PlayListComponent implements OnInit {
   protected getPlayListAccess(): PlayListAccess {
     return PLAYLIST_ACCESS;
   }
+
 }

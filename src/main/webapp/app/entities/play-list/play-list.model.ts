@@ -32,7 +32,7 @@ PLAYLIST_ACCESS = {
   name: { listable: true, visible: true, disabled: false },
   counter: { listable: true, visible: true, disabled: false },
   created: { listable: true, visible: true, disabled: true },
-  updated: { listable: true, visible: true, disabled: false },
+  updated: { listable: true, visible: true, disabled: true },
   videoItems: { listable: false, visible: true, disabled: true },
   apsUser: { listable: true, visible: true, disabled: false },
 };

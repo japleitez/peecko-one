@@ -26,5 +26,5 @@ VIDEO_ITEM_ACCESS = {
   previous: { listable: true, visible: true, disabled: false },
   code: { listable: true, visible: true, disabled: false },
   next: { listable: true, visible: true, disabled: false },
-  playList: { listable: true, visible: true, disabled: true },
+  playList: { listable: true, visible: true, disabled: false },
 };

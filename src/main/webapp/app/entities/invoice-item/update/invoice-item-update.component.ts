@@ -11,7 +11,7 @@ import { IInvoice } from 'app/entities/invoice/invoice.model';
 import { InvoiceService } from 'app/entities/invoice/service/invoice.service';
 import { ProductType } from 'app/entities/enumerations/product-type.model';
 import { InvoiceItemService } from '../service/invoice-item.service';
-import { IInvoiceItem } from '../invoice-item.model';
+import { IInvoiceItem, INVOICE_ITEM_ACCESS, InvoiceItemAccess } from '../invoice-item.model';
 import { InvoiceItemFormService, InvoiceItemFormGroup } from './invoice-item-form.service';
 
 @Component({
@@ -21,13 +21,14 @@ import { InvoiceItemFormService, InvoiceItemFormGroup } from './invoice-item-for
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class InvoiceItemUpdateComponent implements OnInit {
+  ua: InvoiceItemAccess = this.getInvoiceItemAccess();
   isSaving = false;
   invoiceItem: IInvoiceItem | null = null;
   productTypeValues = Object.keys(ProductType);
 
   invoicesSharedCollection: IInvoice[] = [];
 
-  editForm: InvoiceItemFormGroup = this.invoiceItemFormService.createInvoiceItemFormGroup();
+  editForm: InvoiceItemFormGroup = this.invoiceItemFormService.createInvoiceItemFormGroup(undefined, this.getInvoiceItemAccess());
 
   constructor(
     protected invoiceItemService: InvoiceItemService,
@@ -101,4 +102,9 @@ export class InvoiceItemUpdateComponent implements OnInit {
       )
       .subscribe((invoices: IInvoice[]) => (this.invoicesSharedCollection = invoices));
   }
+
+  protected getInvoiceItemAccess(): InvoiceItemAccess {
+    return INVOICE_ITEM_ACCESS;
+  }
+
 }

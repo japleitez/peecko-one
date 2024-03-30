@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IStaff, NewStaff } from '../staff.model';
+import { IStaff, NewStaff, STAFF_ACCESS, StaffAccess } from '../staff.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -27,26 +27,26 @@ export type StaffFormGroup = FormGroup<StaffFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class StaffFormService {
-  createStaffFormGroup(staff: StaffFormGroupInput = { id: null }): StaffFormGroup {
+  createStaffFormGroup(staff: StaffFormGroupInput = { id: null }, ua: StaffAccess = STAFF_ACCESS): StaffFormGroup {
     const staffRawValue = {
       ...this.getFormDefaults(),
       ...staff,
     };
     return new FormGroup<StaffFormGroupContent>({
       id: new FormControl(
-        { value: staffRawValue.id, disabled: true },
+        { value: staffRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      userId: new FormControl(staffRawValue.userId, {
-        validators: [Validators.required],
+      userId: new FormControl({ value: staffRawValue.userId, disabled: ua.userId.disabled },
+        { validators: [Validators.required],
       }),
-      role: new FormControl(staffRawValue.role, {
-        validators: [Validators.required],
+      role: new FormControl({ value: staffRawValue.role, disabled: ua.role.disabled },
+        { validators: [Validators.required],
       }),
-      agency: new FormControl(staffRawValue.agency),
+      agency: new FormControl({ value: staffRawValue.agency, disabled: ua.agency.disabled }),
     });
   }
 

@@ -9,7 +9,7 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IInvoiceItem } from '../invoice-item.model';
+import { IInvoiceItem, INVOICE_ITEM_ACCESS, InvoiceItemAccess } from '../invoice-item.model';
 import { EntityArrayResponseType, InvoiceItemService } from '../service/invoice-item.service';
 import { InvoiceItemDeleteDialogComponent } from '../delete/invoice-item-delete-dialog.component';
 
@@ -29,6 +29,7 @@ import { InvoiceItemDeleteDialogComponent } from '../delete/invoice-item-delete-
   ],
 })
 export class InvoiceItemComponent implements OnInit {
+  ua: InvoiceItemAccess = this.getInvoiceItemAccess();
   invoiceItems?: IInvoiceItem[];
   isLoading = false;
 
@@ -130,4 +131,9 @@ export class InvoiceItemComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getInvoiceItemAccess() {
+    return INVOICE_ITEM_ACCESS;
+  }
+
 }

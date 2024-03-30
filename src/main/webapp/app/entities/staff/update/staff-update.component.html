@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.userId.visible">
           <label class="form-label" for="field_userId">User Id</label>
           <input type="number" class="form-control" name="userId" id="field_userId" data-cy="userId" formControlName="userId" />
           @if (editForm.get('userId')!.invalid && (editForm.get('userId')!.dirty || editForm.get('userId')!.touched)) {
@@ -26,7 +26,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.role.visible">
           <label class="form-label" for="field_role">Role</label>
           <input type="text" class="form-control" name="role" id="field_role" data-cy="role" formControlName="role" />
           @if (editForm.get('role')!.invalid && (editForm.get('role')!.dirty || editForm.get('role')!.touched)) {
@@ -38,7 +38,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.agency.visible">
           <label class="form-label" for="field_agency">Agency</label>
           <select
             class="form-control"

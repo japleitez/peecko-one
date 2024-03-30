@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.type.visible">
           <label class="form-label" for="field_type">Type</label>
           <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
             <option [ngValue]="null"></option>
@@ -30,7 +30,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.description.visible">
           <label class="form-label" for="field_description">Description</label>
           <input
             type="text"
@@ -49,7 +49,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.quantity.visible">
           <label class="form-label" for="field_quantity">Quantity</label>
           <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
           @if (editForm.get('quantity')!.invalid && (editForm.get('quantity')!.dirty || editForm.get('quantity')!.touched)) {
@@ -64,7 +64,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.priceUnit.visible">
           <label class="form-label" for="field_priceUnit">Price Unit</label>
           <input type="number" class="form-control" name="priceUnit" id="field_priceUnit" data-cy="priceUnit" formControlName="priceUnit" />
           @if (editForm.get('priceUnit')!.invalid && (editForm.get('priceUnit')!.dirty || editForm.get('priceUnit')!.touched)) {
@@ -79,7 +79,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.priceExtended.visible">
           <label class="form-label" for="field_priceExtended">Price Extended</label>
           <input
             type="number"
@@ -101,7 +101,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.disRate.visible">
           <label class="form-label" for="field_disRate">Dis Rate</label>
           <input type="number" class="form-control" name="disRate" id="field_disRate" data-cy="disRate" formControlName="disRate" />
           @if (editForm.get('disRate')!.invalid && (editForm.get('disRate')!.dirty || editForm.get('disRate')!.touched)) {
@@ -116,7 +116,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.disAmount.visible">
           <label class="form-label" for="field_disAmount">Dis Amount</label>
           <input type="number" class="form-control" name="disAmount" id="field_disAmount" data-cy="disAmount" formControlName="disAmount" />
           @if (editForm.get('disAmount')!.invalid && (editForm.get('disAmount')!.dirty || editForm.get('disAmount')!.touched)) {
@@ -131,7 +131,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.finalPrice.visible">
           <label class="form-label" for="field_finalPrice">Final Price</label>
           <input
             type="number"
@@ -153,7 +153,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.vatRate.visible">
           <label class="form-label" for="field_vatRate">Vat Rate</label>
           <input type="number" class="form-control" name="vatRate" id="field_vatRate" data-cy="vatRate" formControlName="vatRate" />
           @if (editForm.get('vatRate')!.invalid && (editForm.get('vatRate')!.dirty || editForm.get('vatRate')!.touched)) {
@@ -168,7 +168,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.vatAmount.visible">
           <label class="form-label" for="field_vatAmount">Vat Amount</label>
           <input type="number" class="form-control" name="vatAmount" id="field_vatAmount" data-cy="vatAmount" formControlName="vatAmount" />
           @if (editForm.get('vatAmount')!.invalid && (editForm.get('vatAmount')!.dirty || editForm.get('vatAmount')!.touched)) {
@@ -183,7 +183,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.total.visible">
           <label class="form-label" for="field_total">Total</label>
           <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
           @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
@@ -196,7 +196,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.invoice.visible">
           <label class="form-label" for="field_invoice">Invoice</label>
           <select
             class="form-control"

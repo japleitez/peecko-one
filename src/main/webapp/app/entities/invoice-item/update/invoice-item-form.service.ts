@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IInvoiceItem, NewInvoiceItem } from '../invoice-item.model';
+import { IInvoiceItem, INVOICE_ITEM_ACCESS, InvoiceItemAccess, NewInvoiceItem } from '../invoice-item.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -36,53 +36,53 @@ export type InvoiceItemFormGroup = FormGroup<InvoiceItemFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceItemFormService {
-  createInvoiceItemFormGroup(invoiceItem: InvoiceItemFormGroupInput = { id: null }): InvoiceItemFormGroup {
+  createInvoiceItemFormGroup(invoiceItem: InvoiceItemFormGroupInput = { id: null }, ua: InvoiceItemAccess = INVOICE_ITEM_ACCESS): InvoiceItemFormGroup {
     const invoiceItemRawValue = {
       ...this.getFormDefaults(),
       ...invoiceItem,
     };
     return new FormGroup<InvoiceItemFormGroupContent>({
       id: new FormControl(
-        { value: invoiceItemRawValue.id, disabled: true },
+        { value: invoiceItemRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      type: new FormControl(invoiceItemRawValue.type, {
-        validators: [Validators.required],
+      type: new FormControl({ value: invoiceItemRawValue.type, disabled: ua.type.disabled },
+        { validators: [Validators.required],
       }),
-      description: new FormControl(invoiceItemRawValue.description, {
-        validators: [Validators.required],
+      description: new FormControl({ value: invoiceItemRawValue.description, disabled: ua.description.disabled },
+        { validators: [Validators.required],
       }),
-      quantity: new FormControl(invoiceItemRawValue.quantity, {
-        validators: [Validators.required],
+      quantity: new FormControl({ value: invoiceItemRawValue.quantity, disabled: ua.quantity.disabled },
+        { validators: [Validators.required],
       }),
-      priceUnit: new FormControl(invoiceItemRawValue.priceUnit, {
-        validators: [Validators.required],
+      priceUnit: new FormControl({ value: invoiceItemRawValue.priceUnit, disabled: ua.priceUnit.disabled },
+        { validators: [Validators.required],
       }),
-      priceExtended: new FormControl(invoiceItemRawValue.priceExtended, {
-        validators: [Validators.required],
+      priceExtended: new FormControl({ value: invoiceItemRawValue.priceExtended, disabled: ua.priceExtended.disabled },
+        { validators: [Validators.required],
       }),
-      disRate: new FormControl(invoiceItemRawValue.disRate, {
-        validators: [Validators.required],
+      disRate: new FormControl({ value: invoiceItemRawValue.disRate, disabled: ua.disRate.disabled },
+        { validators: [Validators.required],
       }),
-      disAmount: new FormControl(invoiceItemRawValue.disAmount, {
-        validators: [Validators.required],
+      disAmount: new FormControl({ value: invoiceItemRawValue.disAmount, disabled: ua.disAmount.disabled },
+        { validators: [Validators.required],
       }),
-      finalPrice: new FormControl(invoiceItemRawValue.finalPrice, {
-        validators: [Validators.required],
+      finalPrice: new FormControl({ value: invoiceItemRawValue.finalPrice, disabled: ua.finalPrice.disabled },
+        { validators: [Validators.required],
       }),
-      vatRate: new FormControl(invoiceItemRawValue.vatRate, {
-        validators: [Validators.required],
+      vatRate: new FormControl({ value: invoiceItemRawValue.vatRate, disabled: ua.vatRate.disabled },
+        { validators: [Validators.required],
       }),
-      vatAmount: new FormControl(invoiceItemRawValue.vatAmount, {
-        validators: [Validators.required],
+      vatAmount: new FormControl({ value: invoiceItemRawValue.vatAmount, disabled: ua.vatAmount.disabled },
+        { validators: [Validators.required],
       }),
-      total: new FormControl(invoiceItemRawValue.total, {
-        validators: [Validators.required],
+      total: new FormControl({ value: invoiceItemRawValue.total, disabled: ua.total.disabled },
+        { validators: [Validators.required],
       }),
-      invoice: new FormControl(invoiceItemRawValue.invoice),
+      invoice: new FormControl({ value: invoiceItemRawValue.invoice, disabled: ua.invoice.disabled }),
     });
   }
 

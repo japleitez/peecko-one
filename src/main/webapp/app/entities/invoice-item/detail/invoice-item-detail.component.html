@@ -11,56 +11,56 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ invoiceItem.id }}</span>
           </dd>
-          <dt><span>Type</span></dt>
-          <dd>
+          <dt *ngIf="ua.type.visible"><span>Type</span></dt>
+          <dd *ngIf="ua.type.visible">
             <span>{{ invoiceItem.type }}</span>
           </dd>
-          <dt><span>Description</span></dt>
-          <dd>
+          <dt *ngIf="ua.description.visible"><span>Description</span></dt>
+          <dd *ngIf="ua.description.visible">
             <span>{{ invoiceItem.description }}</span>
           </dd>
-          <dt><span>Quantity</span></dt>
-          <dd>
+          <dt *ngIf="ua.quantity.visible"><span>Quantity</span></dt>
+          <dd *ngIf="ua.quantity.visible">
             <span>{{ invoiceItem.quantity }}</span>
           </dd>
-          <dt><span>Price Unit</span></dt>
-          <dd>
+          <dt *ngIf="ua.priceUnit.visible"><span>Price Unit</span></dt>
+          <dd *ngIf="ua.priceUnit.visible">
             <span>{{ invoiceItem.priceUnit }}</span>
           </dd>
-          <dt><span>Price Extended</span></dt>
-          <dd>
+          <dt *ngIf="ua.priceExtended.visible"><span>Price Extended</span></dt>
+          <dd *ngIf="ua.priceExtended.visible">
             <span>{{ invoiceItem.priceExtended }}</span>
           </dd>
-          <dt><span>Dis Rate</span></dt>
-          <dd>
+          <dt *ngIf="ua.disRate.visible"><span>Dis Rate</span></dt>
+          <dd *ngIf="ua.disRate.visible">
             <span>{{ invoiceItem.disRate }}</span>
           </dd>
-          <dt><span>Dis Amount</span></dt>
-          <dd>
+          <dt *ngIf="ua.disAmount.visible"><span>Dis Amount</span></dt>
+          <dd *ngIf="ua.disAmount.visible">
             <span>{{ invoiceItem.disAmount }}</span>
           </dd>
-          <dt><span>Final Price</span></dt>
-          <dd>
+          <dt *ngIf="ua.finalPrice.visible"><span>Final Price</span></dt>
+          <dd *ngIf="ua.finalPrice.visible">
             <span>{{ invoiceItem.finalPrice }}</span>
           </dd>
-          <dt><span>Vat Rate</span></dt>
-          <dd>
+          <dt *ngIf="ua.vatRate.visible"><span>Vat Rate</span></dt>
+          <dd *ngIf="ua.vatRate.visible">
             <span>{{ invoiceItem.vatRate }}</span>
           </dd>
-          <dt><span>Vat Amount</span></dt>
-          <dd>
+          <dt *ngIf="ua.vatAmount.visible"><span>Vat Amount</span></dt>
+          <dd *ngIf="ua.vatAmount.visible">
             <span>{{ invoiceItem.vatAmount }}</span>
           </dd>
-          <dt><span>Total</span></dt>
-          <dd>
+          <dt *ngIf="ua.total.visible"><span>Total</span></dt>
+          <dd *ngIf="ua.total.visible">
             <span>{{ invoiceItem.total }}</span>
           </dd>
-          <dt><span>Invoice</span></dt>
-          <dd>
+          <dt *ngIf="ua.invoice.visible"><span>Invoice</span></dt>
+          <dd *ngIf="ua.invoice.visible">
             @if (invoiceItem.invoice) {
               <div>
                 <a [routerLink]="['/invoice', invoiceItem.invoice.id, 'view']">{{ invoiceItem.invoice.id }}</a>

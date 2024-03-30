@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
-import { IStaff } from '../staff.model';
+import { IStaff, STAFF_ACCESS, StaffAccess } from '../staff.model';
 import { StaffService } from '../service/staff.service';
 import { StaffFormService, StaffFormGroup } from './staff-form.service';
 
@@ -20,12 +20,13 @@ import { StaffFormService, StaffFormGroup } from './staff-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class StaffUpdateComponent implements OnInit {
+  ua: StaffAccess = this.getStaffAccess();
   isSaving = false;
   staff: IStaff | null = null;
 
   agenciesSharedCollection: IAgency[] = [];
 
-  editForm: StaffFormGroup = this.staffFormService.createStaffFormGroup();
+  editForm: StaffFormGroup = this.staffFormService.createStaffFormGroup(undefined, this.getStaffAccess());
 
   constructor(
     protected staffService: StaffService,
@@ -94,4 +95,9 @@ export class StaffUpdateComponent implements OnInit {
       .pipe(map((agencies: IAgency[]) => this.agencyService.addAgencyToCollectionIfMissing<IAgency>(agencies, this.staff?.agency)))
       .subscribe((agencies: IAgency[]) => (this.agenciesSharedCollection = agencies));
   }
+
+  protected getStaffAccess(): StaffAccess {
+    return STAFF_ACCESS;
+  }
+
 }

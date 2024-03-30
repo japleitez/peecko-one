@@ -9,9 +9,10 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { IStaff } from '../staff.model';
+import { IStaff, STAFF_ACCESS, StaffAccess } from '../staff.model';
 import { EntityArrayResponseType, StaffService } from '../service/staff.service';
 import { StaffDeleteDialogComponent } from '../delete/staff-delete-dialog.component';
+import { PLAYLIST_ACCESS } from '../../play-list/play-list.model';
 
 @Component({
   standalone: true,
@@ -29,6 +30,7 @@ import { StaffDeleteDialogComponent } from '../delete/staff-delete-dialog.compon
   ],
 })
 export class StaffComponent implements OnInit {
+  ua: StaffAccess = this.getStaffAccess();
   staff?: IStaff[];
   isLoading = false;
 
@@ -130,4 +132,9 @@ export class StaffComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected getStaffAccess(): StaffAccess {
+    return STAFF_ACCESS;
+  }
+
 }
