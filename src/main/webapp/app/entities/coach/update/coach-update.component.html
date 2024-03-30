@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.type.visible">
           <label class="form-label" for="field_type">Type</label>
           <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
             <option [ngValue]="null"></option>
@@ -30,7 +30,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.name.visible">
           <label class="form-label" for="field_name">Name</label>
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
           @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
@@ -42,22 +42,22 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.email.visible">
           <label class="form-label" for="field_email">Email</label>
           <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.website.visible">
           <label class="form-label" for="field_website">Website</label>
           <input type="text" class="form-control" name="website" id="field_website" data-cy="website" formControlName="website" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.instagram.visible">
           <label class="form-label" for="field_instagram">Instagram</label>
           <input type="text" class="form-control" name="instagram" id="field_instagram" data-cy="instagram" formControlName="instagram" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.phoneNumber.visible">
           <label class="form-label" for="field_phoneNumber">Phone Number</label>
           <input
             type="text"
@@ -69,27 +69,27 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.country.visible">
           <label class="form-label" for="field_country">Country</label>
           <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.speaks.visible">
           <label class="form-label" for="field_speaks">Speaks</label>
           <input type="text" class="form-control" name="speaks" id="field_speaks" data-cy="speaks" formControlName="speaks" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.resume.visible">
           <label class="form-label" for="field_resume">Resume</label>
           <input type="text" class="form-control" name="resume" id="field_resume" data-cy="resume" formControlName="resume" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.notes.visible">
           <label class="form-label" for="field_notes">Notes</label>
           <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">
             <input
@@ -104,7 +104,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.updated.visible">
           <label class="form-label" for="field_updated">Updated</label>
           <div class="d-flex">
             <input

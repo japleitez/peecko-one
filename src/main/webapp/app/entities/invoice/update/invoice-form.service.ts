@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { IInvoice, NewInvoice } from '../invoice.model';
+import { IInvoice, INVOICE_ACCESS, InvoiceAccess, NewInvoice } from '../invoice.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -49,45 +49,31 @@ export type InvoiceFormGroup = FormGroup<InvoiceFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceFormService {
-  createInvoiceFormGroup(invoice: InvoiceFormGroupInput = { id: null }): InvoiceFormGroup {
+  createInvoiceFormGroup(invoice: InvoiceFormGroupInput = { id: null }, ua: InvoiceAccess = INVOICE_ACCESS): InvoiceFormGroup {
     const invoiceRawValue = this.convertInvoiceToInvoiceRawValue({
       ...this.getFormDefaults(),
       ...invoice,
     });
     return new FormGroup<InvoiceFormGroupContent>({
       id: new FormControl(
-        { value: invoiceRawValue.id, disabled: true },
+        { value: invoiceRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      number: new FormControl(invoiceRawValue.number, {
-        validators: [Validators.required],
-      }),
-      issued: new FormControl(invoiceRawValue.issued, {
-        validators: [Validators.required],
-      }),
-      dueDate: new FormControl(invoiceRawValue.dueDate, {
-        validators: [Validators.required],
-      }),
-      saleDate: new FormControl(invoiceRawValue.saleDate, {
-        validators: [Validators.required],
-      }),
-      subtotal: new FormControl(invoiceRawValue.subtotal, {
-        validators: [Validators.required],
-      }),
-      vat: new FormControl(invoiceRawValue.vat, {
-        validators: [Validators.required],
-      }),
-      total: new FormControl(invoiceRawValue.total, {
-        validators: [Validators.required],
-      }),
-      paid: new FormControl(invoiceRawValue.paid),
-      paidDate: new FormControl(invoiceRawValue.paidDate),
-      diff: new FormControl(invoiceRawValue.diff),
-      notes: new FormControl(invoiceRawValue.notes),
-      apsOrder: new FormControl(invoiceRawValue.apsOrder),
+      number: new FormControl({ value: invoiceRawValue.number, disabled: ua.number.disabled }, { validators: [Validators.required] }),
+      issued: new FormControl({ value: invoiceRawValue.issued, disabled: ua.issued.disabled }, { validators: [Validators.required] }),
+      dueDate: new FormControl({ value: invoiceRawValue.dueDate, disabled: ua.dueDate.disabled }, { validators: [Validators.required] }),
+      saleDate: new FormControl({ value: invoiceRawValue.saleDate, disabled: ua.saleDate.disabled }, { validators: [Validators.required] }),
+      subtotal: new FormControl({ value: invoiceRawValue.subtotal, disabled: ua.subtotal.disabled }, { validators: [Validators.required] }),
+      vat: new FormControl({ value: invoiceRawValue.vat, disabled: ua.vat.disabled }, { validators: [Validators.required] }),
+      total: new FormControl({ value: invoiceRawValue.total, disabled: ua.total.disabled }, { validators: [Validators.required] }),
+      paid: new FormControl({ value: invoiceRawValue.paid, disabled: ua.paid.disabled }),
+      paidDate: new FormControl({ value: invoiceRawValue.paidDate, disabled: ua.paidDate.disabled }),
+      diff: new FormControl({ value: invoiceRawValue.diff, disabled: ua.diff.disabled }),
+      notes: new FormControl({ value: invoiceRawValue.notes, disabled: ua.notes.disabled }),
+      apsOrder: new FormControl({ value: invoiceRawValue.apsOrder, disabled: ua.apsOrder.disabled }),
     });
   }
 

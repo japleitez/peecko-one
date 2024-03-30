@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IPlayList } from 'app/entities/play-list/play-list.model';
 import { PlayListService } from 'app/entities/play-list/service/play-list.service';
-import { IVideoItem } from '../video-item.model';
+import { IVideoItem, VIDEO_ITEM_ACCESS, VideoItemAccess } from '../video-item.model';
 import { VideoItemService } from '../service/video-item.service';
 import { VideoItemFormService, VideoItemFormGroup } from './video-item-form.service';
 
@@ -20,12 +20,13 @@ import { VideoItemFormService, VideoItemFormGroup } from './video-item-form.serv
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class VideoItemUpdateComponent implements OnInit {
+  ua: VideoItemAccess = this.getVideoItemAccess();
   isSaving = false;
   videoItem: IVideoItem | null = null;
 
   playListsSharedCollection: IPlayList[] = [];
 
-  editForm: VideoItemFormGroup = this.videoItemFormService.createVideoItemFormGroup();
+  editForm: VideoItemFormGroup = this.videoItemFormService.createVideoItemFormGroup(undefined, this.getVideoItemAccess());
 
   constructor(
     protected videoItemService: VideoItemService,
@@ -100,5 +101,9 @@ export class VideoItemUpdateComponent implements OnInit {
         ),
       )
       .subscribe((playLists: IPlayList[]) => (this.playListsSharedCollection = playLists));
+  }
+
+  protected getVideoItemAccess(): VideoItemAccess {
+    return VIDEO_ITEM_ACCESS;
   }
 }

@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { ICoach } from '../coach.model';
+import { COACH_ACCESS, CoachAccess, ICoach } from '../coach.model';
 import { EntityArrayResponseType, CoachService } from '../service/coach.service';
 import { CoachDeleteDialogComponent } from '../delete/coach-delete-dialog.component';
 
@@ -33,6 +33,7 @@ import { CoachDeleteDialogComponent } from '../delete/coach-delete-dialog.compon
   ],
 })
 export class CoachComponent implements OnInit {
+  ua: CoachAccess = this.getCoachAccess();
   coaches?: ICoach[];
   isLoading = false;
 
@@ -148,5 +149,9 @@ export class CoachComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getCoachAccess(): CoachAccess {
+    return COACH_ACCESS;
   }
 }

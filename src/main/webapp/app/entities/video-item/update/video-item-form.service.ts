@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IVideoItem, NewVideoItem } from '../video-item.model';
+import { IVideoItem, NewVideoItem, VIDEO_ITEM_ACCESS, VideoItemAccess } from '../video-item.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -28,23 +28,23 @@ export type VideoItemFormGroup = FormGroup<VideoItemFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class VideoItemFormService {
-  createVideoItemFormGroup(videoItem: VideoItemFormGroupInput = { id: null }): VideoItemFormGroup {
+  createVideoItemFormGroup(videoItem: VideoItemFormGroupInput = { id: null }, ua: VideoItemAccess = VIDEO_ITEM_ACCESS): VideoItemFormGroup {
     const videoItemRawValue = {
       ...this.getFormDefaults(),
       ...videoItem,
     };
     return new FormGroup<VideoItemFormGroupContent>({
       id: new FormControl(
-        { value: videoItemRawValue.id, disabled: true },
+        { value: videoItemRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      previous: new FormControl(videoItemRawValue.previous),
-      code: new FormControl(videoItemRawValue.code),
-      next: new FormControl(videoItemRawValue.next),
-      playList: new FormControl(videoItemRawValue.playList),
+      code: new FormControl({ value: videoItemRawValue.code, disabled: ua.code.disabled }),
+      previous: new FormControl({ value: videoItemRawValue.previous, disabled: ua.previous.disabled }),
+      next: new FormControl({ value: videoItemRawValue.next, disabled: ua.next.disabled }),
+      playList: new FormControl({ value: videoItemRawValue.playList, disabled: ua.playList.disabled }),
     });
   }
 

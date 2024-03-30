@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/video-item/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Video Item</span>
+        <span>New Video Item</span>
       </button>
     </div>
   </h2>
@@ -35,35 +35,35 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="previous">
-              <div class="d-flex">
-                <span>Previous</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="code">
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="next">
+            <th scope="col" jhiSortBy="previous" *ngIf="ua.previous.listable">
+              <div class="d-flex">
+                <span>Previous</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="next" *ngIf="ua.next.listable">
               <div class="d-flex">
                 <span>Next</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="playList.id">
+            <th scope="col" jhiSortBy="playList.id" *ngIf="ua.playList.listable">
               <div class="d-flex">
                 <span>Play List</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -75,13 +75,13 @@
         <tbody>
           @for (videoItem of videoItems; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/video-item', videoItem.id, 'view']">{{ videoItem.id }}</a>
               </td>
-              <td>{{ videoItem.previous }}</td>
-              <td>{{ videoItem.code }}</td>
-              <td>{{ videoItem.next }}</td>
-              <td>
+              <td *ngIf="ua.code.listable">{{ videoItem.code }}</td>
+              <td *ngIf="ua.previous.listable">{{ videoItem.previous }}</td>
+              <td *ngIf="ua.next.listable">{{ videoItem.next }}</td>
+              <td *ngIf="ua.playList.listable">
                 @if (videoItem.playList) {
                   <div>
                     <a [routerLink]="['/play-list', videoItem.playList.id, 'view']">{{ videoItem.playList.id }}</a>
@@ -92,17 +92,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/video-item', videoItem.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/video-item', videoItem.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(videoItem)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

@@ -35,91 +35,91 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="type">
+            <th scope="col" jhiSortBy="type" *ngIf="ua.type.listable">
               <div class="d-flex">
                 <span>Type</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="name">
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
               <div class="d-flex">
                 <span>Name</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="email">
+            <th scope="col" jhiSortBy="email" *ngIf="ua.email.listable">
               <div class="d-flex">
                 <span>Email</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="website">
+            <th scope="col" jhiSortBy="website" *ngIf="ua.website.listable">
               <div class="d-flex">
                 <span>Website</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="instagram">
+            <th scope="col" jhiSortBy="instagram" *ngIf="ua.instagram.listable">
               <div class="d-flex">
                 <span>Instagram</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="phoneNumber">
+            <th scope="col" jhiSortBy="phoneNumber" *ngIf="ua.phoneNumber.listable">
               <div class="d-flex">
                 <span>Phone Number</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="country">
+            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
               <div class="d-flex">
                 <span>Country</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="speaks">
+            <th scope="col" jhiSortBy="speaks" *ngIf="ua.speaks.listable">
               <div class="d-flex">
                 <span>Speaks</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="resume">
+            <th scope="col" jhiSortBy="resume" *ngIf="ua.resume.listable">
               <div class="d-flex">
                 <span>Resume</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="notes">
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
               <div class="d-flex">
                 <span>Notes</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updated">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 
@@ -132,36 +132,33 @@
         <tbody>
           @for (coach of coaches; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/coach', coach.id, 'view']">{{ coach.id }}</a>
               </td>
-              <td>{{ coach.type }}</td>
-              <td>{{ coach.name }}</td>
-              <td>{{ coach.email }}</td>
-              <td>{{ coach.website }}</td>
-              <td>{{ coach.instagram }}</td>
-              <td>{{ coach.phoneNumber }}</td>
-              <td>{{ coach.country }}</td>
-              <td>{{ coach.speaks }}</td>
-              <td>{{ coach.resume }}</td>
-              <td>{{ coach.notes }}</td>
-              <td>{{ coach.created | formatMediumDatetime }}</td>
-              <td>{{ coach.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.type.listable">{{ coach.type }}</td>
+              <td *ngIf="ua.name.listable">{{ coach.name }}</td>
+              <td *ngIf="ua.email.listable">{{ coach.email }}</td>
+              <td *ngIf="ua.website.listable">{{ coach.website }}</td>
+              <td *ngIf="ua.instagram.listable">{{ coach.instagram }}</td>
+              <td *ngIf="ua.phoneNumber.listable">{{ coach.phoneNumber }}</td>
+              <td *ngIf="ua.country.listable">{{ coach.country }}</td>
+              <td *ngIf="ua.speaks.listable">{{ coach.speaks }}</td>
+              <td *ngIf="ua.resume.listable">{{ coach.resume }}</td>
+              <td *ngIf="ua.notes.listable">{{ coach.notes }}</td>
+              <td *ngIf="ua.created.listable">{{ coach.created | formatMediumDatetime }}</td>
+              <td *ngIf="ua.updated.listable">{{ coach.updated | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/coach', coach.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/coach', coach.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(coach)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh list</span>
+        <span>Refresh</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/invoice/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span>Create a new Invoice</span>
+        <span>New Invoice</span>
       </button>
     </div>
   </h2>
@@ -35,91 +35,91 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="number">
+            <th scope="col" jhiSortBy="number" *ngIf="ua.number.listable">
               <div class="d-flex">
                 <span>Number</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="issued">
+            <th scope="col" jhiSortBy="issued" *ngIf="ua.issued.listable">
               <div class="d-flex">
                 <span>Issued</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="dueDate">
+            <th scope="col" jhiSortBy="dueDate" *ngIf="ua.dueDate.listable">
               <div class="d-flex">
                 <span>Due Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="saleDate">
+            <th scope="col" jhiSortBy="saleDate" *ngIf="ua.saleDate.listable">
               <div class="d-flex">
                 <span>Sale Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="subtotal">
+            <th scope="col" jhiSortBy="subtotal" *ngIf="ua.subtotal.listable">
               <div class="d-flex">
                 <span>Subtotal</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vat">
+            <th scope="col" jhiSortBy="vat" *ngIf="ua.vat.listable">
               <div class="d-flex">
                 <span>Vat</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="total">
+            <th scope="col" jhiSortBy="total" *ngIf="ua.total.listable">
               <div class="d-flex">
                 <span>Total</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="paid">
+            <th scope="col" jhiSortBy="paid" *ngIf="ua.paid.listable">
               <div class="d-flex">
                 <span>Paid</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="paidDate">
+            <th scope="col" jhiSortBy="paidDate" *ngIf="ua.paidDate.listable">
               <div class="d-flex">
                 <span>Paid Date</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="diff">
+            <th scope="col" jhiSortBy="diff" *ngIf="ua.diff.listable">
               <div class="d-flex">
                 <span>Diff</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="notes">
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
               <div class="d-flex">
                 <span>Notes</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="apsOrder.id">
+            <th scope="col" jhiSortBy="apsOrder.id" *ngIf="ua.apsOrder.listable">
               <div class="d-flex">
                 <span>Aps Order</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -131,21 +131,21 @@
         <tbody>
           @for (invoice of invoices; track trackId) {
             <tr data-cy="entityTable">
-              <td>
+              <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/invoice', invoice.id, 'view']">{{ invoice.id }}</a>
               </td>
-              <td>{{ invoice.number }}</td>
-              <td>{{ invoice.issued | formatMediumDatetime }}</td>
-              <td>{{ invoice.dueDate | formatMediumDate }}</td>
-              <td>{{ invoice.saleDate | formatMediumDate }}</td>
-              <td>{{ invoice.subtotal }}</td>
-              <td>{{ invoice.vat }}</td>
-              <td>{{ invoice.total }}</td>
-              <td>{{ invoice.paid }}</td>
-              <td>{{ invoice.paidDate | formatMediumDate }}</td>
-              <td>{{ invoice.diff }}</td>
-              <td>{{ invoice.notes }}</td>
-              <td>
+              <td *ngIf="ua.number.listable">{{ invoice.number }}</td>
+              <td *ngIf="ua.issued.listable">{{ invoice.issued | formatMediumDatetime }}</td>
+              <td *ngIf="ua.dueDate.listable">{{ invoice.dueDate | formatMediumDate }}</td>
+              <td *ngIf="ua.saleDate.listable">{{ invoice.saleDate | formatMediumDate }}</td>
+              <td *ngIf="ua.subtotal.listable">{{ invoice.subtotal }}</td>
+              <td *ngIf="ua.vat.listable">{{ invoice.vat }}</td>
+              <td *ngIf="ua.total.listable">{{ invoice.total }}</td>
+              <td *ngIf="ua.paid.listable">{{ invoice.paid }}</td>
+              <td *ngIf="ua.paidDate.listable">{{ invoice.paidDate | formatMediumDate }}</td>
+              <td *ngIf="ua.diff.listable">{{ invoice.diff }}</td>
+              <td *ngIf="ua.notes.listable">{{ invoice.notes }}</td>
+              <td *ngIf="ua.apsOrder.listable">
                 @if (invoice.apsOrder) {
                   <div>
                     <a [routerLink]="['/aps-order', invoice.apsOrder.id, 'view']">{{ invoice.apsOrder.id }}</a>
@@ -156,17 +156,14 @@
                 <div class="btn-group">
                   <a [routerLink]="['/invoice', invoice.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline">View</span>
                   </a>
 
                   <a [routerLink]="['/invoice', invoice.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline">Edit</span>
                   </a>
 
                   <button type="submit" (click)="delete(invoice)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline">Delete</span>
                   </button>
                 </div>
               </td>

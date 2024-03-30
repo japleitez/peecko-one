@@ -7,13 +7,13 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div class="mb-3" *ngIf="ua.id.visible">
             <label class="form-label" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.number.visible">
           <label class="form-label" for="field_number">Number</label>
           <input type="text" class="form-control" name="number" id="field_number" data-cy="number" formControlName="number" />
           @if (editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)) {
@@ -25,7 +25,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.issued.visible">
           <label class="form-label" for="field_issued">Issued</label>
           <div class="d-flex">
             <input
@@ -50,7 +50,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.dueDate.visible">
           <label class="form-label" for="field_dueDate">Due Date</label>
           <div class="input-group">
             <input
@@ -74,7 +74,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.saleDate.visible">
           <label class="form-label" for="field_saleDate">Sale Date</label>
           <div class="input-group">
             <input
@@ -98,7 +98,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.subtotal.visible">
           <label class="form-label" for="field_subtotal">Subtotal</label>
           <input type="number" class="form-control" name="subtotal" id="field_subtotal" data-cy="subtotal" formControlName="subtotal" />
           @if (editForm.get('subtotal')!.invalid && (editForm.get('subtotal')!.dirty || editForm.get('subtotal')!.touched)) {
@@ -113,7 +113,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.vat.visible">
           <label class="form-label" for="field_vat">Vat</label>
           <input type="number" class="form-control" name="vat" id="field_vat" data-cy="vat" formControlName="vat" />
           @if (editForm.get('vat')!.invalid && (editForm.get('vat')!.dirty || editForm.get('vat')!.touched)) {
@@ -126,7 +126,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.total.visible">
           <label class="form-label" for="field_total">Total</label>
           <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
           @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
@@ -139,12 +139,12 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.paid.visible">
           <label class="form-label" for="field_paid">Paid</label>
           <input type="number" class="form-control" name="paid" id="field_paid" data-cy="paid" formControlName="paid" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.paidDate.visible">
           <label class="form-label" for="field_paidDate">Paid Date</label>
           <div class="input-group">
             <input
@@ -161,17 +161,17 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.diff.visible">
           <label class="form-label" for="field_diff">Diff</label>
           <input type="number" class="form-control" name="diff" id="field_diff" data-cy="diff" formControlName="diff" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.notes.visible">
           <label class="form-label" for="field_notes">Notes</label>
           <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" *ngIf="ua.apsOrder.visible">
           <label class="form-label" for="field_apsOrder">Aps Order</label>
           <select
             class="form-control"

@@ -11,56 +11,56 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ invoice.id }}</span>
           </dd>
-          <dt><span>Number</span></dt>
-          <dd>
+          <dt *ngIf="ua.number.visible"><span>Number</span></dt>
+          <dd *ngIf="ua.number.visible">
             <span>{{ invoice.number }}</span>
           </dd>
-          <dt><span>Issued</span></dt>
-          <dd>
+          <dt *ngIf="ua.issued.visible"><span>Issued</span></dt>
+          <dd *ngIf="ua.issued.visible">
             <span>{{ invoice.issued | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Due Date</span></dt>
-          <dd>
+          <dt *ngIf="ua.dueDate.visible"><span>Due Date</span></dt>
+          <dd *ngIf="ua.dueDate.visible">
             <span>{{ invoice.dueDate | formatMediumDate }}</span>
           </dd>
-          <dt><span>Sale Date</span></dt>
-          <dd>
+          <dt *ngIf="ua.saleDate.visible"><span>Sale Date</span></dt>
+          <dd *ngIf="ua.saleDate.visible">
             <span>{{ invoice.saleDate | formatMediumDate }}</span>
           </dd>
-          <dt><span>Subtotal</span></dt>
-          <dd>
+          <dt *ngIf="ua.subtotal.visible"><span>Subtotal</span></dt>
+          <dd *ngIf="ua.subtotal.visible">
             <span>{{ invoice.subtotal }}</span>
           </dd>
-          <dt><span>Vat</span></dt>
-          <dd>
+          <dt *ngIf="ua.vat.visible"><span>Vat</span></dt>
+          <dd *ngIf="ua.vat.visible">
             <span>{{ invoice.vat }}</span>
           </dd>
-          <dt><span>Total</span></dt>
-          <dd>
+          <dt *ngIf="ua.total.visible"><span>Total</span></dt>
+          <dd *ngIf="ua.total.visible">
             <span>{{ invoice.total }}</span>
           </dd>
-          <dt><span>Paid</span></dt>
-          <dd>
+          <dt *ngIf="ua.paid.visible"><span>Paid</span></dt>
+          <dd *ngIf="ua.paid.visible">
             <span>{{ invoice.paid }}</span>
           </dd>
-          <dt><span>Paid Date</span></dt>
-          <dd>
+          <dt *ngIf="ua.paidDate.visible"><span>Paid Date</span></dt>
+          <dd *ngIf="ua.paidDate.visible">
             <span>{{ invoice.paidDate | formatMediumDate }}</span>
           </dd>
-          <dt><span>Diff</span></dt>
-          <dd>
+          <dt *ngIf="ua.diff.visible"><span>Diff</span></dt>
+          <dd *ngIf="ua.diff.visible">
             <span>{{ invoice.diff }}</span>
           </dd>
-          <dt><span>Notes</span></dt>
-          <dd>
+          <dt *ngIf="ua.notes.visible"><span>Notes</span></dt>
+          <dd *ngIf="ua.notes.visible">
             <span>{{ invoice.notes }}</span>
           </dd>
-          <dt><span>Aps Order</span></dt>
-          <dd>
+          <dt *ngIf="ua.apsOrder.visible"><span>Aps Order</span></dt>
+          <dd *ngIf="ua.apsOrder.visible">
             @if (invoice.apsOrder) {
               <div>
                 <a [routerLink]="['/aps-order', invoice.apsOrder.id, 'view']">{{ invoice.apsOrder.id }}</a>

@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IApsOrder } from 'app/entities/aps-order/aps-order.model';
 import { ApsOrderService } from 'app/entities/aps-order/service/aps-order.service';
-import { IInvoice } from '../invoice.model';
+import { IInvoice, INVOICE_ACCESS, InvoiceAccess } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
 import { InvoiceFormService, InvoiceFormGroup } from './invoice-form.service';
 
@@ -20,12 +20,13 @@ import { InvoiceFormService, InvoiceFormGroup } from './invoice-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class InvoiceUpdateComponent implements OnInit {
+  ua: InvoiceAccess = this.getInvoiceAccess();
   isSaving = false;
   invoice: IInvoice | null = null;
 
   apsOrdersSharedCollection: IApsOrder[] = [];
 
-  editForm: InvoiceFormGroup = this.invoiceFormService.createInvoiceFormGroup();
+  editForm: InvoiceFormGroup = this.invoiceFormService.createInvoiceFormGroup(undefined, this.getInvoiceAccess());
 
   constructor(
     protected invoiceService: InvoiceService,
@@ -100,5 +101,9 @@ export class InvoiceUpdateComponent implements OnInit {
         ),
       )
       .subscribe((apsOrders: IApsOrder[]) => (this.apsOrdersSharedCollection = apsOrders));
+  }
+
+  protected getInvoiceAccess(): InvoiceAccess {
+    return INVOICE_ACCESS;
   }
 }

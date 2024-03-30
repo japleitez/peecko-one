@@ -11,56 +11,56 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ coach.id }}</span>
           </dd>
-          <dt><span>Type</span></dt>
-          <dd>
+          <dt *ngIf="ua.type.visible"><span>Type</span></dt>
+          <dd *ngIf="ua.type.visible">
             <span>{{ coach.type }}</span>
           </dd>
-          <dt><span>Name</span></dt>
-          <dd>
+          <dt *ngIf="ua.name.visible"><span>Name</span></dt>
+          <dd *ngIf="ua.name.visible">
             <span>{{ coach.name }}</span>
           </dd>
-          <dt><span>Email</span></dt>
-          <dd>
+          <dt *ngIf="ua.email.visible"><span>Email</span></dt>
+          <dd *ngIf="ua.email.visible">
             <span>{{ coach.email }}</span>
           </dd>
-          <dt><span>Website</span></dt>
-          <dd>
+          <dt *ngIf="ua.website.visible"><span>Website</span></dt>
+          <dd *ngIf="ua.website.visible">
             <span>{{ coach.website }}</span>
           </dd>
-          <dt><span>Instagram</span></dt>
-          <dd>
+          <dt *ngIf="ua.instagram.visible"><span>Instagram</span></dt>
+          <dd *ngIf="ua.instagram.visible">
             <span>{{ coach.instagram }}</span>
           </dd>
-          <dt><span>Phone Number</span></dt>
-          <dd>
+          <dt *ngIf="ua.phoneNumber.visible"><span>Phone Number</span></dt>
+          <dd *ngIf="ua.phoneNumber.visible">
             <span>{{ coach.phoneNumber }}</span>
           </dd>
-          <dt><span>Country</span></dt>
-          <dd>
+          <dt *ngIf="ua.country.visible"><span>Country</span></dt>
+          <dd *ngIf="ua.country.visible">
             <span>{{ coach.country }}</span>
           </dd>
-          <dt><span>Speaks</span></dt>
-          <dd>
+          <dt *ngIf="ua.speaks.visible"><span>Speaks</span></dt>
+          <dd *ngIf="ua.speaks.visible">
             <span>{{ coach.speaks }}</span>
           </dd>
-          <dt><span>Resume</span></dt>
-          <dd>
+          <dt *ngIf="ua.resume.visible"><span>Resume</span></dt>
+          <dd *ngIf="ua.resume.visible">
             <span>{{ coach.resume }}</span>
           </dd>
-          <dt><span>Notes</span></dt>
-          <dd>
+          <dt *ngIf="ua.notes.visible"><span>Notes</span></dt>
+          <dd *ngIf="ua.notes.visible">
             <span>{{ coach.notes }}</span>
           </dd>
-          <dt><span>Created</span></dt>
-          <dd>
+          <dt *ngIf="ua.created.visible"><span>Created</span></dt>
+          <dd *ngIf="ua.created.visible">
             <span>{{ coach.created | formatMediumDatetime }}</span>
           </dd>
-          <dt><span>Updated</span></dt>
-          <dd>
+          <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
+          <dd *ngIf="ua.updated.visible">
             <span>{{ coach.updated | formatMediumDatetime }}</span>
           </dd>
         </dl>

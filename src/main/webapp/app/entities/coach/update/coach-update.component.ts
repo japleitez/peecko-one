@@ -8,7 +8,7 @@ import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CoachType } from 'app/entities/enumerations/coach-type.model';
-import { ICoach } from '../coach.model';
+import { COACH_ACCESS, CoachAccess, ICoach } from '../coach.model';
 import { CoachService } from '../service/coach.service';
 import { CoachFormService, CoachFormGroup } from './coach-form.service';
 
@@ -19,11 +19,12 @@ import { CoachFormService, CoachFormGroup } from './coach-form.service';
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class CoachUpdateComponent implements OnInit {
+  ua: CoachAccess = this.getCoachAccess();
   isSaving = false;
   coach: ICoach | null = null;
   coachTypeValues = Object.keys(CoachType);
 
-  editForm: CoachFormGroup = this.coachFormService.createCoachFormGroup();
+  editForm: CoachFormGroup = this.coachFormService.createCoachFormGroup(undefined, this.getCoachAccess());
 
   constructor(
     protected coachService: CoachService,
@@ -76,5 +77,9 @@ export class CoachUpdateComponent implements OnInit {
   protected updateForm(coach: ICoach): void {
     this.coach = coach;
     this.coachFormService.resetForm(this.editForm, coach);
+  }
+
+  protected getCoachAccess(): CoachAccess {
+    return COACH_ACCESS;
   }
 }

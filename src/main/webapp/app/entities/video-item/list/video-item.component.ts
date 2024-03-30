@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IVideoItem } from '../video-item.model';
+import { IVideoItem, VIDEO_ITEM_ACCESS, VideoItemAccess } from '../video-item.model';
 import { EntityArrayResponseType, VideoItemService } from '../service/video-item.service';
 import { VideoItemDeleteDialogComponent } from '../delete/video-item-delete-dialog.component';
 
@@ -33,6 +33,7 @@ import { VideoItemDeleteDialogComponent } from '../delete/video-item-delete-dial
   ],
 })
 export class VideoItemComponent implements OnInit {
+  ua: VideoItemAccess = this.getVideoItemAccess();
   videoItems?: IVideoItem[];
   isLoading = false;
 
@@ -148,5 +149,9 @@ export class VideoItemComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getVideoItemAccess(): VideoItemAccess {
+    return VIDEO_ITEM_ACCESS;
   }
 }

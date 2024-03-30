@@ -3,7 +3,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { IVideoItem } from '../video-item.model';
+import { IVideoItem, VIDEO_ITEM_ACCESS, VideoItemAccess } from '../video-item.model';
+import { ARTICLE_ACCESS } from '../../article/article.model';
 
 @Component({
   standalone: true,
@@ -12,6 +13,7 @@ import { IVideoItem } from '../video-item.model';
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
 export class VideoItemDetailComponent {
+  ua: VideoItemAccess = VIDEO_ITEM_ACCESS;
   @Input() videoItem: IVideoItem | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}

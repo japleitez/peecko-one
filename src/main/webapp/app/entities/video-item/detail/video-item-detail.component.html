@@ -11,24 +11,24 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span>ID</span></dt>
-          <dd>
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
             <span>{{ videoItem.id }}</span>
           </dd>
-          <dt><span>Previous</span></dt>
-          <dd>
-            <span>{{ videoItem.previous }}</span>
-          </dd>
-          <dt><span>Code</span></dt>
-          <dd>
+          <dt *ngIf="ua.code.visible"><span>Code</span></dt>
+          <dd *ngIf="ua.code.visible">
             <span>{{ videoItem.code }}</span>
           </dd>
-          <dt><span>Next</span></dt>
-          <dd>
+          <dt *ngIf="ua.previous.visible"><span>Previous</span></dt>
+          <dd *ngIf="ua.previous.visible">
+            <span>{{ videoItem.previous }}</span>
+          </dd>
+          <dt *ngIf="ua.next.visible"><span>Next</span></dt>
+          <dd *ngIf="ua.next.visible">
             <span>{{ videoItem.next }}</span>
           </dd>
-          <dt><span>Play List</span></dt>
-          <dd>
+          <dt *ngIf="ua.playList.visible"><span>Play List</span></dt>
+          <dd *ngIf="ua.playList.visible">
             @if (videoItem.playList) {
               <div>
                 <a [routerLink]="['/play-list', videoItem.playList.id, 'view']">{{ videoItem.playList.id }}</a>

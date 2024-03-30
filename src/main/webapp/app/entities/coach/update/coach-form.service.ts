@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { ICoach, NewCoach } from '../coach.model';
+import { COACH_ACCESS, CoachAccess, ICoach, NewCoach } from '../coach.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -50,35 +50,31 @@ export type CoachFormGroup = FormGroup<CoachFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class CoachFormService {
-  createCoachFormGroup(coach: CoachFormGroupInput = { id: null }): CoachFormGroup {
+  createCoachFormGroup(coach: CoachFormGroupInput = { id: null }, ua: CoachAccess = COACH_ACCESS): CoachFormGroup {
     const coachRawValue = this.convertCoachToCoachRawValue({
       ...this.getFormDefaults(),
       ...coach,
     });
     return new FormGroup<CoachFormGroupContent>({
       id: new FormControl(
-        { value: coachRawValue.id, disabled: true },
+        { value: coachRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      type: new FormControl(coachRawValue.type, {
-        validators: [Validators.required],
-      }),
-      name: new FormControl(coachRawValue.name, {
-        validators: [Validators.required],
-      }),
-      email: new FormControl(coachRawValue.email),
-      website: new FormControl(coachRawValue.website),
-      instagram: new FormControl(coachRawValue.instagram),
-      phoneNumber: new FormControl(coachRawValue.phoneNumber),
-      country: new FormControl(coachRawValue.country),
-      speaks: new FormControl(coachRawValue.speaks),
-      resume: new FormControl(coachRawValue.resume),
-      notes: new FormControl(coachRawValue.notes),
-      created: new FormControl(coachRawValue.created),
-      updated: new FormControl(coachRawValue.updated),
+      type: new FormControl({ value: coachRawValue.type, disabled: ua.type.disabled }, { validators: [Validators.required] }),
+      name: new FormControl({ value: coachRawValue.name, disabled: ua.name.disabled }, { validators: [Validators.required] }),
+      email: new FormControl({ value: coachRawValue.email, disabled: ua.email.disabled }),
+      website: new FormControl({ value: coachRawValue.website, disabled: ua.website.disabled }),
+      instagram: new FormControl({ value: coachRawValue.instagram, disabled: ua.instagram.disabled }),
+      phoneNumber: new FormControl({ value: coachRawValue.phoneNumber, disabled: ua.phoneNumber.disabled }),
+      country: new FormControl({ value: coachRawValue.country, disabled: ua.country.disabled }),
+      speaks: new FormControl({ value: coachRawValue.speaks, disabled: ua.speaks.disabled }),
+      resume: new FormControl({ value: coachRawValue.resume, disabled: ua.resume.disabled }),
+      notes: new FormControl({ value: coachRawValue.notes, disabled: ua.notes.disabled }),
+      created: new FormControl({ value: coachRawValue.created, disabled: ua.created.disabled }),
+      updated: new FormControl({ value: coachRawValue.updated, disabled: ua.updated.disabled }),
     });
   }
 
