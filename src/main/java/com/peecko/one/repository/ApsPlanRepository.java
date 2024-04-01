@@ -14,12 +14,13 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface ApsPlanRepository extends JpaRepository<ApsPlan, Long> {
-    @Query("from ApsPlan p where p.customer.agency.id = :agencyId")
+    @Query("from ApsPlan p left join fetch p.customer where p.customer.agency.id = :agencyId")
     List<ApsPlan> getPlansForAgency(@Param("agencyId") Long agencyId);
 
-    @Query("from ApsPlan p where p.customer.agency.id = :agencyId and p.state = 'ACTIVE'")
+    @Query("from ApsPlan p left join fetch p.customer where p.customer.agency.id = :agencyId and p.state = 'ACTIVE'")
     List<ApsPlan> currentPaidActivePlans(@Param("agencyId") Long agencyId);
 
-    @Query("from ApsPlan p where exists (from ApsPlan p2 where p2.customer.id = :customerId and p2.state = 'TRIAL' and ((p2.starts between :starts and :ends) or (p2.ends between :starts and :ends)))")
+    @Query("from ApsPlan p join fetch p.customer where exists (from ApsPlan p2 where p2.customer.id = :customerId and p2.state = 'TRIAL' and ((p2.starts between :starts and :ends) or (p2.ends between :starts and :ends)))")
     List<ApsPlan> overlappingTrialPlans(@Param("customerId") Long customerId, @Param("starts") LocalDate start, @Param("ends") LocalDate ends);
+
 }

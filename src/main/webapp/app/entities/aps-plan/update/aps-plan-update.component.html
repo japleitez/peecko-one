@@ -7,8 +7,13 @@
   <div class="col-3 child-inline">
       <div>
         <div class="mb-3" *ngIf="ua.customer.visible">
-          <label class="form-label" for="field_customer">Customer</label>
-          <select
+          @if (apsPlan?.customer) {
+            <label class="form-label" >Contract</label>
+            <input type="text" class="form-control-read" value="{{apsPlan?.customer?.name}}" [readonly]="true" />
+          } @else {
+            <customer-selector [control]="fc('customer')" [required]="false" id="field_customer"></customer-selector>
+          }
+          <!--select
             class="form-control"
             id="field_customer"
             data-cy="customer"
@@ -20,7 +25,7 @@
             @for (customerOption of customersSharedCollection; track $index) {
               <option [ngValue]="customerOption">{{ customerOption.id }}</option>
             }
-          </select>
+          </select-->
         </div>
 
         <div class="mb-3" *ngIf="ua.contract.visible">

@@ -94,8 +94,8 @@ Generic styles
   width: 40% !important;
 }
 
-.w-50 {
-  width: 50% !important;
+.w-100 {
+  width: 100% !important;
 }
 
 .w-60 {
@@ -109,6 +109,20 @@ Generic styles
 
 .form-control {
   background-color: #fff;
+}
+
+.form-control-read {
+  display: block;
+  width: 100%;
+  padding: $input-padding-y $input-padding-x;
+  font-family: $input-font-family;
+  font-weight: $input-font-weight;
+  line-height: $input-line-height;
+  color: $input-color;
+  appearance: none;
+  background-color: burlywood;
+  background-clip: padding-box;
+  border: $input-border-width solid $input-border-color;
 }
 
 .readonly {

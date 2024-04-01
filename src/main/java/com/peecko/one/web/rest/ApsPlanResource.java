@@ -1,7 +1,9 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ApsPlanRepository;
+import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsLicenseService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
@@ -41,7 +43,7 @@ public class ApsPlanResource {
 
     private final ApsLicenseService apsLicenseService;
 
-    public ApsPlanResource(ApsPlanRepository apsPlanRepository, ApsLicenseService apsLicenseService) {
+    public ApsPlanResource(ApsPlanRepository apsPlanRepository, ApsLicenseService apsLicenseService, CustomerRepository customerRepository) {
         this.apsPlanRepository = apsPlanRepository;
         this.apsLicenseService = apsLicenseService;
     }
@@ -194,6 +196,7 @@ public class ApsPlanResource {
     public ResponseEntity<ApsPlan> getApsPlan(@PathVariable("id") Long id) {
         log.debug("REST request to get ApsPlan : {}", id);
         Optional<ApsPlan> apsPlan = apsPlanRepository.findById(id);
+        loadCustomer(apsPlan);
         return ResponseUtil.wrapOrNotFound(apsPlan);
     }
 
@@ -225,5 +228,12 @@ public class ApsPlanResource {
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, "failed.trial.plan.activation")
         );
+    }
+
+    private void loadCustomer(Optional<ApsPlan> optional) {
+        optional.ifPresent(apsPlan -> {
+            Customer c = apsPlan.getCustomer();
+            System.out.println(c.getName());
+        });
     }
 }

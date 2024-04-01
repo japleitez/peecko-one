@@ -1,6 +1,6 @@
 <mat-form-field class="w-50" subscriptSizing="dynamic">
-  <mat-label>Active Customer</mat-label>
-  <input type="text" matInput placeholder="Pick one" aria-label="Customer" [formControl]="control" [matAutocomplete]="auto">
+  <mat-label>Customer</mat-label>
+  <input type="text" matInput placeholder="" aria-label="Customer" [formControl]="control" [matAutocomplete]="auto">
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
     @for (cst of filteredCustomers | async; track cst) {
       <mat-option [value]="cst" >{{cst.name}}</mat-option>

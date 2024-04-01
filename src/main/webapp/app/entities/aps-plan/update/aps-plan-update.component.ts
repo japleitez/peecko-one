@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { CustomerService } from 'app/entities/customer/service/customer.service';
@@ -15,12 +15,13 @@ import { ApsPlanService } from '../service/aps-plan.service';
 import { APS_PLAN_USER_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
 import { ApsPlanFormService, ApsPlanFormGroup } from './aps-plan-form.service';
 import { NgIf } from '@angular/common';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-aps-plan-update',
   templateUrl: './aps-plan-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent]
 })
 export class ApsPlanUpdateComponent implements OnInit {
   ua: ApsPlanAccess = this.getApsPlanAccess();
@@ -110,6 +111,9 @@ export class ApsPlanUpdateComponent implements OnInit {
 
   protected getApsPlanAccess(): ApsPlanAccess {
     return APS_PLAN_USER_ACCESS;
+  }
+  fc(name: string) {
+    return this.editForm.get(name) as FormControl<ICustomer | string | null>;
   }
 
 }

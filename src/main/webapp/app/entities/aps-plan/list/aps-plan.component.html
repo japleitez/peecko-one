@@ -42,6 +42,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="customer.id"*ngIf="ua.customer.listable">
+              <div class="d-flex">
+                <span>Customer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="contract" *ngIf="ua.contract.listable">
               <div class="d-flex">
                 <span>Contract</span>
@@ -112,12 +118,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="customer.id"*ngIf="ua.customer.listable">
-              <div class="d-flex">
-                <span>Customer</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -126,6 +126,13 @@
             <tr data-cy="entityTable">
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-plan', apsPlan.id, 'view']">{{ apsPlan.id }}</a>
+              </td>
+              <td *ngIf="ua.customer.listable">
+                @if (apsPlan.customer) {
+                  <div>
+                    <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.name }}</a>
+                  </div>
+                }
               </td>
               <td *ngIf="ua.contract.listable">{{ apsPlan.contract }}</td>
               <td *ngIf="ua.pricing.listable">{{ apsPlan.pricing }}</td>
@@ -137,13 +144,6 @@
               <td *ngIf="ua.notes.listable">{{ apsPlan.notes }}</td>
               <td *ngIf="ua.created.listable">{{ apsPlan.created | formatMediumDatetime }}</td>
               <td *ngIf="ua.updated.listable">{{ apsPlan.updated | formatMediumDatetime }}</td>
-              <td *ngIf="ua.customer.listable">
-                @if (apsPlan.customer) {
-                  <div>
-                    <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.id }}</a>
-                  </div>
-                }
-              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/aps-plan', apsPlan.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

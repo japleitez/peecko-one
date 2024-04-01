@@ -15,6 +15,14 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ apsPlan.id }}</span>
           </dd>
+          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
+          <dd *ngIf="ua.customer.visible">
+            @if (apsPlan.customer) {
+              <div>
+                <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.name }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.contract.visible"><span>Contract</span></dt>
           <dd *ngIf="ua.contract.visible">
             <span>{{ apsPlan.contract }}</span>
@@ -54,14 +62,6 @@
           <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
           <dd *ngIf="ua.updated.visible">
             <span>{{ apsPlan.updated | formatMediumDatetime }}</span>
-          </dd>
-          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
-          <dd *ngIf="ua.customer.visible">
-            @if (apsPlan.customer) {
-              <div>
-                <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.id }}</a>
-              </div>
-            }
           </dd>
         </dl>
 
