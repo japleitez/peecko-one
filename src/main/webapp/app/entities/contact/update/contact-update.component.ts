@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { CustomerService } from 'app/entities/customer/service/customer.service';
@@ -14,12 +14,13 @@ import { ContactService } from '../service/contact.service';
 import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
 import { ContactFormService, ContactFormGroup } from './contact-form.service';
 import { NgIf } from '@angular/common';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-contact-update',
   templateUrl: './contact-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent]
 })
 export class ContactUpdateComponent implements OnInit {
   ua: ContactAccess = this.getContactUserAccess();
@@ -109,4 +110,9 @@ export class ContactUpdateComponent implements OnInit {
   protected getContactUserAccess(): ContactAccess {
     return CONTACT_USER_ACCESS;
   }
+
+  fc(name: string) {
+    return this.editForm.get(name) as FormControl<ICustomer | string | null>;
+  }
+
 }

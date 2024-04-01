@@ -13,6 +13,15 @@
           </div>
         }
 
+        <div class="mb-3" *ngIf="ua.customer.visible">
+          @if (contact?.customer) {
+            <label class="form-label">Customer</label>
+            <input type="text" class="form-control-read" value="{{contact?.customer?.name}}" [readonly]="true" />
+          } @else {
+            <customer-selector [control]="fc('customer')" [required]="false" id="field_customer"></customer-selector>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.type.visible">
           <label class="form-label" for="field_type">Type</label>
           <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
@@ -112,22 +121,6 @@
           </div>
         </div>
 
-        <div class="mb-3" *ngIf="ua.customer.visible">
-          <label class="form-label" for="field_customer">Customer</label>
-          <select
-            class="form-control"
-            id="field_customer"
-            data-cy="customer"
-            name="customer"
-            formControlName="customer"
-            [compareWith]="compareCustomer"
-          >
-            <option [ngValue]="null"></option>
-            @for (customerOption of customersSharedCollection; track $index) {
-              <option [ngValue]="customerOption">{{ customerOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

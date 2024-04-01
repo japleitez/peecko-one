@@ -13,19 +13,6 @@
           } @else {
             <customer-selector [control]="fc('customer')" [required]="false" id="field_customer"></customer-selector>
           }
-          <!--select
-            class="form-control"
-            id="field_customer"
-            data-cy="customer"
-            name="customer"
-            formControlName="customer"
-            [compareWith]="compareCustomer"
-          >
-            <option [ngValue]="null"></option>
-            @for (customerOption of customersSharedCollection; track $index) {
-              <option [ngValue]="customerOption">{{ customerOption.id }}</option>
-            }
-          </select-->
         </div>
 
         <div class="mb-3" *ngIf="ua.contract.visible">

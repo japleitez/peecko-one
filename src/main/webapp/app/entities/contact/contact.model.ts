@@ -55,5 +55,5 @@ CONTACT_USER_ACCESS = {
   notes: { listable: false, visible: true, disabled: false },
   created: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
-  customer: { listable: false, visible: true, disabled: false }
+  customer: { listable: true, visible: true, disabled: false }
 }
