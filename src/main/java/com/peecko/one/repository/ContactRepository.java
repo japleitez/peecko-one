@@ -15,7 +15,9 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long> {
+    @Query("from Contact c left join fetch c.customer where c.id = :id")
+    List<Contact> loadById(@Param("id") Long id);
+
     @Query("from Contact c left join fetch c.customer where c.customer.id = :customerId")
     List<Contact> getContactsByCustomer(@Param("customerId") Long customerId);
-
 }

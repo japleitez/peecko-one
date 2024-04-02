@@ -1,8 +1,8 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Contact;
-import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ContactRepository;
+import com.peecko.one.service.ContactService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -37,8 +37,11 @@ public class ContactResource {
 
     private final ContactRepository contactRepository;
 
-    public ContactResource(ContactRepository contactRepository) {
+    private final ContactService contactService;
+
+    public ContactResource(ContactRepository contactRepository, ContactService contactService) {
         this.contactRepository = contactRepository;
+        this.contactService = contactService;
     }
 
     /**
@@ -194,8 +197,7 @@ public class ContactResource {
     @GetMapping("/{id}")
     public ResponseEntity<Contact> getContact(@PathVariable("id") Long id) {
         log.debug("REST request to get Contact : {}", id);
-        Optional<Contact> contact = contactRepository.findById(id);
-        loadCustomer(contact);
+        Optional<Contact> contact = contactService.loadById(id);
         return ResponseUtil.wrapOrNotFound(contact);
     }
 
@@ -215,10 +217,4 @@ public class ContactResource {
             .build();
     }
 
-    private void loadCustomer(Optional<Contact> opt) {
-        opt.ifPresent(c -> {
-            Customer customer = c.getCustomer();
-            System.out.println(customer.getName());
-        });
-    }
 }
