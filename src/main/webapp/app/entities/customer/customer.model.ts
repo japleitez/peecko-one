@@ -81,5 +81,5 @@ CUSTOMER_USER_ACCESS = {
   closed: { listable: true, visible: true, disabled: true },
   contacts: { listable: false, visible: true, disabled: false },
   apsPlans: { listable: false, visible: true, disabled: false },
-  agency: { listable: false, visible: true, disabled: true }
+  agency: { listable: false, visible: true, disabled: false }
 };

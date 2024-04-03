@@ -13,6 +13,15 @@
           </div>
         }
 
+        <div class="mb-3" *ngIf="ua.agency.visible">
+          @if (customer?.agency) {
+            <label class="form-label">Agency</label>
+            <input type="text" class="form-control-read" value="{{customer?.agency?.name}}" [readonly]="true" />
+          } @else {
+            <agency-select [control]="agencyControl()" [required]="false" id="field_agency"></agency-select>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
@@ -217,22 +226,6 @@
           </div>
         </div>
 
-        <div class="mb-3" *ngIf="ua.agency.visible">
-          <label class="form-label" for="field_agency">Agency</label>
-          <select
-            class="form-control"
-            id="field_agency"
-            data-cy="agency"
-            name="agency"
-            formControlName="agency"
-            [compareWith]="compareAgency"
-          >
-            <option [ngValue]="null"></option>
-            @for (agencyOption of agenciesSharedCollection; track $index) {
-              <option [ngValue]="agencyOption">{{ agencyOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

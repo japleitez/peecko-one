@@ -15,6 +15,14 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ customer.id }}</span>
           </dd>
+          <dt *ngIf="ua.agency.visible"><span>Agency</span></dt>
+          <dd *ngIf="ua.agency.visible">
+            @if (customer.agency) {
+              <div>
+                <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.name }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.code.visible"><span>Code</span></dt>
           <dd *ngIf="ua.code.visible">
             <span>{{ customer.code }}</span>
@@ -86,14 +94,6 @@
           <dt *ngIf="ua.closed.visible"><span>Closed</span></dt>
           <dd *ngIf="ua.closed.visible">
             <span>{{ customer.closed | formatMediumDatetime }}</span>
-          </dd>
-          <dt *ngIf="ua.agency.visible"><span>Agency</span></dt>
-          <dd *ngIf="ua.agency.visible">
-            @if (customer.agency) {
-              <div>
-                <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.id }}</a>
-              </div>
-            }
           </dd>
         </dl>
 

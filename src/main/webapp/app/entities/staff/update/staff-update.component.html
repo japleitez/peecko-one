@@ -17,7 +17,7 @@
             <label class="form-label">Agency</label>
             <input type="text" class="form-control-read" value="{{staff?.agency?.name}}" [readonly]="true" />
           } @else {
-            <agency-select [control]="fc('agency')" [required]="false" id="field_agency"></agency-select>
+            <agency-select [control]="agencyControl()" [required]="false" id="field_agency"></agency-select>
           }
         </div>
 

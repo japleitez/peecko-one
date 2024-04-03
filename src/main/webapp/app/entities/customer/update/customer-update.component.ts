@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
@@ -13,12 +13,13 @@ import { CustomerState } from 'app/entities/enumerations/customer-state.model';
 import { CustomerService } from '../service/customer.service';
 import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
 import { CustomerFormService, CustomerFormGroup } from './customer-form.service';
+import { AgencySelectComponent } from '../../agency/agency-select/agency-select.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-customer-update',
   templateUrl: './customer-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, AgencySelectComponent]
 })
 export class CustomerUpdateComponent implements OnInit {
   ua: CustomerAccess = this.getCustomerUserAccess();
@@ -103,6 +104,10 @@ export class CustomerUpdateComponent implements OnInit {
 
   protected getCustomerUserAccess(): CustomerAccess {
     return CUSTOMER_USER_ACCESS
+  }
+
+  agencyControl() {
+    return this.editForm.get('agency') as FormControl<IAgency | string | null>;
   }
 
 }

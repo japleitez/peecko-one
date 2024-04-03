@@ -42,6 +42,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="agency.id" *ngIf="ua.agency.listable">
+              <div class="d-flex">
+                <span>Agency</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
@@ -168,12 +174,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="agency.id" *ngIf="ua.agency.listable">
-              <div class="d-flex">
-                <span>Agency</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -182,6 +182,13 @@
             <tr data-cy="entityTable">
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/customer', customer.id, 'view']">{{ customer.id }}</a>
+              </td>
+              <td *ngIf="ua.agency.listable">
+                @if (customer.agency) {
+                  <div>
+                    <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.name }}</a>
+                  </div>
+                }
               </td>
               <td *ngIf="ua.code.listable">{{ customer.code }}</td>
               <td *ngIf="ua.name.listable">{{ customer.name }}</td>
@@ -201,13 +208,6 @@
               <td *ngIf="ua.declined.listable">{{ customer.declined | formatMediumDate }}</td>
               <td *ngIf="ua.activated.listable">{{ customer.activated | formatMediumDate }}</td>
               <td *ngIf="ua.closed.listable">{{ customer.closed | formatMediumDate }}</td>
-              <td *ngIf="ua.agency.listable">
-                @if (customer.agency) {
-                  <div>
-                    <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.id }}</a>
-                  </div>
-                }
-              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/customer', customer.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

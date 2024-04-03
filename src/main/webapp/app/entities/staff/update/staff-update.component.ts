@@ -102,8 +102,8 @@ export class StaffUpdateComponent implements OnInit {
   protected getStaffAccess(): StaffAccess {
     return STAFF_ACCESS;
   }
-  fc(name: string) {
-    return this.editForm.get(name) as FormControl<IAgency | string | null>;
+  agencyControl() {
+    return this.editForm.get('agency') as FormControl<IAgency | string | null>;
   }
 
 }

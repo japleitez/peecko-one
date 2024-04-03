@@ -5,6 +5,7 @@ import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
+import com.peecko.one.service.CustomerService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -44,8 +45,11 @@ public class CustomerResource {
 
     private final CustomerRepository customerRepository;
 
-    public CustomerResource(CustomerRepository customerRepository) {
+    private final CustomerService customerService;
+
+    public CustomerResource(CustomerRepository customerRepository, CustomerService customerService) {
         this.customerRepository = customerRepository;
+        this.customerService = customerService;
     }
 
     /**
@@ -61,6 +65,7 @@ public class CustomerResource {
         if (customer.getId() != null) {
             throw new BadRequestAlertException("A new customer cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        customer.setDummy(false);
         Customer result = customerRepository.save(customer);
         return ResponseEntity
             .created(new URI("/api/customers/" + result.getId()))
@@ -94,7 +99,7 @@ public class CustomerResource {
         if (!customerRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        customer.setDummy(false);
         Customer result = customerRepository.save(customer);
         return ResponseEntity
             .ok()
@@ -230,7 +235,7 @@ public class CustomerResource {
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long id) {
         log.debug("REST request to get Customer : {}", id);
-        Optional<Customer> customer = customerRepository.findById(id);
+        Optional<Customer> customer = customerService.loadById(id);
         return ResponseUtil.wrapOrNotFound(customer);
     }
 
