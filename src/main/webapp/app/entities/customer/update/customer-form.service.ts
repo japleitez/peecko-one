@@ -123,12 +123,12 @@ export class CustomerFormService {
 
     return {
       id: null,
-      created: currentTime,
-      updated: currentTime,
-      trialed: currentTime,
-      declined: currentTime,
-      activated: currentTime,
-      closed: currentTime,
+      created: null,
+      updated: null,
+      trialed: null,
+      declined: null,
+      activated: null,
+      closed: null,
     };
   }
 
