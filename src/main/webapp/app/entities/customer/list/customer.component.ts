@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
-import { EntityArrayResponseType, CustomerService } from '../service/customer.service';
+import { CustomerArrayResponseType, CustomerService } from '../service/customer.service';
 import { CustomerDeleteDialogComponent } from '../delete/customer-delete-dialog.component';
 import { NgIf } from '@angular/common';
 
@@ -70,7 +70,7 @@ export class CustomerComponent implements OnInit {
         switchMap(() => this.loadFromBackendWithRouteInformations()),
       )
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
+        next: (res: CustomerArrayResponseType) => {
           this.onResponseSuccess(res);
         },
       });
@@ -78,7 +78,7 @@ export class CustomerComponent implements OnInit {
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: CustomerArrayResponseType) => {
         this.onResponseSuccess(res);
       },
     });
@@ -92,7 +92,7 @@ export class CustomerComponent implements OnInit {
     this.handleNavigation(page, this.predicate, this.ascending);
   }
 
-  protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
+  protected loadFromBackendWithRouteInformations(): Observable<CustomerArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
       switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending)),
@@ -107,7 +107,7 @@ export class CustomerComponent implements OnInit {
     this.ascending = sort[1] === ASC;
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
+  protected onResponseSuccess(response: CustomerArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.customers = dataFromBody;
@@ -121,7 +121,7 @@ export class CustomerComponent implements OnInit {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
-  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<CustomerArrayResponseType> {
     this.isLoading = true;
     const pageToLoad: number = page ?? 1;
     const queryObject: any = {

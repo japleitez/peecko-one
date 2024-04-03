@@ -15,6 +15,14 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ staff.id }}</span>
           </dd>
+          <dt *ngIf="ua.agency.visible"><span>Agency</span></dt>
+          <dd *ngIf="ua.agency.visible">
+            @if (staff.agency) {
+              <div>
+                <a [routerLink]="['/agency', staff.agency.id, 'view']">{{ staff.agency.name }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.userId.visible"><span>User Id</span></dt>
           <dd *ngIf="ua.userId.visible">
             <span>{{ staff.userId }}</span>
@@ -22,14 +30,6 @@
           <dt *ngIf="ua.role.visible"><span>Role</span></dt>
           <dd *ngIf="ua.role.visible">
             <span>{{ staff.role }}</span>
-          </dd>
-          <dt *ngIf="ua.agency.visible"><span>Agency</span></dt>
-          <dd *ngIf="ua.agency.visible">
-            @if (staff.agency) {
-              <div>
-                <a [routerLink]="['/agency', staff.agency.id, 'view']">{{ staff.agency.id }}</a>
-              </div>
-            }
           </dd>
         </dl>
 

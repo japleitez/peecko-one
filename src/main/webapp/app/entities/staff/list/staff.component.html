@@ -42,6 +42,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="agency.id" *ngIf="ua.agency.listable">
+              <div class="d-flex">
+                <span>Agency</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="userId" *ngIf="ua.userId.listable">
               <div class="d-flex">
                 <span>User Id</span>
@@ -56,12 +62,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="agency.id" *ngIf="ua.agency.listable">
-              <div class="d-flex">
-                <span>Agency</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -71,15 +71,15 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/staff', staff.id, 'view']">{{ staff.id }}</a>
               </td>
-              <td *ngIf="ua.userId.listable">{{ staff.userId }}</td>
-              <td *ngIf="ua.role.listable">{{ staff.role }}</td>
               <td *ngIf="ua.agency.listable">
                 @if (staff.agency) {
                   <div>
-                    <a [routerLink]="['/agency', staff.agency.id, 'view']">{{ staff.agency.id }}</a>
+                    <a [routerLink]="['/agency', staff.agency.id, 'view']">{{ staff.agency.name }}</a>
                   </div>
                 }
               </td>
+              <td *ngIf="ua.userId.listable">{{ staff.userId }}</td>
+              <td *ngIf="ua.role.listable">{{ staff.role }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/staff', staff.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

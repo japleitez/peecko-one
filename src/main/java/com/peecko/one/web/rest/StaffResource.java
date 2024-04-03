@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Staff;
 import com.peecko.one.repository.StaffRepository;
+import com.peecko.one.service.StaffService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -36,8 +37,11 @@ public class StaffResource {
 
     private final StaffRepository staffRepository;
 
-    public StaffResource(StaffRepository staffRepository) {
+    private final StaffService staffService;
+
+    public StaffResource(StaffRepository staffRepository, StaffService staffService) {
         this.staffRepository = staffRepository;
+        this.staffService = staffService;
     }
 
     /**
@@ -148,7 +152,7 @@ public class StaffResource {
     @GetMapping("")
     public List<Staff> getAllStaff() {
         log.debug("REST request to get all Staff");
-        return staffRepository.findAll();
+        return staffRepository.findAllWithAgencies();
     }
 
     /**
@@ -160,7 +164,7 @@ public class StaffResource {
     @GetMapping("/{id}")
     public ResponseEntity<Staff> getStaff(@PathVariable("id") Long id) {
         log.debug("REST request to get Staff : {}", id);
-        Optional<Staff> staff = staffRepository.findById(id);
+        Optional<Staff> staff = staffService.loadById(id);
         return ResponseUtil.wrapOrNotFound(staff);
     }
 

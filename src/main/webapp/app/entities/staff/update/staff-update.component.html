@@ -12,6 +12,15 @@
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
         }
+        <div class="mb-3" *ngIf="ua.agency.visible">
+          @if (staff?.agency) {
+            <label class="form-label">Agency</label>
+            <input type="text" class="form-control-read" value="{{staff?.agency?.name}}" [readonly]="true" />
+          } @else {
+            <agency-select [control]="fc('agency')" [required]="false" id="field_agency"></agency-select>
+          }
+        </div>
+
 
         <div class="mb-3" *ngIf="ua.userId.visible">
           <label class="form-label" for="field_userId">User Id</label>
@@ -38,22 +47,6 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.agency.visible">
-          <label class="form-label" for="field_agency">Agency</label>
-          <select
-            class="form-control"
-            id="field_agency"
-            data-cy="agency"
-            name="agency"
-            formControlName="agency"
-            [compareWith]="compareAgency"
-          >
-            <option [ngValue]="null"></option>
-            @for (agencyOption of agenciesSharedCollection; track $index) {
-              <option [ngValue]="agencyOption">{{ agencyOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

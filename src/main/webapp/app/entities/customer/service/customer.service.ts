@@ -28,8 +28,8 @@ export type NewRestCustomer = RestOf<NewCustomer>;
 
 export type PartialUpdateRestCustomer = RestOf<PartialUpdateCustomer>;
 
-export type EntityResponseType = HttpResponse<ICustomer>;
-export type EntityArrayResponseType = HttpResponse<ICustomer[]>;
+export type CustomerResponseType = HttpResponse<ICustomer>;
+export type CustomerArrayResponseType = HttpResponse<ICustomer[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
@@ -40,41 +40,41 @@ export class CustomerService {
     protected applicationConfigService: ApplicationConfigService,
   ) {}
 
-  create(customer: NewCustomer): Observable<EntityResponseType> {
+  create(customer: NewCustomer): Observable<CustomerResponseType> {
     const copy = this.convertDateFromClient(customer);
     return this.http
       .post<RestCustomer>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(customer: ICustomer): Observable<EntityResponseType> {
+  update(customer: ICustomer): Observable<CustomerResponseType> {
     const copy = this.convertDateFromClient(customer);
     return this.http
       .put<RestCustomer>(`${this.resourceUrl}/${this.getCustomerIdentifier(customer)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  partialUpdate(customer: PartialUpdateCustomer): Observable<EntityResponseType> {
+  partialUpdate(customer: PartialUpdateCustomer): Observable<CustomerResponseType> {
     const copy = this.convertDateFromClient(customer);
     return this.http
       .patch<RestCustomer>(`${this.resourceUrl}/${this.getCustomerIdentifier(customer)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
+  find(id: number): Observable<CustomerResponseType> {
     return this.http
       .get<RestCustomer>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<CustomerArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestCustomer[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
-  queryActive(): Observable<EntityArrayResponseType> {
+  queryActive(): Observable<CustomerArrayResponseType> {
     return this.http
       .get<RestCustomer[]>(`${this.resourceUrl}/active`, { observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));

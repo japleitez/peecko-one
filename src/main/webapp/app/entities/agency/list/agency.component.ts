@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { AGENCY_USER_ACCESS, AgencyAccess, IAgency } from '../agency.model';
-import { AgencyService, EntityArrayResponseType } from '../service/agency.service';
+import { AgencyService, AgencyArrayResponseType } from '../service/agency.service';
 import { AgencyDeleteDialogComponent } from '../delete/agency-delete-dialog.component';
 import { NgIf } from '@angular/common';
 
@@ -62,7 +62,7 @@ export class AgencyComponent implements OnInit {
         switchMap(() => this.loadFromBackendWithRouteInformations()),
       )
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
+        next: (res: AgencyArrayResponseType) => {
           this.onResponseSuccess(res);
         },
       });
@@ -70,7 +70,7 @@ export class AgencyComponent implements OnInit {
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: AgencyArrayResponseType) => {
         this.onResponseSuccess(res);
       },
     });
@@ -80,7 +80,7 @@ export class AgencyComponent implements OnInit {
     this.handleNavigation(this.predicate, this.ascending);
   }
 
-  protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
+  protected loadFromBackendWithRouteInformations(): Observable<AgencyArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
       switchMap(() => this.queryBackend(this.predicate, this.ascending)),
@@ -93,7 +93,7 @@ export class AgencyComponent implements OnInit {
     this.ascending = sort[1] === ASC;
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
+  protected onResponseSuccess(response: AgencyArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.agencies = this.refineData(dataFromBody);
   }
@@ -106,7 +106,7 @@ export class AgencyComponent implements OnInit {
     return data ?? [];
   }
 
-  protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(predicate?: string, ascending?: boolean): Observable<AgencyArrayResponseType> {
     this.isLoading = true;
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),

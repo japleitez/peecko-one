@@ -24,8 +24,8 @@ export type NewRestAgency = RestOf<NewAgency>;
 
 export type PartialUpdateRestAgency = RestOf<PartialUpdateAgency>;
 
-export type EntityResponseType = HttpResponse<IAgency>;
-export type EntityArrayResponseType = HttpResponse<IAgency[]>;
+export type AgencyResponseType = HttpResponse<IAgency>;
+export type AgencyArrayResponseType = HttpResponse<IAgency[]>;
 
 @Injectable({ providedIn: 'root' })
 export class AgencyService {
@@ -36,34 +36,34 @@ export class AgencyService {
     protected applicationConfigService: ApplicationConfigService,
   ) {}
 
-  create(agency: NewAgency): Observable<EntityResponseType> {
+  create(agency: NewAgency): Observable<AgencyResponseType> {
     const copy = this.convertDateFromClient(agency);
     return this.http
       .post<RestAgency>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(agency: IAgency): Observable<EntityResponseType> {
+  update(agency: IAgency): Observable<AgencyResponseType> {
     const copy = this.convertDateFromClient(agency);
     return this.http
       .put<RestAgency>(`${this.resourceUrl}/${this.getAgencyIdentifier(agency)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  partialUpdate(agency: PartialUpdateAgency): Observable<EntityResponseType> {
+  partialUpdate(agency: PartialUpdateAgency): Observable<AgencyResponseType> {
     const copy = this.convertDateFromClient(agency);
     return this.http
       .patch<RestAgency>(`${this.resourceUrl}/${this.getAgencyIdentifier(agency)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
+  find(id: number): Observable<AgencyResponseType> {
     return this.http
       .get<RestAgency>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<AgencyArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestAgency[]>(this.resourceUrl, { params: options, observe: 'response' })

@@ -25,7 +25,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ICustomer } from '../../customer/customer.model';
-import { CustomerService, EntityArrayResponseType } from '../../customer/service/customer.service';
+import { CustomerService, CustomerArrayResponseType } from '../../customer/service/customer.service';
 import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/validate/custom-validator.directive';
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 

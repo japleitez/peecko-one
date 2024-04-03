@@ -1,0 +1,10 @@
+<mat-form-field class="w-50" subscriptSizing="dynamic">
+  <mat-label>Agency</mat-label>
+  <input type="text" matInput placeholder="" aria-label="Agency" [formControl]="control" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
+    @for (agency of filteredAgencies | async; track agency) {
+      <mat-option [value]="agency" >{{agency.name}}</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
+

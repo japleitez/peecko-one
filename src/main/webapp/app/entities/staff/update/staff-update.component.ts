@@ -5,19 +5,22 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
 import { IStaff, STAFF_ACCESS, StaffAccess } from '../staff.model';
 import { StaffService } from '../service/staff.service';
 import { StaffFormService, StaffFormGroup } from './staff-form.service';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
+import { ICustomer } from '../../customer/customer.model';
+import { AgencySelectComponent } from '../../agency/agency-select/agency-select.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-staff-update',
   templateUrl: './staff-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, CustomerSelectorComponent, AgencySelectComponent]
 })
 export class StaffUpdateComponent implements OnInit {
   ua: StaffAccess = this.getStaffAccess();
@@ -98,6 +101,9 @@ export class StaffUpdateComponent implements OnInit {
 
   protected getStaffAccess(): StaffAccess {
     return STAFF_ACCESS;
+  }
+  fc(name: string) {
+    return this.editForm.get(name) as FormControl<IAgency | string | null>;
   }
 
 }
