@@ -42,6 +42,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="videoCategory.title" *ngIf="ua.videoCategory.listable">
+              <div class="d-flex">
+                <span>Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
@@ -147,12 +153,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="videoCategory.id" *ngIf="ua.videoCategory.listable">
-              <div class="d-flex">
-                <span>Video Category</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="coach.id" *ngIf="ua.coach.listable">
               <div class="d-flex">
                 <span>Coach</span>
@@ -167,6 +167,13 @@
             <tr data-cy="entityTable">
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/video', video.id, 'view']">{{ video.id }}</a>
+              </td>
+              <td *ngIf="ua.videoCategory.listable">
+                @if (video.videoCategory) {
+                  <div>
+                    <a [routerLink]="['/video-category', video.videoCategory.id, 'view']">{{ video.videoCategory.title }}</a>
+                  </div>
+                }
               </td>
               <td *ngIf="ua.code.listable">{{ video.code }}</td>
               <td *ngIf="ua.title.listable">{{ video.title }}</td>
@@ -183,13 +190,6 @@
               <td *ngIf="ua.created.listable">{{ video.created | formatMediumDatetime }}</td>
               <td *ngIf="ua.released.listable">{{ video.released | formatMediumDatetime }}</td>
               <td *ngIf="ua.archived.listable">{{ video.archived | formatMediumDatetime }}</td>
-              <td *ngIf="ua.videoCategory.listable">
-                @if (video.videoCategory) {
-                  <div>
-                    <a [routerLink]="['/video-category', video.videoCategory.id, 'view']">{{ video.videoCategory.id }}</a>
-                  </div>
-                }
-              </td>
               <td *ngIf="ua.coach.listable">
                 @if (video.coach) {
                   <div>

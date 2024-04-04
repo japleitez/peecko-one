@@ -13,6 +13,15 @@
           </div>
         }
 
+        <div class="mb-3" *ngIf="ua.videoCategory.visible">
+          @if (video?.videoCategory) {
+            <label class="form-label" >Category</label>
+            <input type="text" class="form-control-read" value="{{video?.videoCategory?.title}}" [readonly]="true" />
+          } @else {
+            <video-category-select [control]="categoryControl()" [required]="false" id="field_video_category"></video-category-select>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
@@ -166,23 +175,6 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
-        </div>
-
-        <div class="mb-3" *ngIf="ua.videoCategory.visible">
-          <label class="form-label" for="field_videoCategory">Video Category</label>
-          <select
-            class="form-control"
-            id="field_videoCategory"
-            data-cy="videoCategory"
-            name="videoCategory"
-            formControlName="videoCategory"
-            [compareWith]="compareVideoCategory"
-          >
-            <option [ngValue]="null"></option>
-            @for (videoCategoryOption of videoCategoriesSharedCollection; track $index) {
-              <option [ngValue]="videoCategoryOption">{{ videoCategoryOption.id }}</option>
-            }
-          </select>
         </div>
 
         <div class="mb-3" *ngIf="ua.coach.visible">

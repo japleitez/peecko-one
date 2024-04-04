@@ -19,7 +19,8 @@ import { ICustomer } from '../../customer/customer.model';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule
-  ],  templateUrl: './agency-select.component.html',
+  ],
+  templateUrl: './agency-select.component.html',
   styleUrl: './agency-select.component.scss'
 })
 export class AgencySelectComponent {

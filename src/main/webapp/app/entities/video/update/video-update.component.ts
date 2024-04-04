@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IVideoCategory } from 'app/entities/video-category/video-category.model';
 import { VideoCategoryService } from 'app/entities/video-category/service/video-category.service';
@@ -18,12 +18,16 @@ import { VideoService } from '../service/video.service';
 import { IVideo, VIDEO_ACCESS, VideoAccess } from '../video.model';
 import { VideoFormService, VideoFormGroup } from './video-form.service';
 import { NgIf } from '@angular/common';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
+import {
+  VideoCategorySelectComponent
+} from '../../video-category/video-category-select/video-category-select.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-video-update',
   templateUrl: './video-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent, VideoCategorySelectComponent]
 })
 export class VideoUpdateComponent implements OnInit {
   ua: VideoAccess = this.getVideoAccess();
@@ -126,6 +130,10 @@ export class VideoUpdateComponent implements OnInit {
 
   protected getVideoAccess(): VideoAccess {
     return VIDEO_ACCESS;
+  }
+
+  categoryControl() {
+    return this.editForm.get('videoCategory') as FormControl<IVideoCategory | string | null>;
   }
 
 }

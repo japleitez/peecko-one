@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { IVideoCategory, VIDEO_CATEGORY_ACCESS, VideoCategoryAccess } from '../video-category.model';
-import { EntityArrayResponseType, VideoCategoryService } from '../service/video-category.service';
+import { VideoCategoryArrayResponseType, VideoCategoryService } from '../service/video-category.service';
 import { VideoCategoryDeleteDialogComponent } from '../delete/video-category-delete-dialog.component';
 import { VIDEO_ACCESS } from '../../video/video.model';
 import { NgIf } from '@angular/common';
@@ -63,7 +63,7 @@ export class VideoCategoryComponent implements OnInit {
         switchMap(() => this.loadFromBackendWithRouteInformations()),
       )
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
+        next: (res: VideoCategoryArrayResponseType) => {
           this.onResponseSuccess(res);
         },
       });
@@ -71,7 +71,7 @@ export class VideoCategoryComponent implements OnInit {
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: VideoCategoryArrayResponseType) => {
         this.onResponseSuccess(res);
       },
     });
@@ -81,7 +81,7 @@ export class VideoCategoryComponent implements OnInit {
     this.handleNavigation(this.predicate, this.ascending);
   }
 
-  protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
+  protected loadFromBackendWithRouteInformations(): Observable<VideoCategoryArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
       switchMap(() => this.queryBackend(this.predicate, this.ascending)),
@@ -94,7 +94,7 @@ export class VideoCategoryComponent implements OnInit {
     this.ascending = sort[1] === ASC;
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
+  protected onResponseSuccess(response: VideoCategoryArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.videoCategories = this.refineData(dataFromBody);
   }
@@ -107,7 +107,7 @@ export class VideoCategoryComponent implements OnInit {
     return data ?? [];
   }
 
-  protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(predicate?: string, ascending?: boolean): Observable<VideoCategoryArrayResponseType> {
     this.isLoading = true;
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),

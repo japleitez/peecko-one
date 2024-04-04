@@ -116,9 +116,9 @@ export class VideoFormService {
 
     return {
       id: null,
-      created: currentTime,
-      released: currentTime,
-      archived: currentTime,
+      created: null,
+      released: null,
+      archived: null,
     };
   }
 

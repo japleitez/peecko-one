@@ -80,7 +80,7 @@ public class Video implements Serializable {
     @Column(name = "archived")
     private Instant archived;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "videos" }, allowSetters = true)
     private VideoCategory videoCategory;
 

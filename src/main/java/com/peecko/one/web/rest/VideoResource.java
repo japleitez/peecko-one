@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -58,6 +59,7 @@ public class VideoResource {
         if (video.getId() != null) {
             throw new BadRequestAlertException("A new video cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        video.setCreated(Instant.now());
         Video result = videoRepository.save(video);
         return ResponseEntity
             .created(new URI("/api/videos/" + result.getId()))
@@ -89,7 +91,6 @@ public class VideoResource {
         if (!videoRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
         Video result = videoRepository.save(video);
         return ResponseEntity
             .ok()

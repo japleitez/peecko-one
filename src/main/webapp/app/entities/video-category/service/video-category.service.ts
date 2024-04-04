@@ -25,8 +25,8 @@ export type NewRestVideoCategory = RestOf<NewVideoCategory>;
 
 export type PartialUpdateRestVideoCategory = RestOf<PartialUpdateVideoCategory>;
 
-export type EntityResponseType = HttpResponse<IVideoCategory>;
-export type EntityArrayResponseType = HttpResponse<IVideoCategory[]>;
+export type VideoCategoryResponseType = HttpResponse<IVideoCategory>;
+export type VideoCategoryArrayResponseType = HttpResponse<IVideoCategory[]>;
 
 @Injectable({ providedIn: 'root' })
 export class VideoCategoryService {
@@ -37,34 +37,34 @@ export class VideoCategoryService {
     protected applicationConfigService: ApplicationConfigService,
   ) {}
 
-  create(videoCategory: NewVideoCategory): Observable<EntityResponseType> {
+  create(videoCategory: NewVideoCategory): Observable<VideoCategoryResponseType> {
     const copy = this.convertDateFromClient(videoCategory);
     return this.http
       .post<RestVideoCategory>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(videoCategory: IVideoCategory): Observable<EntityResponseType> {
+  update(videoCategory: IVideoCategory): Observable<VideoCategoryResponseType> {
     const copy = this.convertDateFromClient(videoCategory);
     return this.http
       .put<RestVideoCategory>(`${this.resourceUrl}/${this.getVideoCategoryIdentifier(videoCategory)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  partialUpdate(videoCategory: PartialUpdateVideoCategory): Observable<EntityResponseType> {
+  partialUpdate(videoCategory: PartialUpdateVideoCategory): Observable<VideoCategoryResponseType> {
     const copy = this.convertDateFromClient(videoCategory);
     return this.http
       .patch<RestVideoCategory>(`${this.resourceUrl}/${this.getVideoCategoryIdentifier(videoCategory)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
+  find(id: number): Observable<VideoCategoryResponseType> {
     return this.http
       .get<RestVideoCategory>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<VideoCategoryArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestVideoCategory[]>(this.resourceUrl, { params: options, observe: 'response' })

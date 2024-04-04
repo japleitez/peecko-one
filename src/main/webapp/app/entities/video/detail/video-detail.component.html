@@ -15,6 +15,14 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ video.id }}</span>
           </dd>
+          <dt *ngIf="ua.videoCategory.visible"><span>Category</span></dt>
+          <dd *ngIf="ua.videoCategory.visible">
+            @if (video.videoCategory) {
+              <div>
+                <a [routerLink]="['/video-category', video.videoCategory.id, 'view']">{{ video.videoCategory.title }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.code.visible"><span>Code</span></dt>
           <dd *ngIf="ua.code.visible">
             <span>{{ video.code }}</span>
@@ -74,14 +82,6 @@
           <dt *ngIf="ua.archived.visible"><span>Archived</span></dt>
           <dd *ngIf="ua.archived.visible">
             <span>{{ video.archived | formatMediumDatetime }}</span>
-          </dd>
-          <dt *ngIf="ua.videoCategory.visible"><span>Video Category</span></dt>
-          <dd *ngIf="ua.videoCategory.visible">
-            @if (video.videoCategory) {
-              <div>
-                <a [routerLink]="['/video-category', video.videoCategory.id, 'view']">{{ video.videoCategory.id }}</a>
-              </div>
-            }
           </dd>
           <dt *ngIf="ua.coach.visible"><span>Coach</span></dt>
           <dd *ngIf="ua.coach.visible">
