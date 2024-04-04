@@ -22,12 +22,13 @@ import { CustomerSelectorComponent } from '../../customer/customer-selector/cust
 import {
   VideoCategorySelectComponent
 } from '../../video-category/video-category-select/video-category-select.component';
+import { CoachSelectComponent } from '../../coach/coach-select/coach-select.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-video-update',
   templateUrl: './video-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent, VideoCategorySelectComponent]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent, VideoCategorySelectComponent, CoachSelectComponent]
 })
 export class VideoUpdateComponent implements OnInit {
   ua: VideoAccess = this.getVideoAccess();
@@ -134,6 +135,10 @@ export class VideoUpdateComponent implements OnInit {
 
   categoryControl() {
     return this.editForm.get('videoCategory') as FormControl<IVideoCategory | string | null>;
+  }
+
+  coachControl() {
+    return this.editForm.get('coach') as FormControl<ICoach | string | null>;
   }
 
 }

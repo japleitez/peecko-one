@@ -6,7 +6,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
+import { DurationPipe, FormatMediumDatetimePipe } from 'app/shared/date';
+import FormatMediumDatePipe  from '../../../shared/date/format-medium-date.pipe';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
 
@@ -31,7 +32,9 @@ import { NgIf } from '@angular/common';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-    NgIf
+    NgIf,
+    FormatMediumDatePipe,
+    FormatMediumDatePipe
   ]
 })
 export class VideoComponent implements OnInit {

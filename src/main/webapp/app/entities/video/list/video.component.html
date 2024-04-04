@@ -187,13 +187,13 @@
               <td *ngIf="ua.intensity.listable">{{ video.intensity }}</td>
               <td *ngIf="ua.filename.listable">{{ video.filename }}</td>
               <td *ngIf="ua.description.listable">{{ video.description }}</td>
-              <td *ngIf="ua.created.listable">{{ video.created | formatMediumDatetime }}</td>
-              <td *ngIf="ua.released.listable">{{ video.released | formatMediumDatetime }}</td>
-              <td *ngIf="ua.archived.listable">{{ video.archived | formatMediumDatetime }}</td>
+              <td *ngIf="ua.created.listable">{{ video.created | formatMediumDate }}</td>
+              <td *ngIf="ua.released.listable">{{ video.released | formatMediumDate }}</td>
+              <td *ngIf="ua.archived.listable">{{ video.archived | formatMediumDate }}</td>
               <td *ngIf="ua.coach.listable">
                 @if (video.coach) {
                   <div>
-                    <a [routerLink]="['/coach', video.coach.id, 'view']">{{ video.coach.id }}</a>
+                    <a [routerLink]="['/coach', video.coach.id, 'view']">{{ video.coach.name }}</a>
                   </div>
                 }
               </td>

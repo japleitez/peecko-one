@@ -22,6 +22,15 @@
           }
         </div>
 
+        <div class="mb-3" *ngIf="ua.coach.visible">
+          @if (video?.coach) {
+            <label class="form-label" >Coach</label>
+            <input type="text" class="form-control-read" value="{{video?.coach?.name}}" [readonly]="true" />
+          } @else {
+            <coach-select [control]="coachControl()" [required]="false" id="field_coach"></coach-select>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
@@ -177,15 +186,6 @@
           </div>
         </div>
 
-        <div class="mb-3" *ngIf="ua.coach.visible">
-          <label class="form-label" for="field_coach">Coach</label>
-          <select class="form-control" id="field_coach" data-cy="coach" name="coach" formControlName="coach" [compareWith]="compareCoach">
-            <option [ngValue]="null"></option>
-            @for (coachOption of coachesSharedCollection; track $index) {
-              <option [ngValue]="coachOption">{{ coachOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

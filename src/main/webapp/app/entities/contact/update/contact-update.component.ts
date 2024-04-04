@@ -111,8 +111,8 @@ export class ContactUpdateComponent implements OnInit {
     return CONTACT_USER_ACCESS;
   }
 
-  fc(name: string) {
-    return this.editForm.get(name) as FormControl<ICustomer | string | null>;
+  customerControl() {
+    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
   }
 
 }

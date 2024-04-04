@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { COACH_ACCESS, CoachAccess, ICoach } from '../coach.model';
-import { EntityArrayResponseType, CoachService } from '../service/coach.service';
+import { CoachArrayResponseType, CoachService } from '../service/coach.service';
 import { CoachDeleteDialogComponent } from '../delete/coach-delete-dialog.component';
 
 @Component({
@@ -67,7 +67,7 @@ export class CoachComponent implements OnInit {
         switchMap(() => this.loadFromBackendWithRouteInformations()),
       )
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
+        next: (res: CoachArrayResponseType) => {
           this.onResponseSuccess(res);
         },
       });
@@ -75,7 +75,7 @@ export class CoachComponent implements OnInit {
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: CoachArrayResponseType) => {
         this.onResponseSuccess(res);
       },
     });
@@ -89,7 +89,7 @@ export class CoachComponent implements OnInit {
     this.handleNavigation(page, this.predicate, this.ascending);
   }
 
-  protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
+  protected loadFromBackendWithRouteInformations(): Observable<CoachArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
       switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending)),
@@ -104,7 +104,7 @@ export class CoachComponent implements OnInit {
     this.ascending = sort[1] === ASC;
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
+  protected onResponseSuccess(response: CoachArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.coaches = dataFromBody;
@@ -118,7 +118,7 @@ export class CoachComponent implements OnInit {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
-  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<CoachArrayResponseType> {
     this.isLoading = true;
     const pageToLoad: number = page ?? 1;
     const queryObject: any = {

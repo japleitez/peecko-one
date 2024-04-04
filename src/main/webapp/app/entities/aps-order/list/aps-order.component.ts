@@ -117,8 +117,8 @@ export class ApsOrderComponent implements OnInit {
     }, { validators: [searchFormValidator()] });
   }
 
-  fc(name: string) {
-    return this.searchForm.get(name) as FormControl<ICustomer | string | null>;
+  customerControl() {
+    return this.searchForm.get('customer') as FormControl<ICustomer | string | null>;
   }
 
   isStartYearMonthValid(): boolean {
