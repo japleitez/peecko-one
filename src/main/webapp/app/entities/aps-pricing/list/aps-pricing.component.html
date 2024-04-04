@@ -42,16 +42,15 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
+            <th scope="col" jhiSortBy="customer.id"*ngIf="ua.customer.listable">
               <div class="d-flex">
-                <span>Country</span>
-
+                <span>Customer</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="customerId" *ngIf="ua.customerId.listable">
+            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
               <div class="d-flex">
-                <span>Customer Id</span>
+                <span>Country</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -86,8 +85,14 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-pricing', apsPricing.id, 'view']">{{ apsPricing.id }}</a>
               </td>
+              <td *ngIf="ua.customer.listable">
+                @if (apsPricing.customer) {
+                  <div>
+                    <a [routerLink]="['/customer', apsPricing.customer.id, 'view']">{{ apsPricing.customer.name }}</a>
+                  </div>
+                }
+              </td>
               <td *ngIf="ua.country.listable">{{ apsPricing.country }}</td>
-              <td *ngIf="ua.customerId.listable">{{ apsPricing.customerId }}</td>
               <td *ngIf="ua.index.listable">{{ apsPricing.index }}</td>
               <td *ngIf="ua.minQuantity.listable">{{ apsPricing.minQuantity }}</td>
               <td *ngIf="ua.unitPrice.listable">{{ apsPricing.unitPrice }}</td>

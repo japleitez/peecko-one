@@ -39,9 +39,9 @@ export interface ApsPlanAccess {
   customer: FieldAccess;
 }
 
-export let APS_PLAN_USER_ACCESS: ApsPlanAccess;
+export let APS_PLAN_ACCESS: ApsPlanAccess;
 
-APS_PLAN_USER_ACCESS = {
+APS_PLAN_ACCESS = {
   id: { listable: true, visible: true, disabled: true },
   contract: { listable: true, visible: true, disabled: false },
   pricing: { listable: true, visible: true, disabled: false },

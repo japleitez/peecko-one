@@ -13,6 +13,15 @@
           </div>
         }
 
+        <div class="mb-3" *ngIf="ua.customer.visible">
+          @if (apsPricing?.customer) {
+            <label class="form-label" >Customer</label>
+            <input type="text" class="form-control-read" value="{{apsPricing?.customer?.name}}" [readonly]="true" />
+          } @else {
+            <customer-selector [control]="customerControl()" [required]="false" id="field_customer"></customer-selector>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.country.visible">
           <label class="form-label" for="field_country">Country</label>
           <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
@@ -21,28 +30,6 @@
               @if (editForm.get('country')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.customerId.visible">
-          <label class="form-label" for="field_customerId">Customer Id</label>
-          <input
-            type="number"
-            class="form-control"
-            name="customerId"
-            id="field_customerId"
-            data-cy="customerId"
-            formControlName="customerId"
-          />
-          @if (editForm.get('customerId')!.invalid && (editForm.get('customerId')!.dirty || editForm.get('customerId')!.touched)) {
-            <div>
-              @if (editForm.get('customerId')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('customerId')?.errors?.number"
-                >This field should be a number.</small
-              >
             </div>
           }
         </div>

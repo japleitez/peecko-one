@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { APS_PLAN_USER_ACCESS, ApsPlanAccess, IApsPlan, NewApsPlan } from '../aps-plan.model';
+import { APS_PLAN_ACCESS, ApsPlanAccess, IApsPlan, NewApsPlan } from '../aps-plan.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -49,7 +49,7 @@ export type ApsPlanFormGroup = FormGroup<ApsPlanFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsPlanFormService {
-  createApsPlanFormGroup(apsPlan: ApsPlanFormGroupInput = { id: null }, ua: ApsPlanAccess =  APS_PLAN_USER_ACCESS): ApsPlanFormGroup {
+  createApsPlanFormGroup(apsPlan: ApsPlanFormGroupInput = { id: null }, ua: ApsPlanAccess =  APS_PLAN_ACCESS): ApsPlanFormGroup {
     const apsPlanRawValue = this.convertApsPlanToApsPlanRawValue({
       ...this.getFormDefaults(),
       ...apsPlan,

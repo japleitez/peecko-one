@@ -15,13 +15,17 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ apsPricing.id }}</span>
           </dd>
+          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
+          <dd *ngIf="ua.customer.visible">
+            @if (apsPricing.customer) {
+              <div>
+                <a [routerLink]="['/customer', apsPricing.customer.id, 'view']">{{ apsPricing.customer.name }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.country.visible"><span>Country</span></dt>
           <dd *ngIf="ua.country.visible">
             <span>{{ apsPricing.country }}</span>
-          </dd>
-          <dt *ngIf="ua.customerId.visible"><span>Customer Id</span></dt>
-          <dd *ngIf="ua.customerId.visible">
-            <span>{{ apsPricing.customerId }}</span>
           </dd>
           <dt *ngIf="ua.index.visible"><span>Index</span></dt>
           <dd *ngIf="ua.index.visible">

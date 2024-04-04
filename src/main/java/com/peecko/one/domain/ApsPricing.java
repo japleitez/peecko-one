@@ -28,10 +28,6 @@ public class ApsPricing implements Serializable {
     private String country;
 
     @NotNull
-    @Column(name = "customer_id", nullable = false)
-    private Long customerId;
-
-    @NotNull
     @Column(name = "index", nullable = false)
     private Integer index;
 
@@ -42,6 +38,10 @@ public class ApsPricing implements Serializable {
     @NotNull
     @Column(name = "unit_price", nullable = false)
     private Double unitPrice;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
+    private Customer customer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -64,19 +64,6 @@ public class ApsPricing implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public Long getCustomerId() {
-        return this.customerId;
-    }
-
-    public ApsPricing customerId(Long customerId) {
-        this.setCustomerId(customerId);
-        return this;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
     }
 
     public Integer getIndex() {
@@ -117,6 +104,18 @@ public class ApsPricing implements Serializable {
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
+    public Customer getCustomer() {
+        return this.customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public ApsPricing customer(Customer customer) {
+        this.setCustomer(customer);
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -140,7 +139,6 @@ public class ApsPricing implements Serializable {
     public String toString() {
         return "ApsPricing{" +
             "id=" + getId() +
-            ", customerId=" + getCustomerId() +
             ", index=" + getIndex() +
             ", minQuantity=" + getMinQuantity() +
             ", unitPrice=" + getUnitPrice() +

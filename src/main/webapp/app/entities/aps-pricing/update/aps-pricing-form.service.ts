@@ -19,7 +19,7 @@ type ApsPricingFormDefaults = Pick<NewApsPricing, 'id'>;
 type ApsPricingFormGroupContent = {
   id: FormControl<IApsPricing['id'] | NewApsPricing['id']>;
   country: FormControl<IApsPricing['country']>;
-  customerId: FormControl<IApsPricing['customerId']>;
+  customer: FormControl<IApsPricing['customer']>;
   index: FormControl<IApsPricing['index']>;
   minQuantity: FormControl<IApsPricing['minQuantity']>;
   unitPrice: FormControl<IApsPricing['unitPrice']>;
@@ -45,7 +45,7 @@ export class ApsPricingFormService {
       country: new FormControl({ value: apsPricingRawValue.country, disabled: ua.country.disabled  },
         { validators: [Validators.required],
       }),
-      customerId: new FormControl({ value: apsPricingRawValue.customerId, disabled: ua.customerId.disabled  },
+      customer: new FormControl({ value: apsPricingRawValue.customer, disabled: ua.customer.disabled  },
         { validators: [Validators.required],
       }),
       index: new FormControl({ value: apsPricingRawValue.index, disabled: ua.index.disabled  },

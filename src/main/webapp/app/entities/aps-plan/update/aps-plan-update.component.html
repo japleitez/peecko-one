@@ -8,10 +8,10 @@
       <div>
         <div class="mb-3" *ngIf="ua.customer.visible">
           @if (apsPlan?.customer) {
-            <label class="form-label" >Contract</label>
+            <label class="form-label" >Customer</label>
             <input type="text" class="form-control-read" value="{{apsPlan?.customer?.name}}" [readonly]="true" />
           } @else {
-            <customer-selector [control]="fc('customer')" [required]="false" id="field_customer"></customer-selector>
+            <customer-selector [control]="customerControl()" [required]="false" id="field_customer"></customer-selector>
           }
         </div>
 
