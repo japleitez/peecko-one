@@ -78,11 +78,11 @@ public class Article implements Serializable {
     @Column(name = "archived")
     private Instant archived;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "articles" }, allowSetters = true)
     private ArticleCategory articleCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "videos", "articles" }, allowSetters = true)
     private Coach coach;
 

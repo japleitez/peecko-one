@@ -42,6 +42,18 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="articleCategory.id" *ngIf="ua.articleCategory.listable">
+              <div class="d-flex">
+                <span>Article Category</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="coach.id" *ngIf="ua.coach.listable">
+              <div class="d-flex">
+                <span>Coach</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
@@ -154,18 +166,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="articleCategory.id" *ngIf="ua.articleCategory.listable">
-              <div class="d-flex">
-                <span>Article Category</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="coach.id" *ngIf="ua.coach.listable">
-              <div class="d-flex">
-                <span>Coach</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -174,6 +174,20 @@
             <tr data-cy="entityTable">
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/article', article.id, 'view']">{{ article.id }}</a>
+              </td>
+              <td *ngIf="ua.articleCategory.listable">
+                @if (article.articleCategory) {
+                  <div>
+                    <a [routerLink]="['/article-category', article.articleCategory.id, 'view']">{{ article.articleCategory.title }}</a>
+                  </div>
+                }
+              </td>
+              <td *ngIf="ua.coach.listable">
+                @if (article.coach) {
+                  <div>
+                    <a [routerLink]="['/coach', article.coach.id, 'view']">{{ article.coach.name }}</a>
+                  </div>
+                }
               </td>
               <td *ngIf="ua.code.listable">{{ article.code }}</td>
               <td *ngIf="ua.title.listable">{{ article.title }}</td>
@@ -187,24 +201,10 @@
               <td *ngIf="ua.content.listable">{{ article.content }}</td>
               <td *ngIf="ua.seriesId.listable">{{ article.seriesId }}</td>
               <td *ngIf="ua.chapter.listable">{{ article.chapter }}</td>
-              <td *ngIf="ua.created.listable">{{ article.created | formatMediumDatetime }}</td>
-              <td *ngIf="ua.updated.listable">{{ article.updated | formatMediumDatetime }}</td>
-              <td *ngIf="ua.released.listable">{{ article.released | formatMediumDatetime }}</td>
-              <td *ngIf="ua.archived.listable">{{ article.archived | formatMediumDatetime }}</td>
-              <td *ngIf="ua.articleCategory.listable">
-                @if (article.articleCategory) {
-                  <div>
-                    <a [routerLink]="['/article-category', article.articleCategory.id, 'view']">{{ article.articleCategory.id }}</a>
-                  </div>
-                }
-              </td>
-              <td *ngIf="ua.coach.listable">
-                @if (article.coach) {
-                  <div>
-                    <a [routerLink]="['/coach', article.coach.id, 'view']">{{ article.coach.id }}</a>
-                  </div>
-                }
-              </td>
+              <td *ngIf="ua.created.listable">{{ article.created | formatMediumDate }}</td>
+              <td *ngIf="ua.updated.listable">{{ article.updated | formatMediumDate }}</td>
+              <td *ngIf="ua.released.listable">{{ article.released | formatMediumDate }}</td>
+              <td *ngIf="ua.archived.listable">{{ article.archived | formatMediumDate }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/article', article.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

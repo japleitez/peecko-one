@@ -13,6 +13,24 @@
           </div>
         }
 
+        <div class="mb-3" *ngIf="ua.articleCategory.visible">
+          @if (article?.articleCategory) {
+            <label class="form-label">Category</label>
+            <input type="text" class="form-control-read" value="{{article?.articleCategory?.title}}" [readonly]="true" />
+          } @else {
+            <article-category-select [control]="categoryControl()" [required]="false" id="field_article_category"></article-category-select>
+          }
+        </div>
+
+        <div class="mb-3" *ngIf="ua.coach.visible">
+          @if (article?.coach) {
+            <label class="form-label">Coach</label>
+            <input type="text" class="form-control-read" value="{{article?.coach?.name}}" [readonly]="true" />
+          } @else {
+            <coach-select [control]="coachControl()" [required]="false" id="field_coach"></coach-select>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
@@ -159,32 +177,6 @@
           </div>
         </div>
 
-        <div class="mb-3" *ngIf="ua.articleCategory.visible">
-          <label class="form-label" for="field_articleCategory">Article Category</label>
-          <select
-            class="form-control"
-            id="field_articleCategory"
-            data-cy="articleCategory"
-            name="articleCategory"
-            formControlName="articleCategory"
-            [compareWith]="compareArticleCategory"
-          >
-            <option [ngValue]="null"></option>
-            @for (articleCategoryOption of articleCategoriesSharedCollection; track $index) {
-              <option [ngValue]="articleCategoryOption">{{ articleCategoryOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3" *ngIf="ua.coach.visible">
-          <label class="form-label" for="field_coach">Coach</label>
-          <select class="form-control" id="field_coach" data-cy="coach" name="coach" formControlName="coach" [compareWith]="compareCoach">
-            <option [ngValue]="null"></option>
-            @for (coachOption of coachesSharedCollection; track $index) {
-              <option [ngValue]="coachOption">{{ coachOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

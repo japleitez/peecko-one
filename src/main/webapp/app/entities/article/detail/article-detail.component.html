@@ -15,6 +15,22 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ article.id }}</span>
           </dd>
+          <dt *ngIf="ua.articleCategory.visible"><span>Article Category</span></dt>
+          <dd *ngIf="ua.articleCategory.visible">
+            @if (article.articleCategory) {
+              <div>
+                <a [routerLink]="['/article-category', article.articleCategory.id, 'view']">{{ article.articleCategory.title }}</a>
+              </div>
+            }
+          </dd>
+          <dt *ngIf="ua.coach.visible"><span>Coach</span></dt>
+          <dd *ngIf="ua.coach.visible">
+            @if (article.coach) {
+              <div>
+                <a [routerLink]="['/coach', article.coach.id, 'view']">{{ article.coach.name }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.code.visible"><span>Code</span></dt>
           <dd *ngIf="ua.code.visible">
             <span>{{ article.code }}</span>
@@ -78,22 +94,6 @@
           <dt *ngIf="ua.archived.visible"><span>Archived</span></dt>
           <dd *ngIf="ua.archived.visible">
             <span>{{ article.archived | formatMediumDatetime }}</span>
-          </dd>
-          <dt *ngIf="ua.articleCategory.visible"><span>Article Category</span></dt>
-          <dd *ngIf="ua.articleCategory.visible">
-            @if (article.articleCategory) {
-              <div>
-                <a [routerLink]="['/article-category', article.articleCategory.id, 'view']">{{ article.articleCategory.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt *ngIf="ua.coach.visible"><span>Coach</span></dt>
-          <dd *ngIf="ua.coach.visible">
-            @if (article.coach) {
-              <div>
-                <a [routerLink]="['/coach', article.coach.id, 'view']">{{ article.coach.id }}</a>
-              </div>
-            }
           </dd>
         </dl>
 

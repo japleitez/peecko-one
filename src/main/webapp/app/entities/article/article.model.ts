@@ -66,7 +66,7 @@ ARTICLE_ACCESS = {
   content: { listable: false, visible: true, disabled: false },
   seriesId: { listable: true, visible: true, disabled: false },
   chapter: { listable: true, visible: true, disabled: false },
-  created: { listable: true, visible: true, disabled: true },
+  created: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
   released: { listable: true, visible: true, disabled: false },
   archived: { listable: true, visible: true, disabled: false },

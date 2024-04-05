@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { ARTICLE_CATEGORY_ACCESS, ArticleCategoryAccess, IArticleCategory } from '../article-category.model';
-import { EntityArrayResponseType, ArticleCategoryService } from '../service/article-category.service';
+import { CategoryArrayResponseType, ArticleCategoryService } from '../service/article-category.service';
 import { ArticleCategoryDeleteDialogComponent } from '../delete/article-category-delete-dialog.component';
 import { ARTICLE_ACCESS } from '../../article/article.model';
 import { NgIf } from '@angular/common';
@@ -63,7 +63,7 @@ export class ArticleCategoryComponent implements OnInit {
         switchMap(() => this.loadFromBackendWithRouteInformations()),
       )
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
+        next: (res: CategoryArrayResponseType) => {
           this.onResponseSuccess(res);
         },
       });
@@ -71,7 +71,7 @@ export class ArticleCategoryComponent implements OnInit {
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: CategoryArrayResponseType) => {
         this.onResponseSuccess(res);
       },
     });
@@ -81,7 +81,7 @@ export class ArticleCategoryComponent implements OnInit {
     this.handleNavigation(this.predicate, this.ascending);
   }
 
-  protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
+  protected loadFromBackendWithRouteInformations(): Observable<CategoryArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
       switchMap(() => this.queryBackend(this.predicate, this.ascending)),
@@ -94,7 +94,7 @@ export class ArticleCategoryComponent implements OnInit {
     this.ascending = sort[1] === ASC;
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
+  protected onResponseSuccess(response: CategoryArrayResponseType): void {
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.articleCategories = this.refineData(dataFromBody);
   }
@@ -107,7 +107,7 @@ export class ArticleCategoryComponent implements OnInit {
     return data ?? [];
   }
 
-  protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(predicate?: string, ascending?: boolean): Observable<CategoryArrayResponseType> {
     this.isLoading = true;
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),

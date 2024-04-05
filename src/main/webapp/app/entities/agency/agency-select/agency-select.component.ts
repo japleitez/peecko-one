@@ -8,7 +8,6 @@ import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ICustomer } from '../../customer/customer.model';
 
 @Component({
   selector: 'agency-select',
@@ -49,7 +48,7 @@ export class AgencySelectComponent {
           startWith(''),
           map(value => {
             const name = typeof value === 'string' ? value : value?.name;
-            return name ? this._filterAgencies(name as string) : this.agencies.slice();
+            return name ? this._filter(name as string) : this.agencies.slice();
           }),
         );
       },
@@ -68,7 +67,7 @@ export class AgencySelectComponent {
     return agency && agency.name? agency.name : '';
   }
 
-  private _filterAgencies(name: string): ICustomer[] {
+  private _filter(name: string): IAgency[] {
     const value = name.toLowerCase();
     return this.agencies.filter(agency => {
       return agency.name?.toLowerCase().includes(value);

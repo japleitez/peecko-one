@@ -25,8 +25,8 @@ export type NewRestArticleCategory = RestOf<NewArticleCategory>;
 
 export type PartialUpdateRestArticleCategory = RestOf<PartialUpdateArticleCategory>;
 
-export type EntityResponseType = HttpResponse<IArticleCategory>;
-export type EntityArrayResponseType = HttpResponse<IArticleCategory[]>;
+export type CategoryResponseType = HttpResponse<IArticleCategory>;
+export type CategoryArrayResponseType = HttpResponse<IArticleCategory[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ArticleCategoryService {
@@ -37,21 +37,21 @@ export class ArticleCategoryService {
     protected applicationConfigService: ApplicationConfigService,
   ) {}
 
-  create(articleCategory: NewArticleCategory): Observable<EntityResponseType> {
+  create(articleCategory: NewArticleCategory): Observable<CategoryResponseType> {
     const copy = this.convertDateFromClient(articleCategory);
     return this.http
       .post<RestArticleCategory>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(articleCategory: IArticleCategory): Observable<EntityResponseType> {
+  update(articleCategory: IArticleCategory): Observable<CategoryResponseType> {
     const copy = this.convertDateFromClient(articleCategory);
     return this.http
       .put<RestArticleCategory>(`${this.resourceUrl}/${this.getArticleCategoryIdentifier(articleCategory)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  partialUpdate(articleCategory: PartialUpdateArticleCategory): Observable<EntityResponseType> {
+  partialUpdate(articleCategory: PartialUpdateArticleCategory): Observable<CategoryResponseType> {
     const copy = this.convertDateFromClient(articleCategory);
     return this.http
       .patch<RestArticleCategory>(`${this.resourceUrl}/${this.getArticleCategoryIdentifier(articleCategory)}`, copy, {
@@ -60,13 +60,13 @@ export class ArticleCategoryService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
+  find(id: number): Observable<CategoryResponseType> {
     return this.http
       .get<RestArticleCategory>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<CategoryArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestArticleCategory[]>(this.resourceUrl, { params: options, observe: 'response' })
