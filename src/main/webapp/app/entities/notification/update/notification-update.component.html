@@ -13,18 +13,12 @@
           </div>
         }
 
-        <div class="mb-3" *ngIf="ua.companyId.visible">
-          <label class="form-label" for="field_companyId">Company Id</label>
-          <input type="number" class="form-control" name="companyId" id="field_companyId" data-cy="companyId" formControlName="companyId" />
-          @if (editForm.get('companyId')!.invalid && (editForm.get('companyId')!.dirty || editForm.get('companyId')!.touched)) {
-            <div>
-              @if (editForm.get('companyId')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('companyId')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
+        <div class="mb-3" *ngIf="ua.customer.visible">
+          @if (notification?.customer) {
+            <label class="form-label">Customer</label>
+            <input type="text" class="form-control-read" value="{{notification?.customer?.name}}" [readonly]="true" />
+          } @else {
+            <customer-selector [control]="customerControl()" [required]="false" id="field_customer"></customer-selector>
           }
         </div>
 

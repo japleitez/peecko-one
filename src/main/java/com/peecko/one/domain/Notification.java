@@ -1,5 +1,6 @@
 package com.peecko.one.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.peecko.one.domain.enumeration.Language;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -26,10 +27,6 @@ public class Notification implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "company_id", nullable = false)
-    private Long companyId;
-
-    @NotNull
     @Column(name = "title", nullable = false)
     private String title;
 
@@ -54,6 +51,10 @@ public class Notification implements Serializable {
     @Column(name = "expires")
     private LocalDate expires;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
+    private Customer customer;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -69,17 +70,17 @@ public class Notification implements Serializable {
         this.id = id;
     }
 
-    public Long getCompanyId() {
-        return this.companyId;
+    public Customer getCustomer() {
+        return this.customer;
     }
 
-    public Notification companyId(Long companyId) {
-        this.setCompanyId(companyId);
+    public Notification customer(Customer customer) {
+        this.setCustomer(customer);
         return this;
     }
 
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
+    public void setCustomer(Customer company) {
+        this.customer = company;
     }
 
     public String getTitle() {
@@ -197,7 +198,6 @@ public class Notification implements Serializable {
     public String toString() {
         return "Notification{" +
             "id=" + getId() +
-            ", companyId=" + getCompanyId() +
             ", title='" + getTitle() + "'" +
             ", message='" + getMessage() + "'" +
             ", language='" + getLanguage() + "'" +

@@ -1,10 +1,10 @@
 import dayjs from 'dayjs/esm';
 import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
+import { ICustomer } from '../customer/customer.model';
 
 export interface INotification {
   id: number;
-  companyId?: number | null;
   title?: string | null;
   message?: string | null;
   language?: keyof typeof Language | null;
@@ -12,13 +12,13 @@ export interface INotification {
   videoUrl?: string | null;
   starts?: dayjs.Dayjs | null;
   expires?: dayjs.Dayjs | null;
+  customer?: ICustomer | null;
 }
 
 export type NewNotification = Omit<INotification, 'id'> & { id: null };
 
 export interface NotificationAccess {
   id: FieldAccess;
-  companyId: FieldAccess;
   title: FieldAccess;
   message: FieldAccess;
   language: FieldAccess;
@@ -26,13 +26,13 @@ export interface NotificationAccess {
   videoUrl: FieldAccess;
   starts: FieldAccess;
   expires: FieldAccess;
+  customer: FieldAccess;
 }
 
 export let NOTIFICATION_ACCESS: NotificationAccess;
 
 NOTIFICATION_ACCESS = {
   id: { listable: false, visible: true, disabled: true },
-  companyId: { listable: true, visible: true, disabled: false },
   title: { listable: true, visible: true, disabled: false },
   message: { listable: false, visible: true, disabled: false },
   language: { listable: true, visible: true, disabled: false },
@@ -40,4 +40,5 @@ NOTIFICATION_ACCESS = {
   videoUrl: { listable: false, visible: true, disabled: false },
   starts: { listable: true, visible: true, disabled: false },
   expires: { listable: true, visible: true, disabled: false },
+  customer: { listable: true, visible: true, disabled: false }
 };

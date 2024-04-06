@@ -100,8 +100,8 @@ export class ArticleCategoryFormService {
     return {
       id: null,
       created: currentTime,
-      release: currentTime,
-      archived: currentTime,
+      release: null,
+      archived: null,
     };
   }
 

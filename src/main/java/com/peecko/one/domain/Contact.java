@@ -65,7 +65,7 @@ public class Contact implements Serializable {
     @Column(name = "updated")
     private Instant updated;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
     private Customer customer;
 

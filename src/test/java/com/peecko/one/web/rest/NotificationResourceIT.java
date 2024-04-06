@@ -81,7 +81,6 @@ class NotificationResourceIT {
      */
     public static Notification createEntity(EntityManager em) {
         Notification notification = new Notification()
-            .companyId(DEFAULT_COMPANY_ID)
             .title(DEFAULT_TITLE)
             .message(DEFAULT_MESSAGE)
             .language(DEFAULT_LANGUAGE)
@@ -100,7 +99,6 @@ class NotificationResourceIT {
      */
     public static Notification createUpdatedEntity(EntityManager em) {
         Notification notification = new Notification()
-            .companyId(UPDATED_COMPANY_ID)
             .title(UPDATED_TITLE)
             .message(UPDATED_MESSAGE)
             .language(UPDATED_LANGUAGE)
@@ -129,7 +127,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeCreate + 1);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(DEFAULT_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(DEFAULT_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(DEFAULT_LANGUAGE);
@@ -162,7 +159,7 @@ class NotificationResourceIT {
     void checkCompanyIdIsRequired() throws Exception {
         int databaseSizeBeforeTest = notificationRepository.findAll().size();
         // set the field null
-        notification.setCompanyId(null);
+        notification.setCustomer(null);
 
         // Create the Notification, which fails.
 
@@ -289,7 +286,6 @@ class NotificationResourceIT {
         // Disconnect from session so that the updates on updatedNotification are not directly saved in db
         em.detach(updatedNotification);
         updatedNotification
-            .companyId(UPDATED_COMPANY_ID)
             .title(UPDATED_TITLE)
             .message(UPDATED_MESSAGE)
             .language(UPDATED_LANGUAGE)
@@ -310,7 +306,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(UPDATED_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
@@ -389,7 +384,6 @@ class NotificationResourceIT {
         partialUpdatedNotification.setId(notification.getId());
 
         partialUpdatedNotification
-            .companyId(UPDATED_COMPANY_ID)
             .language(UPDATED_LANGUAGE)
             .imageUrl(UPDATED_IMAGE_URL)
             .starts(UPDATED_STARTS)
@@ -407,7 +401,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(DEFAULT_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
@@ -430,7 +423,6 @@ class NotificationResourceIT {
         partialUpdatedNotification.setId(notification.getId());
 
         partialUpdatedNotification
-            .companyId(UPDATED_COMPANY_ID)
             .title(UPDATED_TITLE)
             .message(UPDATED_MESSAGE)
             .language(UPDATED_LANGUAGE)
@@ -451,7 +443,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(UPDATED_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
