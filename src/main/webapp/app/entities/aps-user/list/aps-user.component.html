@@ -42,6 +42,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="active" *ngIf="ua.active.listable">
+              <div class="d-flex">
+                <span>Active</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
               <div class="d-flex">
                 <span>Name</span>
@@ -91,13 +98,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="active" *ngIf="ua.active.listable">
-              <div class="d-flex">
-                <span>Active</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
@@ -121,6 +121,7 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-user', apsUser.id, 'view']">{{ apsUser.id }}</a>
               </td>
+              <td *ngIf="ua.active.listable">{{ apsUser.active }}</td>
               <td *ngIf="ua.name.listable">{{ apsUser.name }}</td>
               <td *ngIf="ua.username.listable">{{ apsUser.username }}</td>
               <td *ngIf="ua.usernameVerified.listable">{{ apsUser.usernameVerified }}</td>
@@ -128,9 +129,8 @@
               <td *ngIf="ua.privateVerified.listable">{{ apsUser.privateVerified }}</td>
               <td *ngIf="ua.language.listable">{{ apsUser.language }}</td>
               <td *ngIf="ua.license.listable">{{ apsUser.license }}</td>
-              <td *ngIf="ua.active.listable">{{ apsUser.active }}</td>
-              <td *ngIf="ua.created.listable">{{ apsUser.created | formatMediumDatetime }}</td>
-              <td *ngIf="ua.updated.listable">{{ apsUser.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.created.listable">{{ apsUser.created | formatMediumDate }}</td>
+              <td *ngIf="ua.updated.listable">{{ apsUser.updated | formatMediumDate }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/aps-user', apsUser.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
