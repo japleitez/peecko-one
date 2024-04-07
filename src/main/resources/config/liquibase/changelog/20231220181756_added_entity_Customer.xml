@@ -71,7 +71,7 @@
             <column name="agency_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="dummy" type="boolean">
+            <column name="dummy" type="boolean" defaultValue="false">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -101,6 +101,7 @@
                   tableName="customer"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="agency_id" type="numeric"/>
             <column name="code" type="string"/>
             <column name="name" type="string"/>
             <column name="country" type="string"/>
