@@ -185,7 +185,7 @@ public class ContactResource {
     public List<Contact> getAllContacts() {
         log.debug("REST request to get all Contacts");
         //TODO customer id must be provided
-        return contactRepository.getContactsByCustomer(1L);
+        return contactRepository.getContactsByCustomer(6L);
     }
 
     /**
