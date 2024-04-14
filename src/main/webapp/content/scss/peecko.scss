@@ -9,3 +9,12 @@
   padding: 1rem 1rem;
   vertical-align: top;
 }
+
+/* == to highlight cells in tables that can be copy to the clipboard ==*/
+td span {
+  color: olivedrab!important;
+}
+
+td:hover span {
+  color: #dc3545!important;
+}

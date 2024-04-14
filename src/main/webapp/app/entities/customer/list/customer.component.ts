@@ -17,6 +17,7 @@ import { CustomerArrayResponseType, CustomerService } from '../service/customer.
 import { CustomerDeleteDialogComponent } from '../delete/customer-delete-dialog.component';
 import { NgIf } from '@angular/common';
 import { CustomerData } from '../service/customer.data';
+import { ClipboardService } from '../../../shared/common/clipboard.service';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class CustomerComponent implements OnInit {
   constructor(
     protected customerService: CustomerService,
     protected customerData: CustomerData,
+    protected clipboardService: ClipboardService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
@@ -166,4 +168,11 @@ export class CustomerComponent implements OnInit {
   protected getCustomerUserAccess(): CustomerAccess {
     return CUSTOMER_USER_ACCESS;
   }
+
+  protected copy(elemId: string | null | undefined) {
+    if (elemId) {
+      this.clipboardService.copy('#' + elemId);
+    }
+  }
+
 }

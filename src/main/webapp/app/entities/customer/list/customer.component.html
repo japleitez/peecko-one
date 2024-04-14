@@ -190,7 +190,7 @@
                   </div>
                 }
               </td>
-              <td *ngIf="ua.code.listable">{{ customer.code }}</td>
+              <td *ngIf="ua.code.listable" id="{{customer.code}}" (click)="copy(customer.code)"><span>{{ customer.code }}</span></td>
               <td *ngIf="ua.name.listable">{{ customer.name }}</td>
               <td *ngIf="ua.country.listable">{{ customer.country }}</td>
               <td *ngIf="ua.license.listable">{{ customer.license }}</td>
