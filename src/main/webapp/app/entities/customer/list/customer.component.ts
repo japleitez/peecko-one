@@ -16,6 +16,7 @@ import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.mod
 import { CustomerArrayResponseType, CustomerService } from '../service/customer.service';
 import { CustomerDeleteDialogComponent } from '../delete/customer-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { CustomerData } from '../service/customer.data';
 
 
 @Component({
@@ -49,6 +50,7 @@ export class CustomerComponent implements OnInit {
 
   constructor(
     protected customerService: CustomerService,
+    protected customerData: CustomerData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
@@ -58,6 +60,13 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  contacts(c: ICustomer): void {
+    this.customerData.setValue(c);
+    this.router.navigate(['/contact'], {
+      relativeTo: this.activatedRoute.parent,
+    });
   }
 
   delete(customer: ICustomer): void {

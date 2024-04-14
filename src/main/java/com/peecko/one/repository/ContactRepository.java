@@ -20,4 +20,8 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     @Query("from Contact c left join fetch c.customer where c.customer.id = :customerId")
     List<Contact> getContactsByCustomer(@Param("customerId") Long customerId);
+
+    @Query("from Contact c left join fetch c.customer where c.customer.code = :customerCode")
+    List<Contact> getContactsByCustomerCode(@Param("customerCode") String customerCode);
+
 }

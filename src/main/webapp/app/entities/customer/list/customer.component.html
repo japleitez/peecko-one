@@ -210,6 +210,10 @@
               <td *ngIf="ua.closed.listable">{{ customer.closed | formatMediumDate }}</td>
               <td class="text-end">
                 <div class="btn-group">
+                  <a class="btn btn-info btn-sm" data-cy="entityDetailsButton" (click)="contacts(customer)" title="contacts">
+                    <fa-icon icon="list"></fa-icon>
+                  </a>
+
                   <a [routerLink]="['/customer', customer.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                   </a>

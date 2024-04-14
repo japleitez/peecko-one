@@ -13,6 +13,8 @@ import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
 import { EntityArrayResponseType, ContactService } from '../service/contact.service';
 import { ContactDeleteDialogComponent } from '../delete/contact-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { ICustomer } from '../../customer/customer.model';
+import { CustomerData } from '../../customer/service/customer.data';
 
 @Component({
   standalone: true,
@@ -38,8 +40,12 @@ export class ContactComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
+  customerCode: string | null | undefined = null;
+  customer: ICustomer | null = null;
+
   constructor(
     protected contactService: ContactService,
+    protected customerData: CustomerData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -49,6 +55,7 @@ export class ContactComponent implements OnInit {
   trackId = (_index: number, item: IContact): number => this.contactService.getContactIdentifier(item);
 
   ngOnInit(): void {
+    this.customerData.getValue().subscribe({ next: c => this.customerCode = c.code });
     this.load();
   }
 
@@ -111,6 +118,9 @@ export class ContactComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.customerCode) {
+      queryObject.customerCode = this.customerCode;
+    }
     return this.contactService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 

@@ -182,10 +182,13 @@ public class ContactResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of contacts in body.
      */
     @GetMapping("")
-    public List<Contact> getAllContacts() {
+    public List<Contact> getAllContacts(@RequestParam(required = false) String customerCode) {
         log.debug("REST request to get all Contacts");
-        //TODO customer id must be provided
-        return contactRepository.getContactsByCustomer(6L);
+        if (Objects.nonNull(customerCode)) {
+            return contactRepository.getContactsByCustomerCode(customerCode);
+        } else {
+            return contactRepository.findAll();
+        }
     }
 
     /**
