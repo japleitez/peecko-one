@@ -3,25 +3,25 @@
     <span>Contacts</span>
   </h2>
 
-    <div class="d-flex justify-content-end">
+  <div class="d-flex justify-content-end">
 
-      <input id="customer_code" [(ngModel)]="customerCode" class="form-text me-2"/>
+    <input id="customer_code" [(ngModel)]="customerCode" class="form-text me-2"/>
 
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh</span>
-      </button>
+    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <span>Refresh</span>
+    </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-contact"
-        [routerLink]="['/contact/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>New Contact</span>
-      </button>
-    </div>
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-contact"
+      [routerLink]="['/contact/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>New Contact</span>
+    </button>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 

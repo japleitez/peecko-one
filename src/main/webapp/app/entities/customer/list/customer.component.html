@@ -1,24 +1,38 @@
 <div>
   <h2 id="page-heading" data-cy="CustomerHeading">
     <span>Customers</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-customer"
-        [routerLink]="['/customer/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>New Customer</span>
-      </button>
-    </div>
   </h2>
+
+  <div class="d-flex justify-content-end">
+
+    <input id="customer_code" matInput placeholder="Code" [(ngModel)]="code" class="form-text me-2"/>
+
+    <input id="customer_name" matInput placeholder="Name" [(ngModel)]="name" class="form-text me-2"/>
+
+    <input id="customer_license" matInput placeholder="License" [(ngModel)]="license" class="form-text me-2"/>
+
+    <select id="customer_state" [(ngModel)]="state" class="form-text me-2">
+      <option [ngValue]="null"></option>
+      @for (customerState of customerStateValues; track $index) {
+        <option [value]="customerState">{{ customerState }}</option>
+      }
+    </select>
+
+    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <span>Refresh</span>
+    </button>
+
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-customer"
+      [routerLink]="['/customer/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>New Customer</span>
+    </button>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 

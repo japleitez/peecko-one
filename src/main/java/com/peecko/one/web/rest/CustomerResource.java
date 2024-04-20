@@ -7,6 +7,7 @@ import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.CustomerService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
+import com.peecko.one.web.rest.payload.request.CustomerRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -17,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -121,16 +123,22 @@ public class CustomerResource {
     }
 
     /**
-     * {@code GET  /customers} : get all the customers.
+     * {@code GET  /customers} : get the customers matching the criteria
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customers in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<Customer>> getAllCustomers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<Customer>> getAllCustomers(
+        @RequestParam(required = false) String code,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String license,
+        @RequestParam(required = false) CustomerState state,
+        @ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Customers");
-        Agency agency = SecurityUtils.getCurrentUserAgency();
-        Page<Customer> page = customerRepository.findByAgency(agency, pageable);
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        CustomerRequest request = new CustomerRequest(agencyId, code, name, license, state);
+        Page<Customer> page = customerService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -143,6 +151,7 @@ public class CustomerResource {
         List<Customer> list = customers.stream().map(Customer::cloneForSelection).toList();
         return ResponseEntity.ok().body(list);
     }
+
     /**
      * {@code GET  /customers/:id} : get the "id" customer.
      *
