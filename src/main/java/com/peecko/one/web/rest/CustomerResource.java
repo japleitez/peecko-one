@@ -7,7 +7,7 @@ import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.CustomerService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import com.peecko.one.web.rest.payload.request.CustomerRequest;
+import com.peecko.one.web.rest.payload.request.CustomerListRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -137,7 +137,7 @@ public class CustomerResource {
         @ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Customers");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        CustomerRequest request = new CustomerRequest(agencyId, code, name, license, state);
+        CustomerListRequest request = new CustomerListRequest(agencyId, code, name, license, state);
         Page<Customer> page = customerService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

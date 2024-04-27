@@ -1,6 +1,7 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
@@ -8,6 +9,7 @@ import com.peecko.one.service.ApsLicenseService;
 import com.peecko.one.service.ApsPlanService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import com.peecko.one.web.rest.payload.request.ActivateTrialPlanRequest;
+import com.peecko.one.web.rest.payload.request.ApsPlanListRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -17,11 +19,17 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -183,10 +191,17 @@ public class ApsPlanResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsPlans in body.
      */
     @GetMapping("")
-    public List<ApsPlan> getAllApsPlans() {
+    public ResponseEntity<List<ApsPlan>> getAllApsPlans(
+        @RequestParam(required = false) String customer,
+        @RequestParam(required = false) String contract,
+        @RequestParam(required = false) PlanState state,
+        @ParameterObject Pageable pageable) {
         log.debug("REST request to get all ApsPlans");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsPlanRepository.getPlansForAgency(agencyId);
+        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customer, contract, state);
+        Page<ApsPlan> page = apsPlanService.findAll(request, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**

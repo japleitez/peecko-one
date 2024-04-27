@@ -2,7 +2,7 @@ package com.peecko.one.web.rest.payload.request;
 
 import com.peecko.one.domain.enumeration.CustomerState;
 
-public class CustomerRequest {
+public class CustomerListRequest {
 
     private Long agencyId;
     private String code;
@@ -10,10 +10,10 @@ public class CustomerRequest {
     private String license;
     private CustomerState state;
 
-    public CustomerRequest() {
+    public CustomerListRequest() {
     }
 
-    public CustomerRequest(Long agencyId, String code, String name, String license, CustomerState state) {
+    public CustomerListRequest(Long agencyId, String code, String name, String license, CustomerState state) {
         this.agencyId = agencyId;
         this.code = code;
         this.name = name;

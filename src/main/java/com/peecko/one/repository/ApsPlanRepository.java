@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ApsPlanRepository extends JpaRepository<ApsPlan, Long> {
+public interface ApsPlanRepository extends JpaRepository<ApsPlan, Long>, JpaSpecificationExecutor<ApsPlan> {
     @Query("from ApsPlan p left join fetch p.customer where p.id = :id")
     List<ApsPlan> loadById(@Param("id") Long id);
 

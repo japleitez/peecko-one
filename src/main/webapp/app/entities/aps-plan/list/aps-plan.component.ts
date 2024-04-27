@@ -13,6 +13,8 @@ import { APS_PLAN_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
 import { EntityArrayResponseType, ApsPlanService } from '../service/aps-plan.service';
 import { ApsPlanDeleteDialogComponent } from '../delete/aps-plan-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { PlanState } from '../../enumerations/plan-state.model';
 
 @Component({
   standalone: true,
@@ -27,7 +29,8 @@ import { NgIf } from '@angular/common';
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-    NgIf
+    NgIf,
+    MatInputModule
   ]
 })
 export class ApsPlanComponent implements OnInit {
@@ -37,6 +40,11 @@ export class ApsPlanComponent implements OnInit {
 
   predicate = 'id';
   ascending = true;
+
+  customer: string | null | undefined = null;
+  contract: string | null | undefined = null;
+  state: string | null | undefined = null;
+  stateValues: string[] = Object.keys(PlanState);
 
   constructor(
     protected apsPlanService: ApsPlanService,
@@ -111,6 +119,15 @@ export class ApsPlanComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.customer) {
+      queryObject.customer = this.customer;
+    }
+    if (this.contract) {
+      queryObject.contract = this.contract;
+    }
+    if (this.state) {
+      queryObject.state = this.state;
+    }
     return this.apsPlanService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 

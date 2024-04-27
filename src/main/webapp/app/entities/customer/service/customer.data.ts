@@ -7,15 +7,15 @@ import { ICustomer, NewCustomer } from '../customer.model';
 })
 export class CustomerData {
 
-  private NEW_CUSTOMER: ICustomer = { id: 0, code: ''};
-
   protected _data: BehaviorSubject<ICustomer>;
+
+  private NEW_CUSTOMER: ICustomer = { id: 0, code: ''};
 
   constructor() {
     this._data = new BehaviorSubject<ICustomer>(this.NEW_CUSTOMER);
   }
 
-  setValue(customer: ICustomer) {
+  setValue(customer: ICustomer): void {
     this._data.next(customer);
   }
 
