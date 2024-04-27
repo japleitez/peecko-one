@@ -16,6 +16,24 @@
       }
     </select>
 
+    <input
+      [(ngModel)]="starts"
+      type="text"
+      matInput placeholder="start" class="form-text me-2"
+      ngbDatepicker
+      #startsDp="ngbDatepicker"
+    />
+    <button type="button" class="btn btn-secondary me-2" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+
+    <input
+      [(ngModel)]="ends"
+      type="text"
+      matInput placeholder="ends" class="form-text me-2"
+      ngbDatepicker
+      #endsDp="ngbDatepicker"
+    />
+    <button type="button" class="btn btn-secondary me-2" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
       <span>Refresh</span>

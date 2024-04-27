@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbInputDatepicker, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { APS_PLAN_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
@@ -15,6 +15,8 @@ import { ApsPlanDeleteDialogComponent } from '../delete/aps-plan-delete-dialog.c
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { PlanState } from '../../enumerations/plan-state.model';
+import dayjs from 'dayjs/esm';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from '../../../config/input.constants';
 
 @Component({
   standalone: true,
@@ -30,7 +32,9 @@ import { PlanState } from '../../enumerations/plan-state.model';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     NgIf,
-    MatInputModule
+    MatInputModule,
+    ReactiveFormsModule,
+    NgbInputDatepicker
   ]
 })
 export class ApsPlanComponent implements OnInit {
@@ -44,6 +48,8 @@ export class ApsPlanComponent implements OnInit {
   customer: string | null | undefined = null;
   contract: string | null | undefined = null;
   state: string | null | undefined = null;
+  starts: string | null | undefined = null;
+  ends: string | null | undefined = null;
   stateValues: string[] = Object.keys(PlanState);
 
   constructor(
@@ -127,6 +133,12 @@ export class ApsPlanComponent implements OnInit {
     }
     if (this.state) {
       queryObject.state = this.state;
+    }
+    if (this.starts) {
+      queryObject.starts = dayjs(this.starts, DATE_FORMAT).format('YYYY-MM-DD');
+    }
+    if (this.ends) {
+      queryObject.ends = dayjs(this.ends, DATE_FORMAT).format('YYYY-MM-DD');
     }
     return this.apsPlanService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }

@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class ApsPlanSpecs extends BaseSpecs {
@@ -46,4 +47,19 @@ public class ApsPlanSpecs extends BaseSpecs {
                 cb.conjunction():
                 cb.equal(root.get(ApsPlan_.STATE), state)));
     }
+
+    public static Specification<ApsPlan> starts(LocalDate starts) {
+        return (((root, query, cb) ->
+            Objects.isNull(starts)?
+                cb.conjunction():
+                cb.greaterThanOrEqualTo(root.get(ApsPlan_.STARTS), starts)));
+    }
+
+    public static Specification<ApsPlan> ends(LocalDate ends) {
+        return (((root, query, cb) ->
+            Objects.isNull(ends)?
+                cb.conjunction():
+                cb.lessThanOrEqualTo(root.get(ApsPlan_.ENDS), ends)));
+    }
+
 }

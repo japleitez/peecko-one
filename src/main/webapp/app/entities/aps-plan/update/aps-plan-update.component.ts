@@ -112,7 +112,8 @@ export class ApsPlanUpdateComponent implements OnInit {
   protected getApsPlanAccess(): ApsPlanAccess {
     return APS_PLAN_ACCESS;
   }
-  customerControl() {
+
+  protected customerControl(): FormControl<ICustomer | string | null> {
     return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
   }
 
