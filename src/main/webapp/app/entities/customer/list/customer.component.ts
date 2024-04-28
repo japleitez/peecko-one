@@ -75,9 +75,16 @@ export class CustomerComponent implements OnInit {
     this.load();
   }
 
-  contacts(c: ICustomer): void {
+  navToContacts(c: ICustomer): void {
     this.customerData.setValue(c);
     this.router.navigate(['/contact'], {
+      relativeTo: this.activatedRoute.parent,
+    });
+  }
+
+  navToApsPlans(c: ICustomer): void {
+    this.customerData.setValue(c);
+    this.router.navigate(['/aps-plan'], {
       relativeTo: this.activatedRoute.parent,
     });
   }

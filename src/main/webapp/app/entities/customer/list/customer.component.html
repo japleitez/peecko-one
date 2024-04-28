@@ -56,96 +56,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="agency.id" *ngIf="ua.agency.listable">
-              <div class="d-flex">
-                <span>Agency</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
-              <div class="d-flex">
-                <span>Code</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
-              <div class="d-flex">
-                <span>Name</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
-              <div class="d-flex">
-                <span>Country</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
-              <div class="d-flex">
-                <span>License</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="state" *ngIf="ua.state.listable">
-              <div class="d-flex">
-                <span>State</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="closeReason" *ngIf="ua.closeReason.listable">
-              <div class="d-flex">
-                <span>Close Reason</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="emailDomains" *ngIf="ua.emailDomains.listable">
-              <div class="d-flex">
-                <span>Email Domains</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="vatId" *ngIf="ua.vatId.listable">
-              <div class="d-flex">
-                <span>Vat Id</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="bank" *ngIf="ua.bank.listable">
-              <div class="d-flex">
-                <span>Bank</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="iban" *ngIf="ua.iban.listable">
-              <div class="d-flex">
-                <span>Iban</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="logo" *ngIf="ua.logo.listable">
-              <div class="d-flex">
-                <span>Logo</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
-              <div class="d-flex">
-                <span>Notes</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
@@ -188,6 +98,90 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="closeReason" *ngIf="ua.closeReason.listable">
+              <div class="d-flex">
+                <span>Close Reason</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="emailDomains" *ngIf="ua.emailDomains.listable">
+              <div class="d-flex">
+                <span>Email Domains</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="logo" *ngIf="ua.logo.listable">
+              <div class="d-flex">
+                <span>Logo</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
+              <div class="d-flex">
+                <span>Notes</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
+              <div class="d-flex">
+                <span>Country</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="vatId" *ngIf="ua.vatId.listable">
+              <div class="d-flex">
+                <span>Vat Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bank" *ngIf="ua.bank.listable">
+              <div class="d-flex">
+                <span>Bank</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="iban" *ngIf="ua.iban.listable">
+              <div class="d-flex">
+                <span>Iban</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
+              <div class="d-flex">
+                <span>License</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="state" *ngIf="ua.state.listable">
+              <div class="d-flex">
+                <span>State</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
+              <div class="d-flex">
+                <span>Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
+              <div class="d-flex">
+                <span>Code</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -197,34 +191,35 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/customer', customer.id, 'view']">{{ customer.id }}</a>
               </td>
-              <td *ngIf="ua.agency.listable">
-                @if (customer.agency) {
-                  <div>
-                    <a [routerLink]="['/agency', customer.agency.id, 'view']">{{ customer.agency.name }}</a>
-                  </div>
-                }
-              </td>
-              <td *ngIf="ua.code.listable" id="{{customer.code}}" (click)="copy(customer.code)"><span>{{ customer.code }}</span></td>
-              <td *ngIf="ua.name.listable">{{ customer.name }}</td>
-              <td *ngIf="ua.country.listable">{{ customer.country }}</td>
-              <td *ngIf="ua.license.listable">{{ customer.license }}</td>
-              <td *ngIf="ua.state.listable">{{ customer.state }}</td>
-              <td *ngIf="ua.closeReason.listable">{{ customer.closeReason }}</td>
-              <td *ngIf="ua.emailDomains.listable">{{ customer.emailDomains }}</td>
-              <td *ngIf="ua.vatId.listable">{{ customer.vatId }}</td>
-              <td *ngIf="ua.bank.listable">{{ customer.bank }}</td>
-              <td *ngIf="ua.iban.listable">{{ customer.iban }}</td>
-              <td *ngIf="ua.logo.listable">{{ customer.logo }}</td>
-              <td *ngIf="ua.notes.listable">{{ customer.notes }}</td>
+
               <td *ngIf="ua.created.listable">{{ customer.created | formatMediumDate }}</td>
               <td *ngIf="ua.updated.listable">{{ customer.updated | formatMediumDatetime }}</td>
               <td *ngIf="ua.trialed.listable">{{ customer.trialed | formatMediumDate }}</td>
               <td *ngIf="ua.declined.listable">{{ customer.declined | formatMediumDate }}</td>
               <td *ngIf="ua.activated.listable">{{ customer.activated | formatMediumDate }}</td>
               <td *ngIf="ua.closed.listable">{{ customer.closed | formatMediumDate }}</td>
+
+              <td *ngIf="ua.closeReason.listable">{{ customer.closeReason }}</td>
+              <td *ngIf="ua.emailDomains.listable">{{ customer.emailDomains }}</td>
+              <td *ngIf="ua.logo.listable">{{ customer.logo }}</td>
+              <td *ngIf="ua.notes.listable">{{ customer.notes }}</td>
+
+              <td *ngIf="ua.country.listable">{{ customer.country }}</td>
+              <td *ngIf="ua.vatId.listable">{{ customer.vatId }}</td>
+              <td *ngIf="ua.bank.listable">{{ customer.bank }}</td>
+              <td *ngIf="ua.iban.listable">{{ customer.iban }}</td>
+              <td *ngIf="ua.license.listable">{{ customer.license }}</td>
+              <td *ngIf="ua.state.listable">{{ customer.state }}</td>
+              <td *ngIf="ua.name.listable">{{ customer.name }}</td>
+              <td *ngIf="ua.code.listable" id="{{customer.code}}" (click)="copy(customer.code)"><span>{{ customer.code }}</span></td>
+
               <td class="text-end">
                 <div class="btn-group">
-                  <a class="btn btn-info btn-sm" data-cy="entityDetailsButton" (click)="contacts(customer)" title="contacts">
+                  <a class="btn btn-info btn-sm" data-cy="entityApsPlansButton" (click)="navToApsPlans(customer)" title="plans">
+                    <fa-icon icon="bell"></fa-icon>
+                  </a>
+
+                  <a class="btn btn-info btn-sm" data-cy="entityContactsButton" (click)="navToContacts(customer)" title="contacts">
                     <fa-icon icon="list"></fa-icon>
                   </a>
 

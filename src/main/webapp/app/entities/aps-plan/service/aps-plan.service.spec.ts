@@ -11,8 +11,6 @@ const requireRestSample: RestApsPlan = {
   ...sampleWithRequiredData,
   starts: sampleWithRequiredData.starts?.format(DATE_FORMAT),
   ends: sampleWithRequiredData.ends?.format(DATE_FORMAT),
-  trialStarts: sampleWithRequiredData.trialStarts?.format(DATE_FORMAT),
-  trialEnds: sampleWithRequiredData.trialEnds?.format(DATE_FORMAT),
   created: sampleWithRequiredData.created?.toJSON(),
   updated: sampleWithRequiredData.updated?.toJSON(),
 };

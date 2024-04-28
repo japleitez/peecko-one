@@ -6,7 +6,7 @@
   <div class="d-flex justify-content-end">
     <form class="aps-orders-search-form" [formGroup]="searchForm">
 
-      <customer-selector [control]="customerControl()" [required]="false"></customer-selector>
+      <customer-selector [control]="customerControl()" [required]="false" [cl]="'w-30'"></customer-selector>
 
       <mat-form-field class="w-20" subscriptSizing="dynamic">
         <mat-label>From</mat-label>
@@ -38,7 +38,6 @@
       <span>New Aps Order</span>
     </button>
   </div>
-
 
   <jhi-alert-error></jhi-alert-error>
 

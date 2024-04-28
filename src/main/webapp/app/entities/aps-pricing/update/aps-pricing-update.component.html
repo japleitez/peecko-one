@@ -18,7 +18,7 @@
             <label class="form-label" >Customer</label>
             <input type="text" class="form-control-read" value="{{apsPricing?.customer?.name}}" [readonly]="true" />
           } @else {
-            <customer-selector [control]="customerControl()" [required]="false" id="field_customer"></customer-selector>
+            <customer-selector [control]="customerControl()" [required]="false" [cl]="'w-100'" id="field_customer"></customer-selector>
           }
         </div>
 

@@ -26,12 +26,12 @@ public class ApsPlanService {
 
     public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {
         Specification<ApsPlan> agency = ApsPlanSpecs.agencyId(request.getAgencyId());
-        Specification<ApsPlan> customerCode = ApsPlanSpecs.customerCode(request.getCustomer());
+        Specification<ApsPlan> customerCode = ApsPlanSpecs.customerCode(request.getCustomerCode());
         Specification<ApsPlan> contract = ApsPlanSpecs.contract(request.getContract());
         Specification<ApsPlan> state = ApsPlanSpecs.state(request.getState());
         Specification<ApsPlan> starts = ApsPlanSpecs.starts(request.getStarts());
         Specification<ApsPlan> ends = ApsPlanSpecs.ends(request.getEnds());
-        Specification<ApsPlan> spec = agency.and(state.and(customerCode.or(contract)).and(starts).and(ends));
+        Specification<ApsPlan> spec = agency.and(state.and(customerCode).and(contract).and(starts).and(ends));
         return apsPlanRepository.findAll(spec, pageable);
     }
 

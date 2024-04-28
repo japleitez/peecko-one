@@ -6,15 +6,15 @@ import java.time.LocalDate;
 
 public class ApsPlanListRequest {
     private Long agencyId;
-    private String customer;
+    private String customerCode;
     private String contract;
     private PlanState state;
     private LocalDate starts;
     private LocalDate ends;
 
-    public ApsPlanListRequest(Long agencyId, String customer, String contract, PlanState state, LocalDate start, LocalDate end) {
+    public ApsPlanListRequest(Long agencyId, String customerCode, String contract, PlanState state, LocalDate start, LocalDate end) {
         this.agencyId = agencyId;
-        this.customer = customer;
+        this.customerCode = customerCode;
         this.contract = contract;
         this.state = state;
         this.starts = start;
@@ -29,12 +29,12 @@ public class ApsPlanListRequest {
         this.agencyId = agencyId;
     }
 
-    public String getCustomer() {
-        return customer;
+    public String getCustomerCode() {
+        return customerCode;
     }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
+    public void setCustomerCode(String customerCode) {
+        this.customerCode = customerCode;
     }
 
     public String getContract() {

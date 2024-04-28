@@ -193,7 +193,7 @@ public class ApsPlanResource {
      */
     @GetMapping("")
     public ResponseEntity<List<ApsPlan>> getAllApsPlans(
-        @RequestParam(required = false) String customer,
+        @RequestParam(required = false) String customerCode,
         @RequestParam(required = false) String contract,
         @RequestParam(required = false) PlanState state,
         @RequestParam(required = false) LocalDate starts,
@@ -201,7 +201,7 @@ public class ApsPlanResource {
         @ParameterObject Pageable pageable) {
         log.debug("REST request to get all ApsPlans");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customer, contract, state, starts, ends);
+        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customerCode, contract, state, starts, ends);
         Page<ApsPlan> page = apsPlanService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

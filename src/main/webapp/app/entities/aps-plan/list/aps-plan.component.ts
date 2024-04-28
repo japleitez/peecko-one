@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PlanState } from '../../enumerations/plan-state.model';
 import dayjs from 'dayjs/esm';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from '../../../config/input.constants';
+import { CustomerData } from '../../customer/service/customer.data';
 
 @Component({
   standalone: true,
@@ -45,7 +46,7 @@ export class ApsPlanComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
-  customer: string | null | undefined = null;
+  customerCode: string | null | undefined = null;
   contract: string | null | undefined = null;
   state: string | null | undefined = null;
   starts: string | null | undefined = null;
@@ -54,6 +55,7 @@ export class ApsPlanComponent implements OnInit {
 
   constructor(
     protected apsPlanService: ApsPlanService,
+    protected customerData: CustomerData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -63,6 +65,7 @@ export class ApsPlanComponent implements OnInit {
   trackId = (_index: number, item: IApsPlan): number => this.apsPlanService.getApsPlanIdentifier(item);
 
   ngOnInit(): void {
+    this.customerData.getValue().subscribe({ next: c => this.customerCode = c.code });
     this.load();
   }
 
@@ -125,8 +128,8 @@ export class ApsPlanComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    if (this.customer) {
-      queryObject.customer = this.customer;
+    if (this.customerCode) {
+      queryObject.customerCode = this.customerCode;
     }
     if (this.contract) {
       queryObject.contract = this.contract;
