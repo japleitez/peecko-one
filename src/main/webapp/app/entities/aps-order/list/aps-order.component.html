@@ -74,17 +74,17 @@
             </th>
             <th scope="col">
               <div class="d-flex">
+                <span class="badge bg-info">P-Contract</span>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
                 <span class="badge bg-info">P-State</span>
               </div>
             </th>
             <th scope="col">
               <div class="d-flex">
                 <span class="badge bg-info">P-Pricing</span>
-              </div>
-            </th>
-            <th scope="col">
-              <div class="d-flex">
-                <span class="badge bg-info">P-Contract</span>
               </div>
             </th>
             <!-- order info -->
@@ -142,8 +142,6 @@
               <!-- reference info -->
               <td>{{ apsOrder.cstName }}</td>
               <td>{{ apsOrder.cstState }}</td>
-              <td>{{ apsOrder.plnState }}</td>
-              <td>{{ apsOrder.pricing }}</td>
               <td>
                 @if (apsOrder.plnId) {
                   <div>
@@ -151,6 +149,8 @@
                   </div>
                 }
               </td>
+              <td>{{ apsOrder.plnState }}</td>
+              <td>{{ apsOrder.pricing }}</td>
               <!-- order info -->
               <td *ngIf="ua.period.listable">{{ apsOrder.period }}</td>
               <td *ngIf="ua.license.listable">{{ apsOrder.license }}</td>

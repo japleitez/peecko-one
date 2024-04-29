@@ -26,8 +26,8 @@
             <column name="vat_rate" type="double">
                 <constraints nullable="false" />
             </column>
-            <column name="number_of_users" type="integer">
-                <constraints nullable="false" />
+            <column name="number_of_users" type="integer" defaultValue="0">
+                <constraints nullable="true" />
             </column>
             <column name="invoice_number" type="varchar(255)">
                 <constraints nullable="true" />

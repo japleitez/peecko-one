@@ -147,7 +147,7 @@ public class CustomerResource {
     public ResponseEntity<List<Customer>> findActiveCustomers() {
         log.debug("REST request to get active Customers");
         Agency agency = SecurityUtils.getCurrentUserAgency();
-        List<Customer> customers = customerRepository.findByAgencyAndCustomerState(agency, CustomerState.ACTIVE);
+        List<Customer> customers = customerRepository.findByAgencyAndCustomerState(agency, CustomerState.TRIAL_ACTIVE);
         List<Customer> list = customers.stream().map(Customer::cloneForSelection).toList();
         return ResponseEntity.ok().body(list);
     }

@@ -43,7 +43,6 @@ public class ApsOrder implements Serializable {
     @Column(name = "vat_rate", nullable = false)
     private Double vatRate;
 
-    @NotNull
     @Column(name = "number_of_users", nullable = false)
     private Integer numberOfUsers;
 

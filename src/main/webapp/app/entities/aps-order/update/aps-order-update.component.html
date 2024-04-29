@@ -13,6 +13,15 @@
           </div>
         }
 
+        <div class="mb-3" *ngIf="ua.plan.visible">
+          @if (apsOrder?.apsPlan) {
+            <label class="form-label">Aps Plan</label>
+            <input type="text" class="form-control-read" value="{{apsOrder?.apsPlan?.contract}}" [readonly]="true" />
+          } @else {
+            <aps-plan-select [control]="apsPlanControl()" [required]="false" [cl]="'w-100'" id="field_customer"></aps-plan-select>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.period.visible">
           <label class="form-label" for="field_period">Period</label>
           <input type="number" class="form-control" name="period" id="field_period" data-cy="period" formControlName="period" />
@@ -102,22 +111,6 @@
           />
         </div>
 
-        <div class="mb-3" *ngIf="ua.plan.visible">
-          <label class="form-label" for="field_apsPlan">Aps Plan</label>
-          <select
-            class="form-control"
-            id="field_apsPlan"
-            data-cy="apsPlan"
-            name="apsPlan"
-            formControlName="apsPlan"
-            [compareWith]="compareApsPlan"
-          >
-            <option [ngValue]="null"></option>
-            @for (apsPlanOption of apsPlansSharedCollection; track $index) {
-              <option [ngValue]="apsPlanOption">{{ apsPlanOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

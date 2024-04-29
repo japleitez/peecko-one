@@ -25,7 +25,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
 
     Page<Customer> findByAgency(Agency agency, Pageable pageable);
 
-    @Query("from Customer c left join fetch c.agency where c.agency = :agency and c.state = :customerState order by c.name")
-    List<Customer> findByAgencyAndCustomerState(Agency agency, CustomerState customerState);
+    @Query("from Customer c left join fetch c.agency where c.agency = :agency and c.state in (:states) order by c.name")
+    List<Customer> findByAgencyAndCustomerState(Agency agency, List<CustomerState> states);
 
 }

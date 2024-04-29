@@ -250,4 +250,10 @@ public class ApsPlanResource {
         );
     }
 
+    @GetMapping("/trial-active")
+    public ResponseEntity<List<ApsPlan>> findTrialActivePlans() {
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        List<ApsPlan> result =  apsPlanRepository.getPlansForAgencyAndStates(agencyId, PlanState.TRIAL_ACTIVE);
+        return ResponseEntity.ok().body(result);
+    }
 }

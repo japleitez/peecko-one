@@ -206,6 +206,10 @@ export class ApsOrderComponent implements OnInit {
       if (customerId) {
         queryObject.customerId = customerId;
       }
+      console.log('customer-----------');
+      console.log(customer);
+      console.log('customerId---------')
+      console.log(customerId);
       if (this.searchForm.controls['start'].value) {
         queryObject.startYearMonth = this.searchForm.controls['start'].value;
       }
@@ -213,6 +217,8 @@ export class ApsOrderComponent implements OnInit {
         queryObject.endYearMonth = this.searchForm.controls['end'].value;
       }
     }
+    console.log('----------------');
+    console.log(queryObject);
     this.loadAction = this.REFRESH; // reset load action
     if (executeBatch) {
       return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
