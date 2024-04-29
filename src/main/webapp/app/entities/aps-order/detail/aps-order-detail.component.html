@@ -43,7 +43,7 @@
           <dd *ngIf="ua.plan.visible">
             @if (apsOrder.apsPlan) {
               <div>
-                <a [routerLink]="['/aps-plan', apsOrder.apsPlan.id, 'view']">{{ apsOrder.apsPlan.id }}</a>
+                <a [routerLink]="['/aps-plan', apsOrder.apsPlan.id, 'view']">{{ apsOrder.apsPlan.contract }}</a>
               </div>
             }
           </dd>
