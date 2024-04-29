@@ -15,6 +15,7 @@ import { ContactDeleteDialogComponent } from '../delete/contact-delete-dialog.co
 import { NgIf } from '@angular/common';
 import { ICustomer } from '../../customer/customer.model';
 import { CustomerData } from '../../customer/service/customer.data';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   standalone: true,
@@ -29,7 +30,8 @@ import { CustomerData } from '../../customer/service/customer.data';
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-    NgIf
+    NgIf,
+    MatInputModule
   ]
 })
 export class ContactComponent implements OnInit {

@@ -4,10 +4,12 @@ import { ICustomer } from '../customer.model';
 import { Observable, tap } from 'rxjs';
 import { CustomerService, CustomerArrayResponseType } from '../service/customer.service';
 import { map, startWith } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'customer-selector',
   standalone: true,
@@ -16,7 +18,7 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
   templateUrl: './customer-selector.component.html',
   styleUrl: './customer-selector.component.scss'

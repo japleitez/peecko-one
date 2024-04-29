@@ -5,7 +5,7 @@
 
   <div class="d-flex justify-content-end">
 
-    <input id="customer_code" [(ngModel)]="customerCode" class="form-text me-2"/>
+    <input id="customer_code" matInput placeholder="customer code" [(ngModel)]="customerCode" class="form-text me-2"/>
 
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
