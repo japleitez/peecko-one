@@ -14,6 +14,9 @@ import java.util.List;
 @Repository
 public interface ApsOrderRepository extends JpaRepository<ApsOrder, Long> {
 
+    @Query("from ApsOrder o where o.apsPlan.contract = :contract")
+    List<ApsOrder> findByApsPlanContract(@Param("contract") String contract);
+
     @Query("from ApsOrder o where o.period = :period and o.apsPlan.customer.agency.id = :agencyId")
     List<ApsOrder> findByAgencyAndPeriod(@Param("agencyId") Long agencyId, @Param("period") Integer period);
 

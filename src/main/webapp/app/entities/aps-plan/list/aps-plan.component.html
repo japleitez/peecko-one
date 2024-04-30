@@ -176,6 +176,10 @@
               <td *ngIf="ua.updated.listable">{{ apsPlan.updated | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
+                  <a class="btn btn-info btn-sm" data-cy="entityContactsButton" (click)="navToApsOrder(apsPlan)" title="contacts">
+                    orders
+                  </a>
+
                   <a [routerLink]="['/aps-plan', apsPlan.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                   </a>

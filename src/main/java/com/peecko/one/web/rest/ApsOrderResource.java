@@ -188,6 +188,7 @@ public class ApsOrderResource {
     @GetMapping("/info")
     public List<ApsOrderInfo> getFilteredApsOrders(
         @RequestParam(required = false) Long customerId,
+        @RequestParam(required = false) String apsPlanContract,
         @RequestParam(required = false) String startYearMonth,
         @RequestParam(required = false) String endYearMonth) {
         log.debug("REST request to get ApsOrders");
@@ -211,6 +212,8 @@ public class ApsOrderResource {
             orders = apsOrderRepository.findByCustomerAndStartPeriod(customerId, startPeriod);
         } else if (customerId != null && endPeriod != null ) {
             orders = apsOrderRepository.findByCustomerAndEndPeriod(customerId, endPeriod);
+        } else if (apsPlanContract != null) {
+            orders = apsOrderRepository.findByApsPlanContract(apsPlanContract);
         } else {
             Long agencyId = SecurityUtils.getCurrentAgencyId();
             orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, startPeriod);

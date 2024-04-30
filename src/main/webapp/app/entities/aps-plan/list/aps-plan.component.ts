@@ -18,6 +18,7 @@ import { PlanState } from '../../enumerations/plan-state.model';
 import dayjs from 'dayjs/esm';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from '../../../config/input.constants';
 import { CustomerData } from '../../customer/service/customer.data';
+import { ApsPlanData } from '../service/aps-plan.data';
 
 @Component({
   standalone: true,
@@ -56,6 +57,7 @@ export class ApsPlanComponent implements OnInit {
   constructor(
     protected apsPlanService: ApsPlanService,
     protected customerData: CustomerData,
+    protected apsPlanData: ApsPlanData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -67,6 +69,13 @@ export class ApsPlanComponent implements OnInit {
   ngOnInit(): void {
     this.customerData.getValue().subscribe({ next: c => this.customerCode = c.code });
     this.load();
+  }
+
+  navToApsOrder(a: IApsPlan) {
+    this.apsPlanData.setValue(a);
+    this.router.navigate(['/aps-order'], {
+      relativeTo: this.activatedRoute.parent,
+    });
   }
 
   delete(apsPlan: IApsPlan): void {

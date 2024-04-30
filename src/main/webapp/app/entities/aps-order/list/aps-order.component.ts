@@ -28,9 +28,14 @@ import { ICustomer } from '../../customer/customer.model';
 import { CustomerService, CustomerArrayResponseType } from '../../customer/service/customer.service';
 import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/validate/custom-validator.directive';
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
+import { ApsPlanData } from '../../aps-plan/service/aps-plan.data';
 
 function searchFormValidator(): ValidatorFn {
   return (c: AbstractControl): ValidationErrors | null => {
+    let contract = c.get('apsPlanContract')?.value;
+    if (contract) {
+      return null;
+    }
     let start = c.get('start')?.value;
     if (!start) {
       return { invalidForm: true };
@@ -88,9 +93,12 @@ export class ApsOrderComponent implements OnInit {
   REFRESH = 'REFRESH';
   BATCH_GENERATE = 'BATCH_GENERATE';
 
+  apsPlanContract: string | null | undefined = null;
+
   constructor(
     protected apsOrderService: ApsOrderService,
     protected customerService: CustomerService,
+    protected apsPlanData: ApsPlanData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -101,6 +109,7 @@ export class ApsOrderComponent implements OnInit {
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
 
   ngOnInit(): void {
+    this.apsPlanData.getValue().subscribe({ next: a => this.apsPlanContract = a.contract });
     this.isLoading = true;
     this._initForm();
     this.refresh();
@@ -112,6 +121,7 @@ export class ApsOrderComponent implements OnInit {
   private _initForm(): void {
     this.searchForm = this.fb.group({
       'customer': [''],
+      'apsPlanContract': this.apsPlanContract,
       'start': [currentYearMonth(), Validators.compose([Validators.required, periodValidator()])],
       'end': [null, periodValidator()],
     }, { validators: [searchFormValidator()] });
@@ -206,10 +216,9 @@ export class ApsOrderComponent implements OnInit {
       if (customerId) {
         queryObject.customerId = customerId;
       }
-      console.log('customer-----------');
-      console.log(customer);
-      console.log('customerId---------')
-      console.log(customerId);
+      if (this.searchForm.controls['apsPlanContract'].value) {
+        queryObject.apsPlanContract = this.searchForm.controls['apsPlanContract'].value;
+      }
       if (this.searchForm.controls['start'].value) {
         queryObject.startYearMonth = this.searchForm.controls['start'].value;
       }
@@ -217,8 +226,6 @@ export class ApsOrderComponent implements OnInit {
         queryObject.endYearMonth = this.searchForm.controls['end'].value;
       }
     }
-    console.log('----------------');
-    console.log(queryObject);
     this.loadAction = this.REFRESH; // reset load action
     if (executeBatch) {
       return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
