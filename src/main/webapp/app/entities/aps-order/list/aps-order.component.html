@@ -6,25 +6,17 @@
   <div class="d-flex justify-content-end">
     <form class="aps-orders-search-form" [formGroup]="searchForm">
 
-      <mat-form-field class="w-30" subscriptSizing="dynamic">
-        <mat-label>Contract</mat-label>
-        <input type="text" matInput placeholder="contract" maxlength="30" formControlName="apsPlanContract" required="false">
-      </mat-form-field>
+      <input type="text" matInput placeholder="contract"      class="form-text w-20 me-2" maxlength="30" formControlName="apsPlanContract">
+      <input type="text" matInput placeholder="customer-code" class="form-text w-20 me-2" maxlength="30" formControlName="customerCode">
+      <input type="text" matInput placeholder="period"        class="form-text w-10 me-2" maxlength="7"  formControlName="exact">
+      <input type="text" matInput placeholder="start"         class="form-text w-10 me-2" maxlength="7"  formControlName="starts">
+      <input type="text" matInput placeholder="end"           class="form-text w-10 me-2" maxlength="7"  formControlName="ends">
 
-      <customer-selector [control]="customerControl()" [required]="false" [cl]="'w-30'"></customer-selector>
-
-      <mat-form-field class="w-20" subscriptSizing="dynamic">
-        <mat-label>From</mat-label>
-        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" formControlName="start" required="true">
-      </mat-form-field>
-      <mat-form-field class="w-20" subscriptSizing="dynamic">
-        <mat-label>To</mat-label>
-        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" formControlName="end" >
-      </mat-form-field>
     </form>
 
     <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading || !searchForm.valid">
-      <fa-icon icon="search" [spin]="isLoading"></fa-icon>
+      <fa-icon icon="refresh" [spin]="isLoading"></fa-icon>
+      <span>Search</span>
     </button>
 
     <button
@@ -34,10 +26,11 @@
       [routerLink]="['/aps-order/new']"
     >
       <fa-icon icon="plus"></fa-icon>
+      <span>New Order</span>
     </button>
 
-    <button class="btn btn-info" (click)="batchGenerate()" [disabled]="isLoading || !isStartYearMonthValid()">
-      <span>Generate-from</span>
+    <button class="btn btn-info" (click)="batchGenerate()" [disabled]="isLoading || !isExactYearMonthValid()">
+      <span>Generate</span>
     </button>
 
   </div>

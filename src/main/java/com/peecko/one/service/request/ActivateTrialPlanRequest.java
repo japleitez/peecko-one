@@ -1,4 +1,4 @@
-package com.peecko.one.web.rest.payload.request;
+package com.peecko.one.service.request;
 
 import java.time.LocalDate;
 

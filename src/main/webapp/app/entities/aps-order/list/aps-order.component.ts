@@ -3,7 +3,7 @@ import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/r
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbInputDatepicker, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective } from 'app/shared/sort';
@@ -29,6 +29,7 @@ import { CustomerService, CustomerArrayResponseType } from '../../customer/servi
 import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/validate/custom-validator.directive';
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 import { ApsPlanData } from '../../aps-plan/service/aps-plan.data';
+import { CustomerData } from '../../customer/service/customer.data';
 
 function searchFormValidator(): ValidatorFn {
   return (c: AbstractControl): ValidationErrors | null => {
@@ -36,8 +37,10 @@ function searchFormValidator(): ValidatorFn {
     if (contract) {
       return null;
     }
+    let code = c.get('customerCode')?.value;
+    let exact = c.get('exact')?.value;
     let start = c.get('start')?.value;
-    if (!start) {
+    if (!code && !exact && !start) {
       return { invalidForm: true };
     }
     let end = c.get('end')?.value;
@@ -45,10 +48,6 @@ function searchFormValidator(): ValidatorFn {
       if (end < start) {
         return { invalidForm: true };
       }
-    }
-    let customer = c.get('customer')?.value;
-    if (!customer && end) {
-      return { invalidForm: true };
     }
     return null;
   }
@@ -73,7 +72,8 @@ function searchFormValidator(): ValidatorFn {
     ReactiveFormsModule,
     AsyncPipe,
     CustomerSelectorComponent,
-    NgIf
+    NgIf,
+    NgbInputDatepicker
   ]
 })
 export class ApsOrderComponent implements OnInit {
@@ -93,12 +93,14 @@ export class ApsOrderComponent implements OnInit {
   REFRESH = 'REFRESH';
   BATCH_GENERATE = 'BATCH_GENERATE';
 
-  apsPlanContract: string | null | undefined = null;
+  pCustomerCode: string | null | undefined = null;
+  pApsPlanContract: string | null | undefined = null;
 
   constructor(
     protected apsOrderService: ApsOrderService,
     protected customerService: CustomerService,
     protected apsPlanData: ApsPlanData,
+    protected customerData: CustomerData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -109,8 +111,9 @@ export class ApsOrderComponent implements OnInit {
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
 
   ngOnInit(): void {
-    this.apsPlanData.getValue().subscribe({ next: a => this.apsPlanContract = a.contract });
     this.isLoading = true;
+    this.apsPlanData.getValue().subscribe({ next: a => this.pApsPlanContract = a.contract });
+    this.customerData.getValue().subscribe({ next: c => this.pCustomerCode = c.code });
     this._initForm();
     this.refresh();
   }
@@ -120,10 +123,11 @@ export class ApsOrderComponent implements OnInit {
    */
   private _initForm(): void {
     this.searchForm = this.fb.group({
-      'customer': [''],
-      'apsPlanContract': this.apsPlanContract,
-      'start': [currentYearMonth(), Validators.compose([Validators.required, periodValidator()])],
-      'end': [null, periodValidator()],
+      'customerCode': this.pCustomerCode,
+      'apsPlanContract': this.pApsPlanContract,
+      'exact': [currentYearMonth(), Validators.compose([periodValidator()])],
+      'starts': [null, Validators.compose([periodValidator()])],
+      'ends': [null, periodValidator()],
     }, { validators: [searchFormValidator()] });
   }
 
@@ -131,8 +135,8 @@ export class ApsOrderComponent implements OnInit {
     return this.searchForm.get('customer') as FormControl<ICustomer | string | null>;
   }
 
-  isStartYearMonthValid(): boolean {
-    return this.searchForm.controls['start'].valid;
+  isExactYearMonthValid(): boolean {
+    return this.searchForm.controls['exact'].valid;
   }
 
   /*
@@ -209,21 +213,27 @@ export class ApsOrderComponent implements OnInit {
       sort: this.getSortQueryParam(predicate, ascending),
     };
     if (executeBatch) {
-      queryObject.period = this.searchForm.controls['start'].value;
+      queryObject.period = this.searchForm.controls['exact'].value;
     } else {
-      let customer = this.searchForm.controls['customer'].value;
-      let customerId = typeof customer === 'string' ? null : customer?.id;
-      if (customerId) {
-        queryObject.customerId = customerId;
+      let customerCode = this.searchForm.controls['customerCode'].value;
+      if (customerCode) {
+        queryObject.customerCode = customerCode;
       }
-      if (this.searchForm.controls['apsPlanContract'].value) {
-        queryObject.apsPlanContract = this.searchForm.controls['apsPlanContract'].value;
+      let apsPlanContract = this.searchForm.controls['apsPlanContract'].value;
+      if (apsPlanContract) {
+        queryObject.apsPlanContract = apsPlanContract;
       }
-      if (this.searchForm.controls['start'].value) {
-        queryObject.startYearMonth = this.searchForm.controls['start'].value;
+      let exact = this.searchForm.controls['exact'].value;
+      if (exact) {
+        queryObject.exactYearMonth = exact;
       }
-      if (this.searchForm.controls['end'].value) {
-        queryObject.endYearMonth = this.searchForm.controls['end'].value;
+      let starts = this.searchForm.controls['starts'].value;
+      if (starts) {
+        queryObject.startYearMonth = starts;
+      }
+      let ends = this.searchForm.controls['ends'].value;
+      if (ends) {
+        queryObject.endYearMonth = ends;
       }
     }
     this.loadAction = this.REFRESH; // reset load action

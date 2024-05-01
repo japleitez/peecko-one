@@ -12,10 +12,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ApsOrderRepository extends JpaRepository<ApsOrder, Long> {
-
-    @Query("from ApsOrder o where o.apsPlan.contract = :contract")
-    List<ApsOrder> findByApsPlanContract(@Param("contract") String contract);
+public interface ApsOrderRepository extends JpaRepository<ApsOrder, Long>, JpaSpecificationExecutor<ApsOrder> {
 
     @Query("from ApsOrder o where o.period = :period and o.apsPlan.customer.agency.id = :agencyId")
     List<ApsOrder> findByAgencyAndPeriod(@Param("agencyId") Long agencyId, @Param("period") Integer period);
@@ -28,5 +25,8 @@ public interface ApsOrderRepository extends JpaRepository<ApsOrder, Long> {
 
     @Query("from ApsOrder o where o.apsPlan.customer.id = :customerId and o.period <= :endPeriod order by o.period")
     List<ApsOrder> findByCustomerAndEndPeriod(@Param("customerId") Long customerId, @Param("endPeriod") Integer endPeriod);
+
+    @Query("from ApsOrder o where o.apsPlan.contract = :contract")
+    List<ApsOrder> findByApsPlanContract(@Param("contract") String contract);
 
 }

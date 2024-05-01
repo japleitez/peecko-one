@@ -2,7 +2,7 @@ package com.peecko.one.service;
 
 import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.CustomerRepository;
-import com.peecko.one.web.rest.payload.request.CustomerListRequest;
+import com.peecko.one.service.request.CustomerListRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

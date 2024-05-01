@@ -5,8 +5,13 @@ import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.service.info.ApsOrderInfo;
+import com.peecko.one.service.request.ApsOrderListRequest;
+import com.peecko.one.service.specs.ApsOrderSpecs;
 import com.peecko.one.utils.PeriodUtils;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -55,4 +60,23 @@ public class ApsOrderService {
         return ends == null || endOfMonth.isEqual(ends) || endOfMonth.isBefore(ends);
     }
 
+    public List<ApsOrder> findByListRequest(ApsOrderListRequest req) {
+        Specification<ApsOrder> spec = ApsOrderSpecs.agency(req.getAgencyId());
+        if (StringUtils.hasText(req.getApsPlanContract())) {
+            spec = spec.and(ApsOrderSpecs.contract(req.getApsPlanContract()));
+        } else if (Objects.nonNull(req.getCustomerId())) {
+            spec = spec.and(ApsOrderSpecs.customer(req.getCustomerId()));
+        }
+        if (Objects.nonNull(req.getPeriod())) {
+            spec = spec.and(ApsOrderSpecs.period(req.getPeriod()));
+        } else {
+            if (Objects.nonNull(req.getStartPeriod())) {
+                spec.and(ApsOrderSpecs.startPeriod(req.getStartPeriod()));
+            }
+            if (Objects.nonNull(req.getEndPeriod())) {
+                spec.and(ApsOrderSpecs.endPeriod(req.getEndPeriod()));
+            }
+        }
+        return apsOrderRepository.findAll(spec);
+    }
 }

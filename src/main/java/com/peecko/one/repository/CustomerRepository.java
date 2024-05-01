@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Customer entity.
@@ -22,6 +23,9 @@ import java.util.List;
 public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
     @Query("select c from Customer c left join fetch c.agency where c.id = :id")
     List<Customer> loadById(@Param("id") Long id);
+
+    @Query("select c from Customer c left join fetch c.agency where c.code = :code")
+    Optional<Customer> findCustomerCodeBy(@Param("code") String code);
 
     Page<Customer> findByAgency(Agency agency, Pageable pageable);
 

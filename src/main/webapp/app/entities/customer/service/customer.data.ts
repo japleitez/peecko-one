@@ -17,6 +17,7 @@ export class CustomerData {
 
   setValue(customer: ICustomer): void {
     this._data.next(customer);
+    setTimeout(() => {this._data.next(this.NEW_CUSTOMER)}, 100);
   }
 
   getValue(): Observable<ICustomer> {

@@ -89,6 +89,13 @@ export class CustomerComponent implements OnInit {
     });
   }
 
+  navToApsOrders(c: ICustomer): void {
+    this.customerData.setValue(c);
+    this.router.navigate(['/aps-order'], {
+      relativeTo: this.activatedRoute.parent,
+    });
+  }
+
   delete(customer: ICustomer): void {
     const modalRef = this.modalService.open(CustomerDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.customer = customer;

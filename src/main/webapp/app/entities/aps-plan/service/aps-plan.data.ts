@@ -17,6 +17,7 @@ export class ApsPlanData {
 
   setValue(apsPlan: IApsPlan): void {
     this._data.next(apsPlan);
+    setTimeout(() => {this._data.next(this.NEW_APS_PLAN)}, 100);
   }
 
   getValue(): Observable<IApsPlan> {

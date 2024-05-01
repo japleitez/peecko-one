@@ -7,7 +7,7 @@ import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.CustomerService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import com.peecko.one.web.rest.payload.request.CustomerListRequest;
+import com.peecko.one.service.request.CustomerListRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;

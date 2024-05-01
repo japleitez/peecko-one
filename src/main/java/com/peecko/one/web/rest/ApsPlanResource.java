@@ -8,8 +8,8 @@ import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsLicenseService;
 import com.peecko.one.service.ApsPlanService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import com.peecko.one.web.rest.payload.request.ActivateTrialPlanRequest;
-import com.peecko.one.web.rest.payload.request.ApsPlanListRequest;
+import com.peecko.one.service.request.ActivateTrialPlanRequest;
+import com.peecko.one.service.request.ApsPlanListRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -196,12 +196,12 @@ public class ApsPlanResource {
         @RequestParam(required = false) String customerCode,
         @RequestParam(required = false) String contract,
         @RequestParam(required = false) PlanState state,
-        @RequestParam(required = false) LocalDate starts,
-        @RequestParam(required = false) LocalDate ends,
+        @RequestParam(required = false) LocalDate start,
+        @RequestParam(required = false) LocalDate end,
         @ParameterObject Pageable pageable) {
         log.debug("REST request to get all ApsPlans");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customerCode, contract, state, starts, ends);
+        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customerCode, contract, state, start, end);
         Page<ApsPlan> page = apsPlanService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

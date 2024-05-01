@@ -1,4 +1,4 @@
-package com.peecko.one.service;
+package com.peecko.one.service.specs;
 
 public class BaseSpecs {
     public static String anyText(String text) {

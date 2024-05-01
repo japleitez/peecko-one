@@ -5,6 +5,7 @@ import com.peecko.one.domain.Agency_;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.Customer_;
 import com.peecko.one.domain.enumeration.CustomerState;
+import com.peecko.one.service.specs.BaseSpecs;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 

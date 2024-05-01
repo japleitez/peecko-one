@@ -2,7 +2,8 @@ package com.peecko.one.service;
 
 import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.repository.ApsPlanRepository;
-import com.peecko.one.web.rest.payload.request.ApsPlanListRequest;
+import com.peecko.one.service.request.ApsPlanListRequest;
+import com.peecko.one.service.specs.ApsPlanSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -29,9 +30,9 @@ public class ApsPlanService {
         Specification<ApsPlan> customerCode = ApsPlanSpecs.customerCode(request.getCustomerCode());
         Specification<ApsPlan> contract = ApsPlanSpecs.contract(request.getContract());
         Specification<ApsPlan> state = ApsPlanSpecs.state(request.getState());
-        Specification<ApsPlan> starts = ApsPlanSpecs.starts(request.getStarts());
-        Specification<ApsPlan> ends = ApsPlanSpecs.ends(request.getEnds());
-        Specification<ApsPlan> spec = agency.and(state.and(customerCode).and(contract).and(starts).and(ends));
+        Specification<ApsPlan> start = ApsPlanSpecs.starts(request.getStarts());
+        Specification<ApsPlan> end = ApsPlanSpecs.ends(request.getEnds());
+        Specification<ApsPlan> spec = agency.and(state.and(customerCode).and(contract).and(start).and(end));
         return apsPlanRepository.findAll(spec, pageable);
     }
 

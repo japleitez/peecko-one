@@ -1,4 +1,4 @@
-package com.peecko.one.service;
+package com.peecko.one.service.specs;
 
 import com.peecko.one.domain.*;
 import com.peecko.one.domain.enumeration.PlanState;

@@ -6,7 +6,7 @@ import { NgbInputDatepicker, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { APS_PLAN_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
@@ -47,11 +47,11 @@ export class ApsPlanComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
-  customerCode: string | null | undefined = null;
-  contract: string | null | undefined = null;
-  state: string | null | undefined = null;
-  starts: string | null | undefined = null;
-  ends: string | null | undefined = null;
+  searchForm!: FormGroup;
+
+  pCustomerCode: string | null | undefined = null;
+  pContract: string | null | undefined = null;
+
   stateValues: string[] = Object.keys(PlanState);
 
   constructor(
@@ -62,13 +62,25 @@ export class ApsPlanComponent implements OnInit {
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
+    protected fb: FormBuilder,
   ) {}
 
   trackId = (_index: number, item: IApsPlan): number => this.apsPlanService.getApsPlanIdentifier(item);
 
   ngOnInit(): void {
-    this.customerData.getValue().subscribe({ next: c => this.customerCode = c.code });
+    this.customerData.getValue().subscribe({ next: c => this.pCustomerCode = c.code });
+    this._initForm();
     this.load();
+  }
+
+  private _initForm(): void {
+    this.searchForm = this.fb.group({
+      'customerCode': this.pCustomerCode,
+      'contract': null,
+      'state': null,
+      'starts': null,
+      'ends': null,
+    });
   }
 
   navToApsOrder(a: IApsPlan) {
@@ -137,20 +149,25 @@ export class ApsPlanComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    if (this.customerCode) {
-      queryObject.customerCode = this.customerCode;
+    let customerCode = this.searchForm.controls['customerCode'].value;
+    if (customerCode) {
+      queryObject.customerCode = customerCode;
     }
-    if (this.contract) {
-      queryObject.contract = this.contract;
+    let contract = this.searchForm.controls['contract'].value;
+    if (contract) {
+      queryObject.contract = contract;
     }
-    if (this.state) {
-      queryObject.state = this.state;
+    let state = this.searchForm.controls['state'].value;
+    if (state) {
+      queryObject.state = state;
     }
-    if (this.starts) {
-      queryObject.starts = dayjs(this.starts, DATE_FORMAT).format('YYYY-MM-DD');
+    let starts = this.searchForm.controls['starts'].value
+    if (starts) {
+      queryObject.starts = dayjs(starts, DATE_FORMAT).format('YYYY-MM-DD');
     }
-    if (this.ends) {
-      queryObject.ends = dayjs(this.ends, DATE_FORMAT).format('YYYY-MM-DD');
+    let ends = this.searchForm.controls['ends'].value
+    if (ends) {
+      queryObject.ends = dayjs(ends, DATE_FORMAT).format('YYYY-MM-DD');
     }
     return this.apsPlanService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }

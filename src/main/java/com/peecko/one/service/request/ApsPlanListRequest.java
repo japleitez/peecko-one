@@ -1,4 +1,4 @@
-package com.peecko.one.web.rest.payload.request;
+package com.peecko.one.service.request;
 
 import com.peecko.one.domain.enumeration.PlanState;
 
@@ -12,13 +12,13 @@ public class ApsPlanListRequest {
     private LocalDate starts;
     private LocalDate ends;
 
-    public ApsPlanListRequest(Long agencyId, String customerCode, String contract, PlanState state, LocalDate start, LocalDate end) {
+    public ApsPlanListRequest(Long agencyId, String customerCode, String contract, PlanState state, LocalDate starts, LocalDate ends) {
         this.agencyId = agencyId;
         this.customerCode = customerCode;
         this.contract = contract;
         this.state = state;
-        this.starts = start;
-        this.ends = end;
+        this.starts = starts;
+        this.ends = ends;
     }
 
     public Long getAgencyId() {
@@ -57,7 +57,7 @@ public class ApsPlanListRequest {
         return starts;
     }
 
-    public void setStart(LocalDate starts) {
+    public void setStarts(LocalDate starts) {
         this.starts = starts;
     }
 
@@ -65,7 +65,7 @@ public class ApsPlanListRequest {
         return ends;
     }
 
-    public void setEnd(LocalDate ends) {
+    public void setEnds(LocalDate ends) {
         this.ends = ends;
     }
 }
