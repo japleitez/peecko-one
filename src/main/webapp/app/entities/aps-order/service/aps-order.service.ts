@@ -53,6 +53,10 @@ export class ApsOrderService {
     return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/generate`, { params: options, observe: 'response' });
   }
 
+  importMembers(formData: FormData): Observable<HttpResponse<{}>> {
+    return this.http.post(`${this.resourceUrl}/import/members`, formData, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

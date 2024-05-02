@@ -42,6 +42,10 @@ public class ApsMembership implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
+    public static ApsMembership of(ApsOrder apsOrder, Integer period, String license, String username) {
+        return new ApsMembership().apsOrder(apsOrder).period(period).license(license).username(username);
+    }
+
     public Long getId() {
         return this.id;
     }

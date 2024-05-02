@@ -32,6 +32,7 @@ import { ApsPlanData } from '../../aps-plan/service/aps-plan.data';
 import { CustomerData } from '../../customer/service/customer.data';
 import { MatDialog } from '@angular/material/dialog';
 import { ApsOrderMembersComponent } from '../members/aps-order-members.component';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 function searchFormValidator(): ValidatorFn {
   return (c: AbstractControl): ValidationErrors | null => {
@@ -75,7 +76,8 @@ function searchFormValidator(): ValidatorFn {
     AsyncPipe,
     CustomerSelectorComponent,
     NgIf,
-    NgbInputDatepicker
+    NgbInputDatepicker,
+    FaIconComponent
   ]
 })
 export class ApsOrderComponent implements OnInit {

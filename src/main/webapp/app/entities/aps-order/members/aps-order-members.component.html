@@ -12,8 +12,27 @@
     <mat-label>Period</mat-label>
     <input matInput [(ngModel)]="data.period" readonly>
   </mat-form-field>
+  <mat-form-field>
+    <input matInput [value]="fileName" />
+    <input
+      type="file"
+      id="fileInput"
+      (change)="selectFile($event)"
+      name="fileInput"
+    />
+  </mat-form-field>
+
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button cdkFocusInitial>Upload</button>
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="!currentFile"
+    (click)="upload()"
+  >
+    Upload
+  </button>
+  <button mat-button (click)="onNoClick()">Close</button>
+
 </mat-dialog-actions>

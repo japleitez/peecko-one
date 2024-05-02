@@ -1,11 +1,14 @@
 package com.peecko.one.web.rest;
 
+import com.peecko.one.domain.ApsMembership;
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
+import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.service.ApsOrderService;
+import com.peecko.one.service.dto.MemberDTO;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.utils.PeriodUtils;
@@ -26,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -51,10 +55,13 @@ public class ApsOrderResource {
 
     private final CustomerRepository customerRepository;
 
-    public ApsOrderResource(ApsOrderRepository apsOrderRepository, ApsOrderService apsOrderService, CustomerRepository customerRepository) {
+    private final ApsMembershipService apsMembershipService;
+
+    public ApsOrderResource(ApsOrderRepository apsOrderRepository, ApsOrderService apsOrderService, CustomerRepository customerRepository, ApsMembershipService apsMembershipService) {
         this.apsOrderRepository = apsOrderRepository;
         this.apsOrderService = apsOrderService;
         this.customerRepository = customerRepository;
+        this.apsMembershipService = apsMembershipService;
     }
 
     /**
@@ -255,4 +262,19 @@ public class ApsOrderResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @PostMapping("/import/members")
+    public ResponseEntity<?> createBulkMembership(
+        @RequestParam() Long apsOrderId,
+        @RequestParam() MultipartFile file) {
+        log.debug("REST request to import ApsMembership file : {}", file.getName());
+        ApsOrder apsOrder = apsOrderRepository
+            .findById(apsOrderId)
+            .orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
+        List<MemberDTO> members = apsMembershipService.parseFile(file);
+        List<ApsMembership> result = apsMembershipService.saveOrUpdateMembers(apsOrder.getId(), apsOrder.getPeriod(), apsOrder.getLicense(), members);
+        log.info("batch imported {} apsMemberships for apsOrder {} from file {}", apsOrderId, file.getName(), result.size());
+        return ResponseEntity.noContent().build();
+    }
+
 }
