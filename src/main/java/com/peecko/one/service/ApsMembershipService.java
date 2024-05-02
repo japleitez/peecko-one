@@ -6,7 +6,9 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.peecko.one.domain.ApsMembership;
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.repository.ApsMembershipRepository;
+import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.service.dto.MemberDTO;
+import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,12 +20,27 @@ import java.util.List;
 public class ApsMembershipService {
     private final ApsMembershipRepository apsMembershipRepository;
 
-    public ApsMembershipService(ApsMembershipRepository apsMembershipRepository) {
+    private final ApsOrderRepository apsOrderRepository;
+
+    public ApsMembershipService(ApsMembershipRepository apsMembershipRepository, ApsOrderRepository apsOrderRepository) {
         this.apsMembershipRepository = apsMembershipRepository;
+        this.apsOrderRepository = apsOrderRepository;
+    }
+
+    public int importMembers(Long apsOrderId, MultipartFile file) {
+        ApsOrder apsOrder = apsOrderRepository.findById(apsOrderId).orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
+        List<MemberDTO> members = parseFile(file);
+        List<ApsMembership> result = saveOrUpdateMembers(apsOrder.getId(), apsOrder.getPeriod(), apsOrder.getLicense(), members);
+        return result.size();
     }
 
     public List<ApsMembership> saveOrUpdateMembers(Long apsOrderId, Integer period, String license, List<MemberDTO> members) {
-        return members.stream().map(m -> saveOrUpdateMember(apsOrderId, period, license, m)).toList();
+        List<ApsMembership> list = members.stream().map(m -> saveOrUpdateMember(apsOrderId, period, license, m)).toList();
+        ApsOrder apsOrder = apsOrderRepository.findById(apsOrderId).orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
+        Long count = apsMembershipRepository.countByApsOrder(apsOrder);
+        apsOrder.setNumberOfUsers(count.intValue());
+        apsOrderRepository.save(apsOrder);
+        return list;
     }
 
     private ApsMembership saveOrUpdateMember(Long apsOrderId, Integer period, String license, MemberDTO member) {

@@ -19,6 +19,7 @@ import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.YearMonth;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -268,13 +269,9 @@ public class ApsOrderResource {
         @RequestParam() Long apsOrderId,
         @RequestParam() MultipartFile file) {
         log.debug("REST request to import ApsMembership file : {}", file.getName());
-        ApsOrder apsOrder = apsOrderRepository
-            .findById(apsOrderId)
-            .orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
-        List<MemberDTO> members = apsMembershipService.parseFile(file);
-        List<ApsMembership> result = apsMembershipService.saveOrUpdateMembers(apsOrder.getId(), apsOrder.getPeriod(), apsOrder.getLicense(), members);
-        log.info("batch imported {} apsMemberships for apsOrder {} from file {}", apsOrderId, file.getName(), result.size());
-        return ResponseEntity.noContent().build();
+        int count = apsMembershipService.importMembers(apsOrderId, file);
+        log.info("batch imported {} apsMemberships for apsOrder {} from file {}", apsOrderId, file.getName(), count);
+        return ResponseEntity.ok(Collections.singletonMap("count", count));
     }
 
 }

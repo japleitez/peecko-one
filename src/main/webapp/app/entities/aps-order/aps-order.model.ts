@@ -3,6 +3,10 @@ import { IInvoice } from 'app/entities/invoice/invoice.model';
 import { IApsPlan } from 'app/entities/aps-plan/aps-plan.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
+export interface ICount {
+  count: number;
+}
+
 export interface IApsOrder {
   id: number;
   period?: number | null;

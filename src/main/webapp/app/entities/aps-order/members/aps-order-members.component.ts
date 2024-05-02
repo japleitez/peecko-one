@@ -55,7 +55,8 @@ export class ApsOrderMembersComponent {
       formData.append('file', this.currentFile);
       this.apsOrderService.importMembers(formData).subscribe(
         (response) => {
-          alert("File was uploaded " + response.status);
+          alert("File uploaded with " + response.body?.count + " records");
+          this.onNoClick();
         });
     }
   }

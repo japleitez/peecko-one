@@ -14,4 +14,5 @@ import java.util.Optional;
 @Repository
 public interface ApsMembershipRepository extends JpaRepository<ApsMembership, Long> {
     Optional<ApsMembership> findByApsOrderAndUsername(ApsOrder apsOrder, String username);
+    Long countByApsOrder(ApsOrder apsOrder);
 }

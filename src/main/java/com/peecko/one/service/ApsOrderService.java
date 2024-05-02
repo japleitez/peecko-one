@@ -2,12 +2,14 @@ package com.peecko.one.service;
 
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.repository.ApsMembershipRepository;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.service.specs.ApsOrderSpecs;
 import com.peecko.one.utils.PeriodUtils;
+import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -23,9 +25,12 @@ public class ApsOrderService {
     private final ApsPlanRepository apsPlanRepository;
     private final ApsOrderRepository apsOrderRepository;
 
-    public ApsOrderService(ApsPlanRepository apsPlanRepository, ApsOrderRepository apsOrderRepository) {
+    private final ApsMembershipRepository apsMembershipRepository;
+
+    public ApsOrderService(ApsPlanRepository apsPlanRepository, ApsOrderRepository apsOrderRepository, ApsMembershipRepository apsMembershipRepository) {
         this.apsPlanRepository = apsPlanRepository;
         this.apsOrderRepository = apsOrderRepository;
+        this.apsMembershipRepository = apsMembershipRepository;
     }
 
     public List<ApsOrderInfo> batchGenerate(Long agencyId, YearMonth yearMonth) {
@@ -79,4 +84,5 @@ public class ApsOrderService {
         }
         return apsOrderRepository.findAll(spec);
     }
+
 }
