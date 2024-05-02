@@ -30,6 +30,8 @@ import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 import { ApsPlanData } from '../../aps-plan/service/aps-plan.data';
 import { CustomerData } from '../../customer/service/customer.data';
+import { MatDialog } from '@angular/material/dialog';
+import { ApsOrderMembersComponent } from '../members/aps-order-members.component';
 
 function searchFormValidator(): ValidatorFn {
   return (c: AbstractControl): ValidationErrors | null => {
@@ -106,6 +108,7 @@ export class ApsOrderComponent implements OnInit {
     protected sortService: SortService,
     protected modalService: NgbModal,
     protected fb: FormBuilder,
+    public dialog: MatDialog,
   ) {}
 
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
@@ -266,6 +269,15 @@ export class ApsOrderComponent implements OnInit {
 
   protected getPlanOrderAccess(): ApsOrderAccess {
     return APS_ORDER_USER_ACCESS;
+  }
+
+  protected uploadMembers(o: IApsOrderInfo): void {
+    const dialogRef = this.dialog.open(ApsOrderMembersComponent, {
+      data: o,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 
 }

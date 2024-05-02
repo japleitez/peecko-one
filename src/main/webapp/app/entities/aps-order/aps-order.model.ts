@@ -20,16 +20,16 @@ export type NewApsOrder = Omit<IApsOrder, 'id'> & { id: null };
 
 export interface IApsOrderInfo {
   id: number;
-  period?: number | null;
-  license?: string | null;
+  period: number | null;
+  license: string | null;
   unitPrice?: number | null;
   vatRate?: number | null;
   numberOfUsers?: number | null;
   invoiceNumber?: string | null;
-  cstName?: string | null;
-  cstState?: string | null;
+  cstName: string | null;
+  cstState: string | null;
   plnId: number;
-  plnState?: string | null;
+  plnState: string | null;
   pricing?: string | null;
   contract?: string | null;
 }
