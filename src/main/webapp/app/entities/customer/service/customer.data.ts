@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ICustomer } from '../customer.model';
 
@@ -7,21 +7,14 @@ import { ICustomer } from '../customer.model';
 })
 export class CustomerData {
 
-  protected _data: BehaviorSubject<ICustomer>;
+  code = signal<string | undefined | null>('');
 
-  private NEW_CUSTOMER: ICustomer = { id: 0, code: ''};
-
-  constructor() {
-    this._data = new BehaviorSubject<ICustomer>(this.NEW_CUSTOMER);
+  setCode(update: string | undefined | null): void {
+    this.code.set(update);
   }
 
-  setValue(customer: ICustomer): void {
-    this._data.next(customer);
-    setTimeout(() => {this._data.next(this.NEW_CUSTOMER)}, 100);
-  }
-
-  getValue(): Observable<ICustomer> {
-    return this._data.asObservable();
+  getCode() {
+    return this.code();
   }
 
 }

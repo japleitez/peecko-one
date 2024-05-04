@@ -79,14 +79,15 @@ export class ApsOrderComponent implements OnInit {
     protected sortService: SortService,
     protected modalService: NgbModal,
     public dialog: MatDialog,
-  ) {}
+  ) {
+    this.contract = this.apsPlanData.getContract();
+    this.customer = this.customerData.getCode();
+  }
 
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.apsPlanData.getValue().subscribe({ next: a => this.contract = `${a.contract}` });
-    this.customerData.getValue().subscribe({ next: c => this.customer = `${c.code}` });
     this.refresh();
   }
 

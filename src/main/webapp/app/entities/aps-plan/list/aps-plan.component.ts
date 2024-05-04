@@ -49,8 +49,6 @@ export class ApsPlanComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
-  codeParam: string | null | undefined = null;
-
   customerCode: string | null | undefined = null;
   contract: string | null | undefined = null;
   state: string | null | undefined = null;
@@ -67,22 +65,18 @@ export class ApsPlanComponent implements OnInit {
     protected sortService: SortService,
     protected modalService: NgbModal,
     protected fb: FormBuilder,
-  ) {}
+  ) {
+    this.customerCode = customerData.getCode();
+  }
 
   trackId = (_index: number, item: IApsPlan): number => this.apsPlanService.getApsPlanIdentifier(item);
 
   ngOnInit(): void {
-    this.customerData.getValue().subscribe({ next: c => this.codeParam = c.code });
-    this._init();
     this.load();
   }
 
-  private _init(): void {
-    this.customerCode = this.codeParam;
-  }
-
   navToApsOrder(a: IApsPlan) {
-    this.apsPlanData.setValue(a);
+    this.apsPlanData.setContract(a.contract);
     this.router.navigate(['/aps-order'], {
       relativeTo: this.activatedRoute.parent,
     });

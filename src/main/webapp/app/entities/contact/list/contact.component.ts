@@ -52,12 +52,13 @@ export class ContactComponent implements OnInit {
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
-  ) {}
+  ) {
+    this.customerCode = customerData.getCode();
+  }
 
   trackId = (_index: number, item: IContact): number => this.contactService.getContactIdentifier(item);
 
   ngOnInit(): void {
-    this.customerData.getValue().subscribe({ next: c => this.customerCode = c.code });
     this.load();
   }
 
