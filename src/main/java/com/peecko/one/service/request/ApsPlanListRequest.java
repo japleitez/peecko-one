@@ -68,4 +68,16 @@ public class ApsPlanListRequest {
     public void setEnds(LocalDate ends) {
         this.ends = ends;
     }
+
+    @Override
+    public String toString() {
+        return "ApsPlanListRequest{" +
+            "agencyId=" + agencyId +
+            ", customerCode='" + customerCode + '\'' +
+            ", contract='" + contract + '\'' +
+            ", state=" + state +
+            ", starts=" + starts +
+            ", ends=" + ends +
+            '}';
+    }
 }

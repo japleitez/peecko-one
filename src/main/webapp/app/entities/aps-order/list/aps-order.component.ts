@@ -1,21 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { NgbInputDatepicker, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
-import {
-  AbstractControl,
-  FormBuilder, FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule, ValidationErrors, ValidatorFn,
-  Validators
-} from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { APS_ORDER_USER_ACCESS, ApsOrderAccess, IApsOrder, IApsOrderInfo } from '../aps-order.model';
@@ -24,37 +16,13 @@ import { ApsOrderDeleteDialogComponent } from '../delete/aps-order-delete-dialog
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ICustomer } from '../../customer/customer.model';
-import { CustomerService, CustomerArrayResponseType } from '../../customer/service/customer.service';
-import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/validate/custom-validator.directive';
+import { CustomerService } from '../../customer/service/customer.service';
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 import { ApsPlanData } from '../../aps-plan/service/aps-plan.data';
 import { CustomerData } from '../../customer/service/customer.data';
 import { MatDialog } from '@angular/material/dialog';
 import { ApsOrderMembersComponent } from '../members/aps-order-members.component';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-
-function searchFormValidator(): ValidatorFn {
-  return (c: AbstractControl): ValidationErrors | null => {
-    let contract = c.get('apsPlanContract')?.value;
-    if (contract) {
-      return null;
-    }
-    let code = c.get('customerCode')?.value;
-    let exact = c.get('exact')?.value;
-    let start = c.get('start')?.value;
-    if (!code && !exact && !start) {
-      return { invalidForm: true };
-    }
-    let end = c.get('end')?.value;
-    if (start && end) {
-      if (end < start) {
-        return { invalidForm: true };
-      }
-    }
-    return null;
-  }
-}
 
 @Component({
   standalone: true,
@@ -83,22 +51,23 @@ function searchFormValidator(): ValidatorFn {
 export class ApsOrderComponent implements OnInit {
   ua: ApsOrderAccess = this.getPlanOrderAccess();
 
-  // search form controls
-  searchForm!: FormGroup;
-
   // list controls
   apsOrders?: IApsOrderInfo[];
-  isLoading = false;
+  isLoading: boolean = false;
 
-  predicate = 'id';
-  ascending = true;
+  predicate: string = 'id';
+  ascending: boolean = true;
 
-  loadAction = '';
-  REFRESH = 'REFRESH';
-  BATCH_GENERATE = 'BATCH_GENERATE';
+  loadAction: string = '';
+  REFRESH: string = 'REFRESH';
+  BATCH_GENERATE: string = 'BATCH_GENERATE';
 
-  pCustomerCode: string | null | undefined = null;
-  pApsPlanContract: string | null | undefined = null;
+  // search fields
+  customer: string | null | undefined = null;
+  contract: string | null | undefined = null;
+  period: string | null | undefined = null;
+  starts: string | null | undefined = null;
+  ends: string | null | undefined = null;
 
   constructor(
     protected apsOrderService: ApsOrderService,
@@ -109,7 +78,6 @@ export class ApsOrderComponent implements OnInit {
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
-    protected fb: FormBuilder,
     public dialog: MatDialog,
   ) {}
 
@@ -117,31 +85,9 @@ export class ApsOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.apsPlanData.getValue().subscribe({ next: a => this.pApsPlanContract = a.contract });
-    this.customerData.getValue().subscribe({ next: c => this.pCustomerCode = c.code });
-    this._initForm();
+    this.apsPlanData.getValue().subscribe({ next: a => this.contract = `${a.contract}` });
+    this.customerData.getValue().subscribe({ next: c => this.customer = `${c.code}` });
     this.refresh();
-  }
-
-  /*
-  search actions
-   */
-  private _initForm(): void {
-    this.searchForm = this.fb.group({
-      'customerCode': this.pCustomerCode,
-      'apsPlanContract': this.pApsPlanContract,
-      'exact': [currentYearMonth(), Validators.compose([periodValidator()])],
-      'starts': [null, Validators.compose([periodValidator()])],
-      'ends': [null, periodValidator()],
-    }, { validators: [searchFormValidator()] });
-  }
-
-  customerControl() {
-    return this.searchForm.get('customer') as FormControl<ICustomer | string | null>;
-  }
-
-  isExactYearMonthValid(): boolean {
-    return this.searchForm.controls['exact'].valid;
   }
 
   /*
@@ -218,27 +164,22 @@ export class ApsOrderComponent implements OnInit {
       sort: this.getSortQueryParam(predicate, ascending),
     };
     if (executeBatch) {
-      queryObject.period = this.searchForm.controls['exact'].value;
+      queryObject.period = this.period;
     } else {
-      let customerCode = this.searchForm.controls['customerCode'].value;
-      if (customerCode) {
-        queryObject.customerCode = customerCode;
+      if (this.customer) {
+        queryObject.customerCode = this.customer;
       }
-      let apsPlanContract = this.searchForm.controls['apsPlanContract'].value;
-      if (apsPlanContract) {
-        queryObject.apsPlanContract = apsPlanContract;
+      if (this.contract) {
+        queryObject.contract = this.contract;
       }
-      let exact = this.searchForm.controls['exact'].value;
-      if (exact) {
-        queryObject.exactYearMonth = exact;
+      if (this.period) {
+        queryObject.period = this.period;
       }
-      let starts = this.searchForm.controls['starts'].value;
-      if (starts) {
-        queryObject.startYearMonth = starts;
+      if (this.starts) {
+        queryObject.starts = this.starts;
       }
-      let ends = this.searchForm.controls['ends'].value;
-      if (ends) {
-        queryObject.endYearMonth = ends;
+      if (this.ends) {
+        queryObject.ends = this.ends;
       }
     }
     this.loadAction = this.REFRESH; // reset load action

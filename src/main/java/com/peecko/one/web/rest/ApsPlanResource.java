@@ -24,6 +24,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -192,16 +193,20 @@ public class ApsPlanResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsPlans in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<ApsPlan>> getAllApsPlans(
+    public ResponseEntity<List<ApsPlan>> getApsPlans(
         @RequestParam(required = false) String customerCode,
         @RequestParam(required = false) String contract,
         @RequestParam(required = false) PlanState state,
-        @RequestParam(required = false) LocalDate start,
-        @RequestParam(required = false) LocalDate end,
+        @RequestParam(required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate starts,
+        @RequestParam(required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ends,
         @ParameterObject Pageable pageable) {
-        log.debug("REST request to get all ApsPlans");
+        log.debug("REST request to get all ApsPlans--------------------");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customerCode, contract, state, start, end);
+        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customerCode, contract, state, starts, ends);
+        log.debug(request.toString());
+        log.debug("----------------------------------------------------");
         Page<ApsPlan> page = apsPlanService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

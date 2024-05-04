@@ -1,6 +1,5 @@
 package com.peecko.one.web.rest;
 
-import com.peecko.one.domain.ApsMembership;
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ApsOrderRepository;
@@ -8,7 +7,6 @@ import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.service.ApsOrderService;
-import com.peecko.one.service.dto.MemberDTO;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.utils.PeriodUtils;
@@ -197,33 +195,26 @@ public class ApsOrderResource {
      */
     @GetMapping("/info")
     public List<ApsOrderInfo> getFilteredApsOrders(
-        @RequestParam(required = false) String customerCode,
-        @RequestParam(required = false) String apsPlanContract,
-        @RequestParam(required = false) String exactYearMonth,
-        @RequestParam(required = false) String startYearMonth,
-        @RequestParam(required = false) String endYearMonth) {
-        log.debug("REST request to get ApsOrders");
-        ApsOrderListRequest request = new ApsOrderListRequest(SecurityUtils.getCurrentAgencyId());
-        if (StringUtils.hasText(customerCode)) {
-             Long customerId = customerRepository.findCustomerCodeBy(customerCode).map(Customer::getId).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "customer.code.invalid"));
-             request.setCustomerId(customerId);
+        @RequestParam(required = false) String customer,
+        @RequestParam(required = false) String contract,
+        @RequestParam(required = false) Integer period,
+        @RequestParam(required = false) Integer starts,
+        @RequestParam(required = false) Integer ends) {
+        log.debug("REST request to get ApsOrders------------------");
+        Long customerId = null;
+        if (StringUtils.hasText(customer)) {
+            customerId = customerRepository.findByCustomerCode(customer).map(Customer::getId).orElse(null);
         }
-        if (StringUtils.hasText(apsPlanContract)) {
-            request.setApsPlanContract(apsPlanContract);
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        ApsOrderListRequest request = new ApsOrderListRequest(agencyId, customerId, contract, period, starts, ends);
+        return apsOrderService.findBySearchRequest(request).stream().map(ApsOrder::toApsOrderInfo).toList();
+    }
+
+    private Long findCustomerByCode(String code) {
+        if (!StringUtils.hasText(code)) {
+            return null;
         }
-        if (StringUtils.hasText(exactYearMonth)) {
-            Integer period = PeriodUtils.parseYearMonth(exactYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "exact.period.invalid"));
-            request.setPeriod(period);
-        }
-        if (StringUtils.hasText(startYearMonth)) {
-            Integer startPeriod = PeriodUtils.parseYearMonth(startYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "start.period.invalid"));
-            request.setStartPeriod(startPeriod);
-        }
-        if (StringUtils.hasText(endYearMonth)) {
-            Integer endPeriod = PeriodUtils.parseYearMonth(endYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "end.period.invalid"));
-            request.setEndPeriod(endPeriod);
-        }
-        return apsOrderService.findByListRequest(request).stream().map(ApsOrder::toApsOrderInfo).toList();
+        return customerRepository.findByCustomerCode(code).map(Customer::getId).orElse(null);
     }
 
     @GetMapping("/batch/generate")

@@ -3,23 +3,23 @@ package com.peecko.one.service.request;
 public class ApsOrderListRequest {
 
     private Long agencyId;
-    private String apsPlanContract;
+    private String contract;
     private Long customerId;
     private Integer period;
-    private Integer startPeriod;
-    private Integer endPeriod;
+    private Integer starts;
+    private Integer ends;
 
     public ApsOrderListRequest(Long agencyId) {
         this.agencyId = agencyId;
     }
 
-    public ApsOrderListRequest(Long agencyId, String apsPlanContract, Long customerId, Integer period, Integer startPeriod, Integer endPeriod) {
+    public ApsOrderListRequest(Long agencyId, Long customerId, String contract, Integer period, Integer starts, Integer ends) {
         this.agencyId = agencyId;
-        this.apsPlanContract = apsPlanContract;
         this.customerId = customerId;
+        this.contract = contract;
         this.period = period;
-        this.startPeriod = startPeriod;
-        this.endPeriod = endPeriod;
+        this.starts = starts;
+        this.ends = ends;
     }
 
     public Long getAgencyId() {
@@ -30,12 +30,12 @@ public class ApsOrderListRequest {
         this.agencyId = agencyId;
     }
 
-    public String getApsPlanContract() {
-        return apsPlanContract;
+    public String getContract() {
+        return contract;
     }
 
-    public void setApsPlanContract(String apsPlanContract) {
-        this.apsPlanContract = apsPlanContract;
+    public void setContract(String contract) {
+        this.contract = contract;
     }
 
     public Long getCustomerId() {
@@ -54,19 +54,31 @@ public class ApsOrderListRequest {
         this.period = period;
     }
 
-    public Integer getStartPeriod() {
-        return startPeriod;
+    public Integer getStarts() {
+        return starts;
     }
 
-    public void setStartPeriod(Integer startPeriod) {
-        this.startPeriod = startPeriod;
+    public void setStarts(Integer starts) {
+        this.starts = starts;
     }
 
-    public Integer getEndPeriod() {
-        return endPeriod;
+    public Integer getEnds() {
+        return ends;
     }
 
-    public void setEndPeriod(Integer endPeriod) {
-        this.endPeriod = endPeriod;
+    public void setEnds(Integer ends) {
+        this.ends = ends;
+    }
+
+    @Override
+    public String toString() {
+        return "ApsOrderListRequest{" +
+            "agencyId=" + agencyId +
+            ", contract='" + contract + '\'' +
+            ", customerId=" + customerId +
+            ", period=" + period +
+            ", starts=" + starts +
+            ", ends=" + ends +
+            '}';
     }
 }

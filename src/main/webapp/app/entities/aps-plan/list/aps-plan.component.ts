@@ -19,6 +19,7 @@ import dayjs from 'dayjs/esm';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from '../../../config/input.constants';
 import { CustomerData } from '../../customer/service/customer.data';
 import { ApsPlanData } from '../service/aps-plan.data';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   standalone: true,
@@ -36,7 +37,8 @@ import { ApsPlanData } from '../service/aps-plan.data';
     NgIf,
     MatInputModule,
     ReactiveFormsModule,
-    NgbInputDatepicker
+    NgbInputDatepicker,
+    FaIconComponent
   ]
 })
 export class ApsPlanComponent implements OnInit {
@@ -47,11 +49,13 @@ export class ApsPlanComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
-  searchForm!: FormGroup;
+  codeParam: string | null | undefined = null;
 
-  pCustomerCode: string | null | undefined = null;
-  pContract: string | null | undefined = null;
-
+  customerCode: string | null | undefined = null;
+  contract: string | null | undefined = null;
+  state: string | null | undefined = null;
+  starts: string | null | undefined = null;
+  ends: string | null | undefined = null;
   stateValues: string[] = Object.keys(PlanState);
 
   constructor(
@@ -68,19 +72,13 @@ export class ApsPlanComponent implements OnInit {
   trackId = (_index: number, item: IApsPlan): number => this.apsPlanService.getApsPlanIdentifier(item);
 
   ngOnInit(): void {
-    this.customerData.getValue().subscribe({ next: c => this.pCustomerCode = c.code });
-    this._initForm();
+    this.customerData.getValue().subscribe({ next: c => this.codeParam = c.code });
+    this._init();
     this.load();
   }
 
-  private _initForm(): void {
-    this.searchForm = this.fb.group({
-      'customerCode': this.pCustomerCode,
-      'contract': null,
-      'state': null,
-      'starts': null,
-      'ends': null,
-    });
+  private _init(): void {
+    this.customerCode = this.codeParam;
   }
 
   navToApsOrder(a: IApsPlan) {
@@ -149,25 +147,20 @@ export class ApsPlanComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    let customerCode = this.searchForm.controls['customerCode'].value;
-    if (customerCode) {
-      queryObject.customerCode = customerCode;
+    if (this.customerCode) {
+      queryObject.customerCode = this.customerCode;
     }
-    let contract = this.searchForm.controls['contract'].value;
-    if (contract) {
-      queryObject.contract = contract;
+    if (this.contract) {
+      queryObject.contract = this.contract;
     }
-    let state = this.searchForm.controls['state'].value;
-    if (state) {
-      queryObject.state = state;
+    if (this.state) {
+      queryObject.state = this.state;
     }
-    let starts = this.searchForm.controls['starts'].value
-    if (starts) {
-      queryObject.starts = dayjs(starts, DATE_FORMAT).format('YYYY-MM-DD');
+    if (this.starts) {
+      queryObject.starts = dayjs(this.starts, DATE_FORMAT).format('YYYY-MM-DD');
     }
-    let ends = this.searchForm.controls['ends'].value
-    if (ends) {
-      queryObject.ends = dayjs(ends, DATE_FORMAT).format('YYYY-MM-DD');
+    if (this.ends) {
+      queryObject.ends = dayjs(this.ends, DATE_FORMAT).format('YYYY-MM-DD');
     }
     return this.apsPlanService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
@@ -194,6 +187,10 @@ export class ApsPlanComponent implements OnInit {
 
   protected getApsPlanUserAccess(): ApsPlanAccess {
     return APS_PLAN_ACCESS;
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
 }

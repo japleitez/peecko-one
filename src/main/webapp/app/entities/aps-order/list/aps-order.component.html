@@ -4,17 +4,14 @@
   </h2>
 
   <div class="d-flex justify-content-end">
-    <form class="aps-orders-search-form" [formGroup]="searchForm">
 
-      <input type="text" matInput placeholder="contract"      class="form-text w-20 me-2" maxlength="30" formControlName="apsPlanContract">
-      <input type="text" matInput placeholder="customer-code" class="form-text w-20 me-2" maxlength="30" formControlName="customerCode">
-      <input type="text" matInput placeholder="period"        class="form-text w-10 me-2" maxlength="7"  formControlName="exact">
-      <input type="text" matInput placeholder="start"         class="form-text w-10 me-2" maxlength="7"  formControlName="starts">
-      <input type="text" matInput placeholder="end"           class="form-text w-10 me-2" maxlength="7"  formControlName="ends">
+    <input type="text" matInput placeholder="customer code" class="form-text w-20 me-2" maxlength="30" [(ngModel)]="customer">
+    <input type="text" matInput placeholder="contract"      class="form-text w-20 me-2" maxlength="30" [(ngModel)]="contract">
+    <input type="text" matInput placeholder="period"        class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="period">
+    <input type="text" matInput placeholder="start"         class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="starts">
+    <input type="text" matInput placeholder="end"           class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="ends">
 
-    </form>
-
-    <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading || !searchForm.valid">
+    <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading">
       <fa-icon icon="refresh" [spin]="isLoading"></fa-icon>
       <span>Search</span>
     </button>
@@ -29,7 +26,7 @@
       <span>New Order</span>
     </button>
 
-    <button class="btn btn-info" (click)="batchGenerate()" [disabled]="isLoading || !isExactYearMonthValid()">
+    <button class="btn btn-info" (click)="batchGenerate()" [disabled]="isLoading">
       <span>Generate</span>
     </button>
 

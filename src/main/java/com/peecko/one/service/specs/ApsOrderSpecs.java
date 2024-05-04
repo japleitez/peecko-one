@@ -4,8 +4,6 @@ import com.peecko.one.domain.*;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.Objects;
-
 public class ApsOrderSpecs extends BaseSpecs {
     public static Specification<ApsOrder> agency(Long id) {
         return (((root, query, cb) -> {
@@ -35,11 +33,11 @@ public class ApsOrderSpecs extends BaseSpecs {
         return (((root, query, cb) -> cb.equal(root.get(ApsOrder_.PERIOD), period)));
     }
 
-    public static Specification<ApsOrder> startPeriod(Integer period) {
+    public static Specification<ApsOrder> starts(Integer period) {
         return (((root, query, cb) -> cb.greaterThanOrEqualTo(root.get(ApsOrder_.PERIOD), period)));
     }
 
-    public static Specification<ApsOrder> endPeriod(Integer period) {
+    public static Specification<ApsOrder> ends(Integer period) {
         return (((root, query, cb) -> cb.lessThanOrEqualTo(root.get(ApsOrder_.PERIOD), period)));
     }
 

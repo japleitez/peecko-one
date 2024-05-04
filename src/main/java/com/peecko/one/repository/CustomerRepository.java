@@ -5,7 +5,6 @@ import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -25,7 +24,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
     List<Customer> loadById(@Param("id") Long id);
 
     @Query("select c from Customer c left join fetch c.agency where c.code = :code")
-    Optional<Customer> findCustomerCodeBy(@Param("code") String code);
+    Optional<Customer> findByCustomerCode(@Param("code") String code);
 
     Page<Customer> findByAgency(Agency agency, Pageable pageable);
 

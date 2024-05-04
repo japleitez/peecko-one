@@ -5,38 +5,38 @@
 
   <div class="d-flex justify-content-end">
 
-    <form class="aps-orders-search-form" [formGroup]="searchForm">
+    <input id="customerCode" matInput placeholder="customer code" [(ngModel)]="customerCode" class="form-text me-2"/>
 
-      <input id="customerCode" matInput placeholder="customer code" formControlName="customerCode" class="form-text me-2"/>
+    <input id="contract" matInput placeholder="contract" [(ngModel)]="contract" class="form-text me-2"/>
 
-      <input id="contract" matInput placeholder="contract" formControlName="contract" class="form-text me-2"/>
+    <select id="state" [(ngModel)]="state" class="form-text me-2">
+      <option [ngValue]="null" style="color: #999">State</option>
+      @for (planState of stateValues; track $index) {
+        <option [value]="planState">{{ planState }}</option>
+      }
+    </select>
 
-      <select id="state" formControlName="state" class="form-text me-2">
-        <option [ngValue]="null" style="color: #999">State</option>
-        @for (planState of stateValues; track $index) {
-          <option [value]="planState">{{ planState }}</option>
-        }
-      </select>
+    <input
+      [(ngModel)]="starts"
+      type="text"
+      matInput placeholder="start" class="form-text me-2"
+      ngbDatepicker
+      #startsDp="ngbDatepicker"
+    />
+    <button type="button" class="btn btn-secondary me-2" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
 
-      <input
-        formControlName="starts"
-        type="text"
-        matInput placeholder="start" class="form-text me-2"
-        ngbDatepicker
-        #startsDp="ngbDatepicker"
-      />
-      <button type="button" class="btn btn-secondary me-2" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+    <input
+      [(ngModel)]="ends"
+      type="text"
+      matInput placeholder="ends" class="form-text me-2"
+      ngbDatepicker
+      #endsDp="ngbDatepicker"
+    />
+    <button type="button" class="btn btn-secondary me-2" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
 
-      <input
-        formControlName="ends"
-        type="text"
-        matInput placeholder="ends" class="form-text me-2"
-        ngbDatepicker
-        #endsDp="ngbDatepicker"
-      />
-      <button type="button" class="btn btn-secondary me-2" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-
-    </form>
+    <button type="submit" (click)="previousState()" class="btn btn-info me-2">
+      <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+    </button>
 
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
