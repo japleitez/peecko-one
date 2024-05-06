@@ -9,9 +9,11 @@ import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.utils.UUIDUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,7 +46,7 @@ public class ApsLicenseService {
         ApsPlan apsPlan = new ApsPlan();
         apsPlan.setCustomer(Customer.of(customer.getId()));
         apsPlan.setLicense(customer.getLicense());
-        apsPlan.setPricing(PricingType.FIXED);
+        apsPlan.setPricing(PricingType.TRIAL);
         apsPlan.setState(PlanState.TRIAL);
         apsPlan.setUnitPrice(0.0);
         apsPlan.setCreated(Instant.now());
@@ -53,18 +55,6 @@ public class ApsLicenseService {
         apsPlan.setUpdated(null);
         apsPlanRepository.save(apsPlan);
         return apsPlan;
-    }
-
-    public Optional<Customer> activateCustomerPlan(Long customerId) {
-        //TODO create plan for good, need more parameters, remember to close the customer if the plan is closed
-        return customerRepository
-            .findById(customerId)
-            .map(customer -> {
-                customer.setState(CustomerState.ACTIVE);
-                customer.setActivated(Instant.now());
-                customer.setLicense(UUIDUtils.generateLicense(customer.getCode()));
-                return customer;
-            }).map(customerRepository::save);
     }
 
 }

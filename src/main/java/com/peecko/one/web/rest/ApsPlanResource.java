@@ -28,6 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -74,7 +75,7 @@ public class ApsPlanResource {
         if (apsPlan.getId() != null) {
             throw new BadRequestAlertException("A new apsPlan cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ApsPlan result = apsPlanRepository.save(apsPlan);
+        ApsPlan result = apsPlanService.create(apsPlan);
         return ResponseEntity
             .created(new URI("/api/aps-plans/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -103,12 +104,10 @@ public class ApsPlanResource {
         if (!Objects.equals(id, apsPlan.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-
-        if (!apsPlanRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        if (apsPlanService.notFound(id)) {
+            throw new BadRequestAlertException("Entity Not Found", ENTITY_NAME, "idinvalid");
         }
-
-        ApsPlan result = apsPlanRepository.save(apsPlan);
+        ApsPlan result = apsPlanService.update(apsPlan);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString()))
@@ -138,11 +137,9 @@ public class ApsPlanResource {
         if (!Objects.equals(id, apsPlan.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-
-        if (!apsPlanRepository.existsById(id)) {
+        if (apsPlanService.notFound(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
         Optional<ApsPlan> result = apsPlanRepository
             .findById(apsPlan.getId())
             .map(existingApsPlan -> {
@@ -180,7 +177,9 @@ public class ApsPlanResource {
                 return existingApsPlan;
             })
             .map(apsPlanRepository::save);
-
+        if (result.isPresent() && StringUtils.hasText(apsPlan.getLicense())) {
+            apsPlanService.updateCustomerLicence(result.get());
+        }
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString())
@@ -205,8 +204,6 @@ public class ApsPlanResource {
         log.debug("REST request to get all ApsPlans--------------------");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
         ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customerCode, contract, state, starts, ends);
-        log.debug(request.toString());
-        log.debug("----------------------------------------------------");
         Page<ApsPlan> page = apsPlanService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -256,9 +253,10 @@ public class ApsPlanResource {
     }
 
     @GetMapping("/trial-active")
-    public ResponseEntity<List<ApsPlan>> findTrialActivePlans() {
+    public ResponseEntity<List<ApsPlan>> getPlansWithTrialOrActiveStatus() {
         Long agencyId = SecurityUtils.getCurrentAgencyId();
         List<ApsPlan> result =  apsPlanRepository.getPlansForAgencyAndStates(agencyId, PlanState.TRIAL_ACTIVE);
         return ResponseEntity.ok().body(result);
     }
+
 }

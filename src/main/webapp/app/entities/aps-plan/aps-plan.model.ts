@@ -42,7 +42,7 @@ export interface ApsPlanAccess {
 export let APS_PLAN_ACCESS: ApsPlanAccess;
 
 APS_PLAN_ACCESS = {
-  id: { listable: true, visible: true, disabled: true },
+  id: { listable: false, visible: true, disabled: true },
   contract: { listable: true, visible: true, disabled: false },
   pricing: { listable: true, visible: true, disabled: false },
   state: { listable: true, visible: true, disabled: false },

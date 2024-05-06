@@ -1,7 +1,11 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.domain.enumeration.PlanState;
+import com.peecko.one.domain.enumeration.PricingType;
+import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPlanRepository;
+import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.service.request.ApsPlanListRequest;
 import com.peecko.one.service.specs.ApsOrderSpecs;
 import com.peecko.one.service.specs.ApsPlanSpecs;
@@ -11,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,13 +24,51 @@ import java.util.Optional;
 public class ApsPlanService {
     private final ApsPlanRepository apsPlanRepository;
 
-    public ApsPlanService(ApsPlanRepository apsPlanRepository) {
+    private final CustomerRepository customerRepository;
+
+    public ApsPlanService(ApsPlanRepository apsPlanRepository, CustomerRepository customerRepository) {
         this.apsPlanRepository = apsPlanRepository;
+        this.customerRepository = customerRepository;
+    }
+
+    public boolean notFound(Long id) {
+        return !apsPlanRepository.existsById(id);
+    }
+
+    public ApsPlan create(ApsPlan apsPlan) {
+        apsPlan.setCreated(Instant.now());
+        apsPlan.setUpdated(Instant.now());
+        ApsPlan result = apsPlanRepository.save(apsPlan);
+        updateCustomerLicence(result);
+        return result;
+    }
+
+    public ApsPlan update(ApsPlan apsPlan) {
+        apsPlan.setUpdated(Instant.now());
+        ApsPlan result = apsPlanRepository.save(apsPlan);
+        updateCustomerLicence(result);
+        return result;
     }
 
     public Optional<ApsPlan> loadById(Long id) {
         List<ApsPlan> list = apsPlanRepository.loadById(id);
         return list.isEmpty()? Optional.empty(): Optional.of(list.get(0));
+    }
+
+    public void updateCustomerLicence(ApsPlan apsPlan) {
+        updateCustomerLicense(apsPlan.getCustomer().getId(), apsPlan.getLicense());
+    }
+
+    public void updateCustomerLicense(Long customerId, String license) {
+        if (Objects.isNull(customerId) || !StringUtils.hasText(license)) {
+            return;
+        }
+        customerRepository.findById(customerId)
+            .map(customer -> {
+                customer.setLicense(license);
+                return customer;
+            }).map(customerRepository::save);
+
     }
 
     public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {

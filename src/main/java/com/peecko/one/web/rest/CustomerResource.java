@@ -46,12 +46,9 @@ public class CustomerResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final CustomerRepository customerRepository;
-
     private final CustomerService customerService;
 
-    public CustomerResource(CustomerRepository customerRepository, CustomerService customerService) {
-        this.customerRepository = customerRepository;
+    public CustomerResource(CustomerService customerService) {
         this.customerService = customerService;
     }
 
@@ -68,8 +65,7 @@ public class CustomerResource {
         if (customer.getId() != null) {
             throw new BadRequestAlertException("A new customer cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        customer.setDummy(false);
-        Customer result = customerRepository.save(customer);
+        Customer result = customerService.create(customer);
         return ResponseEntity
             .created(new URI("/api/customers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -91,11 +87,12 @@ public class CustomerResource {
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Customer customer
     ) throws URISyntaxException {
-        Optional<Customer> result = updateCustomer(customer, id);
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, customer.getId().toString())
-        );
+        validateUpdateInput(customer, id);
+        Customer result = customerService.update(customer);
+        return ResponseEntity
+            .accepted()
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(customer);
     }
 
     /**
@@ -115,7 +112,8 @@ public class CustomerResource {
         @NotNull @RequestBody Customer customer
     ) throws URISyntaxException {
         log.debug("REST request to partial update Customer partially : {}, {}", id, customer);
-        Optional<Customer> result = updateCustomer(customer, id);
+        validateUpdateInput(customer, id);
+        Optional<Customer> result = customerService.partialUpdateCustomer(customer);
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, customer.getId().toString())
@@ -147,7 +145,7 @@ public class CustomerResource {
     public ResponseEntity<List<Customer>> findActiveCustomers() {
         log.debug("REST request to get active Customers");
         Agency agency = SecurityUtils.getCurrentUserAgency();
-        List<Customer> customers = customerRepository.findByAgencyAndCustomerState(agency, CustomerState.TRIAL_ACTIVE);
+        List<Customer> customers = customerService.findByAgencyAndCustomerStates(agency, CustomerState.TRIAL_ACTIVE);
         List<Customer> list = customers.stream().map(Customer::cloneForSelection).toList();
         return ResponseEntity.ok().body(list);
     }
@@ -174,76 +172,23 @@ public class CustomerResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id) {
         log.debug("REST request to delete Customer : {}", id);
-        customerRepository.deleteById(id);
+        customerService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
 
-    private Optional<Customer> updateCustomer(Customer input, Long id) {
+    private void validateUpdateInput(Customer input, Long id) {
         if (input.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         if (!Objects.equals(id, input.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-        if (!customerRepository.existsById(id)) {
+        if (customerService.notFound(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        return customerRepository
-            .findById(input.getId())
-            .map(customer -> {
-                if (input.getCode() != null) {
-                    customer.setCode(input.getCode());
-                }
-                if (input.getName() != null) {
-                    customer.setName(input.getName());
-                }
-                if (input.getCountry() != null) {
-                    customer.setCountry(input.getCountry());
-                }
-                if (input.getLicense() != null) {
-                    customer.setLicense(input.getLicense());
-                }
-                if (input.getEmailDomains() != null) {
-                    customer.setEmailDomains(input.getEmailDomains());
-                }
-                if (input.getVatId() != null) {
-                    customer.setVatId(input.getVatId());
-                }
-                if (input.getBank() != null) {
-                    customer.setBank(input.getBank());
-                }
-                if (input.getIban() != null) {
-                    customer.setIban(input.getIban());
-                }
-                if (input.getLogo() != null) {
-                    customer.setLogo(input.getLogo());
-                }
-                if (input.getNotes() != null) {
-                    customer.setNotes(input.getNotes());
-                }
-                if (!customer.getState().equals(input.getState())) {
-                    switch (input.getState()) {
-                        case TRIAL -> {
-                            customer.setTrialed(Instant.now());
-                        }
-                        case ACTIVE -> {
-                            customer.setActivated(Instant.now());
-                        }
-                        case CLOSED -> {
-                            customer.setClosed(Instant.now());
-                        }
-                    }
-                    customer.setState(input.getState());
-                }
-                if (input.getCloseReason() != null) {
-                    customer.setCloseReason(input.getCloseReason());
-                }
-                customer.setDummy(false);
-                return customer;
-            })
-            .map(customerRepository::save);
     }
+
 }

@@ -22,7 +22,7 @@ import { ApsPlanData } from '../../aps-plan/service/aps-plan.data';
 import { CustomerData } from '../../customer/service/customer.data';
 import { MatDialog } from '@angular/material/dialog';
 import { ApsOrderMembersComponent } from '../members/aps-order-members.component';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   standalone: true,
@@ -45,7 +45,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
     CustomerSelectorComponent,
     NgIf,
     NgbInputDatepicker,
-    FaIconComponent
+    FaIconComponent,
+    FontAwesomeModule,
   ]
 })
 export class ApsOrderComponent implements OnInit {
@@ -222,6 +223,10 @@ export class ApsOrderComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
     });
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
 }
