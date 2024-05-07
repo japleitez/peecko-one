@@ -1,13 +1,10 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.ApsPlan;
-import com.peecko.one.domain.enumeration.PlanState;
-import com.peecko.one.domain.enumeration.PricingType;
-import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.service.request.ApsPlanListRequest;
-import com.peecko.one.service.specs.ApsOrderSpecs;
 import com.peecko.one.service.specs.ApsPlanSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,15 +36,14 @@ public class ApsPlanService {
         apsPlan.setCreated(Instant.now());
         apsPlan.setUpdated(Instant.now());
         ApsPlan result = apsPlanRepository.save(apsPlan);
-        updateCustomerLicence(result);
+        updateCustomerLicense(result.getId(), result.getLicense());
         return result;
     }
 
     public ApsPlan update(ApsPlan apsPlan) {
+        updateCustomerLicense(apsPlan.getId(), apsPlan.getLicense());
         apsPlan.setUpdated(Instant.now());
-        ApsPlan result = apsPlanRepository.save(apsPlan);
-        updateCustomerLicence(result);
-        return result;
+        return apsPlanRepository.save(apsPlan);
     }
 
     public Optional<ApsPlan> loadById(Long id) {
@@ -55,20 +51,16 @@ public class ApsPlanService {
         return list.isEmpty()? Optional.empty(): Optional.of(list.get(0));
     }
 
-    public void updateCustomerLicence(ApsPlan apsPlan) {
-        updateCustomerLicense(apsPlan.getCustomer().getId(), apsPlan.getLicense());
+    private void updateCustomerLicense(Long apsPlanId, String license) {
+        apsPlanRepository.findById(apsPlanId).map(apsPlan -> updateCustomerLicense(apsPlan, license));
     }
 
-    public void updateCustomerLicense(Long customerId, String license) {
-        if (Objects.isNull(customerId) || !StringUtils.hasText(license)) {
-            return;
-        }
-        customerRepository.findById(customerId)
+    private Optional<Customer> updateCustomerLicense(ApsPlan apsPlan, String license) {
+        return customerRepository.findById(apsPlan.getCustomer().getId())
             .map(customer -> {
                 customer.setLicense(license);
                 return customer;
             }).map(customerRepository::save);
-
     }
 
     public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {
@@ -91,4 +83,43 @@ public class ApsPlanService {
         return apsPlanRepository.findAll(spec, pageable);
     }
 
+    public Optional<ApsPlan> partialUpdateApsPlan(ApsPlan apsPlan) {
+        updateCustomerLicense(apsPlan.getId(), apsPlan.getLicense());
+        return apsPlanRepository
+            .findById(apsPlan.getId())
+            .map(existingApsPlan -> {
+                if (apsPlan.getContract() != null) {
+                    existingApsPlan.setContract(apsPlan.getContract());
+                }
+                if (apsPlan.getPricing() != null) {
+                    existingApsPlan.setPricing(apsPlan.getPricing());
+                }
+                if (apsPlan.getState() != null) {
+                    existingApsPlan.setState(apsPlan.getState());
+                }
+                if (apsPlan.getLicense() != null) {
+                    existingApsPlan.setLicense(apsPlan.getLicense());
+                }
+                if (apsPlan.getStarts() != null) {
+                    existingApsPlan.setStarts(apsPlan.getStarts());
+                }
+                if (apsPlan.getEnds() != null) {
+                    existingApsPlan.setEnds(apsPlan.getEnds());
+                }
+                if (apsPlan.getUnitPrice() != null) {
+                    existingApsPlan.setUnitPrice(apsPlan.getUnitPrice());
+                }
+                if (apsPlan.getNotes() != null) {
+                    existingApsPlan.setNotes(apsPlan.getNotes());
+                }
+                if (apsPlan.getCreated() != null) {
+                    existingApsPlan.setCreated(apsPlan.getCreated());
+                }
+                if (apsPlan.getUpdated() != null) {
+                    existingApsPlan.setUpdated(apsPlan.getUpdated());
+                }
+                return existingApsPlan;
+            })
+            .map(apsPlanRepository::save);
+    }
 }

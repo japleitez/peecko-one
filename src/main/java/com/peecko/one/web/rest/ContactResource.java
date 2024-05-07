@@ -1,7 +1,6 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Contact;
-import com.peecko.one.repository.ContactRepository;
 import com.peecko.one.service.ContactService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -35,12 +34,9 @@ public class ContactResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ContactRepository contactRepository;
-
     private final ContactService contactService;
 
-    public ContactResource(ContactRepository contactRepository, ContactService contactService) {
-        this.contactRepository = contactRepository;
+    public ContactResource(ContactService contactService) {
         this.contactService = contactService;
     }
 
@@ -57,7 +53,7 @@ public class ContactResource {
         if (contact.getId() != null) {
             throw new BadRequestAlertException("A new contact cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Contact result = contactRepository.save(contact);
+        Contact result = contactService.create(contact);
         return ResponseEntity
             .created(new URI("/api/contacts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -80,24 +76,25 @@ public class ContactResource {
         @Valid @RequestBody Contact contact
     ) throws URISyntaxException {
         log.debug("REST request to update Contact : {}, {}", id, contact);
-        if (contact.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, contact.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!contactRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Contact result = contactRepository.save(contact);
+        validateUpdateInput(contact, id);
+        Contact result = contactService.update(contact);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, contact.getId().toString()))
             .body(result);
     }
 
+    private void validateUpdateInput(Contact input, Long id) {
+        if (input.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, input.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+        if (contactService.notFound(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+    }
     /**
      * {@code PATCH  /contacts/:id} : Partial updates given fields of an existing contact, field will ignore if it is null
      *
@@ -115,61 +112,8 @@ public class ContactResource {
         @NotNull @RequestBody Contact contact
     ) throws URISyntaxException {
         log.debug("REST request to partial update Contact partially : {}, {}", id, contact);
-        if (contact.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, contact.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!contactRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<Contact> result = contactRepository
-            .findById(contact.getId())
-            .map(existingContact -> {
-                if (contact.getType() != null) {
-                    existingContact.setType(contact.getType());
-                }
-                if (contact.getName() != null) {
-                    existingContact.setName(contact.getName());
-                }
-                if (contact.getLine1() != null) {
-                    existingContact.setLine1(contact.getLine1());
-                }
-                if (contact.getLine2() != null) {
-                    existingContact.setLine2(contact.getLine2());
-                }
-                if (contact.getZip() != null) {
-                    existingContact.setZip(contact.getZip());
-                }
-                if (contact.getCity() != null) {
-                    existingContact.setCity(contact.getCity());
-                }
-                if (contact.getCountry() != null) {
-                    existingContact.setCountry(contact.getCountry());
-                }
-                if (contact.getEmail() != null) {
-                    existingContact.setEmail(contact.getEmail());
-                }
-                if (contact.getPhone() != null) {
-                    existingContact.setPhone(contact.getPhone());
-                }
-                if (contact.getNotes() != null) {
-                    existingContact.setNotes(contact.getNotes());
-                }
-                if (contact.getCreated() != null) {
-                    existingContact.setCreated(contact.getCreated());
-                }
-                if (contact.getUpdated() != null) {
-                    existingContact.setUpdated(contact.getUpdated());
-                }
-
-                return existingContact;
-            })
-            .map(contactRepository::save);
-
+        validateUpdateInput(contact, id);
+        Optional<Contact> result = contactService.partialUpdateContact(contact);
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, contact.getId().toString())
@@ -184,11 +128,7 @@ public class ContactResource {
     @GetMapping("")
     public List<Contact> getAllContacts(@RequestParam(required = false) String customerCode) {
         log.debug("REST request to get all Contacts");
-        if (Objects.nonNull(customerCode)) {
-            return contactRepository.getContactsByCustomerCode(customerCode);
-        } else {
-            return contactRepository.findAll();
-        }
+        return contactService.getContactsByCode(customerCode);
     }
 
     /**
@@ -213,7 +153,7 @@ public class ContactResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteContact(@PathVariable("id") Long id) {
         log.debug("REST request to delete Contact : {}", id);
-        contactRepository.deleteById(id);
+        contactService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

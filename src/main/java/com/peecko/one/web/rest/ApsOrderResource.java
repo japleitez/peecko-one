@@ -201,20 +201,9 @@ public class ApsOrderResource {
         @RequestParam(required = false) Integer starts,
         @RequestParam(required = false) Integer ends) {
         log.debug("REST request to get ApsOrders------------------");
-        Long customerId = null;
-        if (StringUtils.hasText(customer)) {
-            customerId = customerRepository.findByCustomerCode(customer).map(Customer::getId).orElse(null);
-        }
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        ApsOrderListRequest request = new ApsOrderListRequest(agencyId, customerId, contract, period, starts, ends);
+        ApsOrderListRequest request = new ApsOrderListRequest(agencyId, customer, contract, period, starts, ends);
         return apsOrderService.findBySearchRequest(request).stream().map(ApsOrder::toApsOrderInfo).toList();
-    }
-
-    private Long findCustomerByCode(String code) {
-        if (!StringUtils.hasText(code)) {
-            return null;
-        }
-        return customerRepository.findByCustomerCode(code).map(Customer::getId).orElse(null);
     }
 
     @GetMapping("/batch/generate")

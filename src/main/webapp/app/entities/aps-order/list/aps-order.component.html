@@ -5,8 +5,8 @@
 
   <div class="d-flex justify-content-end">
 
-    <input type="text" matInput placeholder="customer code" class="form-text w-20 me-2" maxlength="30" [(ngModel)]="customer">
-    <input type="text" matInput placeholder="contract"      class="form-text w-20 me-2" maxlength="30" [(ngModel)]="contract">
+    <input type="text" matInput placeholder="customer code" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="customer">
+    <input type="text" matInput placeholder="contract"      class="form-text w-15 me-2" maxlength="30" [(ngModel)]="contract">
     <input type="text" matInput placeholder="period"        class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="period">
     <input type="text" matInput placeholder="start"         class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="starts">
     <input type="text" matInput placeholder="end"           class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="ends">
@@ -26,6 +26,7 @@
       class="btn btn-primary jh-create-entity create-aps-order me-2"
       [routerLink]="['/aps-order/new']"
     >
+      <fa-icon icon="plus"></fa-icon>
       <span>New</span>
     </button>
 

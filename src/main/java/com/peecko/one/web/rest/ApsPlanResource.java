@@ -98,6 +98,15 @@ public class ApsPlanResource {
         @Valid @RequestBody ApsPlan apsPlan
     ) throws URISyntaxException {
         log.debug("REST request to update ApsPlan : {}, {}", id, apsPlan);
+        validateUpdateInput(apsPlan, id);
+        ApsPlan result = apsPlanService.update(apsPlan);
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString()))
+            .body(result);
+    }
+
+    private void validateUpdateInput(ApsPlan apsPlan, Long id) {
         if (apsPlan.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -107,11 +116,6 @@ public class ApsPlanResource {
         if (apsPlanService.notFound(id)) {
             throw new BadRequestAlertException("Entity Not Found", ENTITY_NAME, "idinvalid");
         }
-        ApsPlan result = apsPlanService.update(apsPlan);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString()))
-            .body(result);
     }
 
     /**
@@ -131,55 +135,8 @@ public class ApsPlanResource {
         @NotNull @RequestBody ApsPlan apsPlan
     ) throws URISyntaxException {
         log.debug("REST request to partial update ApsPlan partially : {}, {}", id, apsPlan);
-        if (apsPlan.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, apsPlan.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-        if (apsPlanService.notFound(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-        Optional<ApsPlan> result = apsPlanRepository
-            .findById(apsPlan.getId())
-            .map(existingApsPlan -> {
-                if (apsPlan.getContract() != null) {
-                    existingApsPlan.setContract(apsPlan.getContract());
-                }
-                if (apsPlan.getPricing() != null) {
-                    existingApsPlan.setPricing(apsPlan.getPricing());
-                }
-                if (apsPlan.getState() != null) {
-                    existingApsPlan.setState(apsPlan.getState());
-                }
-                if (apsPlan.getLicense() != null) {
-                    existingApsPlan.setLicense(apsPlan.getLicense());
-                }
-                if (apsPlan.getStarts() != null) {
-                    existingApsPlan.setStarts(apsPlan.getStarts());
-                }
-                if (apsPlan.getEnds() != null) {
-                    existingApsPlan.setEnds(apsPlan.getEnds());
-                }
-                if (apsPlan.getUnitPrice() != null) {
-                    existingApsPlan.setUnitPrice(apsPlan.getUnitPrice());
-                }
-                if (apsPlan.getNotes() != null) {
-                    existingApsPlan.setNotes(apsPlan.getNotes());
-                }
-                if (apsPlan.getCreated() != null) {
-                    existingApsPlan.setCreated(apsPlan.getCreated());
-                }
-                if (apsPlan.getUpdated() != null) {
-                    existingApsPlan.setUpdated(apsPlan.getUpdated());
-                }
-
-                return existingApsPlan;
-            })
-            .map(apsPlanRepository::save);
-        if (result.isPresent() && StringUtils.hasText(apsPlan.getLicense())) {
-            apsPlanService.updateCustomerLicence(result.get());
-        }
+        validateUpdateInput(apsPlan, id);
+        Optional<ApsPlan> result = apsPlanService.partialUpdateApsPlan(apsPlan);
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString())

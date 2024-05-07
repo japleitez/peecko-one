@@ -20,33 +20,25 @@ public class CustomerSpecs extends BaseSpecs {
 
     public static Specification<Customer> codeLike(String code) {
         return ((root, query, cb) ->
-            code == null?
-                cb.conjunction():
-                cb.like(root.get(Customer_.CODE), anyText(code))
-            );
+            cb.like(root.get(Customer_.CODE), anyText(code))
+        );
     }
 
     public static Specification<Customer> nameLike(String name) {
         return ((root, query, cb) ->
-            name == null?
-                cb.conjunction():
-                cb.like(root.get(Customer_.NAME), anyText(name))
-            );
+            cb.like(root.get(Customer_.NAME), anyText(name))
+        );
     }
 
     public static Specification<Customer> licenseLike(String license) {
         return ((root, query, cb) ->
-            license == null?
-                cb.conjunction():
-                cb.like(root.get(Customer_.LICENSE), anyText(license))
+            cb.like(root.get(Customer_.LICENSE), anyText(license))
         );
     }
 
     public static Specification<Customer> stateEqual(CustomerState state) {
         return ((root, query, cb) ->
-            state == null?
-                cb.conjunction():
-                cb.equal(root.get(Customer_.state), state)
+            cb.equal(root.get(Customer_.state), state)
         );
     }
 

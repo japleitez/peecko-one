@@ -9,9 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,17 +25,18 @@ public class CustomerService {
     }
 
     public Customer create(Customer customer) {
-        manageState(customer);
+        resolveFields(customer);
+        customer.setCreated(Instant.now());
         return customerRepository.save(customer);
     }
 
     public Customer update(Customer customer) {
-        manageState(customer);
+        resolveFields(customer);
         customer.setUpdated(Instant.now());
         return customerRepository.save(customer);
     }
 
-    private void manageState(Customer customer) {
+    private void resolveFields(Customer customer) {
         boolean isDummy = customer.getCode().toUpperCase().endsWith("-ALL");
         customer.setDummy(isDummy);
         if (CustomerState.TRIAL.equals(customer.getState())) {
@@ -43,6 +46,43 @@ public class CustomerService {
         } else if (CustomerState.CLOSED.equals(customer.getState())) {
             customer.setClosed(Instant.now());
         }
+    }
+
+    public void delete(Long id) {
+        if (customerRepository.existsById(id)) {
+            customerRepository.deleteById(id);
+        }
+    }
+
+    public boolean notFound(Long id) {
+        return !customerRepository.existsById(id);
+    }
+
+    public Optional<Customer> loadById(Long id) {
+        List<Customer> list = customerRepository.loadById(id);
+        return list.isEmpty()?  Optional.empty(): Optional.of(list.get(0));
+    }
+
+    public List<Customer> findByAgencyAndCustomerStates(Agency agency, List<CustomerState> states) {
+        return customerRepository.findByAgencyAndCustomerState(agency, states);
+    }
+
+
+    public Page<Customer> findAll(CustomerListRequest request, Pageable pageable) {
+        Specification<Customer> spec = CustomerSpecs.agency(request.getAgencyId());
+        if (StringUtils.hasText(request.getCode())) {
+            spec = spec.and(CustomerSpecs.codeLike(request.getCode()));
+        }
+        if (StringUtils.hasText(request.getName())) {
+            spec = spec.and(CustomerSpecs.nameLike(request.getName()));
+        }
+        if (StringUtils.hasText(request.getLicense())) {
+            spec = spec.and(CustomerSpecs.licenseLike(request.getLicense()));
+        }
+        if (Objects.nonNull(request.getState())) {
+            spec = spec.and(CustomerSpecs.stateEqual(request.getState()));
+        }
+        return customerRepository.findAll(spec, pageable);
     }
 
     public Optional<Customer> partialUpdateCustomer(Customer input) {
@@ -85,41 +125,12 @@ public class CustomerService {
                 if (input.getCloseReason() != null) {
                     customer.setCloseReason(input.getCloseReason());
                 }
-                manageState(customer);
+                resolveFields(customer);
                 boolean isDummy = customer.getCode().toUpperCase().endsWith("-ALL");
                 customer.setDummy(isDummy);
                 return customer;
             })
             .map(customerRepository::save);
-    }
-
-    public Optional<Customer> loadById(Long id) {
-        List<Customer> list = customerRepository.loadById(id);
-        return list.isEmpty()?  Optional.empty(): Optional.of(list.get(0));
-    }
-
-    public List<Customer> findByAgencyAndCustomerStates(Agency agency, List<CustomerState> states) {
-        return customerRepository.findByAgencyAndCustomerState(agency, states);
-    }
-
-    public void delete(Long id) {
-        if (customerRepository.existsById(id)) {
-            customerRepository.deleteById(id);
-        }
-    }
-
-    public boolean notFound(Long id) {
-        return !customerRepository.existsById(id);
-    }
-
-    public Page<Customer> findAll(CustomerListRequest request, Pageable pageable) {
-        Specification<Customer> spc1 = CustomerSpecs.agency(request.getAgencyId());
-        Specification<Customer> spc2 = CustomerSpecs.codeLike(request.getCode());
-        Specification<Customer> spc3 = CustomerSpecs.nameLike(request.getName());
-        Specification<Customer> spc4 = CustomerSpecs.licenseLike(request.getLicense());
-        Specification<Customer> spc5 = CustomerSpecs.stateEqual(request.getState());
-        Specification<Customer>  spec = spc1.and(spc2.and(spc3).and(spc4).and(spc5));
-        return customerRepository.findAll(spec, pageable);
     }
 
 }

@@ -4,7 +4,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { CONTACT_USER_ACCESS, ContactAccess, IContact, NewContact } from '../contact.model';
-import { CustomerAccess } from '../../customer/customer.model';
 
 /**
  * A partial Type with required key is used as form input.

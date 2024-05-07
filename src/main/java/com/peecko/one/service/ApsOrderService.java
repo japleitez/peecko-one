@@ -62,9 +62,10 @@ public class ApsOrderService {
     public List<ApsOrder> findBySearchRequest(ApsOrderListRequest request) {
         Specification<ApsOrder> spec = ApsOrderSpecs.agency(request.getAgencyId());
         if (StringUtils.hasText(request.getContract())) {
-            spec = spec.and(ApsOrderSpecs.contract(request.getContract()));
-        } else if (Objects.nonNull(request.getCustomerId())) {
-            spec = spec.and(ApsOrderSpecs.customer(request.getCustomerId()));
+            spec = spec.and(ApsOrderSpecs.contractLike(request.getContract()));
+        }
+        if (StringUtils.hasText(request.getCustomer())) {
+            spec = spec.and(ApsOrderSpecs.customerLike(request.getContract()));
         }
         if (Objects.nonNull(request.getPeriod())) {
             spec = spec.and(ApsOrderSpecs.period(request.getPeriod()));

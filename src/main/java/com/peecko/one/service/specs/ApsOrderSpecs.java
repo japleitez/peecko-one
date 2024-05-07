@@ -14,18 +14,18 @@ public class ApsOrderSpecs extends BaseSpecs {
         }));
     }
 
-    public static Specification<ApsOrder> contract(String contract) {
+    public static Specification<ApsOrder> contractLike(String contract) {
         return (((root, query, cb) -> {
             Join<ApsOrder, ApsPlan> planJoin = root.join(ApsOrder_.APS_PLAN);
-            return cb.equal(planJoin.get(ApsPlan_.CONTRACT), contract);
+            return cb.like(planJoin.get(ApsPlan_.CONTRACT), anyText(contract));
         }));
     }
 
-    public static Specification<ApsOrder> customer(Long id) {
+    public static Specification<ApsOrder> customerLike(String code) {
         return (((root, query, cb) -> {
             Join<ApsOrder, ApsPlan> planJoin = root.join(ApsOrder_.APS_PLAN);
             Join<ApsPlan, Customer> customerJoin = planJoin.join(ApsPlan_.CUSTOMER);
-            return cb.equal(customerJoin.get(Customer_.ID), id);
+            return cb.like(customerJoin.get(Customer_.CODE), anyText(code));
         }));
     }
 

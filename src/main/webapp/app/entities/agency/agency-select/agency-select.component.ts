@@ -24,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class AgencySelectComponent {
   @Input() control: FormControl<IAgency | string | null> = new FormControl('');
+  @Input() cl: string = 'w-20';
   @Input() set disabled(value: boolean) {
     this.disableControl(value);
   }

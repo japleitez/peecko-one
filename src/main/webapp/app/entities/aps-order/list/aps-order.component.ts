@@ -169,7 +169,7 @@ export class ApsOrderComponent implements OnInit {
       queryObject.period = this.period;
     } else {
       if (this.customer) {
-        queryObject.customerCode = this.customer;
+        queryObject.customer = this.customer;
       }
       if (this.contract) {
         queryObject.contract = this.contract;

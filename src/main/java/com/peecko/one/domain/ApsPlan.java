@@ -44,6 +44,7 @@ public class ApsPlan implements Serializable {
     @Column(name = "state", nullable = false)
     private PlanState state;
 
+    @NotNull
     @Column(name = "license")
     private String license;
 

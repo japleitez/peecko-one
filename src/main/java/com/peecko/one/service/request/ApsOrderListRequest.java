@@ -4,7 +4,7 @@ public class ApsOrderListRequest {
 
     private Long agencyId;
     private String contract;
-    private Long customerId;
+    private String customer;
     private Integer period;
     private Integer starts;
     private Integer ends;
@@ -13,9 +13,9 @@ public class ApsOrderListRequest {
         this.agencyId = agencyId;
     }
 
-    public ApsOrderListRequest(Long agencyId, Long customerId, String contract, Integer period, Integer starts, Integer ends) {
+    public ApsOrderListRequest(Long agencyId, String customer, String contract, Integer period, Integer starts, Integer ends) {
         this.agencyId = agencyId;
-        this.customerId = customerId;
+        this.customer = customer;
         this.contract = contract;
         this.period = period;
         this.starts = starts;
@@ -38,12 +38,12 @@ public class ApsOrderListRequest {
         this.contract = contract;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public String getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomer(String  customer) {
+        this.customer = customer;
     }
 
     public Integer getPeriod() {
@@ -75,7 +75,7 @@ public class ApsOrderListRequest {
         return "ApsOrderListRequest{" +
             "agencyId=" + agencyId +
             ", contract='" + contract + '\'' +
-            ", customerId=" + customerId +
+            ", customer=" + customer +
             ", period=" + period +
             ", starts=" + starts +
             ", ends=" + ends +

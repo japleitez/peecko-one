@@ -15,12 +15,13 @@ import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.mod
 import { CustomerFormService, CustomerFormGroup } from './customer-form.service';
 import { AgencySelectComponent } from '../../agency/agency-select/agency-select.component';
 import { NgIf } from '@angular/common';
+import { CustomerSelectorComponent } from '../customer-selector/customer-selector.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-customer-update',
   templateUrl: './customer-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, AgencySelectComponent, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, AgencySelectComponent, NgIf, CustomerSelectorComponent]
 })
 export class CustomerUpdateComponent implements OnInit {
   ua: CustomerAccess = this.getCustomerUserAccess();
