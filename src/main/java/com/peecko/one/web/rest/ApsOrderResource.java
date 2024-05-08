@@ -1,6 +1,7 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
+import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.CustomerRepository;
@@ -48,18 +49,12 @@ public class ApsOrderResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ApsOrderRepository apsOrderRepository;
-
     private final ApsOrderService apsOrderService;
-
-    private final CustomerRepository customerRepository;
 
     private final ApsMembershipService apsMembershipService;
 
-    public ApsOrderResource(ApsOrderRepository apsOrderRepository, ApsOrderService apsOrderService, CustomerRepository customerRepository, ApsMembershipService apsMembershipService) {
-        this.apsOrderRepository = apsOrderRepository;
+    public ApsOrderResource(ApsOrderService apsOrderService, ApsMembershipService apsMembershipService) {
         this.apsOrderService = apsOrderService;
-        this.customerRepository = customerRepository;
         this.apsMembershipService = apsMembershipService;
     }
 
@@ -76,7 +71,7 @@ public class ApsOrderResource {
         if (apsOrder.getId() != null) {
             throw new BadRequestAlertException("A new apsOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ApsOrder result = apsOrderRepository.save(apsOrder);
+        ApsOrder result = apsOrderService.create(apsOrder);
         return ResponseEntity
             .created(new URI("/api/aps-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -99,18 +94,8 @@ public class ApsOrderResource {
         @Valid @RequestBody ApsOrder apsOrder
     ) throws URISyntaxException {
         log.debug("REST request to update ApsOrder : {}, {}", id, apsOrder);
-        if (apsOrder.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, apsOrder.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!apsOrderRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        ApsOrder result = apsOrderRepository.save(apsOrder);
+        validateUpdateInput(apsOrder, id);
+        ApsOrder result = apsOrderService.update(apsOrder);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString()))
@@ -134,47 +119,24 @@ public class ApsOrderResource {
         @NotNull @RequestBody ApsOrder apsOrder
     ) throws URISyntaxException {
         log.debug("REST request to partial update ApsOrder partially : {}, {}", id, apsOrder);
+        validateUpdateInput(apsOrder, id);
+        Optional<ApsOrder> result = apsOrderService.partialUpdateApsOrder(apsOrder);
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString())
+        );
+    }
+
+    private void validateUpdateInput(ApsOrder apsOrder, Long id) {
         if (apsOrder.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         if (!Objects.equals(id, apsOrder.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-
-        if (!apsOrderRepository.existsById(id)) {
+        if (apsOrderService.notFound(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
-        Optional<ApsOrder> result = apsOrderRepository
-            .findById(apsOrder.getId())
-            .map(existingApsOrder -> {
-                if (apsOrder.getPeriod() != null) {
-                    existingApsOrder.setPeriod(apsOrder.getPeriod());
-                }
-                if (apsOrder.getLicense() != null) {
-                    existingApsOrder.setLicense(apsOrder.getLicense());
-                }
-                if (apsOrder.getUnitPrice() != null) {
-                    existingApsOrder.setUnitPrice(apsOrder.getUnitPrice());
-                }
-                if (apsOrder.getVatRate() != null) {
-                    existingApsOrder.setVatRate(apsOrder.getVatRate());
-                }
-                if (apsOrder.getNumberOfUsers() != null) {
-                    existingApsOrder.setNumberOfUsers(apsOrder.getNumberOfUsers());
-                }
-                if (apsOrder.getInvoiceNumber() != null) {
-                    existingApsOrder.setInvoiceNumber(apsOrder.getInvoiceNumber());
-                }
-
-                return existingApsOrder;
-            })
-            .map(apsOrderRepository::save);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString())
-        );
     }
 
     /**
@@ -185,7 +147,7 @@ public class ApsOrderResource {
     @GetMapping("")
     public List<ApsOrder> getAllApsOrders() {
         log.debug("REST request to get all InvoiceItems");
-        return apsOrderRepository.findAll();
+        return apsOrderService.findAll();
     }
 
     /**
@@ -207,12 +169,10 @@ public class ApsOrderResource {
     }
 
     @GetMapping("/batch/generate")
-    public List<ApsOrderInfo> batchGenerate(@RequestParam() String period) {
+    public List<ApsOrderInfo> batchGenerate(@RequestParam() Integer period) {
         log.debug("REST request to batch generate ApsOrders");
-        YearMonth yearMonth = PeriodUtils.parseYearMonth(period)
-            .orElseThrow(() -> new BadRequestAlertException("Cannot generate orders due to invalid period", ENTITY_NAME, "invalid.period"));
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsOrderService.batchGenerate(agencyId, yearMonth);
+        return apsOrderService.batchGenerate(agencyId, period);
     }
 
     /**
@@ -224,7 +184,7 @@ public class ApsOrderResource {
     @GetMapping("/{id}")
     public ResponseEntity<ApsOrder> getApsOrder(@PathVariable("id") Long id) {
         log.debug("REST request to get ApsOrder : {}", id);
-        Optional<ApsOrder> apsOrder = apsOrderRepository.findById(id);
+        Optional<ApsOrder> apsOrder = apsOrderService.findById(id);
         return ResponseUtil.wrapOrNotFound(apsOrder);
     }
 
@@ -237,7 +197,7 @@ public class ApsOrderResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteApsOrder(@PathVariable("id") Long id) {
         log.debug("REST request to delete ApsOrder : {}", id);
-        apsOrderRepository.deleteById(id);
+        apsOrderService.deleteById(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

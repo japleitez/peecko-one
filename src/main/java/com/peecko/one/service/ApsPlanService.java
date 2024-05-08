@@ -2,6 +2,7 @@ package com.peecko.one.service;
 
 import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.domain.Customer;
+import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.service.request.ApsPlanListRequest;
@@ -46,6 +47,11 @@ public class ApsPlanService {
         return apsPlanRepository.save(apsPlan);
     }
 
+    public void deleteById(Long id) {
+        if (apsPlanRepository.existsById(id)) {
+            apsPlanRepository.deleteById(id);
+        }
+    }
     public Optional<ApsPlan> loadById(Long id) {
         List<ApsPlan> list = apsPlanRepository.loadById(id);
         return list.isEmpty()? Optional.empty(): Optional.of(list.get(0));
@@ -61,26 +67,6 @@ public class ApsPlanService {
                 customer.setLicense(license);
                 return customer;
             }).map(customerRepository::save);
-    }
-
-    public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {
-        Specification<ApsPlan> spec = ApsPlanSpecs.agencyId(request.getAgencyId());
-        if (StringUtils.hasText(request.getContract())) {
-            spec = spec.and(ApsPlanSpecs.contract(request.getContract()));
-        }
-        if (StringUtils.hasText(request.getCustomerCode())) {
-            spec = spec.and(ApsPlanSpecs.customerCode(request.getCustomerCode()));
-        }
-        if (Objects.nonNull(request.getState())) {
-            spec = spec.and(ApsPlanSpecs.state(request.getState()));
-        }
-        if (Objects.nonNull(request.getStarts())) {
-            spec = spec.and(ApsPlanSpecs.starts(request.getStarts()));
-        }
-        if (Objects.nonNull(request.getEnds())) {
-            spec = spec.and(ApsPlanSpecs.ends(request.getEnds()));
-        }
-        return apsPlanRepository.findAll(spec, pageable);
     }
 
     public Optional<ApsPlan> partialUpdateApsPlan(ApsPlan apsPlan) {
@@ -122,4 +108,29 @@ public class ApsPlanService {
             })
             .map(apsPlanRepository::save);
     }
+
+    public List<ApsPlan> getPlansForAgencyAndStates(Long agencyId, List<PlanState> states) {
+        return apsPlanRepository.getPlansForAgencyAndStates(agencyId, states);
+    }
+
+    public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {
+        Specification<ApsPlan> spec = ApsPlanSpecs.agencyId(request.getAgencyId());
+        if (StringUtils.hasText(request.getContract())) {
+            spec = spec.and(ApsPlanSpecs.contract(request.getContract()));
+        }
+        if (StringUtils.hasText(request.getCustomerCode())) {
+            spec = spec.and(ApsPlanSpecs.customerCode(request.getCustomerCode()));
+        }
+        if (Objects.nonNull(request.getState())) {
+            spec = spec.and(ApsPlanSpecs.state(request.getState()));
+        }
+        if (Objects.nonNull(request.getStarts())) {
+            spec = spec.and(ApsPlanSpecs.starts(request.getStarts()));
+        }
+        if (Objects.nonNull(request.getEnds())) {
+            spec = spec.and(ApsPlanSpecs.ends(request.getEnds()));
+        }
+        return apsPlanRepository.findAll(spec, pageable);
+    }
+
 }

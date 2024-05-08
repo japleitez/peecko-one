@@ -31,6 +31,7 @@ import { ApsOrderService } from '../service/aps-order.service';
 export class ApsOrderMembersComponent {
   currentFile?: File;
   fileName: string = 'Select File';
+  count: number | undefined = 0;
 
   constructor(
     protected apsOrderService: ApsOrderService,
@@ -55,14 +56,15 @@ export class ApsOrderMembersComponent {
       formData.append('file', this.currentFile);
       this.apsOrderService.importMembers(formData).subscribe(
         (response) => {
-          alert("File uploaded with " + response.body?.count + " records");
+          this.count = response.body?.count;
+          alert("File uploaded with " + this.count + " records");
           this.onNoClick();
         });
     }
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ count: this.count });
   }
 
 }

@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ApsOrderService {
@@ -27,8 +28,43 @@ public class ApsOrderService {
         this.apsOrderRepository = apsOrderRepository;
     }
 
-    public List<ApsOrderInfo> batchGenerate(Long agencyId, YearMonth yearMonth) {
-        Integer period = PeriodUtils.getPeriod(yearMonth);
+    public ApsOrder create(ApsOrder apsOrder) {
+        return apsOrderRepository.save(apsOrder);
+    }
+
+    public ApsOrder update(ApsOrder apsOrder) {
+        return apsOrderRepository.save(apsOrder);
+    }
+
+    public Optional<ApsOrder> partialUpdateApsOrder(ApsOrder apsOrder) {
+        return apsOrderRepository
+            .findById(apsOrder.getId())
+            .map(existingApsOrder -> {
+                if (apsOrder.getPeriod() != null) {
+                    existingApsOrder.setPeriod(apsOrder.getPeriod());
+                }
+                if (apsOrder.getLicense() != null) {
+                    existingApsOrder.setLicense(apsOrder.getLicense());
+                }
+                if (apsOrder.getUnitPrice() != null) {
+                    existingApsOrder.setUnitPrice(apsOrder.getUnitPrice());
+                }
+                if (apsOrder.getVatRate() != null) {
+                    existingApsOrder.setVatRate(apsOrder.getVatRate());
+                }
+                if (apsOrder.getNumberOfUsers() != null) {
+                    existingApsOrder.setNumberOfUsers(apsOrder.getNumberOfUsers());
+                }
+                if (apsOrder.getInvoiceNumber() != null) {
+                    existingApsOrder.setInvoiceNumber(apsOrder.getInvoiceNumber());
+                }
+
+                return existingApsOrder;
+            })
+            .map(apsOrderRepository::save);
+    }
+
+    public List<ApsOrderInfo> batchGenerate(Long agencyId, Integer period) {
         LocalDate endOfMonth = PeriodUtils.getYearMonth(period).atEndOfMonth();
         List<ApsPlan> plans = apsPlanRepository.currentPaidActivePlans(agencyId);
         List<ApsOrder> orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, period);
@@ -78,6 +114,24 @@ public class ApsOrderService {
             }
         }
         return apsOrderRepository.findAll(spec);
+    }
+
+    public void deleteById(Long id) {
+        if (apsOrderRepository.existsById(id)) {
+            apsOrderRepository.deleteById(id);
+        }
+    }
+
+    public boolean notFound(Long id) {
+        return !apsOrderRepository.existsById(id);
+    }
+
+    public Optional<ApsOrder> findById(Long id) {
+        return apsOrderRepository.findById(id);
+    }
+
+    public List<ApsOrder> findAll() {
+        return apsOrderRepository.findAll();
     }
 
 }
