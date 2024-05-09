@@ -21,7 +21,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Agency implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -82,6 +81,7 @@ public class Agency implements Serializable {
     @Column(name = "vat_id")
     private String vatId;
 
+    @NotNull
     @Column(name = "vat_rate")
     private Double vatRate;
 

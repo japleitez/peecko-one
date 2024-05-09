@@ -101,7 +101,7 @@ public class ApsOrderService {
             spec = spec.and(ApsOrderSpecs.contractLike(request.getContract()));
         }
         if (StringUtils.hasText(request.getCustomer())) {
-            spec = spec.and(ApsOrderSpecs.customerLike(request.getContract()));
+            spec = spec.and(ApsOrderSpecs.customerLike(request.getCustomer()));
         }
         if (Objects.nonNull(request.getPeriod())) {
             spec = spec.and(ApsOrderSpecs.period(request.getPeriod()));

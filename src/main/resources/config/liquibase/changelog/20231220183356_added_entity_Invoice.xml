@@ -29,6 +29,9 @@
             <column name="subtotal" type="double">
                 <constraints nullable="false" />
             </column>
+            <column name="vat_rate" type="double">
+                <constraints nullable="false" />
+            </column>
             <column name="vat" type="double">
                 <constraints nullable="false" />
             </column>
@@ -78,6 +81,7 @@
             <column name="sale_date" type="date"/>
             <column name="subtotal" type="numeric"/>
             <column name="vat" type="numeric"/>
+            <column name="vat_rate" type="numeric"/>
             <column name="total" type="numeric"/>
             <column name="paid" type="numeric"/>
             <column name="paid_date" type="date"/>

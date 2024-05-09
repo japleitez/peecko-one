@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
+import { AGENCY_USER_ACCESS } from '../../agency/agency.model';
 
 @Component({
   standalone: true,

@@ -139,6 +139,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="vatRate"  *ngIf="ua.vatRate.listable">
+              <div class="d-flex">
+                <span>Vat Rate</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="bank" *ngIf="ua.bank.listable">
               <div class="d-flex">
                 <span>Bank</span>
@@ -205,6 +212,7 @@
 
               <td *ngIf="ua.country.listable">{{ customer.country }}</td>
               <td *ngIf="ua.vatId.listable">{{ customer.vatId }}</td>
+              <td *ngIf="ua.vatRate.listable">{{ customer.vatRate }}</td>
               <td *ngIf="ua.bank.listable">{{ customer.bank }}</td>
               <td *ngIf="ua.iban.listable">{{ customer.iban }}</td>
               <td *ngIf="ua.license.listable" id="{{customer.license}}" (click)="copy(customer.license)"><span>{{ customer.license }}</span></td>

@@ -221,7 +221,6 @@ export class ApsOrderComponent implements OnInit {
       data: o,
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result.count) {
         o.numberOfUsers = result.count;
       }

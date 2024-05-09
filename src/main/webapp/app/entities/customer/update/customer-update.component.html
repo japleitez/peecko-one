@@ -57,6 +57,11 @@
       <input type="text" class="form-control" name="vatId" id="field_vatId" data-cy="vatId" formControlName="vatId" />
     </div>
 
+    <div class="mb-3" *ngIf="ua.vatRate.visible">
+      <label class="form-label" for="field_vatRate">Vat Rate</label>
+      <input type="number" class="form-control" name="vatRate" id="field_vatRate" data-cy="vatRate" formControlName="vatRate" />
+    </div>
+
     <div class="mb-3" *ngIf="ua.bank.visible">
       <label class="form-label" for="field_bank">Bank</label>
       <input type="text" class="form-control" name="bank" id="field_bank" data-cy="bank" formControlName="bank" />

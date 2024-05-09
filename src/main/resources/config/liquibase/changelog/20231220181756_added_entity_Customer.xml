@@ -38,6 +38,9 @@
             <column name="vat_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="vat_rate" type="double">
+                <constraints nullable="true" />
+            </column>
             <column name="bank" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

@@ -55,6 +55,10 @@
           <dd *ngIf="ua.vatId.visible">
             <span>{{ customer.vatId }}</span>
           </dd>
+          <dt *ngIf="ua.vatRate.visible"><span>Vat Rate</span></dt>
+          <dd *ngIf="ua.vatRate.visible">
+            <span>{{ customer.vatRate }}</span>
+          </dd>
           <dt *ngIf="ua.bank.visible"><span>Bank</span></dt>
           <dd *ngIf="ua.bank.visible">
             <span>{{ customer.bank }}</span>

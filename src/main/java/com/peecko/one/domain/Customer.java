@@ -57,6 +57,10 @@ public class Customer implements Serializable {
     @Column(name = "vat_id")
     private String vatId;
 
+    @NotNull
+    @Column(name = "vat_rate", nullable = false)
+    private Double vatRate;
+
     @Column(name = "bank")
     private String bank;
 
@@ -227,6 +231,19 @@ public class Customer implements Serializable {
 
     public void setVatId(String vatId) {
         this.vatId = vatId;
+    }
+
+    public Double getVatRate() {
+        return vatRate;
+    }
+
+    public void setVatRate(Double vatRate) {
+        this.vatRate = vatRate;
+    }
+
+    public Customer vatRate(Double vatRate) {
+        this.setVatRate(vatRate);
+        return this;
     }
 
     public String getBank() {

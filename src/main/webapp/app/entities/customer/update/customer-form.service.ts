@@ -44,6 +44,7 @@ type CustomerFormGroupContent = {
   closeReason: FormControl<CustomerFormRawValue['closeReason']>;
   emailDomains: FormControl<CustomerFormRawValue['emailDomains']>;
   vatId: FormControl<CustomerFormRawValue['vatId']>;
+  vatRate: FormControl<CustomerFormRawValue['vatRate']>;
   bank: FormControl<CustomerFormRawValue['bank']>;
   iban: FormControl<CustomerFormRawValue['iban']>;
   logo: FormControl<CustomerFormRawValue['logo']>;
@@ -90,6 +91,7 @@ export class CustomerFormService {
       closeReason: new FormControl({ value: customerRawValue.closeReason, disabled: ua.closeReason.disabled }),
       emailDomains: new FormControl({ value: customerRawValue.emailDomains, disabled: ua.emailDomains.disabled }),
       vatId: new FormControl({ value: customerRawValue.vatId, disabled: ua.vatId.disabled }),
+      vatRate: new FormControl({ value: customerRawValue.vatRate, disabled: ua.vatRate.disabled }),
       bank: new FormControl({ value: customerRawValue.bank, disabled: ua.bank.disabled }),
       iban: new FormControl({ value: customerRawValue.iban, disabled: ua.iban.disabled }),
       logo: new FormControl({ value: customerRawValue.logo, disabled: ua.logo.disabled }),

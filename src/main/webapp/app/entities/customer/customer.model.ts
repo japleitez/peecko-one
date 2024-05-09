@@ -15,6 +15,7 @@ export interface ICustomer {
   closeReason?: string | null;
   emailDomains?: string | null;
   vatId?: string | null;
+  vatRate?: number | null;
   bank?: string | null;
   iban?: string | null;
   logo?: string | null;
@@ -42,6 +43,7 @@ export interface CustomerAccess {
   closeReason: FieldAccess;
   emailDomains: FieldAccess;
   vatId: FieldAccess;
+  vatRate: FieldAccess;
   bank: FieldAccess;
   iban: FieldAccess;
   logo: FieldAccess;
@@ -69,16 +71,17 @@ CUSTOMER_USER_ACCESS = {
   closeReason: { listable: false, visible: true, disabled: false },
   emailDomains: { listable: false, visible: true, disabled: false },
   vatId: { listable: false, visible: true, disabled: false },
+  vatRate: { listable: true, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
   logo: { listable: false, visible: true, disabled: false },
   notes: { listable: false, visible: true, disabled: false },
-  created: { listable: true, visible: true, disabled: true },
+  created: { listable: false, visible: true, disabled: true },
   trialed: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
   declined: { listable: false, visible: true, disabled: true },
   activated: { listable: true, visible: true, disabled: true },
-  closed: { listable: true, visible: true, disabled: true },
+  closed: { listable: false, visible: true, disabled: true },
   contacts: { listable: false, visible: true, disabled: false },
   apsPlans: { listable: false, visible: true, disabled: false },
   agency: { listable: false, visible: true, disabled: false }
