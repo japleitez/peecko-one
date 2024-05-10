@@ -62,6 +62,7 @@ export class ApsOrderComponent implements OnInit {
   loadAction: string = '';
   REFRESH: string = 'REFRESH';
   BATCH_GENERATE: string = 'BATCH_GENERATE';
+  BATCH_INVOICE: string = 'BATCH_INVOICE';
 
   // search fields
   customer: string | null | undefined = null;
@@ -118,6 +119,11 @@ export class ApsOrderComponent implements OnInit {
 
   batchGenerate(): void {
     this.loadAction = this.BATCH_GENERATE;
+    this._executeLoad();
+  }
+
+  batchInvoice(): void {
+    this.loadAction = this.BATCH_INVOICE;
     this._executeLoad();
   }
 
@@ -225,6 +231,10 @@ export class ApsOrderComponent implements OnInit {
         o.numberOfUsers = result.count;
       }
     });
+  }
+
+  protected disabledGenerate(): boolean {
+    return this.isLoading || this.period?.length != 6;
   }
 
   previousState(): void {

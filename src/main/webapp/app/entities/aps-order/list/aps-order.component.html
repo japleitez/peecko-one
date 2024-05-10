@@ -30,8 +30,14 @@
       <span>New</span>
     </button>
 
-    <button class="btn btn-info" (click)="batchGenerate()" [disabled]="isLoading">
-      <span>Generate</span>
+    <button class="btn btn-primary jh-create-entity create-aps-order me-2"
+            (click)="batchGenerate()" [disabled]="disabledGenerate()">
+      <span>(B)Orders</span>
+    </button>
+
+    <button class="btn btn-primary jh-create-entity create-aps-order"
+            (click)="batchInvoice()" [disabled]="disabledGenerate()">
+      <span>(B)Invoices</span>
     </button>
 
   </div>
@@ -108,7 +114,7 @@
             </th>
             <th scope="col" jhiSortBy="vatRate"  *ngIf="ua.vatRate.listable">
               <div class="d-flex">
-                <span>Vat</span>
+                <span>Vat Rate</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -169,7 +175,7 @@
                     <fa-icon icon="pencil-alt"></fa-icon>
                   </a>
 
-                  <button type="submit" (click)="delete(apsOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <button type="submit" (click)="delete(apsOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton" [disabled]="apsOrder.invoiceNumber">
                     <fa-icon icon="times"></fa-icon>
                   </button>
                 </div>

@@ -70,14 +70,16 @@ export class ApsPlanFormService {
         { validators: [Validators.required], }),
       license: new FormControl({ value: apsPlanRawValue.license, disabled: ua.license.disabled },
         { validators: [Validators.required], }),
-      starts: new FormControl({ value: apsPlanRawValue.starts, disabled: ua.starts.disabled }),
+      starts: new FormControl({ value: apsPlanRawValue.starts, disabled: ua.starts.disabled },
+        { validators: [Validators.required], }),
       ends: new FormControl({ value: apsPlanRawValue.ends, disabled: ua.ends.disabled }),
       unitPrice: new FormControl({ value: apsPlanRawValue.unitPrice, disabled: ua.unitPrice.disabled },
         { validators: [Validators.required], }),
       notes: new FormControl({ value: apsPlanRawValue.notes, disabled: ua.notes.disabled }),
       created: new FormControl({ value: apsPlanRawValue.created, disabled: ua.created.disabled }),
       updated: new FormControl({ value: apsPlanRawValue.updated, disabled: ua.updated.disabled }),
-      customer: new FormControl({ value: apsPlanRawValue.customer, disabled: ua.customer.disabled }),
+      customer: new FormControl({ value: apsPlanRawValue.customer, disabled: ua.customer.disabled },
+        { validators: [Validators.required], }),
     });
   }
 
