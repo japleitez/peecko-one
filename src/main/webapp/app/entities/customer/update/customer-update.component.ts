@@ -49,10 +49,13 @@ export class CustomerUpdateComponent implements OnInit {
         this.updateForm(customer);
       } else {
         this.agencyService.current().subscribe(response => {
+          const agency = response.body;
+          this.editForm.get('agency')?.setValue(agency);
           const vatRate = response.body?.vatRate;
           this.editForm.get('vatRate')?.setValue(vatRate);
           const country = response.body?.country;
           this.editForm.get('country')?.setValue(country);
+          this.editForm.get('state')?.setValue(CustomerState.NEW);
         })
       }
 
