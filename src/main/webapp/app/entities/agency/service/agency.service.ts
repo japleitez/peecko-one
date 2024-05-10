@@ -63,6 +63,12 @@ export class AgencyService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  current(): Observable<AgencyResponseType> {
+    return this.http
+      .get<RestAgency>(`${this.resourceUrl}/current`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
   query(req?: any): Observable<AgencyArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

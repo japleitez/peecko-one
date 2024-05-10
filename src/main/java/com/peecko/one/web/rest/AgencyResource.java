@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Agency;
 import com.peecko.one.repository.AgencyRepository;
+import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -235,4 +236,11 @@ public class AgencyResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @GetMapping("/current")
+    public ResponseEntity<Agency> getAgency() {
+        Optional<Agency> agency = agencyRepository.findById(SecurityUtils.getCurrentAgencyId());
+        return ResponseUtil.wrapOrNotFound(agency);
+    }
+
 }
