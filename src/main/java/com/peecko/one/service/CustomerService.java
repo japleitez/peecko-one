@@ -3,6 +3,7 @@ package com.peecko.one.service;
 import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.service.request.CustomerListRequest;
 import org.springframework.data.domain.Page;
@@ -18,9 +19,12 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
+
+    private final AgencyRepository agencyRepository;
     private final CustomerRepository customerRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(AgencyRepository agencyRepository, CustomerRepository customerRepository) {
+        this.agencyRepository = agencyRepository;
         this.customerRepository = customerRepository;
     }
 
@@ -31,6 +35,11 @@ public class CustomerService {
     }
 
     public Customer update(Customer customer) {
+        Optional<Agency> optionalAgency = agencyRepository.findById(customer.getAgency().getId());
+        if (optionalAgency.isPresent()) {
+            Agency agency = optionalAgency.get();
+            customer.setCountry(agency.getCountry());
+        }
         resolveFields(customer);
         customer.setUpdated(Instant.now());
         return customerRepository.save(customer);

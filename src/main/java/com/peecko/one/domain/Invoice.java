@@ -81,6 +81,15 @@ public class Invoice implements Serializable {
     @JsonIgnoreProperties(value = { "apsMemberships", "invoices", "apsPlan" }, allowSetters = true)
     private ApsOrder apsOrder;
 
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @Column(name = "aps_plan_id")
+    private Long apsPlanId;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -293,6 +302,45 @@ public class Invoice implements Serializable {
 
     public Invoice apsOrder(ApsOrder apsOrder) {
         this.setApsOrder(apsOrder);
+        return this;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Invoice country(String country) {
+        this.setCountry(country);
+        return this;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Invoice customerId(Long customerId) {
+        this.setCustomerId(customerId);
+        return this;
+    }
+
+    public Long getApsPlanId() {
+        return apsPlanId;
+    }
+
+    public void setApsPlanId(Long apsPlanId) {
+        this.apsPlanId = apsPlanId;
+    }
+
+    public Invoice apsPlanId(Long apsPlanId) {
+        this.setApsPlanId(apsPlanId);
         return this;
     }
 

@@ -32,6 +32,9 @@
             <column name="city" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="countryName" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="country" type="varchar(255)">
                 <constraints nullable="false" />
             </column>

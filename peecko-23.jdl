@@ -172,6 +172,7 @@ entity Customer {
   closeReason String,
   emailDomains String,
   vatId String,
+  vatRate Double,
   bank String,
   iban String,
   logo String,
@@ -250,6 +251,7 @@ entity ApsPlan {
 * contract: ApsPlan.contract
 * period: year + month
 * license: membership number
+* unitPrice: ApsPricing.unit_price resolved by customer_id and min_quantity
 * numberOfUsers: number of users
 * invoiceNumber: generated
 */

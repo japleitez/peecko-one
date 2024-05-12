@@ -1,23 +1,17 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
-import com.peecko.one.domain.ApsPlan;
-import com.peecko.one.domain.Customer;
-import com.peecko.one.repository.ApsOrderRepository;
-import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.service.ApsOrderService;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
-import com.peecko.one.utils.PeriodUtils;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import com.peecko.one.web.rest.errors.ErrorConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.YearMonth;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tech.jhipster.web.util.HeaderUtil;
@@ -146,7 +139,7 @@ public class ApsOrderResource {
      */
     @GetMapping("")
     public List<ApsOrder> getAllApsOrders() {
-        log.debug("REST request to get all InvoiceItems");
+        log.debug("REST request to get all ApsOrder");
         return apsOrderService.findAll();
     }
 
@@ -168,11 +161,18 @@ public class ApsOrderResource {
         return apsOrderService.findBySearchRequest(request).stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
-    @GetMapping("/batch/generate")
-    public List<ApsOrderInfo> batchGenerate(@RequestParam() Integer period) {
-        log.debug("REST request to batch generate ApsOrders");
+    @GetMapping("/batch/orders")
+    public List<ApsOrderInfo> batchOrders(@RequestParam() Integer period) {
+        log.debug("REST request to generate ApsOrders in batch");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsOrderService.batchGenerate(agencyId, period);
+        return apsOrderService.batchOrders(agencyId, period);
+    }
+
+    @GetMapping("/batch/invoices")
+    public List<ApsOrderInfo> batchInvoices(@RequestParam() Integer period) {
+        log.debug("REST request to generate Invoices in batch");
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        return apsOrderService.batchInvoice(agencyId, period);
     }
 
     /**

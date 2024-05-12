@@ -167,11 +167,12 @@ export class ApsOrderComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityInfoArrayResponseType> {
     this.isLoading = true;
-    const executeBatch = (this.loadAction === this.BATCH_GENERATE);
+    const batchOrders: boolean = (this.loadAction === this.BATCH_GENERATE);
+    const batchInvoices: boolean = (this.loadAction === this.BATCH_INVOICE);
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    if (executeBatch) {
+    if (batchOrders || batchInvoices) {
       queryObject.period = this.period;
     } else {
       if (this.customer) {
@@ -191,8 +192,10 @@ export class ApsOrderComponent implements OnInit {
       }
     }
     this.loadAction = this.REFRESH; // reset load action
-    if (executeBatch) {
-      return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
+    if (batchOrders) {
+      return this.apsOrderService.batchOrders(queryObject).pipe(tap(() => (this.isLoading = false)));
+    } else if (batchInvoices) {
+      return this.apsOrderService.batchInvoices(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else {
       return this.apsOrderService.queryInfo(queryObject).pipe(tap(() => (this.isLoading = false)));
     }

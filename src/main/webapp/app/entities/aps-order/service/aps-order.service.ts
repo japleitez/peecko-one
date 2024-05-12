@@ -49,9 +49,14 @@ export class ApsOrderService {
     return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/info`, { params: options, observe: 'response' });
   }
 
-  batchGenerate(req?: any): Observable<EntityInfoArrayResponseType> {
+  batchOrders(req?: any): Observable<EntityInfoArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/generate`, { params: options, observe: 'response' });
+    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/orders`, { params: options, observe: 'response' });
+  }
+
+  batchInvoices(req?: any): Observable<EntityInfoArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/invoices`, { params: options, observe: 'response' });
   }
 
   importMembers(formData: FormData): Observable<CountResponseType> {
