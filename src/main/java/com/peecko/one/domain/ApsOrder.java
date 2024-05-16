@@ -66,6 +66,7 @@ public class ApsOrder implements Serializable {
     @Column(name = "customer_id")
     private Long customerId;
 
+    @Column(name = "country")
     private String country;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -144,9 +144,10 @@ public class ApsOrderService {
             apsOrder.setLicense(apsPlan.getLicense());
             apsOrder.setUnitPrice(apsPlan.getUnitPrice());
             apsOrder.setVatRate(apsPlan.getCustomer().getVatRate());
-            apsOrder.setCountry(apsPlan.getCustomer().getCountry());
-            apsOrder.setCustomerId(apsPlan.getCustomer().getId());
             apsOrder.setNumberOfUsers(0);
+            apsOrder.setInvoiceNumber(null);
+            apsOrder.setCustomerId(apsPlan.getCustomer().getId());
+            apsOrder.setCountry(apsPlan.getCustomer().getCountry());
             apsOrder = apsOrderRepository.save(apsOrder);
         }
         return ApsOrderInfo.of(apsOrder);
@@ -158,16 +159,18 @@ public class ApsOrderService {
         }
         return ends == null || endOfMonth.isEqual(ends) || endOfMonth.isBefore(ends);
     }
+
     public List<ApsOrderInfo> batchInvoice(Long agencyId, Integer period) {
         return apsOrderRepository.findByAgencyAndPeriod(agencyId, period)
             .stream()
-            .map(this::getOrCreateInvoice)
+            .map(apsOrder -> this.getOrCreateInvoice(agencyId, apsOrder))
             .toList();
     }
 
-    private ApsOrderInfo getOrCreateInvoice(ApsOrder apsOrder) {
+    private ApsOrderInfo getOrCreateInvoice(Long agencyId, ApsOrder apsOrder) {
         if (apsOrder.getInvoices().isEmpty()) {
-            String invoiceNumber = "PCK-" + apsOrder.getPeriod();
+            Long count = invoiceRepository.countByAgencyIdAndPeriod(agencyId, apsOrder.getPeriod());
+            String invoiceNumber = "PCK" + apsOrder.getPeriod() + String.format("%05d", count);
             Invoice invoice = new Invoice();
             invoice.setApsOrder(apsOrder);
             invoice.setNumber(invoiceNumber);
@@ -178,6 +181,7 @@ public class ApsOrderService {
             invoice.setVat(0D);
             invoice.setVatRate(apsOrder.getVatRate());
             invoice.setTotal(0D);
+            invoice.setAgencyId(agencyId);
             invoice.setCountry(apsOrder.getCountry());
             invoice.setCustomerId(apsOrder.getCustomerId());
             invoice.setApsPlanId(apsOrder.getApsPlan().getId());

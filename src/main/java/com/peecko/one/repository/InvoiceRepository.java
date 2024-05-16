@@ -15,4 +15,6 @@ import java.util.List;
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     List<Invoice> findByApsOrder(ApsOrder apsOrder);
 
+    Long countByAgencyIdAndPeriod(Long agencyId, Integer period);
+
 }

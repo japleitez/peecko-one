@@ -90,6 +90,12 @@ public class Invoice implements Serializable {
     @Column(name = "aps_plan_id")
     private Long apsPlanId;
 
+    @Column(name = "agency_id")
+    private Long agencyId;
+
+    @Column(name = "period")
+    private Integer period;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -341,6 +347,32 @@ public class Invoice implements Serializable {
 
     public Invoice apsPlanId(Long apsPlanId) {
         this.setApsPlanId(apsPlanId);
+        return this;
+    }
+
+    public Long getAgencyId() {
+        return agencyId;
+    }
+
+    public void setAgencyId(Long agencyId) {
+        this.agencyId = agencyId;
+    }
+
+    public Invoice agencyId(Long agencyId) {
+        this.setAgencyId(agencyId);
+        return this;
+    }
+
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
+    }
+
+    public Invoice period(Integer period) {
+        this.setPeriod(period);
         return this;
     }
 
