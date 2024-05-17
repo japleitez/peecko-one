@@ -91,9 +91,6 @@ public class Customer implements Serializable {
     @Column(name = "closed")
     private Instant closed;
 
-    @Column(name = "dummy")
-    private Boolean dummy;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "customer" }, allowSetters = true)
@@ -374,14 +371,6 @@ public class Customer implements Serializable {
 
     public void setClosed(Instant closed) {
         this.closed = closed;
-    }
-
-    public Boolean getDummy() {
-        return dummy;
-    }
-
-    public void setDummy(Boolean dummy) {
-        this.dummy = dummy;
     }
 
     public Set<Contact> getContacts() {

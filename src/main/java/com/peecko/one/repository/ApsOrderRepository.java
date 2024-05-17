@@ -17,6 +17,9 @@ public interface ApsOrderRepository extends JpaRepository<ApsOrder, Long>, JpaSp
     @Query("from ApsOrder o left join fetch o.apsPlan where o.period = :period and o.apsPlan.customer.agency.id = :agencyId")
     List<ApsOrder> findByAgencyAndPeriod(@Param("agencyId") Long agencyId, @Param("period") Integer period);
 
+    @Query("from ApsOrder o left join fetch o.apsPlan where o.period = :period and o.apsPlan.customer.agency.id = :agencyId and o.apsPlan.state = 'ACTIVE'")
+    List<ApsOrder> findByAgencyAndPeriodAndActive(@Param("agencyId") Long agencyId, @Param("period") Integer period);
+
     @Query("from ApsOrder o left join fetch o.apsPlan where o.apsPlan.customer.id = :customerId and o.period between :startPeriod and :endPeriod order by o.period")
     List<ApsOrder> findByCustomerAndBetweenPeriods(@Param("customerId") Long customerId, @Param("startPeriod") Integer startPeriod, @Param("endPeriod") Integer endPeriod);
 

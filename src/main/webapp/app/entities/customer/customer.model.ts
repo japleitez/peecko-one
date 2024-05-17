@@ -71,7 +71,7 @@ CUSTOMER_USER_ACCESS = {
   closeReason: { listable: false, visible: true, disabled: false },
   emailDomains: { listable: false, visible: true, disabled: false },
   vatId: { listable: false, visible: true, disabled: false },
-  vatRate: { listable: false, visible: true, disabled: false },
+  vatRate: { listable: true, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
   logo: { listable: false, visible: true, disabled: false },

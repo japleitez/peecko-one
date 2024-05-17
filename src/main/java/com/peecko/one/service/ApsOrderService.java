@@ -1,6 +1,7 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.*;
+import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.domain.enumeration.PricingType;
 import com.peecko.one.repository.*;
 import com.peecko.one.service.info.ApsOrderInfo;
@@ -128,7 +129,7 @@ public class ApsOrderService {
 
     public List<ApsOrderInfo> batchOrders(Long agencyId, Integer period) {
         LocalDate endOfMonth = PeriodUtils.getYearMonth(period).atEndOfMonth();
-        List<ApsPlan> plans = apsPlanRepository.currentPaidActivePlans(agencyId);
+        List<ApsPlan> plans = apsPlanRepository.getPlansForAgencyAndStates(agencyId, PlanState.TRIAL_ACTIVE);
         List<ApsOrder> orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, period);
         return plans.stream()
             .filter(p -> betweenPlanValidity(endOfMonth, p.getStarts(), p.getEnds()))
@@ -161,7 +162,7 @@ public class ApsOrderService {
     }
 
     public List<ApsOrderInfo> batchInvoice(Long agencyId, Integer period) {
-        return apsOrderRepository.findByAgencyAndPeriod(agencyId, period)
+        return apsOrderRepository.findByAgencyAndPeriodAndActive(agencyId, period)
             .stream()
             .map(apsOrder -> this.getOrCreateInvoice(agencyId, apsOrder))
             .toList();

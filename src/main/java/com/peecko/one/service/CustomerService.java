@@ -29,8 +29,7 @@ public class CustomerService {
     }
 
     public Customer create(Customer customer) {
-        resolveFields(customer);
-        customer.setCreated(Instant.now());
+        updateDates(customer);
         return customerRepository.save(customer);
     }
 
@@ -40,20 +39,22 @@ public class CustomerService {
             Agency agency = optionalAgency.get();
             customer.setCountry(agency.getCountry());
         }
-        resolveFields(customer);
-        customer.setUpdated(Instant.now());
+        updateDates(customer);
         return customerRepository.save(customer);
     }
 
-    private void resolveFields(Customer customer) {
-        boolean isDummy = customer.getCode().toUpperCase().endsWith("-ALL");
-        customer.setDummy(isDummy);
+    private void updateDates(Customer customer) {
         if (CustomerState.TRIAL.equals(customer.getState())) {
             customer.setTrialed(Instant.now());
         } else if (CustomerState.ACTIVE.equals(customer.getState())) {
             customer.setActivated(Instant.now());
         } else if (CustomerState.CLOSED.equals(customer.getState())) {
             customer.setClosed(Instant.now());
+        }
+        if (customer.getId() == null) {
+            customer.setCreated(Instant.now());
+        } else {
+            customer.setUpdated(Instant.now());
         }
     }
 
@@ -134,9 +135,7 @@ public class CustomerService {
                 if (input.getCloseReason() != null) {
                     customer.setCloseReason(input.getCloseReason());
                 }
-                resolveFields(customer);
-                boolean isDummy = customer.getCode().toUpperCase().endsWith("-ALL");
-                customer.setDummy(isDummy);
+                updateDates(customer);
                 return customer;
             })
             .map(customerRepository::save);

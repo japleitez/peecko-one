@@ -1,11 +1,1 @@
-id;period;license;unit_price;vat_rate;number_of_users;invoice_number
-1;20327;famously irk;5064.89;13276.91;19502;ugh
-2;10432;inside spectacle;20558.59;30944.95;27571;while
-3;20563;studio ouch flare;263.3;5267.43;1712;admired refloat powerless
-4;12096;stadium;18856.63;8092.13;11823;for
-5;24513;modulo lasting gratefully;25416.82;4013.41;13754;theorise yum
-6;26996;sans;18700.62;29296.65;4580;underplay
-7;24147;pointed victoriously identical;7934.28;21862.08;7298;welch
-8;12307;what till round;17569.01;19911.84;26295;angle hunger like
-9;16207;ugh;13007.91;5556;29436;estuary ha
-10;12051;questioningly nab;10731.2;9528.81;1085;besides ionise
+id;country;period;license;unit_price;vat_rate;number_of_users;invoice_number

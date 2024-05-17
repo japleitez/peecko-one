@@ -48,6 +48,7 @@ public class ApsPlan implements Serializable {
     @Column(name = "license")
     private String license;
 
+    @NotNull
     @Column(name = "starts")
     private LocalDate starts;
 
@@ -61,6 +62,7 @@ public class ApsPlan implements Serializable {
     @Column(name = "notes")
     private String notes;
 
+    @NotNull
     @Column(name = "created")
     private Instant created;
 
@@ -291,20 +293,18 @@ public class ApsPlan implements Serializable {
     }
 
     // prettier-ignore
+
     @Override
     public String toString() {
         return "ApsPlan{" +
-            "id=" + getId() +
-            ", contract='" + getContract() + "'" +
-            ", pricing='" + getPricing() + "'" +
-            ", state='" + getState() + "'" +
-            ", license='" + getLicense() + "'" +
-            ", starts='" + getStarts() + "'" +
-            ", ends='" + getEnds() + "'" +
-            ", unitPrice=" + getUnitPrice() +
-            ", notes='" + getNotes() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", updated='" + getUpdated() + "'" +
-            "}";
+            "id=" + id +
+            ", contract='" + contract + '\'' +
+            ", pricing=" + pricing +
+            ", state=" + state +
+            ", license='" + license + '\'' +
+            ", starts=" + starts +
+            ", ends=" + ends +
+            ", unitPrice=" + unitPrice +
+            '}';
     }
 }
