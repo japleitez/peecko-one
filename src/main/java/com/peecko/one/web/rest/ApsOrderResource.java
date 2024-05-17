@@ -88,11 +88,11 @@ public class ApsOrderResource {
     ) throws URISyntaxException {
         log.debug("REST request to update ApsOrder : {}, {}", id, apsOrder);
         validateUpdateInput(apsOrder, id);
-        ApsOrder result = apsOrderService.update(apsOrder);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString()))
-            .body(result);
+        Optional<ApsOrder> result = apsOrderService.partialUpdateApsOrder(apsOrder);
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString())
+        );
     }
 
     /**

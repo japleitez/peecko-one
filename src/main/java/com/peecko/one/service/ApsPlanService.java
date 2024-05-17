@@ -98,12 +98,7 @@ public class ApsPlanService {
                 if (apsPlan.getNotes() != null) {
                     existingApsPlan.setNotes(apsPlan.getNotes());
                 }
-                if (apsPlan.getCreated() != null) {
-                    existingApsPlan.setCreated(apsPlan.getCreated());
-                }
-                if (apsPlan.getUpdated() != null) {
-                    existingApsPlan.setUpdated(apsPlan.getUpdated());
-                }
+                existingApsPlan.setUpdated(Instant.now());
                 return existingApsPlan;
             })
             .map(apsPlanRepository::save);

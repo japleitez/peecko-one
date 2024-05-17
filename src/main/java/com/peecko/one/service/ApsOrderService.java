@@ -8,19 +8,18 @@ import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.service.specs.ApsOrderSpecs;
 import com.peecko.one.utils.PeriodUtils;
-import com.peecko.one.web.rest.ApsOrderResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class ApsOrderService {
@@ -75,13 +74,7 @@ public class ApsOrderService {
                 if (apsOrder.getVatRate() != null) {
                     existingApsOrder.setVatRate(apsOrder.getVatRate());
                 }
-                if (apsOrder.getNumberOfUsers() != null) {
-                    existingApsOrder.setNumberOfUsers(apsOrder.getNumberOfUsers());
-                }
-                if (apsOrder.getInvoiceNumber() != null) {
-                    existingApsOrder.setInvoiceNumber(apsOrder.getInvoiceNumber());
-                }
-
+                existingApsOrder.setInvoiceNumber(apsOrder.getInvoiceNumber());
                 return existingApsOrder;
             })
             .map(apsOrderRepository::save);
@@ -164,59 +157,85 @@ public class ApsOrderService {
     public List<ApsOrderInfo> batchInvoice(Long agencyId, Integer period) {
         return apsOrderRepository.findByAgencyAndPeriodAndActive(agencyId, period)
             .stream()
+            .filter(ApsOrder::hasSubscribers)
             .map(apsOrder -> this.getOrCreateInvoice(agencyId, apsOrder))
             .toList();
     }
 
     private ApsOrderInfo getOrCreateInvoice(Long agencyId, ApsOrder apsOrder) {
+        Invoice invoice = null;
         if (apsOrder.getInvoices().isEmpty()) {
-            Long count = invoiceRepository.countByAgencyIdAndPeriod(agencyId, apsOrder.getPeriod());
-            String invoiceNumber = "PCK" + apsOrder.getPeriod() + String.format("%05d", count);
-            Invoice invoice = new Invoice();
+            InvoiceDetails details = calculateInvoiceDetails(agencyId, apsOrder);
+            invoice = new Invoice();
             invoice.setApsOrder(apsOrder);
-            invoice.setNumber(invoiceNumber);
+            invoice.setNumber(details.invoiceNumber);
             invoice.setIssued(Instant.now());
-            invoice.setDueDate(LocalDate.now().plusDays(7));
-            invoice.saleDate(LocalDate.now());
-            invoice.setSubtotal(0D);
-            invoice.setVat(0D);
+            invoice.setDueDate(details.dueDate);
+            invoice.saleDate(details.saleDate);
             invoice.setVatRate(apsOrder.getVatRate());
-            invoice.setTotal(0D);
+            invoice.setSubtotal(details.subTotal);
+            invoice.setVat(details.vat);
+            invoice.setTotal(details.total);
             invoice.setAgencyId(agencyId);
             invoice.setCountry(apsOrder.getCountry());
             invoice.setCustomerId(apsOrder.getCustomerId());
             invoice.setApsPlanId(apsOrder.getApsPlan().getId());
             invoiceRepository.save(invoice);
             invoiceRepository.flush();
+            //TODO create invoice item using invoice details
+        }
+        if (Objects.nonNull(invoice)) {
             apsOrder.addInvoice(invoice);
-            apsOrder.setInvoiceNumber(invoiceNumber);
+            apsOrder.setInvoiceNumber(invoice.getNumber());
             apsOrder = apsOrderRepository.save(apsOrder);
+            apsOrderRepository.flush();
         }
         return ApsOrderInfo.of(apsOrder);
     }
 
-    private Double resolveUnitPrice(ApsOrder apsOrder) {
-        Double result = 0D;
-        PricingType pricingType = apsOrder.getApsPlan().getPricing();
-        if (PricingType.FIXED.equals(pricingType)) {
-            result = apsOrder.getApsPlan().getUnitPrice();
-        } else if (PricingType.BRACKET.equals(pricingType)) {
-            result = findUnitPrice(apsOrder.getCustomerId(), apsOrder.getNumberOfUsers());
-        }
-        return result;
+    private String generateInvoiceNumber(Long agencyId, Integer period) {
+        Long count = invoiceRepository.countByAgencyIdAndPeriod(agencyId, period);
+        return  "PCK" + period + String.format("%05d", count);
     }
 
-    private Double findUnitPrice(Long customerId, Integer numberOfUsers) {
-        //TODO need to add country in filter
+    private InvoiceDetails calculateInvoiceDetails(Long agencyId, ApsOrder apsOrder) {
         Double unitPrice = 0D;
-        List<ApsPricing> apsPricings = apsPricingRepository.findByCustomerIdAndNumberOfUsers(customerId, numberOfUsers);
-        if (apsPricings.isEmpty()) {
-            apsPricings = apsPricingRepository.findByCustomerIdAndNumberOfUsers(BASE_CUSTOMER_ID, numberOfUsers);
+        String invoiceItemText = apsOrder.getNumberOfUsers() + " peecko app license(s)";
+        String country = apsOrder.getCountry();
+        Long customerId = apsOrder.getCustomerId();
+        Integer numberOfUsers = apsOrder.getNumberOfUsers();
+        PricingType pricingType = apsOrder.getApsPlan().getPricing();
+        if (PricingType.FIXED.equals(pricingType)) {
+            unitPrice = apsOrder.getApsPlan().getUnitPrice();
+        } else if (PricingType.BRACKET.equals(pricingType)) {
+            List<ApsPricing> apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(country, customerId, numberOfUsers);
+            if (apsPricings.isEmpty()) {
+                apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(country, BASE_CUSTOMER_ID, numberOfUsers);
+            }
+            if (!apsPricings.isEmpty()) {
+                unitPrice = apsPricings.get(0).getUnitPrice();
+            }
         }
-        if (!apsPricings.isEmpty()) {
-            unitPrice = apsPricings.get(0).getUnitPrice();
-        }
-        return unitPrice;
+        final DecimalFormat df = new DecimalFormat("#.##");
+        InvoiceDetails details = new InvoiceDetails();
+        details.invoiceNumber = generateInvoiceNumber(agencyId, apsOrder.getPeriod());
+        details.saleDate = PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "01");
+        details.dueDate = PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "09");
+        details.subTotal = Double.parseDouble(df.format(numberOfUsers * unitPrice));
+        details.vat =   Double.parseDouble(df.format (details.subTotal * apsOrder.getVatRate() / 100.0));
+        details.total = details.subTotal + details.vat;
+        details.description = invoiceItemText + " at an individual price of " + unitPrice +  " euros";
+        return details;
+    }
+
+    static class InvoiceDetails {
+        public LocalDate saleDate;
+        public LocalDate dueDate;
+        public double subTotal;
+        public double vat;
+        public double total;
+        public String description;
+        public String invoiceNumber;
     }
 
 }

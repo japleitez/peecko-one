@@ -14,7 +14,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface ApsPricingRepository extends JpaRepository<ApsPricing, Long> {
-    @Query("from ApsPricing p left join fetch p.customer where p.customer.id = :customerId and p.minQuantity <= :numberOfUsers order by p.minQuantity desc")
-    List<ApsPricing> findByCustomerIdAndNumberOfUsers(@Param("customerId") Long customerId, @Param("numberOfUsers") Integer numberOfUsers);
+    @Query("from ApsPricing p left join fetch p.customer where p.country = :country and p.customer.id = :customerId and p.minQuantity <= :numberOfUsers order by p.minQuantity desc")
+    List<ApsPricing> findByCountryAndCustomerIdAndNumberOfUsers(@Param("country") String country, @Param("customerId") Long customerId, @Param("numberOfUsers") Integer numberOfUsers);
 
 }

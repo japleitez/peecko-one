@@ -1,6 +1,10 @@
 package com.peecko.one.utils;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
@@ -30,4 +34,8 @@ public abstract class PeriodUtils {
         }
     }
 
+    public static LocalDate parsePeriodDay(Integer period, String dd) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return LocalDate.parse(period + dd, formatter);
+    }
 }

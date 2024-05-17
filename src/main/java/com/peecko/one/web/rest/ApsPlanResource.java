@@ -92,11 +92,11 @@ public class ApsPlanResource {
     ) throws URISyntaxException {
         log.debug("REST request to update ApsPlan : {}, {}", id, apsPlan);
         validateUpdateInput(apsPlan, id);
-        ApsPlan result = apsPlanService.update(apsPlan);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString()))
-            .body(result);
+        Optional<ApsPlan> result = apsPlanService.partialUpdateApsPlan(apsPlan);
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString())
+        );
     }
 
     /**
