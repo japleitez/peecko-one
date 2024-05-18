@@ -74,7 +74,6 @@ public class ApsOrderService {
                 if (apsOrder.getVatRate() != null) {
                     existingApsOrder.setVatRate(apsOrder.getVatRate());
                 }
-                existingApsOrder.setInvoiceNumber(apsOrder.getInvoiceNumber());
                 return existingApsOrder;
             })
             .map(apsOrderRepository::save);
@@ -172,7 +171,6 @@ public class ApsOrderService {
             invoice.setIssued(Instant.now());
             invoice.setDueDate(details.dueDate);
             invoice.saleDate(details.saleDate);
-            invoice.setVatRate(apsOrder.getVatRate());
             invoice.setSubtotal(details.subTotal);
             invoice.setVat(details.vat);
             invoice.setTotal(details.total);

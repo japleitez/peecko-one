@@ -31,29 +31,17 @@
           <dd *ngIf="ua.priceUnit.visible">
             <span>{{ invoiceItem.priceUnit }}</span>
           </dd>
-          <dt *ngIf="ua.priceExtended.visible"><span>Price Extended</span></dt>
-          <dd *ngIf="ua.priceExtended.visible">
-            <span>{{ invoiceItem.priceExtended }}</span>
-          </dd>
-          <dt *ngIf="ua.disRate.visible"><span>Dis Rate</span></dt>
-          <dd *ngIf="ua.disRate.visible">
-            <span>{{ invoiceItem.disRate }}</span>
-          </dd>
-          <dt *ngIf="ua.disAmount.visible"><span>Dis Amount</span></dt>
-          <dd *ngIf="ua.disAmount.visible">
-            <span>{{ invoiceItem.disAmount }}</span>
-          </dd>
-          <dt *ngIf="ua.finalPrice.visible"><span>Final Price</span></dt>
-          <dd *ngIf="ua.finalPrice.visible">
-            <span>{{ invoiceItem.finalPrice }}</span>
+          <dt *ngIf="ua.subtotal.visible"><span>Final Price</span></dt>
+          <dd *ngIf="ua.subtotal.visible">
+            <span>{{ invoiceItem.subtotal }}</span>
           </dd>
           <dt *ngIf="ua.vatRate.visible"><span>Vat Rate</span></dt>
           <dd *ngIf="ua.vatRate.visible">
             <span>{{ invoiceItem.vatRate }}</span>
           </dd>
-          <dt *ngIf="ua.vatAmount.visible"><span>Vat Amount</span></dt>
-          <dd *ngIf="ua.vatAmount.visible">
-            <span>{{ invoiceItem.vatAmount }}</span>
+          <dt *ngIf="ua.vat.visible"><span>Vat Amount</span></dt>
+          <dd *ngIf="ua.vat.visible">
+            <span>{{ invoiceItem.vat }}</span>
           </dd>
           <dt *ngIf="ua.total.visible"><span>Total</span></dt>
           <dd *ngIf="ua.total.visible">

@@ -22,12 +22,9 @@ type InvoiceItemFormGroupContent = {
   description: FormControl<IInvoiceItem['description']>;
   quantity: FormControl<IInvoiceItem['quantity']>;
   priceUnit: FormControl<IInvoiceItem['priceUnit']>;
-  priceExtended: FormControl<IInvoiceItem['priceExtended']>;
-  disRate: FormControl<IInvoiceItem['disRate']>;
-  disAmount: FormControl<IInvoiceItem['disAmount']>;
-  finalPrice: FormControl<IInvoiceItem['finalPrice']>;
+  finalPrice: FormControl<IInvoiceItem['subtotal']>;
   vatRate: FormControl<IInvoiceItem['vatRate']>;
-  vatAmount: FormControl<IInvoiceItem['vatAmount']>;
+  vatAmount: FormControl<IInvoiceItem['vat']>;
   total: FormControl<IInvoiceItem['total']>;
   invoice: FormControl<IInvoiceItem['invoice']>;
 };
@@ -61,22 +58,13 @@ export class InvoiceItemFormService {
       priceUnit: new FormControl({ value: invoiceItemRawValue.priceUnit, disabled: ua.priceUnit.disabled },
         { validators: [Validators.required],
       }),
-      priceExtended: new FormControl({ value: invoiceItemRawValue.priceExtended, disabled: ua.priceExtended.disabled },
-        { validators: [Validators.required],
-      }),
-      disRate: new FormControl({ value: invoiceItemRawValue.disRate, disabled: ua.disRate.disabled },
-        { validators: [Validators.required],
-      }),
-      disAmount: new FormControl({ value: invoiceItemRawValue.disAmount, disabled: ua.disAmount.disabled },
-        { validators: [Validators.required],
-      }),
-      finalPrice: new FormControl({ value: invoiceItemRawValue.finalPrice, disabled: ua.finalPrice.disabled },
+      finalPrice: new FormControl({ value: invoiceItemRawValue.subtotal, disabled: ua.subtotal.disabled },
         { validators: [Validators.required],
       }),
       vatRate: new FormControl({ value: invoiceItemRawValue.vatRate, disabled: ua.vatRate.disabled },
         { validators: [Validators.required],
       }),
-      vatAmount: new FormControl({ value: invoiceItemRawValue.vatAmount, disabled: ua.vatAmount.disabled },
+      vatAmount: new FormControl({ value: invoiceItemRawValue.vat, disabled: ua.vat.disabled },
         { validators: [Validators.required],
       }),
       total: new FormControl({ value: invoiceItemRawValue.total, disabled: ua.total.disabled },

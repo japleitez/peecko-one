@@ -8,12 +8,9 @@ export interface IInvoiceItem {
   description?: string | null;
   quantity?: number | null;
   priceUnit?: number | null;
-  priceExtended?: number | null;
-  disRate?: number | null;
-  disAmount?: number | null;
-  finalPrice?: number | null;
+  subtotal?: number | null;
   vatRate?: number | null;
-  vatAmount?: number | null;
+  vat?: number | null;
   total?: number | null;
   invoice?: IInvoice | null;
 }
@@ -26,12 +23,9 @@ export interface InvoiceItemAccess {
   description: FieldAccess;
   quantity: FieldAccess;
   priceUnit: FieldAccess;
-  priceExtended: FieldAccess;
-  disRate: FieldAccess;
-  disAmount: FieldAccess;
-  finalPrice: FieldAccess;
+  subtotal: FieldAccess;
   vatRate: FieldAccess;
-  vatAmount: FieldAccess;
+  vat: FieldAccess;
   total: FieldAccess;
   invoice: FieldAccess;
 }
@@ -44,12 +38,9 @@ INVOICE_ITEM_ACCESS = {
   description: { listable: true, visible: true, disabled: false },
   quantity: { listable: true, visible: true, disabled: false },
   priceUnit: { listable: true, visible: true, disabled: false },
-  priceExtended: { listable: true, visible: true, disabled: false },
-  disRate: { listable: true, visible: true, disabled: false },
-  disAmount: { listable: true, visible: true, disabled: false },
-  finalPrice: { listable: true, visible: true, disabled: false },
+  subtotal: { listable: true, visible: true, disabled: false },
   vatRate: { listable: true, visible: true, disabled: false },
-  vatAmount: { listable: true, visible: true, disabled: false },
+  vat: { listable: true, visible: true, disabled: false },
   total: { listable: true, visible: true, disabled: false },
   invoice: { listable: true, visible: true, disabled: false }
 }

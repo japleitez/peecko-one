@@ -43,20 +43,8 @@ public class InvoiceItem implements Serializable {
     private Double priceUnit;
 
     @NotNull
-    @Column(name = "price_extended", nullable = false)
-    private Double priceExtended;
-
-    @NotNull
-    @Column(name = "dis_rate", nullable = false)
-    private Double disRate;
-
-    @NotNull
-    @Column(name = "dis_amount", nullable = false)
-    private Double disAmount;
-
-    @NotNull
-    @Column(name = "final_price", nullable = false)
-    private Double finalPrice;
+    @Column(name = "subtotal", nullable = false)
+    private Double subtotal;
 
     @NotNull
     @Column(name = "vat_rate", nullable = false)
@@ -64,7 +52,7 @@ public class InvoiceItem implements Serializable {
 
     @NotNull
     @Column(name = "vat_amount", nullable = false)
-    private Double vatAmount;
+    private Double vat;
 
     @NotNull
     @Column(name = "total", nullable = false)
@@ -141,56 +129,17 @@ public class InvoiceItem implements Serializable {
         this.priceUnit = priceUnit;
     }
 
-    public Double getPriceExtended() {
-        return this.priceExtended;
+    public Double getSubtotal() {
+        return this.subtotal;
     }
 
     public InvoiceItem priceExtended(Double priceExtended) {
-        this.setPriceExtended(priceExtended);
+        this.setSubtotal(priceExtended);
         return this;
     }
 
-    public void setPriceExtended(Double priceExtended) {
-        this.priceExtended = priceExtended;
-    }
-
-    public Double getDisRate() {
-        return this.disRate;
-    }
-
-    public InvoiceItem disRate(Double disRate) {
-        this.setDisRate(disRate);
-        return this;
-    }
-
-    public void setDisRate(Double disRate) {
-        this.disRate = disRate;
-    }
-
-    public Double getDisAmount() {
-        return this.disAmount;
-    }
-
-    public InvoiceItem disAmount(Double disAmount) {
-        this.setDisAmount(disAmount);
-        return this;
-    }
-
-    public void setDisAmount(Double disAmount) {
-        this.disAmount = disAmount;
-    }
-
-    public Double getFinalPrice() {
-        return this.finalPrice;
-    }
-
-    public InvoiceItem finalPrice(Double finalPrice) {
-        this.setFinalPrice(finalPrice);
-        return this;
-    }
-
-    public void setFinalPrice(Double finalPrice) {
-        this.finalPrice = finalPrice;
+    public void setSubtotal(Double priceExtended) {
+        this.subtotal = priceExtended;
     }
 
     public Double getVatRate() {
@@ -206,17 +155,17 @@ public class InvoiceItem implements Serializable {
         this.vatRate = vatRate;
     }
 
-    public Double getVatAmount() {
-        return this.vatAmount;
+    public Double getVat() {
+        return this.vat;
     }
 
     public InvoiceItem vatAmount(Double vatAmount) {
-        this.setVatAmount(vatAmount);
+        this.setVat(vatAmount);
         return this;
     }
 
-    public void setVatAmount(Double vatAmount) {
-        this.vatAmount = vatAmount;
+    public void setVat(Double vatAmount) {
+        this.vat = vatAmount;
     }
 
     public Double getTotal() {
@@ -268,18 +217,16 @@ public class InvoiceItem implements Serializable {
     @Override
     public String toString() {
         return "InvoiceItem{" +
-            "id=" + getId() +
-            ", type='" + getType() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", quantity=" + getQuantity() +
-            ", priceUnit=" + getPriceUnit() +
-            ", priceExtended=" + getPriceExtended() +
-            ", disRate=" + getDisRate() +
-            ", disAmount=" + getDisAmount() +
-            ", finalPrice=" + getFinalPrice() +
-            ", vatRate=" + getVatRate() +
-            ", vatAmount=" + getVatAmount() +
-            ", total=" + getTotal() +
-            "}";
+            "id=" + id +
+            ", type=" + type +
+            ", description='" + description + '\'' +
+            ", quantity=" + quantity +
+            ", priceUnit=" + priceUnit +
+            ", subtotal=" + subtotal +
+            ", vatRate=" + vatRate +
+            ", vat=" + vat +
+            ", total=" + total +
+            ", invoice=" + invoice +
+            '}';
     }
 }

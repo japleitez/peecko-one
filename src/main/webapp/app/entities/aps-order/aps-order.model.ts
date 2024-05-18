@@ -58,6 +58,6 @@ APS_ORDER_USER_ACCESS = {
   unitPrice: { listable: true, visible: true, disabled: false },
   vatRate: { listable: true, visible: true, disabled: false },
   numberOfUsers: { listable: true, visible: true, disabled: true },
-  invoiceNumber: { listable: true, visible: true, disabled: false },
+  invoiceNumber: { listable: true, visible: true, disabled: true },
   plan: { listable: true, visible: true, disabled: false },
 }

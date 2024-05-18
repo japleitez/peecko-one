@@ -9,9 +9,9 @@ export const sampleWithRequiredData: IInvoiceItem = {
   priceExtended: 28497.18,
   disRate: 1596.74,
   disAmount: 20801.75,
-  finalPrice: 28541.42,
+  subtotal: 28541.42,
   vatRate: 20201.02,
-  vatAmount: 27081.42,
+  vat: 27081.42,
   total: 26978.71,
 };
 
@@ -24,9 +24,9 @@ export const sampleWithPartialData: IInvoiceItem = {
   priceExtended: 1910.12,
   disRate: 19991.51,
   disAmount: 14681.94,
-  finalPrice: 24658.48,
+  subtotal: 24658.48,
   vatRate: 12683.23,
-  vatAmount: 2800.74,
+  vat: 2800.74,
   total: 12257.58,
 };
 
@@ -39,9 +39,9 @@ export const sampleWithFullData: IInvoiceItem = {
   priceExtended: 7454.69,
   disRate: 1007.16,
   disAmount: 22939.5,
-  finalPrice: 24548.38,
+  subtotal: 24548.38,
   vatRate: 1735.61,
-  vatAmount: 26725.01,
+  vat: 26725.01,
   total: 23102.38,
 };
 
@@ -53,9 +53,9 @@ export const sampleWithNewData: NewInvoiceItem = {
   priceExtended: 557.08,
   disRate: 6757.27,
   disAmount: 18275.34,
-  finalPrice: 13479.24,
+  subtotal: 13479.24,
   vatRate: 8276.93,
-  vatAmount: 7102.89,
+  vat: 7102.89,
   total: 12718.27,
   id: null,
 };

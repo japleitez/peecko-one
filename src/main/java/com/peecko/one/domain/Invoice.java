@@ -53,10 +53,6 @@ public class Invoice implements Serializable {
     private Double vat;
 
     @NotNull
-    @Column(name = "vat_rate", nullable = false)
-    private Double vatRate;
-
-    @NotNull
     @Column(name = "total", nullable = false)
     private Double total;
 
@@ -187,19 +183,6 @@ public class Invoice implements Serializable {
 
     public void setVat(Double vat) {
         this.vat = vat;
-    }
-
-    public Double getVatRate() {
-        return vatRate;
-    }
-
-    public void setVatRate(Double vatRate) {
-        this.vatRate = vatRate;
-    }
-
-    public Invoice vatRate(Double vatRate) {
-        this.setVatRate(vatRate);
-        return this;
     }
 
     public Double getTotal() {

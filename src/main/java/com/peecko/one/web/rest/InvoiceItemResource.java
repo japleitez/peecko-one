@@ -137,23 +137,14 @@ public class InvoiceItemResource {
                 if (invoiceItem.getPriceUnit() != null) {
                     existingInvoiceItem.setPriceUnit(invoiceItem.getPriceUnit());
                 }
-                if (invoiceItem.getPriceExtended() != null) {
-                    existingInvoiceItem.setPriceExtended(invoiceItem.getPriceExtended());
-                }
-                if (invoiceItem.getDisRate() != null) {
-                    existingInvoiceItem.setDisRate(invoiceItem.getDisRate());
-                }
-                if (invoiceItem.getDisAmount() != null) {
-                    existingInvoiceItem.setDisAmount(invoiceItem.getDisAmount());
-                }
-                if (invoiceItem.getFinalPrice() != null) {
-                    existingInvoiceItem.setFinalPrice(invoiceItem.getFinalPrice());
+                if (invoiceItem.getSubtotal() != null) {
+                    existingInvoiceItem.setSubtotal(invoiceItem.getSubtotal());
                 }
                 if (invoiceItem.getVatRate() != null) {
                     existingInvoiceItem.setVatRate(invoiceItem.getVatRate());
                 }
-                if (invoiceItem.getVatAmount() != null) {
-                    existingInvoiceItem.setVatAmount(invoiceItem.getVatAmount());
+                if (invoiceItem.getVat() != null) {
+                    existingInvoiceItem.setVat(invoiceItem.getVat());
                 }
                 if (invoiceItem.getTotal() != null) {
                     existingInvoiceItem.setTotal(invoiceItem.getTotal());
