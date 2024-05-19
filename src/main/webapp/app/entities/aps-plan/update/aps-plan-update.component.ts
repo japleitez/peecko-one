@@ -49,9 +49,6 @@ export class ApsPlanUpdateComponent implements OnInit {
       if (apsPlan) {
         this.updateForm(apsPlan);
       }
-      this.editForm.get('state')?.setValue(PlanState.TRIAL);
-      this.editForm.get('pricing')?.setValue(PricingType.TRIAL);
-      this.editForm.get('unitPrice')?.setValue(0);
       this.loadRelationshipsOptions();
     });
   }

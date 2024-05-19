@@ -134,8 +134,8 @@ public class InvoiceItemResource {
                 if (invoiceItem.getQuantity() != null) {
                     existingInvoiceItem.setQuantity(invoiceItem.getQuantity());
                 }
-                if (invoiceItem.getPriceUnit() != null) {
-                    existingInvoiceItem.setPriceUnit(invoiceItem.getPriceUnit());
+                if (invoiceItem.getUnitPrice() != null) {
+                    existingInvoiceItem.setUnitPrice(invoiceItem.getUnitPrice());
                 }
                 if (invoiceItem.getSubtotal() != null) {
                     existingInvoiceItem.setSubtotal(invoiceItem.getSubtotal());

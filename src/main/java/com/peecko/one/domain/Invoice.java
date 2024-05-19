@@ -68,7 +68,7 @@ public class Invoice implements Serializable {
     @Column(name = "notes")
     private String notes;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "invoice" }, allowSetters = true)
     private Set<InvoiceItem> invoiceItems = new HashSet<>();

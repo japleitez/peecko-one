@@ -3,6 +3,7 @@ package com.peecko.one.service;
 import com.peecko.one.domain.*;
 import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.domain.enumeration.PricingType;
+import com.peecko.one.domain.enumeration.ProductType;
 import com.peecko.one.repository.*;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
@@ -164,23 +165,24 @@ public class ApsOrderService {
     private ApsOrderInfo getOrCreateInvoice(Long agencyId, ApsOrder apsOrder) {
         Invoice invoice = null;
         if (apsOrder.getInvoices().isEmpty()) {
-            InvoiceDetails details = calculateInvoiceDetails(agencyId, apsOrder);
+            InvoiceItem invoiceItem = generateInvoiceItem(agencyId, apsOrder);
             invoice = new Invoice();
             invoice.setApsOrder(apsOrder);
-            invoice.setNumber(details.invoiceNumber);
+            invoice.setNumber(generateInvoiceNumber(agencyId, apsOrder.getPeriod()));
+            invoice.setDueDate(PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "09"));
+            invoice.saleDate(PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "01"));
             invoice.setIssued(Instant.now());
-            invoice.setDueDate(details.dueDate);
-            invoice.saleDate(details.saleDate);
-            invoice.setSubtotal(details.subTotal);
-            invoice.setVat(details.vat);
-            invoice.setTotal(details.total);
             invoice.setAgencyId(agencyId);
+            invoice.setPeriod(apsOrder.getPeriod());
             invoice.setCountry(apsOrder.getCountry());
             invoice.setCustomerId(apsOrder.getCustomerId());
             invoice.setApsPlanId(apsOrder.getApsPlan().getId());
+            invoice.setSubtotal(invoiceItem.getSubtotal());
+            invoice.setVat(invoiceItem.getVat());
+            invoice.setTotal(invoiceItem.getTotal());
+            invoice.addInvoiceItem(invoiceItem);
             invoiceRepository.save(invoice);
             invoiceRepository.flush();
-            //TODO create invoice item using invoice details
         }
         if (Objects.nonNull(invoice)) {
             apsOrder.addInvoice(invoice);
@@ -196,9 +198,9 @@ public class ApsOrderService {
         return  "PCK" + period + String.format("%05d", count);
     }
 
-    private InvoiceDetails calculateInvoiceDetails(Long agencyId, ApsOrder apsOrder) {
+    private InvoiceItem generateInvoiceItem(Long agencyId, ApsOrder apsOrder) {
         Double unitPrice = 0D;
-        String invoiceItemText = apsOrder.getNumberOfUsers() + " peecko app license(s)";
+        String description = apsOrder.getNumberOfUsers() + " peecko app license(s)";
         String country = apsOrder.getCountry();
         Long customerId = apsOrder.getCustomerId();
         Integer numberOfUsers = apsOrder.getNumberOfUsers();
@@ -215,25 +217,20 @@ public class ApsOrderService {
             }
         }
         final DecimalFormat df = new DecimalFormat("#.##");
-        InvoiceDetails details = new InvoiceDetails();
-        details.invoiceNumber = generateInvoiceNumber(agencyId, apsOrder.getPeriod());
-        details.saleDate = PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "01");
-        details.dueDate = PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "09");
-        details.subTotal = Double.parseDouble(df.format(numberOfUsers * unitPrice));
-        details.vat =   Double.parseDouble(df.format (details.subTotal * apsOrder.getVatRate() / 100.0));
-        details.total = details.subTotal + details.vat;
-        details.description = invoiceItemText + " at an individual price of " + unitPrice +  " euros";
-        return details;
-    }
+        double subTotal = Double.parseDouble(df.format(numberOfUsers * unitPrice));
+        double vat =   Double.parseDouble(df.format (subTotal * apsOrder.getVatRate() / 100.0));
+        double total = subTotal + vat;
 
-    static class InvoiceDetails {
-        public LocalDate saleDate;
-        public LocalDate dueDate;
-        public double subTotal;
-        public double vat;
-        public double total;
-        public String description;
-        public String invoiceNumber;
+        InvoiceItem item = new InvoiceItem();
+        item.type(ProductType.APP);
+        item.quantity(numberOfUsers);
+        item.unitPrice(unitPrice);
+        item.subtotal(subTotal);
+        item.vatRate(apsOrder.getVatRate());
+        item.vat(vat);
+        item.total(total);
+        item.description(description);
+        return item;
     }
 
 }

@@ -7,7 +7,7 @@ export interface IInvoiceItem {
   type?: keyof typeof ProductType | null;
   description?: string | null;
   quantity?: number | null;
-  priceUnit?: number | null;
+  unitPrice?: number | null;
   subtotal?: number | null;
   vatRate?: number | null;
   vat?: number | null;
@@ -22,7 +22,7 @@ export interface InvoiceItemAccess {
   type: FieldAccess;
   description: FieldAccess;
   quantity: FieldAccess;
-  priceUnit: FieldAccess;
+  unitPrice: FieldAccess;
   subtotal: FieldAccess;
   vatRate: FieldAccess;
   vat: FieldAccess;
@@ -37,7 +37,7 @@ INVOICE_ITEM_ACCESS = {
   type: { listable: true, visible: true, disabled: false },
   description: { listable: true, visible: true, disabled: false },
   quantity: { listable: true, visible: true, disabled: false },
-  priceUnit: { listable: true, visible: true, disabled: false },
+  unitPrice: { listable: true, visible: true, disabled: false },
   subtotal: { listable: true, visible: true, disabled: false },
   vatRate: { listable: true, visible: true, disabled: false },
   vat: { listable: true, visible: true, disabled: false },

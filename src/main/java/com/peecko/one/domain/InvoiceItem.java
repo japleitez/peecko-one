@@ -39,8 +39,8 @@ public class InvoiceItem implements Serializable {
     private Integer quantity;
 
     @NotNull
-    @Column(name = "price_unit", nullable = false)
-    private Double priceUnit;
+    @Column(name = "unit_price", nullable = false)
+    private Double unitPrice;
 
     @NotNull
     @Column(name = "subtotal", nullable = false)
@@ -51,7 +51,7 @@ public class InvoiceItem implements Serializable {
     private Double vatRate;
 
     @NotNull
-    @Column(name = "vat_amount", nullable = false)
+    @Column(name = "vat", nullable = false)
     private Double vat;
 
     @NotNull
@@ -116,25 +116,25 @@ public class InvoiceItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public Double getPriceUnit() {
-        return this.priceUnit;
+    public Double getUnitPrice() {
+        return this.unitPrice;
     }
 
-    public InvoiceItem priceUnit(Double priceUnit) {
-        this.setPriceUnit(priceUnit);
+    public InvoiceItem unitPrice(Double priceUnit) {
+        this.setUnitPrice(priceUnit);
         return this;
     }
 
-    public void setPriceUnit(Double priceUnit) {
-        this.priceUnit = priceUnit;
+    public void setUnitPrice(Double priceUnit) {
+        this.unitPrice = priceUnit;
     }
 
     public Double getSubtotal() {
         return this.subtotal;
     }
 
-    public InvoiceItem priceExtended(Double priceExtended) {
-        this.setSubtotal(priceExtended);
+    public InvoiceItem subtotal(Double subtotal) {
+        this.setSubtotal(subtotal);
         return this;
     }
 
@@ -159,8 +159,8 @@ public class InvoiceItem implements Serializable {
         return this.vat;
     }
 
-    public InvoiceItem vatAmount(Double vatAmount) {
-        this.setVat(vatAmount);
+    public InvoiceItem vat(Double vat) {
+        this.setVat(vat);
         return this;
     }
 
@@ -221,7 +221,7 @@ public class InvoiceItem implements Serializable {
             ", type=" + type +
             ", description='" + description + '\'' +
             ", quantity=" + quantity +
-            ", priceUnit=" + priceUnit +
+            ", priceUnit=" + unitPrice +
             ", subtotal=" + subtotal +
             ", vatRate=" + vatRate +
             ", vat=" + vat +

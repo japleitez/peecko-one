@@ -63,7 +63,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="priceUnit" *ngIf="ua.priceUnit.listable">
+            <th scope="col" jhiSortBy="priceUnit" *ngIf="ua.unitPrice.listable">
               <div class="d-flex">
                 <span>Price Unit</span>
 
@@ -72,7 +72,7 @@
             </th>
             <th scope="col" jhiSortBy="subtotal" *ngIf="ua.subtotal.listable">
               <div class="d-flex">
-                <span>Subtotale</span>
+                <span>Subtotal</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -116,7 +116,7 @@
               <td *ngIf="ua.type.listable">{{ invoiceItem.type }}</td>
               <td *ngIf="ua.description.listable">{{ invoiceItem.description }}</td>
               <td *ngIf="ua.quantity.listable">{{ invoiceItem.quantity }}</td>
-              <td *ngIf="ua.priceUnit.listable">{{ invoiceItem.priceUnit }}</td>
+              <td *ngIf="ua.unitPrice.listable">{{ invoiceItem.unitPrice }}</td>
               <td *ngIf="ua.subtotal.listable">{{ invoiceItem.subtotal }}</td>
               <td *ngIf="ua.vatRate.listable">{{ invoiceItem.vatRate }}</td>
               <td *ngIf="ua.vat.listable">{{ invoiceItem.vat }}</td>

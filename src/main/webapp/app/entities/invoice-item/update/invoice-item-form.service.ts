@@ -21,10 +21,10 @@ type InvoiceItemFormGroupContent = {
   type: FormControl<IInvoiceItem['type']>;
   description: FormControl<IInvoiceItem['description']>;
   quantity: FormControl<IInvoiceItem['quantity']>;
-  priceUnit: FormControl<IInvoiceItem['priceUnit']>;
-  finalPrice: FormControl<IInvoiceItem['subtotal']>;
+  unitPrice: FormControl<IInvoiceItem['unitPrice']>;
+  subtotal: FormControl<IInvoiceItem['subtotal']>;
   vatRate: FormControl<IInvoiceItem['vatRate']>;
-  vatAmount: FormControl<IInvoiceItem['vat']>;
+  vat: FormControl<IInvoiceItem['vat']>;
   total: FormControl<IInvoiceItem['total']>;
   invoice: FormControl<IInvoiceItem['invoice']>;
 };
@@ -55,16 +55,16 @@ export class InvoiceItemFormService {
       quantity: new FormControl({ value: invoiceItemRawValue.quantity, disabled: ua.quantity.disabled },
         { validators: [Validators.required],
       }),
-      priceUnit: new FormControl({ value: invoiceItemRawValue.priceUnit, disabled: ua.priceUnit.disabled },
+      unitPrice: new FormControl({ value: invoiceItemRawValue.unitPrice, disabled: ua.unitPrice.disabled },
         { validators: [Validators.required],
       }),
-      finalPrice: new FormControl({ value: invoiceItemRawValue.subtotal, disabled: ua.subtotal.disabled },
+      subtotal: new FormControl({ value: invoiceItemRawValue.subtotal, disabled: ua.subtotal.disabled },
         { validators: [Validators.required],
       }),
       vatRate: new FormControl({ value: invoiceItemRawValue.vatRate, disabled: ua.vatRate.disabled },
         { validators: [Validators.required],
       }),
-      vatAmount: new FormControl({ value: invoiceItemRawValue.vat, disabled: ua.vat.disabled },
+      vat: new FormControl({ value: invoiceItemRawValue.vat, disabled: ua.vat.disabled },
         { validators: [Validators.required],
       }),
       total: new FormControl({ value: invoiceItemRawValue.total, disabled: ua.total.disabled },

@@ -23,7 +23,7 @@
             <column name="quantity" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="price_unit" type="double">
+            <column name="unit_price" type="double">
                 <constraints nullable="false" />
             </column>
             <column name="subtotal" type="double">

@@ -64,15 +64,15 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.priceUnit.visible">
-          <label class="form-label" for="field_priceUnit">Price Unit</label>
-          <input type="number" class="form-control" name="priceUnit" id="field_priceUnit" data-cy="priceUnit" formControlName="priceUnit" />
-          @if (editForm.get('priceUnit')!.invalid && (editForm.get('priceUnit')!.dirty || editForm.get('priceUnit')!.touched)) {
+        <div class="mb-3" *ngIf="ua.unitPrice.visible">
+          <label class="form-label" for="field_unitPrice">Unit Price</label>
+          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
+          @if (editForm.get('unitPrice')!.invalid && (editForm.get('unitPrice')!.dirty || editForm.get('unitPrice')!.touched)) {
             <div>
-              @if (editForm.get('priceUnit')?.errors?.required) {
+              @if (editForm.get('unitPrice')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('priceUnit')?.errors?.number"
+              <small class="form-text text-danger" [hidden]="!editForm.get('unitPrice')?.errors?.number"
                 >This field should be a number.</small
               >
             </div>
@@ -80,21 +80,21 @@
         </div>
 
         <div class="mb-3" *ngIf="ua.subtotal.visible">
-          <label class="form-label" for="field_finalPrice">Final Price</label>
+          <label class="form-label" for="field_subtotal">Subtotal</label>
           <input
             type="number"
             class="form-control"
-            name="finalPrice"
-            id="field_finalPrice"
-            data-cy="finalPrice"
-            formControlName="finalPrice"
+            name="subtotal"
+            id="field_subtotal"
+            data-cy="subtotal"
+            formControlName="subtotal"
           />
-          @if (editForm.get('finalPrice')!.invalid && (editForm.get('finalPrice')!.dirty || editForm.get('finalPrice')!.touched)) {
+          @if (editForm.get('subtotal')!.invalid && (editForm.get('subtotal')!.dirty || editForm.get('subtotal')!.touched)) {
             <div>
-              @if (editForm.get('finalPrice')?.errors?.required) {
+              @if (editForm.get('subtotal')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('finalPrice')?.errors?.number"
+              <small class="form-text text-danger" [hidden]="!editForm.get('subtotal')?.errors?.number"
                 >This field should be a number.</small
               >
             </div>
@@ -117,14 +117,14 @@
         </div>
 
         <div class="mb-3" *ngIf="ua.vat.visible">
-          <label class="form-label" for="field_vatAmount">Vat Amount</label>
-          <input type="number" class="form-control" name="vatAmount" id="field_vatAmount" data-cy="vatAmount" formControlName="vatAmount" />
-          @if (editForm.get('vatAmount')!.invalid && (editForm.get('vatAmount')!.dirty || editForm.get('vatAmount')!.touched)) {
+          <label class="form-label" for="field_vat">Vat Amount</label>
+          <input type="number" class="form-control" name="vat" id="field_vat" data-cy="vat" formControlName="vat" />
+          @if (editForm.get('vat')!.invalid && (editForm.get('vat')!.dirty || editForm.get('vat')!.touched)) {
             <div>
-              @if (editForm.get('vatAmount')?.errors?.required) {
+              @if (editForm.get('vat')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('vatAmount')?.errors?.number"
+              <small class="form-text text-danger" [hidden]="!editForm.get('vat')?.errors?.number"
                 >This field should be a number.</small
               >
             </div>
