@@ -27,22 +27,22 @@ public class ApsOrderService {
 
     private final static Long BASE_CUSTOMER_ID = 1L;
     private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
-
     private final ApsPlanRepository apsPlanRepository;
     private final ApsOrderRepository apsOrderRepository;
-
-    private final InvoiceItemRepository invoiceItemRepository;
-
     private final InvoiceRepository invoiceRepository;
-
     private final ApsPricingRepository apsPricingRepository;
+    private final CustomerRepository customerRepository;
 
-    public ApsOrderService(ApsPlanRepository apsPlanRepository, ApsOrderRepository apsOrderRepository, InvoiceItemRepository invoiceItemRepository, InvoiceRepository invoiceRepository, ApsPricingRepository apsPricingRepository) {
+    public ApsOrderService(
+            ApsPlanRepository apsPlanRepository,
+            ApsOrderRepository apsOrderRepository,
+            InvoiceRepository invoiceRepository,
+            ApsPricingRepository apsPricingRepository, CustomerRepository customerRepository) {
         this.apsPlanRepository = apsPlanRepository;
         this.apsOrderRepository = apsOrderRepository;
-        this.invoiceItemRepository = invoiceItemRepository;
         this.invoiceRepository = invoiceRepository;
         this.apsPricingRepository = apsPricingRepository;
+        this.customerRepository = customerRepository;
     }
 
     public ApsOrder create(ApsOrder apsOrder) {
@@ -163,7 +163,7 @@ public class ApsOrderService {
     }
 
     private ApsOrderInfo getOrCreateInvoice(Long agencyId, ApsOrder apsOrder) {
-        Invoice invoice = null;
+        Invoice invoice;
         if (apsOrder.getInvoices().isEmpty()) {
             InvoiceItem invoiceItem = generateInvoiceItem(agencyId, apsOrder);
             invoice = new Invoice();
@@ -181,8 +181,14 @@ public class ApsOrderService {
             invoice.setVat(invoiceItem.getVat());
             invoice.setTotal(invoiceItem.getTotal());
             invoice.addInvoiceItem(invoiceItem);
+            customerRepository
+                .findById(apsOrder.getCustomerId())
+                .ifPresent(customer -> invoice.setCustomerVatId(customer.getVatId()));
+            invoice.setCustomerVatId(null);
             invoiceRepository.save(invoice);
             invoiceRepository.flush();
+        } else {
+            invoice = null;
         }
         if (Objects.nonNull(invoice)) {
             apsOrder.addInvoice(invoice);
@@ -216,6 +222,7 @@ public class ApsOrderService {
                 unitPrice = apsPricings.get(0).getUnitPrice();
             }
         }
+
         final DecimalFormat df = new DecimalFormat("#.##");
         double subTotal = Double.parseDouble(df.format(numberOfUsers * unitPrice));
         double vat =   Double.parseDouble(df.format (subTotal * apsOrder.getVatRate() / 100.0));

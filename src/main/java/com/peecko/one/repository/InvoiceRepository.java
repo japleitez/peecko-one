@@ -2,7 +2,9 @@ package com.peecko.one.repository;
 
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.domain.Invoice;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +16,8 @@ import java.util.List;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     List<Invoice> findByApsOrder(ApsOrder apsOrder);
-
     Long countByAgencyIdAndPeriod(Long agencyId, Integer period);
+    @Query("from Invoice i left join fetch i.invoiceItems where i.agencyId = :agencyId and i.period = :period")
+    List<Invoice> findByAgencyAndPeriod(@Param("agencyId") Long agencyId, @Param("period") Integer period);
 
 }

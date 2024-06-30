@@ -53,6 +53,9 @@
             <column name="customer_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="customer_vat_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="aps_plan_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -2,13 +2,9 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.domain.enumeration.PlanState;
-import com.peecko.one.repository.ApsPlanRepository;
-import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
-import com.peecko.one.service.ApsLicenseService;
 import com.peecko.one.service.ApsPlanService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import com.peecko.one.service.request.ActivateTrialPlanRequest;
 import com.peecko.one.service.request.ApsPlanListRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

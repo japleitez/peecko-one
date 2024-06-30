@@ -83,6 +83,9 @@ public class Invoice implements Serializable {
     @Column(name = "customer_id")
     private Long customerId;
 
+    @Column(name = "customer_vat_id")
+    private String customerVatId;
+
     @Column(name = "aps_plan_id")
     private Long apsPlanId;
 
@@ -317,6 +320,19 @@ public class Invoice implements Serializable {
 
     public Invoice customerId(Long customerId) {
         this.setCustomerId(customerId);
+        return this;
+    }
+
+    public String getCustomerVatId() {
+        return customerVatId;
+    }
+
+    public void setCustomerVatId(String customerVatId) {
+        this.customerVatId = customerVatId;
+    }
+
+    public Invoice customerVatId(String customerVatId) {
+        this.setCustomerVatId(customerVatId);
         return this;
     }
 

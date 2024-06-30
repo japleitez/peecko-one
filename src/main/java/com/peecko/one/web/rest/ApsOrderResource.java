@@ -4,6 +4,7 @@ import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.service.ApsOrderService;
+import com.peecko.one.service.InvoiceService;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
@@ -44,10 +45,12 @@ public class ApsOrderResource {
 
     private final ApsOrderService apsOrderService;
 
+    private final InvoiceService invoiceService;
     private final ApsMembershipService apsMembershipService;
 
-    public ApsOrderResource(ApsOrderService apsOrderService, ApsMembershipService apsMembershipService) {
+    public ApsOrderResource(ApsOrderService apsOrderService, InvoiceService invoiceService, ApsMembershipService apsMembershipService) {
         this.apsOrderService = apsOrderService;
+        this.invoiceService = invoiceService;
         this.apsMembershipService = apsMembershipService;
     }
 
@@ -172,7 +175,9 @@ public class ApsOrderResource {
     public List<ApsOrderInfo> batchInvoices(@RequestParam() Integer period) {
         log.debug("REST request to generate Invoices in batch");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsOrderService.batchInvoice(agencyId, period);
+        List<ApsOrderInfo> list = apsOrderService.batchInvoice(agencyId, period);
+        new Thread(new InvoiceGenerator(agencyId, period)).start();
+        return list;
     }
 
     /**
@@ -214,4 +219,16 @@ public class ApsOrderResource {
         return ResponseEntity.ok(Collections.singletonMap("count", count));
     }
 
+    private class InvoiceGenerator implements Runnable {
+        private final Long agencyId;
+        private final Integer period;
+        public InvoiceGenerator(Long agencyId, Integer period) {
+            this.agencyId = agencyId;
+            this.period = period;
+        }
+        @Override
+        public void run() {
+            invoiceService.batchInvoicePDF(agencyId, period);
+        }
+    }
 }
