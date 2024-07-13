@@ -23,12 +23,12 @@ public class PdfInvoiceService {
         document.close();
     }
 
-    public boolean generateInvoice(String invoiceNumber, String destination) {
+    public boolean generateInvoice(String invoiceNumber, String filename) {
         Document document = new Document();
 
         PdfWriter writer = null;
         try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream(destination));
+            writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
         } catch (DocumentException | FileNotFoundException e) {
             log.error("Cannot generate PDF Invoice " + invoiceNumber, e);
             return false;

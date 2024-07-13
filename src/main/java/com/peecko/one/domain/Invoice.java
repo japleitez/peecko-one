@@ -95,6 +95,9 @@ public class Invoice implements Serializable {
     @Column(name = "period")
     private Integer period;
 
+    @Column(name = "filename")
+    private String filename;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -372,6 +375,19 @@ public class Invoice implements Serializable {
 
     public Invoice period(Integer period) {
         this.setPeriod(period);
+        return this;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public Invoice filename(String filename) {
+        this.setFilename(filename);
         return this;
     }
 

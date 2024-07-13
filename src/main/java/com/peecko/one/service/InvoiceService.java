@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InvoiceService {
@@ -19,18 +20,24 @@ public class InvoiceService {
         this.pdfInvoiceService = pdfInvoiceService;
     }
 
-    public List<Invoice> batchInvoicePDF(Long agencyId, Integer period) {
-        return invoiceRepository
+    public void batchInvoicePDF(Long agencyId, Integer period) {
+        invoiceRepository
             .findByAgencyAndPeriod(agencyId, period)
-            .stream()
-            .map(this::generatePDF)
-            .toList();
+            .forEach(this::generatePDF);
     }
 
-    private Invoice generatePDF(Invoice invoice) {
+    private void generatePDF(Invoice invoice) {
         log.info("generate invoice number" + invoice.getNumber());
-        pdfInvoiceService.generateInvoice(invoice.getNumber(), "src/" + invoice.getNumber() + ".pdf");
-        return invoice;
+        String filename = generateFilename(invoice);
+        boolean done = pdfInvoiceService.generateInvoice(invoice.getNumber(), filename);
+        if (done) {
+            invoice.setFilename(filename);
+            invoiceRepository.save(invoice);
+        }
     }
 
+    private String generateFilename(Invoice invoice) {
+        String filename = "src/" + invoice.getAgencyId() + "/" + invoice.getPeriod() + "/" + invoice.getNumber() + ".pdf";
+        return "src/" + invoice.getNumber() + ".pdf";
+    }
 }

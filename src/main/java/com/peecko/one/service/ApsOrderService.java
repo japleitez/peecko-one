@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -121,11 +122,13 @@ public class ApsOrderService {
 
 
     public List<ApsOrderInfo> batchOrders(Long agencyId, Integer period) {
-        LocalDate endOfMonth = PeriodUtils.getYearMonth(period).atEndOfMonth();
-        List<ApsPlan> plans = apsPlanRepository.getPlansForAgencyAndStates(agencyId, PlanState.TRIAL_ACTIVE);
+        YearMonth yearMonth = PeriodUtils.getYearMonth(period);
+        LocalDate periodEnds = yearMonth.atEndOfMonth();
+        LocalDate periodStarts = yearMonth.atDay(1);
         List<ApsOrder> orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, period);
-        return plans.stream()
-            .filter(p -> betweenPlanValidity(endOfMonth, p.getStarts(), p.getEnds()))
+        List<ApsPlan> plans = apsPlanRepository.getActivePlansInPeriod(agencyId, periodStarts, periodEnds);
+        return plans
+            .stream()
             .map(p -> getOrCreateApsOrder(p, orders, period))
             .toList();
     }
@@ -145,13 +148,6 @@ public class ApsOrderService {
             apsOrder = apsOrderRepository.save(apsOrder);
         }
         return ApsOrderInfo.of(apsOrder);
-    }
-
-    private boolean betweenPlanValidity(LocalDate endOfMonth, LocalDate starts, LocalDate ends) {
-        if (endOfMonth.isBefore(starts)) {
-            return false;
-        }
-        return ends == null || endOfMonth.isEqual(ends) || endOfMonth.isBefore(ends);
     }
 
     public List<ApsOrderInfo> batchInvoice(Long agencyId, Integer period) {

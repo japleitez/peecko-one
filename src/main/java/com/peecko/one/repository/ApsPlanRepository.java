@@ -24,10 +24,10 @@ public interface ApsPlanRepository extends JpaRepository<ApsPlan, Long>, JpaSpec
     @Query("from ApsPlan p left join fetch p.customer where p.customer.agency.id = :agencyId and p.state in (:states)")
     List<ApsPlan> getPlansForAgencyAndStates(@Param("agencyId") Long agencyId, @Param("states") List<PlanState> states);
 
-    @Query("from ApsPlan p left join fetch p.customer where p.customer.agency.id = :agencyId and p.state = 'ACTIVE'")
-    List<ApsPlan> currentPaidActivePlans(@Param("agencyId") Long agencyId);
+    @Query("from ApsPlan p join fetch p.customer where p.customer.agency.id = :agencyId and p.state = 'ACTIVE' and p.starts <= :starts and (p.ends is null or p.ends >= :ends)")
+    List<ApsPlan> getActivePlansInPeriod(@Param("agencyId") Long agencyId, @Param("starts") LocalDate starts, @Param("ends") LocalDate ends);
 
-    @Query("from ApsPlan p join fetch p.customer where exists (from ApsPlan p2 where p2.customer.id = :customerId and p2.state = 'TRIAL' and ((p2.starts between :starts and :ends) or (p2.ends between :starts and :ends)))")
-    List<ApsPlan> overlappingTrialPlans(@Param("customerId") Long customerId, @Param("starts") LocalDate start, @Param("ends") LocalDate ends);
+    @Query("from ApsPlan p join fetch p.customer where p.state = 'ACTIVE' and p.ends is not null and p.ends < :today")
+    List<ApsPlan> getActivePlansToClose(@Param("today") LocalDate today);
 
 }
