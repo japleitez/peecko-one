@@ -2,7 +2,6 @@ package com.peecko.one.repository;
 
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.domain.Invoice;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
