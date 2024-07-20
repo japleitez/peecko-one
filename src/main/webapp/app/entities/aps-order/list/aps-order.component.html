@@ -20,16 +20,6 @@
       <span>Search</span>
     </button>
 
-    <button
-      id="jh-create-entity"
-      data-cy="entityCreateButton"
-      class="btn btn-primary jh-create-entity create-aps-order me-2"
-      [routerLink]="['/aps-order/new']"
-    >
-      <fa-icon icon="plus"></fa-icon>
-      <span>New</span>
-    </button>
-
     <button class="btn btn-primary jh-create-entity create-aps-order me-2"
             (click)="batchGenerate()" [disabled]="disabledGenerate()">
       <span>(B)Orders</span>
@@ -160,7 +150,7 @@
               <td *ngIf="ua.unitPrice.listable">{{ apsOrder.unitPrice }}</td>
               <td *ngIf="ua.vatRate.listable">{{ apsOrder.vatRate }}</td>
               <td *ngIf="ua.numberOfUsers.listable">{{ apsOrder.numberOfUsers }}</td>
-              <td *ngIf="ua.invoiceNumber.listable">{{ apsOrder.invoiceNumber }}</td>
+              <td *ngIf="ua.invoiceNumber.listable">{{ apsOrder.invoiceNumber }}<div *ngIf="apsOrder.invoiceSent"> S</div></td>
               <td class="text-end">
                 <div class="btn-group">
                   <button type="submit" (click)="uploadMembers(apsOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">

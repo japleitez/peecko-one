@@ -50,6 +50,9 @@ public class ApsOrder implements Serializable {
     @Column(name = "invoice_number")
     private String invoiceNumber;
 
+    @Column(name = "invoice_sent")
+    private boolean invoiceSent;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsOrder")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "apsOrder" }, allowSetters = true)
@@ -168,6 +171,19 @@ public class ApsOrder implements Serializable {
 
     public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
+    }
+
+    public boolean getInvoiceSent() {
+        return invoiceSent;
+    }
+
+    public void setInvoiceSent(boolean invoiceSent) {
+        this.invoiceSent = invoiceSent;
+    }
+
+    public ApsOrder invoiceSent(boolean invoiceSent) {
+        this.setInvoiceSent(invoiceSent);
+        return this;
     }
 
     public Set<ApsMembership> getApsMemberships() {

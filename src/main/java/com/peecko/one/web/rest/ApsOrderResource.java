@@ -165,18 +165,22 @@ public class ApsOrderResource {
     }
 
     @GetMapping("/batch/orders")
-    public List<ApsOrderInfo> batchOrders(@RequestParam() Integer period) {
+    public List<ApsOrderInfo> batchOrders(
+        @RequestParam() Integer period,
+        @RequestParam(required = false) String contract) {
         log.debug("REST request to generate ApsOrders in batch");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsOrderService.batchOrders(agencyId, period);
+        return apsOrderService.batchOrders(agencyId, contract, period);
     }
 
     @GetMapping("/batch/invoices")
-    public List<ApsOrderInfo> batchInvoices(@RequestParam() Integer period) {
+    public List<ApsOrderInfo> batchInvoices(
+        @RequestParam() Integer period,
+        @RequestParam(required = false) String contract) {
         log.debug("REST request to generate Invoices in batch");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        List<ApsOrderInfo> list = apsOrderService.batchInvoice(agencyId, period);
-        new Thread(new InvoiceGenerator(agencyId, period)).start();
+        List<ApsOrderInfo> list = apsOrderService.batchInvoice(agencyId, contract, period);
+        new Thread(new InvoiceGenerator(agencyId, contract, period)).start();
         return list;
     }
 
@@ -221,14 +225,16 @@ public class ApsOrderResource {
 
     private class InvoiceGenerator implements Runnable {
         private final Long agencyId;
+        private final String contract;
         private final Integer period;
-        public InvoiceGenerator(Long agencyId, Integer period) {
+        public InvoiceGenerator(Long agencyId, String contract, Integer period) {
             this.agencyId = agencyId;
+            this.contract = contract;
             this.period = period;
         }
         @Override
         public void run() {
-            invoiceService.batchInvoicePDF(agencyId, period);
+            invoiceService.batchInvoicePDF(agencyId, contract, period);
         }
     }
 }

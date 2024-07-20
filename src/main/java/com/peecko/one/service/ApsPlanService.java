@@ -105,7 +105,7 @@ public class ApsPlanService {
     }
 
     public List<ApsPlan> getPlansForAgencyAndStates(Long agencyId, List<PlanState> states) {
-        return apsPlanRepository.getPlansForAgencyAndStates(agencyId, states);
+        return apsPlanRepository.getByAgencyAndStates(agencyId, states);
     }
 
     public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {

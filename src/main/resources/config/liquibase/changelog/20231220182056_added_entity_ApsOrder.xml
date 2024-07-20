@@ -41,6 +41,9 @@
             <column name="aps_plan_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="invoice_sent" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>

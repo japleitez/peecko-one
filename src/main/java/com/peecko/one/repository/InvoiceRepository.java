@@ -20,4 +20,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     @Query("from Invoice i left join fetch i.invoiceItems where i.agencyId = :agencyId and i.period = :period")
     List<Invoice> findByAgencyAndPeriod(@Param("agencyId") Long agencyId, @Param("period") Integer period);
 
+    @Query("from Invoice i left join fetch i.invoiceItems where i.apsOrder.apsPlan.contract = :contract and i.period = :period")
+    List<Invoice> findByContractAndPeriod(@Param("contract") String contract, @Param("period") Integer period);
+
 }

@@ -41,7 +41,7 @@ class ApsPlanResourceIT {
     private static final PricingType DEFAULT_PRICING = PricingType.FIXED;
     private static final PricingType UPDATED_PRICING = PricingType.BRACKET;
 
-    private static final PlanState DEFAULT_STATE = PlanState.NEW;
+    private static final PlanState DEFAULT_STATE = PlanState.TRIAL;
     private static final PlanState UPDATED_STATE = PlanState.TRIAL;
 
     private static final String DEFAULT_LICENSE = "AAAAAAAAAA";

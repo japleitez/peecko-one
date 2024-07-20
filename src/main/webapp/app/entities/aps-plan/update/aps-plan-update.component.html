@@ -21,11 +21,6 @@
           <input type="text" class="form-control" name="contract" id="field_contract" data-cy="contract" formControlName="contract" />
         </div>
 
-        <div class="mb-3" *ngIf="ua.license.visible">
-          <label class="form-label" for="field_license">License</label>
-          <input type="text" class="form-control" name="license" id="field_license" data-cy="license" formControlName="license" />
-        </div>
-
         <div class="mb-3" *ngIf="ua.state.visible">
           <label class="form-label" for="field_state">State</label>
           <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
@@ -34,6 +29,11 @@
               <option [value]="planState">{{ planState }}</option>
             }
           </select>
+        </div>
+
+        <div class="mb-3" *ngIf="ua.license.visible">
+          <label class="form-label" for="field_license">License</label>
+          <input type="text" class="form-control" name="license" id="field_license" data-cy="license" formControlName="license" />
         </div>
 
         <div class="mb-3" *ngIf="ua.pricing.visible">

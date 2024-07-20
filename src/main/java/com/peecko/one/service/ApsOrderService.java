@@ -1,7 +1,6 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.*;
-import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.domain.enumeration.PricingType;
 import com.peecko.one.domain.enumeration.ProductType;
 import com.peecko.one.repository.*;
@@ -121,16 +120,20 @@ public class ApsOrderService {
     }
 
 
-    public List<ApsOrderInfo> batchOrders(Long agencyId, Integer period) {
+    public List<ApsOrderInfo> batchOrders(Long agencyId, String contract, Integer period) {
         YearMonth yearMonth = PeriodUtils.getYearMonth(period);
         LocalDate periodEnds = yearMonth.atEndOfMonth();
         LocalDate periodStarts = yearMonth.atDay(1);
-        List<ApsOrder> orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, period);
-        List<ApsPlan> plans = apsPlanRepository.getActivePlansInPeriod(agencyId, periodStarts, periodEnds);
-        return plans
-            .stream()
-            .map(p -> getOrCreateApsOrder(p, orders, period))
-            .toList();
+        List<ApsOrder> orders;
+        List<ApsPlan> plans;
+        if (StringUtils.hasText(contract)) {
+            orders = apsOrderRepository.getByContactAndPeriod(contract, period);
+            plans = apsPlanRepository.getByContractAndDatesAndActive(contract, periodStarts, periodEnds);
+        } else {
+            orders = apsOrderRepository.getByAgencyAndPeriod(agencyId, period);
+            plans = apsPlanRepository.getByAgencyAndDatesAndActive(agencyId, periodStarts, periodEnds);
+        }
+        return plans.stream().map(p -> getOrCreateApsOrder(p, orders, period)).toList();
     }
 
     private ApsOrderInfo getOrCreateApsOrder(ApsPlan apsPlan, List<ApsOrder> apsOrders, Integer period) {
@@ -150,9 +153,14 @@ public class ApsOrderService {
         return ApsOrderInfo.of(apsOrder);
     }
 
-    public List<ApsOrderInfo> batchInvoice(Long agencyId, Integer period) {
-        return apsOrderRepository.findByAgencyAndPeriodAndActive(agencyId, period)
-            .stream()
+    public List<ApsOrderInfo> batchInvoice(Long agencyId, String contract, Integer period) {
+        List<ApsOrder> orders;
+        if (StringUtils.hasText(contract)) {
+            orders = apsOrderRepository.getByContractAndPeriodAndActive(contract, period);
+        } else {
+            orders = apsOrderRepository.getByAgencyAndPeriodAndActive(agencyId, period);
+        }
+        return orders.stream()
             .filter(ApsOrder::hasSubscribers)
             .map(apsOrder -> this.getOrCreateInvoice(agencyId, apsOrder))
             .toList();

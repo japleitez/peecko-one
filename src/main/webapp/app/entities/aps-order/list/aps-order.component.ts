@@ -61,8 +61,8 @@ export class ApsOrderComponent implements OnInit {
 
   loadAction: string = '';
   REFRESH: string = 'REFRESH';
-  BATCH_GENERATE: string = 'BATCH_GENERATE';
-  BATCH_INVOICE: string = 'BATCH_INVOICE';
+  BATCH_ORDERS: string = 'BATCH_ORDERS';
+  BATCH_INVOICES: string = 'BATCH_INVOICES';
 
   // search fields
   customer: string | null | undefined = null;
@@ -118,12 +118,12 @@ export class ApsOrderComponent implements OnInit {
   }
 
   batchGenerate(): void {
-    this.loadAction = this.BATCH_GENERATE;
+    this.loadAction = this.BATCH_ORDERS;
     this._executeLoad();
   }
 
   batchInvoice(): void {
-    this.loadAction = this.BATCH_INVOICE;
+    this.loadAction = this.BATCH_INVOICES;
     this._executeLoad();
   }
 
@@ -167,31 +167,27 @@ export class ApsOrderComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityInfoArrayResponseType> {
     this.isLoading = true;
-    const batchOrders: boolean = (this.loadAction === this.BATCH_GENERATE);
-    const batchInvoices: boolean = (this.loadAction === this.BATCH_INVOICE);
+    const batchOrders: boolean = (this.loadAction === this.BATCH_ORDERS);
+    const batchInvoices: boolean = (this.loadAction === this.BATCH_INVOICES);
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    if (batchOrders || batchInvoices) {
-      queryObject.period = this.period;
-    } else {
-      if (this.customer) {
-        queryObject.customer = this.customer;
-      }
-      if (this.contract) {
-        queryObject.contract = this.contract;
-      }
-      if (this.period) {
-        queryObject.period = this.period;
-      }
-      if (this.starts) {
-        queryObject.starts = this.starts;
-      }
-      if (this.ends) {
-        queryObject.ends = this.ends;
-      }
+    if (this.customer) {
+      queryObject.customer = this.customer;
     }
-    this.loadAction = this.REFRESH; // reset load action
+    if (this.contract) {
+      queryObject.contract = this.contract;
+    }
+    if (this.period) {
+      queryObject.period = this.period;
+    }
+    if (this.starts) {
+      queryObject.starts = this.starts;
+    }
+    if (this.ends) {
+      queryObject.ends = this.ends;
+    }
+    this.loadAction = this.REFRESH; // reset action
     if (batchOrders) {
       return this.apsOrderService.batchOrders(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else if (batchInvoices) {

@@ -5,6 +5,7 @@ import com.peecko.one.repository.InvoiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,10 +21,12 @@ public class InvoiceService {
         this.pdfInvoiceService = pdfInvoiceService;
     }
 
-    public void batchInvoicePDF(Long agencyId, Integer period) {
-        invoiceRepository
-            .findByAgencyAndPeriod(agencyId, period)
-            .forEach(this::generatePDF);
+    public void batchInvoicePDF(Long agencyId, String contract, Integer period) {
+        if (StringUtils.hasText(contract)) {
+            invoiceRepository.findByContractAndPeriod(contract, period).forEach(this::generatePDF);
+        } else {
+            invoiceRepository.findByAgencyAndPeriod(agencyId, period).forEach(this::generatePDF);
+        }
     }
 
     private void generatePDF(Invoice invoice) {
@@ -38,6 +41,7 @@ public class InvoiceService {
 
     private String generateFilename(Invoice invoice) {
         String filename = "src/" + invoice.getAgencyId() + "/" + invoice.getPeriod() + "/" + invoice.getNumber() + ".pdf";
-        return "src/" + invoice.getNumber() + ".pdf";
+        return "/Users/jpleitez/s3/" + invoice.getNumber() + ".pdf";
     }
+
 }

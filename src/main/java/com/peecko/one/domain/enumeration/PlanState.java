@@ -6,7 +6,6 @@ import java.util.List;
  * The PlanState enumeration.
  */
 public enum PlanState {
-    NEW,
     TRIAL,
     ACTIVE,
     CLOSED;
