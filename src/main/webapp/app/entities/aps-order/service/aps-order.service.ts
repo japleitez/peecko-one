@@ -94,4 +94,9 @@ export class ApsOrderService {
     }
     return apsOrderCollection;
   }
+
+  downloadInvoice(id: number): Observable<Blob> {
+    return this.http.get(`${this.resourceUrl}/${id}/download/invoice`, { responseType: 'blob' });
+  }
+
 }

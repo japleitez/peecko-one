@@ -150,7 +150,10 @@
               <td *ngIf="ua.unitPrice.listable">{{ apsOrder.unitPrice }}</td>
               <td *ngIf="ua.vatRate.listable">{{ apsOrder.vatRate }}</td>
               <td *ngIf="ua.numberOfUsers.listable">{{ apsOrder.numberOfUsers }}</td>
-              <td *ngIf="ua.invoiceNumber.listable">{{ apsOrder.invoiceNumber }}<div *ngIf="apsOrder.invoiceSent"> S</div></td>
+              <td *ngIf="ua.invoiceNumber.listable">
+                <a [routerLink]="" (click)="downloadInvoice(apsOrder)">{{ apsOrder.invoiceNumber }}</a>
+                <div *ngIf="apsOrder.invoiceSent"> S</div>
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <button type="submit" (click)="uploadMembers(apsOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">

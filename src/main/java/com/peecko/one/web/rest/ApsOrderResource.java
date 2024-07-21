@@ -5,12 +5,17 @@ import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.service.ApsOrderService;
 import com.peecko.one.service.InvoiceService;
+import com.peecko.one.service.PropertyService;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import com.peecko.one.web.rest.errors.ErrorConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -20,8 +25,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tech.jhipster.web.util.HeaderUtil;
@@ -42,17 +51,18 @@ public class ApsOrderResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final ApsOrderService apsOrderService;
-
     private final InvoiceService invoiceService;
+    private final ApsOrderService apsOrderService;
+    private final PropertyService propertyService;
     private final ApsMembershipService apsMembershipService;
 
-    public ApsOrderResource(ApsOrderService apsOrderService, InvoiceService invoiceService, ApsMembershipService apsMembershipService) {
-        this.apsOrderService = apsOrderService;
+    public ApsOrderResource(InvoiceService invoiceService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
         this.invoiceService = invoiceService;
+        this.apsOrderService = apsOrderService;
+        this.propertyService = propertyService;
         this.apsMembershipService = apsMembershipService;
     }
+
 
     /**
      * {@code POST  /aps-orders} : Create a new apsOrder.
@@ -195,6 +205,25 @@ public class ApsOrderResource {
         log.debug("REST request to get ApsOrder : {}", id);
         Optional<ApsOrder> apsOrder = apsOrderService.findById(id);
         return ResponseUtil.wrapOrNotFound(apsOrder);
+    }
+
+    @GetMapping("/{id}/download/invoice")
+    public ResponseEntity<InputStreamResource> downloadInvoice(@PathVariable("id") Long id) throws FileNotFoundException {
+        String invoiceNumber = apsOrderService.findById(id).map(ApsOrder::getInvoiceNumber).orElse(null);
+        if (!StringUtils.hasText(invoiceNumber)) {
+            return ResponseEntity.notFound().build();
+        }
+        String pathname = propertyService.resolveInvoicePathname(invoiceNumber);
+        File file = new File(pathname);
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .contentLength(file.length())
+            .body(resource);
     }
 
     /**

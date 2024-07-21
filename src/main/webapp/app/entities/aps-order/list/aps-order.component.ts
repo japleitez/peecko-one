@@ -232,6 +232,21 @@ export class ApsOrderComponent implements OnInit {
     });
   }
 
+  downloadInvoice(apsOrder: IApsOrderInfo): void {
+    this.apsOrderService.downloadInvoice(apsOrder.id).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = apsOrder.invoiceNumber + '.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      console.error('Error downloading file:', error);
+    });
+  }
+
   protected disabledGenerate(): boolean {
     return this.isLoading || this.period?.length != 6;
   }

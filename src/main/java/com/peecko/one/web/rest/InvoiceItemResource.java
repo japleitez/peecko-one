@@ -1,17 +1,13 @@
 package com.peecko.one.web.rest;
 
-import com.itextpdf.text.DocumentException;
 import com.peecko.one.domain.InvoiceItem;
 import com.peecko.one.repository.InvoiceItemRepository;
-import com.peecko.one.service.PdfInvoiceService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -40,11 +36,8 @@ public class InvoiceItemResource {
 
     private final InvoiceItemRepository invoiceItemRepository;
 
-    private final PdfInvoiceService pdfInvoiceService;
-
-    public InvoiceItemResource(InvoiceItemRepository invoiceItemRepository, PdfInvoiceService pdfInvoiceService) {
+    public InvoiceItemResource(InvoiceItemRepository invoiceItemRepository) {
         this.invoiceItemRepository = invoiceItemRepository;
-        this.pdfInvoiceService = pdfInvoiceService;
     }
 
     /**
@@ -165,23 +158,6 @@ public class InvoiceItemResource {
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, invoiceItem.getId().toString())
         );
-    }
-
-    /**
-     * {@code GET  /invoice-items} : get all the invoiceItems.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of invoiceItems in body.
-     */
-    @GetMapping("")
-    public List<InvoiceItem> getAllInvoiceItems()  {
-        log.debug("REST request to get all InvoiceItems");
-        try {
-            pdfInvoiceService.generate();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return invoiceItemRepository.findAll();
     }
 
     /**
