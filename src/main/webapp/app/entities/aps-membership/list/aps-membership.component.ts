@@ -13,6 +13,9 @@ import { APS_MEMBERSHIP_USER_ACCESS, ApsMembershipAccess, IApsMembership } from 
 import { EntityArrayResponseType, ApsMembershipService } from '../service/aps-membership.service';
 import { ApsMembershipDeleteDialogComponent } from '../delete/aps-membership-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { ApsOrderData } from '../../aps-order/aps-order.data';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   standalone: true,
@@ -27,24 +30,31 @@ import { NgIf } from '@angular/common';
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-    NgIf
+    NgIf,
+    MatInputModule,
+    FaIconComponent
   ]
 })
 export class ApsMembershipComponent implements OnInit {
   ua: ApsMembershipAccess = this.getApsMembershipAccess();
   apsMemberships?: IApsMembership[];
-  isLoading = false;
+  isLoading: boolean = false;
 
-  predicate = 'id';
-  ascending = true;
+  predicate :string = 'id';
+  ascending :boolean = true;
+
+  apsOrderId: number | null | undefined = null;
 
   constructor(
     protected apsMembershipService: ApsMembershipService,
+    protected apsOrderData: ApsOrderData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
-  ) {}
+  ) {
+    this.apsOrderId = apsOrderData.getId();
+  }
 
   trackId = (_index: number, item: IApsMembership): number => this.apsMembershipService.getApsMembershipIdentifier(item);
 
@@ -111,6 +121,9 @@ export class ApsMembershipComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.apsOrderId) {
+      queryObject.apsOrderId = this.apsOrderId;
+    }
     return this.apsMembershipService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -136,6 +149,10 @@ export class ApsMembershipComponent implements OnInit {
 
   protected getApsMembershipAccess(): ApsMembershipAccess {
     return APS_MEMBERSHIP_USER_ACCESS;
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
 }

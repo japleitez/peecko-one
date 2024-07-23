@@ -1,24 +1,32 @@
 <div>
   <h2 id="page-heading" data-cy="ApsMembershipHeading">
     <span>Aps Memberships</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-aps-membership"
-        [routerLink]="['/aps-membership/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>New Aps Membership</span>
-      </button>
-    </div>
   </h2>
+
+  <div class="d-flex justify-content-end">
+
+    <input type="text" matInput placeholder="apsOrderId" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="apsOrderId">
+
+    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <span>Refresh</span>
+    </button>
+
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-aps-membership me-2"
+      [routerLink]="['/aps-membership/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>New Aps Membership</span>
+    </button>
+
+    <button type="submit" (click)="previousState()" class="btn btn-info">
+      <fa-icon icon="arrow-left"></fa-icon> <span>Back</span>
+    </button>
+
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -42,16 +50,16 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="period" *ngIf="ua.period.listable">
+            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
               <div class="d-flex">
-                <span>Period</span>
+                <span>License</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
+            <th scope="col" jhiSortBy="period" *ngIf="ua.period.listable">
               <div class="d-flex">
-                <span>License</span>
+                <span>Period</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -78,8 +86,8 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-membership', apsMembership.id, 'view']">{{ apsMembership.id }}</a>
               </td>
-              <td *ngIf="ua.period.listable">{{ apsMembership.period }}</td>
               <td *ngIf="ua.license.listable">{{ apsMembership.license }}</td>
+              <td *ngIf="ua.period.listable">{{ apsMembership.period }}</td>
               <td *ngIf="ua.username.listable">{{ apsMembership.username }}</td>
               <td *ngIf="ua.apsOrder.listable">
                 @if (apsMembership.apsOrder) {

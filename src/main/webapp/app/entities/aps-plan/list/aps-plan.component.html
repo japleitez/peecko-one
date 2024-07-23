@@ -1,6 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="ApsPlanHeading">
-    <span>Aps Plan</span>
+    <span>Plan</span>
   </h2>
 
   <div class="d-flex justify-content-end">
@@ -34,11 +34,6 @@
     />
     <button type="button" class="btn btn-secondary me-2" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
 
-    <button type="submit" (click)="previousState()" class="btn btn-info me-2">
-      <fa-icon icon="arrow-left"></fa-icon>
-      <span>Back</span>
-    </button>
-
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
       <span>Search</span>
@@ -47,12 +42,18 @@
     <button
       id="jh-create-entity"
       data-cy="entityCreateButton"
-      class="btn btn-primary jh-create-entity create-aps-plan"
+      class="btn btn-primary jh-create-entity create-aps-plan me-2"
       [routerLink]="['/aps-plan/new']"
     >
       <fa-icon icon="plus"></fa-icon>
-      <span>New Contract</span>
+      <span>New Plan</span>
     </button>
+
+    <button type="submit" (click)="previousState()" class="btn btn-info">
+      <fa-icon icon="arrow-left"></fa-icon>
+      <span>Back</span>
+    </button>
+
   </div>
 
   <jhi-alert-error></jhi-alert-error>
@@ -97,13 +98,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="pricing" *ngIf="ua.pricing.listable">
-              <div class="d-flex">
-                <span>Pricing</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
               <div class="d-flex">
                 <span>License</span>
@@ -121,6 +115,13 @@
             <th scope="col" jhiSortBy="ends" *ngIf="ua.ends.listable">
               <div class="d-flex">
                 <span>Ends</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pricing" *ngIf="ua.pricing.listable">
+              <div class="d-flex">
+                <span>Pricing</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -171,10 +172,10 @@
               </td>
               <td *ngIf="ua.contract.listable">{{ apsPlan.contract }}</td>
               <td *ngIf="ua.state.listable">{{ apsPlan.state }}</td>
-              <td *ngIf="ua.pricing.listable">{{ apsPlan.pricing }}</td>
               <td *ngIf="ua.license.listable">{{ apsPlan.license }}</td>
               <td *ngIf="ua.starts.listable">{{ apsPlan.starts | formatMediumDate }}</td>
               <td *ngIf="ua.ends.listable">{{ apsPlan.ends | formatMediumDate }}</td>
+              <td *ngIf="ua.pricing.listable">{{ apsPlan.pricing }}</td>
               <td *ngIf="ua.unitPrice.listable">{{ apsPlan.unitPrice }}</td>
               <td *ngIf="ua.notes.listable">{{ apsPlan.notes }}</td>
               <td *ngIf="ua.created.listable">{{ apsPlan.created | formatMediumDatetime }}</td>

@@ -23,6 +23,8 @@ import { CustomerData } from '../../customer/service/customer.data';
 import { MatDialog } from '@angular/material/dialog';
 import { ApsOrderMembersComponent } from '../members/aps-order-members.component';
 import { FaIconComponent, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ApsOrderData } from '../aps-order.data';
+import { ICustomer } from '../../customer/customer.model';
 
 @Component({
   standalone: true,
@@ -76,6 +78,7 @@ export class ApsOrderComponent implements OnInit {
     protected customerService: CustomerService,
     protected apsPlanData: ApsPlanData,
     protected customerData: CustomerData,
+    protected apsOrderData: ApsOrderData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -96,6 +99,13 @@ export class ApsOrderComponent implements OnInit {
   /*
   list actions
    */
+  navToMembership(o: IApsOrderInfo): void {
+    this.apsOrderData.setId(o.id);
+    this.router.navigate(['/aps-membership'], {
+      relativeTo: this.activatedRoute.parent,
+    });
+  }
+
   delete(apsOrder: IApsOrder): void {
     const modalRef = this.modalService.open(ApsOrderDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.apsOrder = apsOrder;

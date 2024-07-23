@@ -5,6 +5,7 @@ import com.peecko.one.domain.ApsOrder;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,4 +16,6 @@ import java.util.Optional;
 public interface ApsMembershipRepository extends JpaRepository<ApsMembership, Long> {
     Optional<ApsMembership> findByApsOrderAndUsername(ApsOrder apsOrder, String username);
     Long countByApsOrder(ApsOrder apsOrder);
+
+    List<ApsMembership> findByApsOrder(ApsOrder apsOrder);
 }

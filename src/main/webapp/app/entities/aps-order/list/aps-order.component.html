@@ -11,10 +11,6 @@
     <input type="text" matInput placeholder="start"         class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="starts">
     <input type="text" matInput placeholder="end"           class="form-text w-10 me-2" maxlength="7"  [(ngModel)]="ends">
 
-    <button type="submit" (click)="previousState()" class="btn btn-info me-2">
-      <fa-icon icon="arrow-left"></fa-icon> <span>Back</span>
-    </button>
-
     <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading">
       <fa-icon icon="refresh" [spin]="isLoading"></fa-icon>
       <span>Search</span>
@@ -25,9 +21,13 @@
       <span>(B)Orders</span>
     </button>
 
-    <button class="btn btn-primary jh-create-entity create-aps-order"
+    <button class="btn btn-primary jh-create-entity create-aps-order me-2"
             (click)="batchInvoice()" [disabled]="disabledGenerate()">
       <span>(B)Invoices</span>
+    </button>
+
+    <button type="submit" (click)="previousState()" class="btn btn-info">
+      <fa-icon icon="arrow-left"></fa-icon> <span>Back</span>
     </button>
 
   </div>
@@ -156,6 +156,10 @@
               </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <a class="btn btn-info btn-sm" data-cy="entityApsPlansButton" (click)="navToMembership(apsOrder)" title="members">
+                    members
+                  </a>
+
                   <button type="submit" (click)="uploadMembers(apsOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     upload
                   </button>

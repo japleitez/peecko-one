@@ -1,6 +1,4 @@
 import { Injectable, signal } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ICustomer } from '../customer.model';
 
 @Injectable({
   providedIn: 'root'
