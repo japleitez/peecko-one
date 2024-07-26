@@ -1,9 +1,5 @@
 package com.peecko.one.service;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.peecko.one.domain.Invoice;
 import com.peecko.one.repository.InvoiceRepository;
 import org.slf4j.Logger;
@@ -11,16 +7,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class InvoiceService {
     private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
     private final InvoiceRepository invoiceRepository;
+    private final PdfService pdfService;
     private final PropertyService propertyService;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, PropertyService propertyService) {
+    public InvoiceService(InvoiceRepository invoiceRepository, PdfService pdfService, PropertyService propertyService) {
         this.invoiceRepository = invoiceRepository;
+        this.pdfService = pdfService;
         this.propertyService = propertyService;
     }
 
@@ -34,34 +33,27 @@ public class InvoiceService {
 
     private void generatePDF(Invoice invoice) {
         log.info("generate invoice number" + invoice.getNumber());
+        String template = propertyService.getInvoiceTemplate();
         String filename = propertyService.resolveInvoicePathname(invoice);
-        boolean done = generateInvoicePdf(invoice.getNumber(), filename);
-        if (done) {
+        Map<String, Object> data = buildInvoiceMapData(invoice);
+        boolean generated = pdfService.generatePdf(template, filename, data);
+        if (generated) {
             invoice.setFilename(filename);
             invoiceRepository.save(invoice);
         }
     }
 
-    private boolean generateInvoicePdf(String invoiceNumber, String filename) {
-        Document document = new Document();
-        PdfWriter writer = null;
-        try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
-        } catch (DocumentException | FileNotFoundException e) {
-            log.error("Cannot generate PDF Invoice " + invoiceNumber, e);
-            return false;
-        }
-        String template = propertyService.getInvoiceTemplate();
-        document.open();
-        try {
-            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new FileInputStream(template));
-        } catch (IOException e) {
-            log.error("Cannot generate Invoice PDF " + invoiceNumber, e);
-        } finally {
-            document.close();
-        }
-        return true;
+    private Map<String, Object> buildInvoiceMapData(Invoice i) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", i.getId());
+        data.put("number", i.getNumber());
+        data.put("dueDate", i.getDueDate());
+        data.put("issued", i.getIssued());
+        data.put("subtotal", i.getSubtotal());
+        data.put("total", i.getTotal());
+        data.put("vat", i.getVat());
+        data.put("notes", i.getNotes());
+        return data;
     }
-
 
 }

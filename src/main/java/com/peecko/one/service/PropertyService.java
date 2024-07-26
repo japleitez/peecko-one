@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PropertyService {
-    private static final String INVOICE_TEMPLATE = "src/main/resources/sample.html";
+    private static final String INVOICE_TEMPLATE = "invoice.html";
     private static final String INVOICE_PATH = "/Users/jpleitez/s3";
 
     public String getInvoiceTemplate() {
