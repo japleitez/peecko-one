@@ -51,6 +51,7 @@ public class ApsOrderService {
             ApsPlan apsPlan = optionalApsPlan.get();
             apsOrder.setCustomerId(apsPlan.getCustomer().getId());
             apsOrder.setCountry(apsPlan.getCustomer().getCountry());
+            apsOrder.setAgencyId(apsPlan.getCustomer().getAgency().getId());
         }
         return apsOrderRepository.save(apsOrder);
     }
@@ -148,6 +149,7 @@ public class ApsOrderService {
             apsOrder.setInvoiceNumber(null);
             apsOrder.setCustomerId(apsPlan.getCustomer().getId());
             apsOrder.setCountry(apsPlan.getCustomer().getCountry());
+            apsOrder.setAgencyId(apsPlan.getCustomer().getId());
             apsOrder = apsOrderRepository.save(apsOrder);
         }
         return ApsOrderInfo.of(apsOrder);
@@ -168,7 +170,7 @@ public class ApsOrderService {
 
     private ApsOrderInfo getOrCreateInvoice(Long agencyId, ApsOrder apsOrder) {
         Invoice invoice;
-        if (apsOrder.getInvoices().isEmpty()) {
+        if (apsOrder.getInvoice() == null) {
             InvoiceItem invoiceItem = generateInvoiceItem(agencyId, apsOrder);
             invoice = new Invoice();
             invoice.setApsOrder(apsOrder);
@@ -195,7 +197,7 @@ public class ApsOrderService {
             invoice = null;
         }
         if (Objects.nonNull(invoice)) {
-            apsOrder.addInvoice(invoice);
+            apsOrder.setInvoice(invoice);
             apsOrder.setInvoiceNumber(invoice.getNumber());
             apsOrder = apsOrderRepository.save(apsOrder);
             apsOrderRepository.flush();

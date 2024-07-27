@@ -104,6 +104,14 @@ spring:
         #- tls
   jmx:
     enabled: false
+  mail:
+    host: smtp.daddy.com
+    port: 587
+    username: info.@peecko.com
+    password: secret
+    properties:
+      mail.smtp.aut: true
+      mail.smtp.starttls.enable: true
   data:
     jpa:
       repositories:

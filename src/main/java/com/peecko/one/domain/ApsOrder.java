@@ -5,6 +5,7 @@ import com.peecko.one.service.info.ApsOrderInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -53,15 +54,20 @@ public class ApsOrder implements Serializable {
     @Column(name = "invoice_sent")
     private boolean invoiceSent;
 
+    @Column(name = "invoice_sent_at")
+    private Instant invoiceSentAt;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsOrder")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "apsOrder" }, allowSetters = true)
     private Set<ApsMembership> apsMemberships = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsOrder")
+
+    @OneToOne(cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "invoiceItems", "apsOrder" }, allowSetters = true)
-    private Set<Invoice> invoices = new HashSet<>();
+    @JoinColumn(name = "invoice_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = { "apsOrder" }, allowSetters = true)
+    private Invoice invoice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "apsOrders", "customer" }, allowSetters = true)
@@ -69,6 +75,8 @@ public class ApsOrder implements Serializable {
 
     @Column(name = "customer_id")
     private Long customerId;
+    @Column(name = "agency_id")
+    private Long agencyId;
 
     @Column(name = "country")
     private String country;
@@ -186,6 +194,19 @@ public class ApsOrder implements Serializable {
         return this;
     }
 
+    public Instant getInvoiceSentAt() {
+        return invoiceSentAt;
+    }
+
+    public void setInvoiceSentAt(Instant invoiceSentAt) {
+        this.invoiceSentAt = invoiceSentAt;
+    }
+
+    public ApsOrder invoiceSentAt(Instant invoiceSentAt) {
+        this.setInvoiceSentAt(invoiceSentAt);
+        return this;
+    }
+
     public Set<ApsMembership> getApsMemberships() {
         return this.apsMemberships;
     }
@@ -217,34 +238,16 @@ public class ApsOrder implements Serializable {
         return this;
     }
 
-    public Set<Invoice> getInvoices() {
-        return this.invoices;
+    public Invoice getInvoice() {
+        return this.invoice;
     }
 
-    public void setInvoices(Set<Invoice> invoices) {
-        if (this.invoices != null) {
-            this.invoices.forEach(i -> i.setApsOrder(null));
-        }
-        if (invoices != null) {
-            invoices.forEach(i -> i.setApsOrder(this));
-        }
-        this.invoices = invoices;
+    public void setInvoice(Invoice invoices) {
+        this.invoice = invoice;
     }
 
-    public ApsOrder invoices(Set<Invoice> invoices) {
-        this.setInvoices(invoices);
-        return this;
-    }
-
-    public ApsOrder addInvoice(Invoice invoice) {
-        this.invoices.add(invoice);
-        invoice.setApsOrder(this);
-        return this;
-    }
-
-    public ApsOrder removeInvoice(Invoice invoice) {
-        this.invoices.remove(invoice);
-        invoice.setApsOrder(null);
+    public ApsOrder invoice(Invoice invoice) {
+        this.setInvoice(invoice);
         return this;
     }
 
@@ -271,6 +274,19 @@ public class ApsOrder implements Serializable {
 
     public ApsOrder customerId(Long customerId) {
         this.setCustomerId(customerId);
+        return this;
+    }
+
+    public Long getAgencyId() {
+        return agencyId;
+    }
+
+    public void setAgencyId(Long agencyId) {
+        this.agencyId = agencyId;
+    }
+
+    public ApsOrder agencyId(Long agencyId) {
+        this.setAgencyId(agencyId);
         return this;
     }
 

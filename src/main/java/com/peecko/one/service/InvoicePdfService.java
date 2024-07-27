@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class InvoiceService {
+public class InvoicePdfService {
     private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
     private final InvoiceRepository invoiceRepository;
     private final PdfService pdfService;
     private final PropertyService propertyService;
 
-    public InvoiceService(InvoiceRepository invoiceRepository, PdfService pdfService, PropertyService propertyService) {
+    public InvoicePdfService(InvoiceRepository invoiceRepository, PdfService pdfService, PropertyService propertyService) {
         this.invoiceRepository = invoiceRepository;
         this.pdfService = pdfService;
         this.propertyService = propertyService;

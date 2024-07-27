@@ -49,27 +49,6 @@ class ApsOrderTest {
         assertThat(apsMembershipBack.getApsOrder()).isNull();
     }
 
-    @Test
-    void invoiceTest() throws Exception {
-        ApsOrder apsOrder = getApsOrderRandomSampleGenerator();
-        Invoice invoiceBack = getInvoiceRandomSampleGenerator();
-
-        apsOrder.addInvoice(invoiceBack);
-        assertThat(apsOrder.getInvoices()).containsOnly(invoiceBack);
-        assertThat(invoiceBack.getApsOrder()).isEqualTo(apsOrder);
-
-        apsOrder.removeInvoice(invoiceBack);
-        assertThat(apsOrder.getInvoices()).doesNotContain(invoiceBack);
-        assertThat(invoiceBack.getApsOrder()).isNull();
-
-        apsOrder.invoices(new HashSet<>(Set.of(invoiceBack)));
-        assertThat(apsOrder.getInvoices()).containsOnly(invoiceBack);
-        assertThat(invoiceBack.getApsOrder()).isEqualTo(apsOrder);
-
-        apsOrder.setInvoices(new HashSet<>());
-        assertThat(apsOrder.getInvoices()).doesNotContain(invoiceBack);
-        assertThat(invoiceBack.getApsOrder()).isNull();
-    }
 
     @Test
     void apsPlanTest() throws Exception {

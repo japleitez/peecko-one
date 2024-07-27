@@ -4,7 +4,7 @@ import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.service.ApsOrderService;
-import com.peecko.one.service.InvoiceService;
+import com.peecko.one.service.InvoicePdfService;
 import com.peecko.one.service.PropertyService;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
@@ -51,13 +51,13 @@ public class ApsOrderResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-    private final InvoiceService invoiceService;
+    private final InvoicePdfService invoicePdfService;
     private final ApsOrderService apsOrderService;
     private final PropertyService propertyService;
     private final ApsMembershipService apsMembershipService;
 
-    public ApsOrderResource(InvoiceService invoiceService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
-        this.invoiceService = invoiceService;
+    public ApsOrderResource(InvoicePdfService invoicePdfService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
+        this.invoicePdfService = invoicePdfService;
         this.apsOrderService = apsOrderService;
         this.propertyService = propertyService;
         this.apsMembershipService = apsMembershipService;
@@ -263,7 +263,7 @@ public class ApsOrderResource {
         }
         @Override
         public void run() {
-            invoiceService.batchInvoicePDF(agencyId, contract, period);
+            invoicePdfService.batchInvoicePDF(agencyId, contract, period);
         }
     }
 }

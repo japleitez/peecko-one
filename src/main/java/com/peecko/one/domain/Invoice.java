@@ -73,8 +73,9 @@ public class Invoice implements Serializable {
     @JsonIgnoreProperties(value = { "invoice" }, allowSetters = true)
     private Set<InvoiceItem> invoiceItems = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "apsMemberships", "invoices", "apsPlan" }, allowSetters = true)
+    @OneToOne(mappedBy = "invoice", fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
+    @JsonIgnoreProperties(value = { "apsMemberships", "invoice", "apsPlan" }, allowSetters = true)
     private ApsOrder apsOrder;
 
     @Column(name = "country")

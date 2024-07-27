@@ -35,14 +35,23 @@
             <column name="country" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="agency_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <column name="customer_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <column name="aps_plan_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="invoice_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="invoice_sent" type="boolean" defaultValue="false">
                 <constraints nullable="false" />
+            </column>
+            <column name="invoice_sent_at" type="${datetimeType}">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
