@@ -118,15 +118,15 @@
       />
     </div>
 
-    <div class="mb-3" *ngIf="ua.emailDomains.visible">
-      <label class="form-label" for="field_emailDomains">Email Domains</label>
+    <div class="mb-3" *ngIf="ua.billingEmail.visible">
+      <label class="form-label" for="field_billingEmail">Billing Email</label>
       <input
         type="text"
         class="form-control"
-        name="emailDomains"
-        id="field_emailDomains"
-        data-cy="emailDomains"
-        formControlName="emailDomains"
+        name="billingEmail"
+        id="field_billingEmail"
+        data-cy="billingEmail"
+        formControlName="billingEmail"
       />
     </div>
 

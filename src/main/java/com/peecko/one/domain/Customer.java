@@ -51,8 +51,8 @@ public class Customer implements Serializable {
     @Column(name = "close_reason")
     private String closeReason;
 
-    @Column(name = "email_domains")
-    private String emailDomains;
+    @Column(name = "billing_email")
+    private String billingEmail;
 
     @Column(name = "vat_id")
     private String vatId;
@@ -204,17 +204,17 @@ public class Customer implements Serializable {
         this.closeReason = closeReason;
     }
 
-    public String getEmailDomains() {
-        return this.emailDomains;
+    public String getBillingEmail() {
+        return this.billingEmail;
     }
 
-    public Customer emailDomains(String emailDomains) {
-        this.setEmailDomains(emailDomains);
+    public Customer billingEmail(String billingEmail) {
+        this.setBillingEmail(billingEmail);
         return this;
     }
 
-    public void setEmailDomains(String emailDomains) {
-        this.emailDomains = emailDomains;
+    public void setBillingEmail(String billingEmail) {
+        this.billingEmail = billingEmail;
     }
 
     public String getVatId() {
@@ -487,7 +487,7 @@ public class Customer implements Serializable {
             ", license='" + getLicense() + "'" +
             ", state='" + getState() + "'" +
             ", closeReason='" + getCloseReason() + "'" +
-            ", emailDomains='" + getEmailDomains() + "'" +
+            ", billingEmail='" + getBillingEmail() + "'" +
             ", vatId='" + getVatId() + "'" +
             ", bank='" + getBank() + "'" +
             ", iban='" + getIban() + "'" +

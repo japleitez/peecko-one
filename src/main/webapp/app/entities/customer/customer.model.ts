@@ -13,7 +13,7 @@ export interface ICustomer {
   license?: string | null;
   state?: keyof typeof CustomerState | null;
   closeReason?: string | null;
-  emailDomains?: string | null;
+  billingEmail?: string | null;
   vatId?: string | null;
   vatRate?: number | null;
   bank?: string | null;
@@ -41,7 +41,7 @@ export interface CustomerAccess {
   license: FieldAccess;
   state: FieldAccess;
   closeReason: FieldAccess;
-  emailDomains: FieldAccess;
+  billingEmail: FieldAccess;
   vatId: FieldAccess;
   vatRate: FieldAccess;
   bank: FieldAccess;
@@ -69,7 +69,7 @@ CUSTOMER_USER_ACCESS = {
   license: { listable: true, visible: true, disabled: true },
   state: { listable: true, visible: true, disabled: false },
   closeReason: { listable: false, visible: true, disabled: false },
-  emailDomains: { listable: false, visible: true, disabled: false },
+  billingEmail: { listable: false, visible: true, disabled: false },
   vatId: { listable: false, visible: true, disabled: false },
   vatRate: { listable: true, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },

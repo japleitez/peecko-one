@@ -53,30 +53,30 @@
     <h1>Invoice Notice</h1>
   </div>
   <div class="content">
-    <p>Dear {{clientName}},</p>
+    <p>Dear Client,</p>
     <p>Thank you for choosing us to help you provide a wellness support to your employees.</p>
     <p>Please find the details of your invoice below:</p>
     <table class="invoice-details">
       <tr>
         <th>Invoice Number</th>
-        <td>{{invoiceNumber}}</td>
+        <td><span th:text="${number}"></span></td>
       </tr>
       <tr>
         <th>Date</th>
-        <td>{{issued}}</td>
+        <td><span th:text="${issued}"></span></td>
       </tr>
       <tr>
         <th>Amount Due</th>
-        <td>{{total}}</td>
+        <td><span th:text="${total}"></span></td>
       </tr>
       <tr>
         <th>Due Date</th>
-        <td>{{dueDate}}</td>
+        <td><span th:text="${dueDate}"></span></td>
       </tr>
     </table>
     <p>Wishing you a day filled with positiviy, productivity, and good health</p>
-    <p>If you have any questions regarding this invoice, please contact us at {{supportEmail}}</p>
-    <p>Best regards,<br>{{agencyName}}</p>
+    <p>If you have any questions regarding this invoice, please contact us at <span th:text="${supportEmail}"></span></p>
+    <p>Best regards,<br><span th:text="${agencyName}"></span></p>
   </div>
   <div class="footer">
     <p>Your Company Inc. | 123 Business Road, Business City, BC 12345</p>

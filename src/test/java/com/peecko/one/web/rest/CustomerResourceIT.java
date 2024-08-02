@@ -117,7 +117,7 @@ class CustomerResourceIT {
             .license(DEFAULT_LICENSE)
             .state(DEFAULT_STATE)
             .closeReason(DEFAULT_CLOSE_REASON)
-            .emailDomains(DEFAULT_EMAIL_DOMAINS)
+            .billingEmail(DEFAULT_EMAIL_DOMAINS)
             .vatId(DEFAULT_VAT_ID)
             .bank(DEFAULT_BANK)
             .iban(DEFAULT_IBAN)
@@ -146,7 +146,7 @@ class CustomerResourceIT {
             .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
             .closeReason(UPDATED_CLOSE_REASON)
-            .emailDomains(UPDATED_EMAIL_DOMAINS)
+            .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
             .iban(UPDATED_IBAN)
@@ -185,7 +185,7 @@ class CustomerResourceIT {
         assertThat(testCustomer.getLicense()).isEqualTo(DEFAULT_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
+        assertThat(testCustomer.getBillingEmail()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(DEFAULT_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(DEFAULT_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(DEFAULT_IBAN);
@@ -375,7 +375,7 @@ class CustomerResourceIT {
             .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
             .closeReason(UPDATED_CLOSE_REASON)
-            .emailDomains(UPDATED_EMAIL_DOMAINS)
+            .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
             .iban(UPDATED_IBAN)
@@ -406,7 +406,7 @@ class CustomerResourceIT {
         assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(UPDATED_EMAIL_DOMAINS);
+        assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(UPDATED_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(UPDATED_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(UPDATED_IBAN);
@@ -516,7 +516,7 @@ class CustomerResourceIT {
         assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
+        assertThat(testCustomer.getBillingEmail()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(DEFAULT_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(DEFAULT_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(DEFAULT_IBAN);
@@ -549,7 +549,7 @@ class CustomerResourceIT {
             .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
             .closeReason(UPDATED_CLOSE_REASON)
-            .emailDomains(UPDATED_EMAIL_DOMAINS)
+            .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
             .iban(UPDATED_IBAN)
@@ -580,7 +580,7 @@ class CustomerResourceIT {
         assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(UPDATED_EMAIL_DOMAINS);
+        assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(UPDATED_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(UPDATED_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(UPDATED_IBAN);

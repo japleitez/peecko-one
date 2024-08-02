@@ -32,7 +32,7 @@
             <column name="close_reason" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="email_domains" type="varchar(255)">
+            <column name="billing_email" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="vat_id" type="varchar(255)">

@@ -2,10 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.security.SecurityUtils;
-import com.peecko.one.service.ApsMembershipService;
-import com.peecko.one.service.ApsOrderService;
-import com.peecko.one.service.InvoicePdfService;
-import com.peecko.one.service.PropertyService;
+import com.peecko.one.service.*;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
@@ -52,12 +49,14 @@ public class ApsOrderResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
     private final InvoicePdfService invoicePdfService;
+    private final InvoiceEmailService invoiceEmailService;
     private final ApsOrderService apsOrderService;
     private final PropertyService propertyService;
     private final ApsMembershipService apsMembershipService;
 
-    public ApsOrderResource(InvoicePdfService invoicePdfService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
+    public ApsOrderResource(InvoicePdfService invoicePdfService, InvoiceEmailService invoiceEmailService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
         this.invoicePdfService = invoicePdfService;
+        this.invoiceEmailService = invoiceEmailService;
         this.apsOrderService = apsOrderService;
         this.propertyService = propertyService;
         this.apsMembershipService = apsMembershipService;
@@ -192,6 +191,14 @@ public class ApsOrderResource {
         List<ApsOrderInfo> list = apsOrderService.batchInvoice(agencyId, contract, period);
         new Thread(new InvoiceGenerator(agencyId, contract, period)).start();
         return list;
+    }
+
+    @GetMapping("/batch/emails")
+    public List<ApsOrderInfo> batchEmails(
+        @RequestParam() Integer period,
+        @RequestParam(required = false) String contract) {
+        log.debug("REST request to generate Emails in batch");
+        return invoiceEmailService.batchInvoiceEmail(contract, period);
     }
 
     /**

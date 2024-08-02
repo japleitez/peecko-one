@@ -62,9 +62,7 @@ public class ApsOrder implements Serializable {
     @JsonIgnoreProperties(value = { "apsOrder" }, allowSetters = true)
     private Set<ApsMembership> apsMemberships = new HashSet<>();
 
-
     @OneToOne(cascade = CascadeType.ALL)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinColumn(name = "invoice_id", referencedColumnName = "id")
     @JsonIgnoreProperties(value = { "apsOrder" }, allowSetters = true)
     private Invoice invoice;

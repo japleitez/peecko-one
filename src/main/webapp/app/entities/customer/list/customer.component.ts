@@ -20,6 +20,7 @@ import { CustomerData } from '../service/customer.data';
 import { ClipboardService } from '../../../shared/common/clipboard.service';
 import { MatInputModule } from '@angular/material/input';
 import { CustomerState } from '../../enumerations/customer-state.model';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 
 @Component({
@@ -38,7 +39,8 @@ import { CustomerState } from '../../enumerations/customer-state.model';
     ItemCountComponent,
     NgIf,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FaIconComponent
   ]
 })
 export class CustomerComponent implements OnInit {
@@ -73,6 +75,13 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  resetSearchForm() {
+    this.code = null;
+    this.name = null;
+    this.license = null;
+    this.state = null;
   }
 
   navToContacts(c: ICustomer): void {
@@ -210,6 +219,10 @@ export class CustomerComponent implements OnInit {
     if (elemId) {
       this.clipboardService.copy('#' + elemId);
     }
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
 }

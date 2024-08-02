@@ -19,7 +19,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Invoice implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -73,8 +72,7 @@ public class Invoice implements Serializable {
     @JsonIgnoreProperties(value = { "invoice" }, allowSetters = true)
     private Set<InvoiceItem> invoiceItems = new HashSet<>();
 
-    @OneToOne(mappedBy = "invoice", fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
+    @OneToOne(mappedBy = "invoice")
     @JsonIgnoreProperties(value = { "apsMemberships", "invoice", "apsPlan" }, allowSetters = true)
     private ApsOrder apsOrder;
 

@@ -8,6 +8,8 @@ import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
+import com.peecko.one.service.info.ApsOrderInfo;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
@@ -15,7 +17,10 @@ import org.thymeleaf.context.Context;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class InvoiceEmailService {
@@ -24,60 +29,58 @@ public class InvoiceEmailService {
     private final ApsOrderRepository apsOrderRepository;
     private final CustomerRepository customerRepository;
     private final TemplateEngine templateEngine;
+    private final MessageSource messageSource;
 
-    public InvoiceEmailService(EmailService emailService, AgencyRepository agencyRepository, ApsOrderRepository apsOrderRepository, CustomerRepository customerRepository, TemplateEngine templateEngine) {
+    public InvoiceEmailService(EmailService emailService, AgencyRepository agencyRepository, ApsOrderRepository apsOrderRepository, CustomerRepository customerRepository, TemplateEngine templateEngine, MessageSource messageSource) {
         this.emailService = emailService;
         this.agencyRepository = agencyRepository;
         this.apsOrderRepository = apsOrderRepository;
         this.customerRepository = customerRepository;
         this.templateEngine = templateEngine;
+        this.messageSource = messageSource;
     }
 
-    public void batchInvoiceEmail(String contract, Integer period) {
-        if (StringUtils.hasText(contract)) {
-            apsOrderRepository.getByContactAndPeriod(contract, period).forEach(this::sendEmail);
-        } else {
-            //TODO batch for period
-            Long agencyId = SecurityUtils.getCurrentAgencyId();
-            apsOrderRepository.getByAgencyAndPeriod(agencyId, period).forEach(this::sendEmail);
-        }
-    }
-
-    private void sendEmail(ApsOrder order) {
+    public List<ApsOrderInfo> batchInvoiceEmail(String contract, Integer period) {
+        List<ApsOrder> orders;
         Agency agency = agencyRepository.getReferenceById(SecurityUtils.getCurrentAgencyId());
+        if (StringUtils.hasText(contract)) {
+            orders = apsOrderRepository.getByContactAndPeriod(contract, period);
+        } else {
+            orders = apsOrderRepository.getByAgencyAndPeriod(agency.getId(), period);
+        }
+        return orders.stream().map(order -> sendEmail(agency, order)).collect(Collectors.toList());
+    }
+
+    private ApsOrderInfo sendEmail(Agency agency, ApsOrder order) {
         Customer customer = customerRepository.getReferenceById(order.getCustomerId());
         String from = agency.getBillingEmail();
-        String to = resolveTo(order);
+        String to = customer.getBillingEmail();
         String subject = resolveSubject(agency, order);
         String text = resolveText(agency, order, customer);
-        String attachmentPath = resolveAttachmentPath(order);
+        String attachmentPath = order.getInvoice().getFilename();
         boolean sent = emailService.sendEmail(from, to, subject, text, attachmentPath);
         if (sent) {
             order.setInvoiceSent(true);
             order.setInvoiceSentAt(Instant.now());
             apsOrderRepository.save(order);
         }
-    }
-
-    private String resolveTo(ApsOrder order) {
-        return "";
+        return ApsOrderInfo.of(order);
     }
 
     private String resolveSubject(Agency agency, ApsOrder order) {
-        return String.format("%s your %s invoice %s", agency.getName(), order.getPeriod(), order.getInvoiceNumber());
+        Locale locale = new Locale(agency.getLanguage().name());
+        Object[] args = new Object[] {agency.getName(), order.getPeriod(), order.getInvoiceNumber()};
+        // messageSource.getMessage("invoice.email.subject", args, locale);
+        return agency.getName() + " your invoice " + order.getPeriod() + " - " + order.getInvoiceNumber();
     }
 
     private String resolveText(Agency agency, ApsOrder order, Customer customer) {
         Context context = new Context();
-        context.setVariables(buildTemplateModel(agency, order, customer));
-        return templateEngine.process("invoice_template", context);
+        context.setVariables(buildInvoiceTemplateModel(agency, order, customer));
+        return templateEngine.process("invoice_email.html", context);
     }
 
-    private String resolveAttachmentPath(ApsOrder order) {
-        return "";
-    }
-
-    private Map<String, Object> buildTemplateModel(Agency agency, ApsOrder order, Customer customer) {
+    private Map<String, Object> buildInvoiceTemplateModel(Agency agency, ApsOrder order, Customer customer) {
         Invoice invoice = order.getInvoice();
         Map<String, Object> data = new HashMap<>();
         data.put("number", invoice.getNumber());

@@ -65,6 +65,7 @@ export class ApsOrderComponent implements OnInit {
   REFRESH: string = 'REFRESH';
   BATCH_ORDERS: string = 'BATCH_ORDERS';
   BATCH_INVOICES: string = 'BATCH_INVOICES';
+  BATCH_EMAILS: string = 'BATCH_EMAILS';
 
   // search fields
   customer: string | null | undefined = null;
@@ -127,13 +128,26 @@ export class ApsOrderComponent implements OnInit {
     this._executeLoad();
   }
 
-  batchGenerate(): void {
+  cleanSearchForm(): void {
+    this.customer = null;
+    this.contract = null;
+    this.period = null;
+    this.starts = null;
+    this.ends = null;
+  }
+
+  batchOrders(): void {
     this.loadAction = this.BATCH_ORDERS;
     this._executeLoad();
   }
 
   batchInvoice(): void {
     this.loadAction = this.BATCH_INVOICES;
+    this._executeLoad();
+  }
+
+  batchEmails(): void {
+    this.loadAction = this.BATCH_EMAILS;
     this._executeLoad();
   }
 
@@ -179,6 +193,7 @@ export class ApsOrderComponent implements OnInit {
     this.isLoading = true;
     const batchOrders: boolean = (this.loadAction === this.BATCH_ORDERS);
     const batchInvoices: boolean = (this.loadAction === this.BATCH_INVOICES);
+    const batchEmails: boolean = (this.loadAction === this.BATCH_EMAILS);
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
@@ -202,6 +217,8 @@ export class ApsOrderComponent implements OnInit {
       return this.apsOrderService.batchOrders(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else if (batchInvoices) {
       return this.apsOrderService.batchInvoices(queryObject).pipe(tap(() => (this.isLoading = false)));
+    } else if (batchEmails) {
+      return this.apsOrderService.batchEmails(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else {
       return this.apsOrderService.queryInfo(queryObject).pipe(tap(() => (this.isLoading = false)));
     }

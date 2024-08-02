@@ -75,6 +75,14 @@ export class ApsPlanComponent implements OnInit {
     this.load();
   }
 
+  resetSearchForm(): void {
+    this.customerCode = null;
+    this.contract = null;
+    this.state = null;
+    this.starts = null;
+    this.ends = null;
+  }
+
   navToApsOrder(a: IApsPlan) {
     this.apsPlanData.setContract(a.contract);
     this.router.navigate(['/aps-order'], {

@@ -42,7 +42,7 @@ type CustomerFormGroupContent = {
   license: FormControl<CustomerFormRawValue['license']>;
   state: FormControl<CustomerFormRawValue['state']>;
   closeReason: FormControl<CustomerFormRawValue['closeReason']>;
-  emailDomains: FormControl<CustomerFormRawValue['emailDomains']>;
+  billingEmail: FormControl<CustomerFormRawValue['billingEmail']>;
   vatId: FormControl<CustomerFormRawValue['vatId']>;
   vatRate: FormControl<CustomerFormRawValue['vatRate']>;
   bank: FormControl<CustomerFormRawValue['bank']>;
@@ -85,7 +85,7 @@ export class CustomerFormService {
       state: new FormControl({ value: customerRawValue.state, disabled: ua.state.disabled },
         { validators: [Validators.required], }),
       closeReason: new FormControl({ value: customerRawValue.closeReason, disabled: ua.closeReason.disabled }),
-      emailDomains: new FormControl({ value: customerRawValue.emailDomains, disabled: ua.emailDomains.disabled }),
+      billingEmail: new FormControl({ value: customerRawValue.billingEmail, disabled: ua.billingEmail.disabled }),
       vatId: new FormControl({ value: customerRawValue.vatId, disabled: ua.vatId.disabled }),
       vatRate: new FormControl({ value: customerRawValue.vatRate, disabled: ua.vatRate.disabled },
         { validators: [Validators.required], }),

@@ -16,6 +16,8 @@ import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { ApsOrderData } from '../../aps-order/aps-order.data';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { IApsOrder } from '../../aps-order/aps-order.model';
+import { ApsOrderService } from '../../aps-order/service/aps-order.service';
 
 @Component({
   standalone: true,
@@ -44,9 +46,13 @@ export class ApsMembershipComponent implements OnInit {
   ascending :boolean = true;
 
   apsOrderId: number | null | undefined = null;
+  apsOrder: IApsOrder | null = null;
+  period: number | null | undefined = null;
+  contract: string | null | undefined = null;
 
   constructor(
     protected apsMembershipService: ApsMembershipService,
+    protected apsOrderService: ApsOrderService,
     protected apsOrderData: ApsOrderData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
@@ -79,6 +85,19 @@ export class ApsMembershipComponent implements OnInit {
   }
 
   load(): void {
+    if (this.apsOrderId) {
+      this.apsOrderService.find(this.apsOrderId)
+        .subscribe(resp => {
+          this.apsOrder = resp.body;
+          if (this.apsOrder) {
+            this.period = this.apsOrder?.period;
+            this.contract = this.apsOrder?.apsPlan?.contract;
+          } else {
+            this.period = null;
+            this.contract = null;
+          }
+        });
+    }
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);

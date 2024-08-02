@@ -105,13 +105,14 @@ spring:
   jmx:
     enabled: false
   mail:
-    host: smtp.daddy.com
-    port: 587
+    host: smtpout.secureserver.net
+    port: 465
     username: info.@peecko.com
-    password: secret
+    password: InfoPeecko@2022
     properties:
       mail.smtp.aut: true
       mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
   data:
     jpa:
       repositories:

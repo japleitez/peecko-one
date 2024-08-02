@@ -111,8 +111,8 @@ public class CustomerService {
                 if (input.getLicense() != null) {
                     customer.setLicense(input.getLicense());
                 }
-                if (input.getEmailDomains() != null) {
-                    customer.setEmailDomains(input.getEmailDomains());
+                if (input.getBillingEmail() != null) {
+                    customer.setBillingEmail(input.getBillingEmail());
                 }
                 if (input.getVatId() != null) {
                     customer.setVatId(input.getVatId());

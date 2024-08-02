@@ -36,7 +36,14 @@
 
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-      <span>Search</span>
+    </button>
+
+    <button class="btn btn-info me-2" (click)="resetSearchForm()" [disabled]="isLoading">
+      <fa-icon icon="times"></fa-icon>
+    </button>
+
+    <button class="btn btn-info me-2" (click)="previousState()" type="submit">
+      <fa-icon icon="arrow-left"></fa-icon> <span> </span>
     </button>
 
     <button
@@ -47,11 +54,6 @@
     >
       <fa-icon icon="plus"></fa-icon>
       <span>New Plan</span>
-    </button>
-
-    <button type="submit" (click)="previousState()" class="btn btn-info">
-      <fa-icon icon="arrow-left"></fa-icon>
-      <span>Back</span>
     </button>
 
   </div>

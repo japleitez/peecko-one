@@ -47,9 +47,9 @@
           <dd *ngIf="ua.closeReason.visible">
             <span>{{ customer.closeReason }}</span>
           </dd>
-          <dt *ngIf="ua.emailDomains.visible"><span>Email Domains</span></dt>
-          <dd *ngIf="ua.emailDomains.visible">
-            <span>{{ customer.emailDomains }}</span>
+          <dt *ngIf="ua.billingEmail.visible"><span>Billing Email</span></dt>
+          <dd *ngIf="ua.billingEmail.visible">
+            <span>{{ customer.billingEmail }}</span>
           </dd>
           <dt *ngIf="ua.vatId.visible"><span>Vat Id</span></dt>
           <dd *ngIf="ua.vatId.visible">

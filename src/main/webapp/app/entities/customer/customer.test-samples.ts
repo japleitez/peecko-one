@@ -31,7 +31,7 @@ export const sampleWithFullData: ICustomer = {
   license: 'remedy daily unripe',
   state: 'ACTIVE',
   closeReason: 'or dance',
-  emailDomains: 'poison so round',
+  billingEmail: 'poison so round',
   vatId: 'researcher',
   bank: 'how intermix ah',
   iban: 'PK52KUWZ6006857025304091',
