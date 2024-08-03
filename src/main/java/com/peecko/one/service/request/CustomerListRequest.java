@@ -3,8 +3,6 @@ package com.peecko.one.service.request;
 import com.peecko.one.domain.enumeration.CustomerState;
 
 public class CustomerListRequest {
-
-    private Long agencyId;
     private String code;
     private String name;
     private CustomerState state;
@@ -12,19 +10,10 @@ public class CustomerListRequest {
     public CustomerListRequest() {
     }
 
-    public CustomerListRequest(Long agencyId, String code, String name, CustomerState state) {
-        this.agencyId = agencyId;
+    public CustomerListRequest(String code, String name, CustomerState state) {
         this.code = code;
         this.name = name;
         this.state = state;
-    }
-
-    public Long getAgencyId() {
-        return agencyId;
-    }
-
-    public void setAgencyId(Long agencyId) {
-        this.agencyId = agencyId;
     }
 
     public String getCode() {

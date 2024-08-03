@@ -21,7 +21,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
     @Query("select c from Customer c left join fetch c.agency where c.id = :id")
-    List<Customer> loadById(@Param("id") Long id);
+    Optional<Customer> loadById(@Param("id") Long id);
 
     @Query("select c from Customer c left join fetch c.agency where c.code = :code")
     Optional<Customer> findByCustomerCode(@Param("code") String code);

@@ -14,7 +14,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
-    List<Invoice> findByApsOrder(ApsOrder apsOrder);
     Long countByAgencyIdAndPeriod(Long agencyId, Integer period);
     @Query("from Invoice i left join fetch i.invoiceItems where i.agencyId = :agencyId and i.period = :period")
     List<Invoice> findByAgencyAndPeriod(@Param("agencyId") Long agencyId, @Param("period") Integer period);

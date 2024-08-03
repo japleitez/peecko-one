@@ -146,32 +146,20 @@ public class ApsOrderResource {
     }
 
     /**
-     * {@code GET  /aps-orders} : get all the apsOrders.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrders in body.
-     */
-    @GetMapping("")
-    public List<ApsOrder> getAllApsOrders() {
-        log.debug("REST request to get all ApsOrder");
-        return apsOrderService.findAll();
-    }
-
-    /**
      * {@code GET  /aps-orders/filtered} : get the apsOrdersInfo filtered by customer and periods.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrderInfos in body.
      */
     @GetMapping("/info")
-    public List<ApsOrderInfo> getFilteredApsOrders(
+    public List<ApsOrderInfo> getAllApsOrders(
         @RequestParam(required = false) String customer,
         @RequestParam(required = false) String contract,
         @RequestParam(required = false) Integer period,
         @RequestParam(required = false) Integer starts,
         @RequestParam(required = false) Integer ends) {
         log.debug("REST request to get ApsOrders------------------");
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        ApsOrderListRequest request = new ApsOrderListRequest(agencyId, customer, contract, period, starts, ends);
-        return apsOrderService.findBySearchRequest(request).stream().map(ApsOrder::toApsOrderInfo).toList();
+        ApsOrderListRequest request = new ApsOrderListRequest(customer, contract, period, starts, ends);
+        return apsOrderService.findAll(request).stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
     @GetMapping("/batch/orders")
@@ -179,8 +167,7 @@ public class ApsOrderResource {
         @RequestParam() Integer period,
         @RequestParam(required = false) String contract) {
         log.debug("REST request to generate ApsOrders in batch");
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsOrderService.batchOrders(agencyId, contract, period);
+        return apsOrderService.batchOrders(period, contract);
     }
 
     @GetMapping("/batch/invoices")
@@ -188,9 +175,8 @@ public class ApsOrderResource {
         @RequestParam() Integer period,
         @RequestParam(required = false) String contract) {
         log.debug("REST request to generate Invoices in batch");
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        List<ApsOrderInfo> list = invoiceService.batchInvoice(agencyId, contract, period);
-        new Thread(new InvoiceGenerator(agencyId, contract, period)).start();
+        List<ApsOrderInfo> list = invoiceService.batchInvoice(period, contract);
+        new Thread(new InvoiceGenerator(period, contract)).start();
         return list;
     }
 
@@ -261,17 +247,15 @@ public class ApsOrderResource {
     }
 
     private class InvoiceGenerator implements Runnable {
-        private final Long agencyId;
         private final String contract;
         private final Integer period;
-        public InvoiceGenerator(Long agencyId, String contract, Integer period) {
-            this.agencyId = agencyId;
-            this.contract = contract;
+        public InvoiceGenerator(Integer period, String contract) {
             this.period = period;
+            this.contract = contract;
         }
         @Override
         public void run() {
-            invoicePdfService.batchInvoicePDF(agencyId, contract, period);
+            invoicePdfService.batchInvoicePDF(contract, period);
         }
     }
 }

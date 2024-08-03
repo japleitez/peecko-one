@@ -1,9 +1,8 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.*;
-import com.peecko.one.domain.enumeration.PricingType;
-import com.peecko.one.domain.enumeration.ProductType;
 import com.peecko.one.repository.*;
+import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.service.specs.ApsOrderSpecs;
@@ -14,8 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.text.DecimalFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
@@ -79,8 +76,9 @@ public class ApsOrderService {
             .map(apsOrderRepository::save);
     }
 
-    public List<ApsOrder> findBySearchRequest(ApsOrderListRequest request) {
-        Specification<ApsOrder> spec = ApsOrderSpecs.agency(request.getAgencyId());
+    public List<ApsOrder> findAll(ApsOrderListRequest request) {
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        Specification<ApsOrder> spec = ApsOrderSpecs.agency(agencyId);
         if (StringUtils.hasText(request.getContract())) {
             spec = spec.and(ApsOrderSpecs.contractLike(request.getContract()));
         }
@@ -119,7 +117,7 @@ public class ApsOrderService {
     }
 
 
-    public List<ApsOrderInfo> batchOrders(Long agencyId, String contract, Integer period) {
+    public List<ApsOrderInfo> batchOrders(Integer period, String contract) {
         YearMonth yearMonth = PeriodUtils.getYearMonth(period);
         LocalDate periodEnds = yearMonth.atEndOfMonth();
         LocalDate periodStarts = yearMonth.atDay(1);
@@ -129,6 +127,7 @@ public class ApsOrderService {
             orders = apsOrderRepository.getByContactAndPeriod(contract, period);
             plans = apsPlanRepository.getByContractAndDatesAndActive(contract, periodStarts, periodEnds);
         } else {
+            Long agencyId = SecurityUtils.getCurrentAgencyId();
             orders = apsOrderRepository.getByAgencyAndPeriod(agencyId, period);
             plans = apsPlanRepository.getByAgencyAndDatesAndActive(agencyId, periodStarts, periodEnds);
         }

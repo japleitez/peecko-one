@@ -5,6 +5,7 @@ import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.repository.CustomerRepository;
+import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.request.ApsPlanListRequest;
 import com.peecko.one.service.specs.ApsPlanSpecs;
 import org.springframework.data.domain.Page;
@@ -53,8 +54,7 @@ public class ApsPlanService {
         }
     }
     public Optional<ApsPlan> loadById(Long id) {
-        List<ApsPlan> list = apsPlanRepository.loadById(id);
-        return list.isEmpty()? Optional.empty(): Optional.of(list.get(0));
+        return apsPlanRepository.loadById(id);
     }
 
     public Optional<ApsPlan> partialUpdateApsPlan(ApsPlan apsPlan) {
@@ -91,12 +91,14 @@ public class ApsPlanService {
             .map(apsPlanRepository::save);
     }
 
-    public List<ApsPlan> getPlansForAgencyAndStates(Long agencyId, List<PlanState> states) {
+    public List<ApsPlan> getPlansByStates(List<PlanState> states) {
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
         return apsPlanRepository.getByAgencyAndStates(agencyId, states);
     }
 
     public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {
-        Specification<ApsPlan> spec = ApsPlanSpecs.agencyId(request.getAgencyId());
+        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        Specification<ApsPlan> spec = ApsPlanSpecs.agencyId(agencyId);
         if (StringUtils.hasText(request.getContract())) {
             spec = spec.and(ApsPlanSpecs.contract(request.getContract()));
         }

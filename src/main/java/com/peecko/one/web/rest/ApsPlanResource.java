@@ -2,7 +2,6 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.domain.enumeration.PlanState;
-import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.ApsPlanService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import com.peecko.one.service.request.ApsPlanListRequest;
@@ -63,6 +62,9 @@ public class ApsPlanResource {
         log.debug("REST request to save ApsPlan : {}", apsPlan);
         if (apsPlan.getId() != null) {
             throw new BadRequestAlertException("A new apsPlan cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (apsPlan.getCustomer() == null) {
+            throw new BadRequestAlertException("A new apsPlan requires a Customer ID", ENTITY_NAME, "idexists");
         }
         ApsPlan result = apsPlanService.create(apsPlan);
         return ResponseEntity
@@ -138,7 +140,7 @@ public class ApsPlanResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsPlans in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<ApsPlan>> getApsPlans(
+    public ResponseEntity<List<ApsPlan>> getAllApsPlans(
         @RequestParam(required = false) String customerCode,
         @RequestParam(required = false) String contract,
         @RequestParam(required = false) PlanState state,
@@ -148,8 +150,7 @@ public class ApsPlanResource {
         @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ends,
         @ParameterObject Pageable pageable) {
         log.debug("REST request to get all ApsPlans");
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        ApsPlanListRequest request = new ApsPlanListRequest(agencyId, customerCode, contract, state, starts, ends);
+        ApsPlanListRequest request = new ApsPlanListRequest(customerCode, contract, state, starts, ends);
         Page<ApsPlan> page = apsPlanService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -186,8 +187,7 @@ public class ApsPlanResource {
 
     @GetMapping("/trial-active")
     public ResponseEntity<List<ApsPlan>> getPlansWithTrialOrActiveStatus() {
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        List<ApsPlan> result =  apsPlanService.getPlansForAgencyAndStates(agencyId, PlanState.TRIAL_ACTIVE);
+        List<ApsPlan> result =  apsPlanService.getPlansByStates(PlanState.TRIAL_ACTIVE);
         return ResponseEntity.ok().body(result);
     }
 

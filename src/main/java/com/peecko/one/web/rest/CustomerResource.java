@@ -1,9 +1,7 @@
 package com.peecko.one.web.rest;
 
-import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
-import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.CustomerService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import com.peecko.one.service.request.CustomerListRequest;
@@ -131,8 +129,7 @@ public class CustomerResource {
         @RequestParam(required = false) CustomerState state,
         @ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Customers");
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        CustomerListRequest request = new CustomerListRequest(agencyId, code, name, state);
+        CustomerListRequest request = new CustomerListRequest(code, name, state);
         Page<Customer> page = customerService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -141,8 +138,7 @@ public class CustomerResource {
     @GetMapping("/active")
     public ResponseEntity<List<Customer>> findActiveCustomers() {
         log.debug("REST request to get active Customers");
-        Agency agency = SecurityUtils.getCurrentUserAgency();
-        List<Customer> customers = customerService.findByAgencyAndCustomerStates(agency, CustomerState.TRIAL_ACTIVE);
+        List<Customer> customers = customerService.findByCustomerAndStates(CustomerState.TRIAL_ACTIVE);
         List<Customer> list = customers.stream().map(Customer::cloneForSelection).toList();
         return ResponseEntity.ok().body(list);
     }
@@ -156,7 +152,7 @@ public class CustomerResource {
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long id) {
         log.debug("REST request to get Customer : {}", id);
-        Optional<Customer> customer = customerService.loadById(id);
+        Optional<Customer> customer = customerService.findById(id);
         return ResponseUtil.wrapOrNotFound(customer);
     }
 

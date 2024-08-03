@@ -5,6 +5,7 @@ import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
 import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.CustomerRepository;
+import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.request.CustomerListRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,18 +69,19 @@ public class CustomerService {
         return !customerRepository.existsById(id);
     }
 
-    public Optional<Customer> loadById(Long id) {
-        List<Customer> list = customerRepository.loadById(id);
-        return list.isEmpty()?  Optional.empty(): Optional.of(list.get(0));
+    public Optional<Customer> findById(Long id) {
+        return customerRepository.loadById(id);
     }
 
-    public List<Customer> findByAgencyAndCustomerStates(Agency agency, List<CustomerState> states) {
+    public List<Customer> findByCustomerAndStates(List<CustomerState> states) {
+        Agency agency = SecurityUtils.getCurrentUserAgency();
         return customerRepository.findByAgencyAndCustomerState(agency, states);
     }
 
 
     public Page<Customer> findAll(CustomerListRequest request, Pageable pageable) {
-        Specification<Customer> spec = CustomerSpecs.agency(request.getAgencyId());
+        Agency agency = SecurityUtils.getCurrentUserAgency();
+        Specification<Customer> spec = CustomerSpecs.agency(agency.getId());
         if (StringUtils.hasText(request.getCode())) {
             spec = spec.and(CustomerSpecs.codeLike(request.getCode()));
         }

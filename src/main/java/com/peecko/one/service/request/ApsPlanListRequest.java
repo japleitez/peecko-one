@@ -5,28 +5,18 @@ import com.peecko.one.domain.enumeration.PlanState;
 import java.time.LocalDate;
 
 public class ApsPlanListRequest {
-    private Long agencyId;
     private String customerCode;
     private String contract;
     private PlanState state;
     private LocalDate starts;
     private LocalDate ends;
 
-    public ApsPlanListRequest(Long agencyId, String customerCode, String contract, PlanState state, LocalDate starts, LocalDate ends) {
-        this.agencyId = agencyId;
+    public ApsPlanListRequest(String customerCode, String contract, PlanState state, LocalDate starts, LocalDate ends) {
         this.customerCode = customerCode;
         this.contract = contract;
         this.state = state;
         this.starts = starts;
         this.ends = ends;
-    }
-
-    public Long getAgencyId() {
-        return agencyId;
-    }
-
-    public void setAgencyId(Long agencyId) {
-        this.agencyId = agencyId;
     }
 
     public String getCustomerCode() {
@@ -72,8 +62,7 @@ public class ApsPlanListRequest {
     @Override
     public String toString() {
         return "ApsPlanListRequest{" +
-            "agencyId=" + agencyId +
-            ", customerCode='" + customerCode + '\'' +
+            "customerCode='" + customerCode + '\'' +
             ", contract='" + contract + '\'' +
             ", state=" + state +
             ", starts=" + starts +

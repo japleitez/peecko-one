@@ -2,6 +2,7 @@ package com.peecko.one.service;
 
 import com.peecko.one.domain.Invoice;
 import com.peecko.one.repository.InvoiceRepository;
+import com.peecko.one.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,11 @@ public class InvoicePdfService {
         this.propertyService = propertyService;
     }
 
-    public void batchInvoicePDF(Long agencyId, String contract, Integer period) {
+    public void batchInvoicePDF(String contract, Integer period) {
         if (StringUtils.hasText(contract)) {
             invoiceRepository.findByContractAndPeriod(contract, period).forEach(this::generatePDF);
         } else {
+            Long agencyId = SecurityUtils.getCurrentAgencyId();
             invoiceRepository.findByAgencyAndPeriod(agencyId, period).forEach(this::generatePDF);
         }
     }

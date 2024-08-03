@@ -7,6 +7,7 @@ import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPricingRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.repository.InvoiceRepository;
+import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.info.ApsOrderInfo;
 import com.peecko.one.utils.PeriodUtils;
 import org.springframework.stereotype.Service;
@@ -32,30 +33,29 @@ public class InvoiceService {
         this.apsPricingRepository = apsPricingRepository;
     }
 
-    public List<ApsOrderInfo> batchInvoice(Long agencyId, String contract, Integer period) {
+    public List<ApsOrderInfo> batchInvoice(Integer period, String contract) {
         List<ApsOrder> orders;
         if (StringUtils.hasText(contract)) {
             orders = apsOrderRepository.getByContractAndPeriodAndActive(contract, period);
         } else {
+            Long agencyId = SecurityUtils.getCurrentAgencyId();
             orders = apsOrderRepository.getByAgencyAndPeriodAndActive(agencyId, period);
         }
         return orders.stream()
             .filter(ApsOrder::hasSubscribers)
-            .map(apsOrder -> this.getOrCreateInvoice(agencyId, apsOrder.getId()))
+            .map(this::getOrCreateInvoice)
             .toList();
     }
 
-    private ApsOrderInfo getOrCreateInvoice(Long agencyId, Long apsOrderId) {
-        ApsOrder apsOrder = apsOrderRepository.getReferenceById(apsOrderId);
-        Invoice invoice = null;
+    private ApsOrderInfo getOrCreateInvoice(ApsOrder apsOrder) {
         if (apsOrder.getInvoice() == null) {
-            InvoiceItem invoiceItem = generateInvoiceItem(agencyId, apsOrder);
-            invoice = new Invoice();
-            invoice.setNumber(generateInvoiceNumber(agencyId, apsOrder.getPeriod()));
+            InvoiceItem invoiceItem = generateInvoiceItem(apsOrder.getAgencyId(), apsOrder);
+            Invoice invoice = new Invoice();
+            invoice.setNumber(generateInvoiceNumber(apsOrder.getAgencyId(), apsOrder.getPeriod()));
             invoice.setDueDate(PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "09"));
             invoice.saleDate(PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "01"));
             invoice.setIssued(Instant.now());
-            invoice.setAgencyId(agencyId);
+            invoice.setAgencyId(apsOrder.getAgencyId());
             invoice.setPeriod(apsOrder.getPeriod());
             invoice.setCountry(apsOrder.getCountry());
             invoice.setCustomerId(apsOrder.getCustomerId());
@@ -69,9 +69,6 @@ public class InvoiceService {
             invoice.setCustomerVatId(customer.getVatId());
             apsOrder.setInvoice(invoice);
             invoiceRepository.save(invoice);
-        }
-        if (invoice != null) {
-            apsOrderRepository.save(apsOrder);
         }
         return ApsOrderInfo.of(apsOrder);
     }
