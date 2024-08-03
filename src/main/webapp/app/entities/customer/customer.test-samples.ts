@@ -28,7 +28,6 @@ export const sampleWithFullData: ICustomer = {
   code: 'defensive aw',
   name: 'usable mockingly old-fashioned',
   country: 'Qatar',
-  license: 'remedy daily unripe',
   state: 'ACTIVE',
   closeReason: 'or dance',
   billingEmail: 'poison so round',

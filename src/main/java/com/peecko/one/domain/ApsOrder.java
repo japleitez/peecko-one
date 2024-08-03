@@ -62,8 +62,7 @@ public class ApsOrder implements Serializable {
     @JsonIgnoreProperties(value = { "apsOrder" }, allowSetters = true)
     private Set<ApsMembership> apsMemberships = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "invoice_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "apsOrder", cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = { "apsOrder" }, allowSetters = true)
     private Invoice invoice;
 
@@ -240,8 +239,12 @@ public class ApsOrder implements Serializable {
         return this.invoice;
     }
 
-    public void setInvoice(Invoice invoices) {
+    public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+        if (invoice != null) {
+            invoice.setApsOrder(this);
+            this.setInvoiceNumber(invoice.getNumber());
+        }
     }
 
     public ApsOrder invoice(Invoice invoice) {

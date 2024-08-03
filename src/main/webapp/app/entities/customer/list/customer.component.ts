@@ -57,7 +57,6 @@ export class CustomerComponent implements OnInit {
 
   code: string | null | undefined = null;
   name: string | null | undefined = null;
-  license: string | null | undefined = null;
   state: string | null | undefined = null;
   customerStateValues = Object.keys(CustomerState);
 
@@ -80,7 +79,6 @@ export class CustomerComponent implements OnInit {
   resetSearchForm() {
     this.code = null;
     this.name = null;
-    this.license = null;
     this.state = null;
   }
 
@@ -179,9 +177,6 @@ export class CustomerComponent implements OnInit {
     }
     if (this.name) {
       queryObject.name = this.name;
-    }
-    if (this.license) {
-      queryObject.license = this.license;
     }
     if (this.state) {
       queryObject.state = this.state;

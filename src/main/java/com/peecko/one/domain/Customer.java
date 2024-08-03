@@ -40,9 +40,6 @@ public class Customer implements Serializable {
     @Column(name = "country", nullable = false)
     private String country;
 
-    @Column(name = "license")
-    private String license;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
@@ -163,19 +160,6 @@ public class Customer implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getLicense() {
-        return this.license;
-    }
-
-    public Customer license(String license) {
-        this.setLicense(license);
-        return this;
-    }
-
-    public void setLicense(String license) {
-        this.license = license;
     }
 
     public CustomerState getState() {
@@ -484,7 +468,6 @@ public class Customer implements Serializable {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", country='" + getCountry() + "'" +
-            ", license='" + getLicense() + "'" +
             ", state='" + getState() + "'" +
             ", closeReason='" + getCloseReason() + "'" +
             ", billingEmail='" + getBillingEmail() + "'" +

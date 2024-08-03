@@ -34,15 +34,15 @@ public class ApsPlanService {
     }
 
     public ApsPlan create(ApsPlan apsPlan) {
-        apsPlan.setCreated(Instant.now());
-        apsPlan.setUpdated(Instant.now());
-        ApsPlan result = apsPlanRepository.save(apsPlan);
-        updateCustomerLicense(result.getId(), result.getLicense());
-        return result;
+        Instant now = Instant.now();
+        apsPlan.setCreated(now);
+        apsPlan.setUpdated(now);
+        Customer customer = customerRepository.getReferenceById(apsPlan.getCustomer().getId());
+        apsPlan.setAgencyId(customer.getAgency().getId());
+        return apsPlanRepository.save(apsPlan);
     }
 
     public ApsPlan update(ApsPlan apsPlan) {
-        updateCustomerLicense(apsPlan.getId(), apsPlan.getLicense());
         apsPlan.setUpdated(Instant.now());
         return apsPlanRepository.save(apsPlan);
     }
@@ -57,20 +57,7 @@ public class ApsPlanService {
         return list.isEmpty()? Optional.empty(): Optional.of(list.get(0));
     }
 
-    private void updateCustomerLicense(Long apsPlanId, String license) {
-        apsPlanRepository.findById(apsPlanId).map(apsPlan -> updateCustomerLicense(apsPlan, license));
-    }
-
-    private Optional<Customer> updateCustomerLicense(ApsPlan apsPlan, String license) {
-        return customerRepository.findById(apsPlan.getCustomer().getId())
-            .map(customer -> {
-                customer.setLicense(license);
-                return customer;
-            }).map(customerRepository::save);
-    }
-
     public Optional<ApsPlan> partialUpdateApsPlan(ApsPlan apsPlan) {
-        updateCustomerLicense(apsPlan.getId(), apsPlan.getLicense());
         return apsPlanRepository
             .findById(apsPlan.getId())
             .map(existingApsPlan -> {

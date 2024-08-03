@@ -1,4 +1,4 @@
 id;code;name;line_1;zip;city;country;language;email;phone;billing_email;billing_phone;bank;iban;rcs;vat_id;vat_rate;created
-1;LU;Peecko Luxembourg;7 Rue Henri VII;1011;Luxembourg;Luxembourg;FR;info@peecko.lu;686.205.9884;billing@peecko.lu;686.205.9884;BGL;LU01 1111 0082 0708 5081;LU-RCS-01;LU_VAT_001;7.0;2024-01-01T00:00:00
-2;FR-PAR;Peecko Paris;8 Rue Rossini;2360;Paris;France;FR;info-paris@peecko.fr;686.205.9884;billing-paris@peecko.fr;686.205.9884;BGL;FR01 1111 0082 0708 5081;FR-RCS-02;FR_VAT_002;5.0;2024-01-01T00:00:00
-3;FR-LYS;Peecko Lyon;4 Rue Clement;1934;Lyon;France;FR; info-lyon@peecko.fr;686.205.9884;billing-lyon@peecko.fr;686.205.9884;BGL;FR02 2222 0082 0708 5081;FR-RCS-03;FR_VAT_003;5.0;2024-01-01T00:00:00
+1;LU;Peecko Luxembourg;7 Rue Henri VII;1011;Luxembourg;LU;FR;info@peecko.lu;686.205.9884;billing@peecko.lu;686.205.9884;BGL;LU01 1111 0082 0708 5081;LU-RCS-01;LU_VAT_001;7.0;2024-01-01T00:00:00
+2;FR-PAR;Peecko Paris;8 Rue Rossini;2360;Paris;FR;FR;info-paris@peecko.fr;686.205.9884;billing-paris@peecko.fr;686.205.9884;BGL;FR01 1111 0082 0708 5081;FR-RCS-02;FR_VAT_002;5.0;2024-01-01T00:00:00
+3;FR-LYS;Peecko Lyon;4 Rue Clement;1934;Lyon;FR;FR; info-lyon@peecko.fr;686.205.9884;billing-lyon@peecko.fr;686.205.9884;BGL;FR02 2222 0082 0708 5081;FR-RCS-03;FR_VAT_003;5.0;2024-01-01T00:00:00

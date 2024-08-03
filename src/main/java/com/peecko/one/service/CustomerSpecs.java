@@ -30,12 +30,6 @@ public class CustomerSpecs extends BaseSpecs {
         );
     }
 
-    public static Specification<Customer> licenseLike(String license) {
-        return ((root, query, cb) ->
-            cb.like(root.get(Customer_.LICENSE), anyText(license))
-        );
-    }
-
     public static Specification<Customer> stateEqual(CustomerState state) {
         return ((root, query, cb) ->
             cb.equal(root.get(Customer_.state), state)

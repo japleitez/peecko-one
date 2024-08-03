@@ -14,16 +14,25 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="country" type="varchar(10)">
+                <constraints nullable="true" />
+            </column>
+            <column name="agency_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="customer_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="aps_plan_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="aps_order_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="period" type="integer">
+                <constraints nullable="true" />
+            </column>
             <column name="number" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="issued" type="${datetimeType}">
-                <constraints nullable="false" />
-            </column>
-            <column name="due_date" type="date">
-                <constraints nullable="false" />
-            </column>
-            <column name="sale_date" type="date">
                 <constraints nullable="false" />
             </column>
             <column name="subtotal" type="double">
@@ -44,28 +53,19 @@
             <column name="diff" type="double">
                 <constraints nullable="true" />
             </column>
+            <column name="issued" type="${datetimeType}">
+                <constraints nullable="false" />
+            </column>
+            <column name="due_date" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="sale_date" type="date">
+                <constraints nullable="false" />
+            </column>
             <column name="notes" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="country" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="customer_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="customer_vat_id" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="aps_plan_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="aps_order_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="agency_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="period" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="filename" type="varchar(255)">

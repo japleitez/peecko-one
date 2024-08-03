@@ -14,6 +14,15 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="country" type="varchar(10)">
+                <constraints nullable="false" />
+            </column>
+            <column name="agency_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="customer_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <column name="contract" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -44,9 +53,6 @@
             <column name="updated" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="customer_id" type="bigint">
-                <constraints nullable="false" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="aps_plan" columnName="created" columnDataType="${datetimeType}"/>
@@ -70,6 +76,8 @@
                   tableName="aps_plan"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="country" type="string"/>
+            <column name="agency_id" type="numeric"/>
             <column name="customer_id" type="numeric"/>
             <column name="contract" type="string"/>
             <column name="pricing" type="string"/>

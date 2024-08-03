@@ -86,9 +86,6 @@ public class CustomerService {
         if (StringUtils.hasText(request.getName())) {
             spec = spec.and(CustomerSpecs.nameLike(request.getName()));
         }
-        if (StringUtils.hasText(request.getLicense())) {
-            spec = spec.and(CustomerSpecs.licenseLike(request.getLicense()));
-        }
         if (Objects.nonNull(request.getState())) {
             spec = spec.and(CustomerSpecs.stateEqual(request.getState()));
         }
@@ -107,9 +104,6 @@ public class CustomerService {
                 }
                 if (input.getCountry() != null) {
                     customer.setCountry(input.getCountry());
-                }
-                if (input.getLicense() != null) {
-                    customer.setLicense(input.getLicense());
                 }
                 if (input.getBillingEmail() != null) {
                     customer.setBillingEmail(input.getBillingEmail());

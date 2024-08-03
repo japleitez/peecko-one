@@ -128,12 +128,11 @@ public class CustomerResource {
     public ResponseEntity<List<Customer>> getAllCustomers(
         @RequestParam(required = false) String code,
         @RequestParam(required = false) String name,
-        @RequestParam(required = false) String license,
         @RequestParam(required = false) CustomerState state,
         @ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Customers");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        CustomerListRequest request = new CustomerListRequest(agencyId, code, name, license, state);
+        CustomerListRequest request = new CustomerListRequest(agencyId, code, name, state);
         Page<Customer> page = customerService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

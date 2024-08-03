@@ -48,20 +48,21 @@ public class ApsOrderResource {
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+    private final InvoiceService invoiceService;
     private final InvoicePdfService invoicePdfService;
     private final InvoiceEmailService invoiceEmailService;
     private final ApsOrderService apsOrderService;
     private final PropertyService propertyService;
     private final ApsMembershipService apsMembershipService;
 
-    public ApsOrderResource(InvoicePdfService invoicePdfService, InvoiceEmailService invoiceEmailService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
+    public ApsOrderResource(InvoiceService invoiceService, InvoicePdfService invoicePdfService, InvoiceEmailService invoiceEmailService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
+        this.invoiceService = invoiceService;
         this.invoicePdfService = invoicePdfService;
         this.invoiceEmailService = invoiceEmailService;
         this.apsOrderService = apsOrderService;
         this.propertyService = propertyService;
         this.apsMembershipService = apsMembershipService;
     }
-
 
     /**
      * {@code POST  /aps-orders} : Create a new apsOrder.
@@ -188,7 +189,7 @@ public class ApsOrderResource {
         @RequestParam(required = false) String contract) {
         log.debug("REST request to generate Invoices in batch");
         Long agencyId = SecurityUtils.getCurrentAgencyId();
-        List<ApsOrderInfo> list = apsOrderService.batchInvoice(agencyId, contract, period);
+        List<ApsOrderInfo> list = invoiceService.batchInvoice(agencyId, contract, period);
         new Thread(new InvoiceGenerator(agencyId, contract, period)).start();
         return list;
     }

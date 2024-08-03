@@ -41,9 +41,6 @@ class CustomerResourceIT {
     private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
     private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
 
-    private static final String DEFAULT_LICENSE = "AAAAAAAAAA";
-    private static final String UPDATED_LICENSE = "BBBBBBBBBB";
-
     private static final CustomerState DEFAULT_STATE = CustomerState.NEW;
     private static final CustomerState UPDATED_STATE = CustomerState.TRIAL;
 
@@ -114,7 +111,6 @@ class CustomerResourceIT {
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
             .country(DEFAULT_COUNTRY)
-            .license(DEFAULT_LICENSE)
             .state(DEFAULT_STATE)
             .closeReason(DEFAULT_CLOSE_REASON)
             .billingEmail(DEFAULT_EMAIL_DOMAINS)
@@ -143,7 +139,6 @@ class CustomerResourceIT {
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
-            .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
             .closeReason(UPDATED_CLOSE_REASON)
             .billingEmail(UPDATED_EMAIL_DOMAINS)
@@ -182,7 +177,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testCustomer.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(DEFAULT_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(DEFAULT_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
@@ -300,7 +294,6 @@ class CustomerResourceIT {
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)))
-            .andExpect(jsonPath("$.[*].license").value(hasItem(DEFAULT_LICENSE)))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
             .andExpect(jsonPath("$.[*].closeReason").value(hasItem(DEFAULT_CLOSE_REASON)))
             .andExpect(jsonPath("$.[*].emailDomains").value(hasItem(DEFAULT_EMAIL_DOMAINS)))
@@ -332,7 +325,6 @@ class CustomerResourceIT {
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY))
-            .andExpect(jsonPath("$.license").value(DEFAULT_LICENSE))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
             .andExpect(jsonPath("$.closeReason").value(DEFAULT_CLOSE_REASON))
             .andExpect(jsonPath("$.emailDomains").value(DEFAULT_EMAIL_DOMAINS))
@@ -372,7 +364,6 @@ class CustomerResourceIT {
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
-            .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
             .closeReason(UPDATED_CLOSE_REASON)
             .billingEmail(UPDATED_EMAIL_DOMAINS)
@@ -403,7 +394,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(UPDATED_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
@@ -491,7 +481,6 @@ class CustomerResourceIT {
         partialUpdatedCustomer
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
-            .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
             .logo(UPDATED_LOGO)
             .created(UPDATED_CREATED)
@@ -513,7 +502,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(DEFAULT_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
@@ -546,7 +534,6 @@ class CustomerResourceIT {
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
-            .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
             .closeReason(UPDATED_CLOSE_REASON)
             .billingEmail(UPDATED_EMAIL_DOMAINS)
@@ -577,7 +564,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(UPDATED_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
