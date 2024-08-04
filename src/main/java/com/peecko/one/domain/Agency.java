@@ -96,11 +96,6 @@ public class Agency implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "agency" }, allowSetters = true)
-    private Set<Staff> staff = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
     private Set<Customer> customers = new HashSet<>();
 
@@ -377,37 +372,6 @@ public class Agency implements Serializable {
 
     public void setUpdated(Instant updated) {
         this.updated = updated;
-    }
-
-    public Set<Staff> getStaff() {
-        return this.staff;
-    }
-
-    public void setStaff(Set<Staff> staff) {
-        if (this.staff != null) {
-            this.staff.forEach(i -> i.setAgency(null));
-        }
-        if (staff != null) {
-            staff.forEach(i -> i.setAgency(this));
-        }
-        this.staff = staff;
-    }
-
-    public Agency staff(Set<Staff> staff) {
-        this.setStaff(staff);
-        return this;
-    }
-
-    public Agency addStaff(Staff staff) {
-        this.staff.add(staff);
-        staff.setAgency(this);
-        return this;
-    }
-
-    public Agency removeStaff(Staff staff) {
-        this.staff.remove(staff);
-        staff.setAgency(null);
-        return this;
     }
 
     public Set<Customer> getCustomers() {

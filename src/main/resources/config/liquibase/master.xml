@@ -14,7 +14,6 @@
     <include file="config/liquibase/changelog/20231220181356_added_entity_ApsUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181456_added_entity_ApsDevice.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181556_added_entity_Agency.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231220181656_added_entity_Staff.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181756_added_entity_Customer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181856_added_entity_Contact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181956_added_entity_ApsPlan.xml" relativeToChangelogFile="false"/>
@@ -35,7 +34,7 @@
     <include file="config/liquibase/changelog/20231220183456_added_entity_InvoiceItem.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20231220181456_added_entity_constraints_ApsDevice.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20231220181656_added_entity_constraints_Staff.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20231220181656_added_entity_constraints_jhi_user.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181756_added_entity_constraints_Customer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181856_added_entity_constraints_Contact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220181956_added_entity_constraints_ApsPlan.xml" relativeToChangelogFile="false"/>

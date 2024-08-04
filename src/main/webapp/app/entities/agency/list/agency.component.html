@@ -98,13 +98,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="email"  *ngIf="ua.email.listable">
-              <div class="d-flex">
-                <span>Email</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="phone"  *ngIf="ua.phone.listable">
               <div class="d-flex">
                 <span>Phone</span>
@@ -112,16 +105,23 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="billingEmail"  *ngIf="ua.billingEmail.listable">
+            <th scope="col" jhiSortBy="billingPhone"  *ngIf="ua.billingPhone.listable">
               <div class="d-flex">
-                <span>Billing Email</span>
+                <span>Billing Phone</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="billingPhone"  *ngIf="ua.billingPhone.listable">
+            <th scope="col" jhiSortBy="email"  *ngIf="ua.email.listable">
               <div class="d-flex">
-                <span>Billing Phone</span>
+                <span>Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="billingEmail"  *ngIf="ua.billingEmail.listable">
+              <div class="d-flex">
+                <span>Billing Email</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -199,10 +199,10 @@
               <td *ngIf="ua.city.listable">{{ agency.city }}</td>
               <td *ngIf="ua.country.listable">{{ agency.country }}</td>
               <td *ngIf="ua.language.listable">{{ agency.language }}</td>
-              <td *ngIf="ua.email.listable">{{ agency.email }}</td>
               <td *ngIf="ua.phone.listable">{{ agency.phone }}</td>
-              <td *ngIf="ua.billingEmail.listable">{{ agency.billingEmail }}</td>
               <td *ngIf="ua.billingPhone.listable">{{ agency.billingPhone }}</td>
+              <td *ngIf="ua.email.listable">{{ agency.email }}</td>
+              <td *ngIf="ua.billingEmail.listable">{{ agency.billingEmail }}</td>
               <td *ngIf="ua.bank.listable">{{ agency.bank }}</td>
               <td *ngIf="ua.iban.listable">{{ agency.iban }}</td>
               <td *ngIf="ua.rcs.listable">{{ agency.rcs }}</td>

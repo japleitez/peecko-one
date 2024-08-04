@@ -99,7 +99,7 @@ public class Customer implements Serializable {
     private Set<ApsPlan> apsPlans = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "staff", "customers", "apsPricings" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "customers", "apsPricings" }, allowSetters = true)
     private Agency agency;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

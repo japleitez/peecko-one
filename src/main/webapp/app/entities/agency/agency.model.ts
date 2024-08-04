@@ -1,5 +1,4 @@
 import dayjs from 'dayjs/esm';
-import { IStaff } from 'app/entities/staff/staff.model';
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { IApsPricing } from 'app/entities/aps-pricing/aps-pricing.model';
 import { Language } from 'app/entities/enumerations/language.model';
@@ -27,7 +26,6 @@ export interface IAgency {
   notes?: string | null;
   created?: dayjs.Dayjs | null;
   updated?: dayjs.Dayjs | null;
-  staff?: IStaff[] | null;
   customers?: ICustomer[] | null;
   apsPricings?: IApsPricing[] | null;
 }
@@ -56,7 +54,6 @@ export interface AgencyAccess {
   notes: FieldAccess;
   created: FieldAccess;
   updated: FieldAccess;
-  staff: FieldAccess;
   customers: FieldAccess;
   apsPricings: FieldAccess;
 }
@@ -66,14 +63,14 @@ export let AGENCY_USER_ACCESS: AgencyAccess;
 AGENCY_USER_ACCESS = {
   apsPricings: { listable: false, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
-  billingEmail: { listable: false, visible: true, disabled: false },
-  billingPhone: { listable: false, visible: true, disabled: false },
+  billingEmail: { listable: true, visible: true, disabled: false },
+  billingPhone: { listable: true, visible: true, disabled: false },
   city: { listable: true, visible: true, disabled: false },
   code: { listable: true, visible: true, disabled: false },
   country: { listable: true, visible: true, disabled: false },
   created: { listable: false, visible: true, disabled: true },
   customers: { listable: false, visible: true, disabled: false },
-  email: { listable: false, visible: true, disabled: false },
+  email: { listable: true, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
   id: { listable: false, visible: true, disabled: true },
   language: { listable: false, visible: true, disabled: false },
@@ -83,7 +80,6 @@ AGENCY_USER_ACCESS = {
   notes: { listable: false, visible: true, disabled: false },
   phone: { listable: true, visible: true, disabled: false },
   rcs: { listable: false, visible: true, disabled: false },
-  staff: { listable: false, visible: true, disabled: false },
   updated: { listable: false, visible: true, disabled: true },
   vatId: { listable: false, visible: true, disabled: false },
   vatRate: { listable: false, visible: true, disabled: false },

@@ -14,10 +14,6 @@ export const EntityNavbarItems: NavbarItem[] = [
     route: '/agency',
   },
   {
-    name: 'Staff',
-    route: '/staff',
-  },
-  {
     name: 'Customer',
     route: '/customer',
   },

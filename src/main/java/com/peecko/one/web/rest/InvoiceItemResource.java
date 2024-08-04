@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -171,6 +172,12 @@ public class InvoiceItemResource {
         log.debug("REST request to get InvoiceItem : {}", id);
         Optional<InvoiceItem> invoiceItem = invoiceItemRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(invoiceItem);
+    }
+
+    @GetMapping("")
+    public List<InvoiceItem> getAll() {
+        log.debug("REST request to get all InvoiceItems");
+        return invoiceItemRepository.findAll();
     }
 
     /**

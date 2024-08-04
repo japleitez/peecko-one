@@ -17,11 +17,6 @@ const routes: Routes = [
     loadChildren: () => import('./agency/agency.routes'),
   },
   {
-    path: 'staff',
-    data: { pageTitle: 'Staff' },
-    loadChildren: () => import('./staff/staff.routes'),
-  },
-  {
     path: 'customer',
     data: { pageTitle: 'Customers' },
     loadChildren: () => import('./customer/customer.routes'),

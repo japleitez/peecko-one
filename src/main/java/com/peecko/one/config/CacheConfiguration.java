@@ -53,10 +53,8 @@ public class CacheConfiguration {
             createCache(cm, com.peecko.one.domain.ApsUser.class.getName() + ".playLists");
             createCache(cm, com.peecko.one.domain.ApsDevice.class.getName());
             createCache(cm, com.peecko.one.domain.Agency.class.getName());
-            createCache(cm, com.peecko.one.domain.Agency.class.getName() + ".staff");
             createCache(cm, com.peecko.one.domain.Agency.class.getName() + ".customers");
             createCache(cm, com.peecko.one.domain.Agency.class.getName() + ".apsPricings");
-            createCache(cm, com.peecko.one.domain.Staff.class.getName());
             createCache(cm, com.peecko.one.domain.Customer.class.getName());
             createCache(cm, com.peecko.one.domain.Customer.class.getName() + ".contacts");
             createCache(cm, com.peecko.one.domain.Customer.class.getName() + ".apsPlans");
