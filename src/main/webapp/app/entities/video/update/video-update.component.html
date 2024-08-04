@@ -55,11 +55,6 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.duration.visible">
-          <label class="form-label" for="field_duration">Duration</label>
-          <input type="number" class="form-control" name="duration" id="field_duration" data-cy="duration" formControlName="duration" />
-        </div>
-
         <div class="mb-3" *ngIf="ua.language.visible">
           <label class="form-label" for="field_language">Language</label>
           <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
@@ -75,11 +70,6 @@
               }
             </div>
           }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.tags.visible">
-          <label class="form-label" for="field_tags">Tags</label>
-          <input type="text" class="form-control" name="tags" id="field_tags" data-cy="tags" formControlName="tags" />
         </div>
 
         <div class="mb-3" *ngIf="ua.player.visible">
@@ -99,16 +89,6 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.thumbnail.visible">
-          <label class="form-label" for="field_thumbnail">Thumbnail</label>
-          <input type="text" class="form-control" name="thumbnail" id="field_thumbnail" data-cy="thumbnail" formControlName="thumbnail" />
-        </div>
-
-        <div class="mb-3" *ngIf="ua.url.visible">
-          <label class="form-label" for="field_url">Url</label>
-          <input type="text" class="form-control" name="url" id="field_url" data-cy="url" formControlName="url" />
-        </div>
-
         <div class="mb-3" *ngIf="ua.audience.visible">
           <label class="form-label" for="field_audience">Audience</label>
           <input type="text" class="form-control" name="audience" id="field_audience" data-cy="audience" formControlName="audience" />
@@ -122,6 +102,26 @@
               <option [value]="intensity">{{ intensity }}</option>
             }
           </select>
+        </div>
+
+        <div class="mb-3" *ngIf="ua.duration.visible">
+          <label class="form-label" for="field_duration">Duration</label>
+          <input type="number" class="form-control" name="duration" id="field_duration" data-cy="duration" formControlName="duration" />
+        </div>
+
+        <div class="mb-3" *ngIf="ua.tags.visible">
+          <label class="form-label" for="field_tags">Tags</label>
+          <input type="text" class="form-control" name="tags" id="field_tags" data-cy="tags" formControlName="tags" />
+        </div>
+
+        <div class="mb-3" *ngIf="ua.thumbnail.visible">
+          <label class="form-label" for="field_thumbnail">Thumbnail</label>
+          <input type="text" class="form-control" name="thumbnail" id="field_thumbnail" data-cy="thumbnail" formControlName="thumbnail" />
+        </div>
+
+        <div class="mb-3" *ngIf="ua.url.visible">
+          <label class="form-label" for="field_url">Url</label>
+          <input type="text" class="form-control" name="url" id="field_url" data-cy="url" formControlName="url" />
         </div>
 
         <div class="mb-3" *ngIf="ua.filename.visible">

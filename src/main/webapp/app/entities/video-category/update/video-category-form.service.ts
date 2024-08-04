@@ -93,8 +93,8 @@ export class VideoCategoryFormService {
     return {
       id: null,
       created: currentTime,
-      released: currentTime,
-      archived: currentTime,
+      released: null,
+      archived: null,
     };
   }
 
