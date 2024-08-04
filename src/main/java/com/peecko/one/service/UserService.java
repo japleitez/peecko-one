@@ -53,6 +53,11 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
+    public Long getCurrentAgencyId() {
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("No login present"));
+        return userRepository.findOneByLogin(login).map(User::getAgencyId).orElse(null);
+    }
+
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository

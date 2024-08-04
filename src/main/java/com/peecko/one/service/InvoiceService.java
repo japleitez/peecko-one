@@ -19,6 +19,7 @@ import java.util.List;
 
 @Service
 public class InvoiceService {
+    private final UserService userService;
     private final ApsOrderRepository apsOrderRepository;
     private final InvoiceRepository invoiceRepository;
     private final CustomerRepository customerRepository;
@@ -26,7 +27,8 @@ public class InvoiceService {
 
     private final static Long BASE_CUSTOMER_ID = 1L;
 
-    public InvoiceService(ApsOrderRepository apsOrderRepository, InvoiceRepository invoiceRepository, CustomerRepository customerRepository, ApsPricingRepository apsPricingRepository) {
+    public InvoiceService(UserService userService, ApsOrderRepository apsOrderRepository, InvoiceRepository invoiceRepository, CustomerRepository customerRepository, ApsPricingRepository apsPricingRepository) {
+        this.userService = userService;
         this.apsOrderRepository = apsOrderRepository;
         this.invoiceRepository = invoiceRepository;
         this.customerRepository = customerRepository;
@@ -38,7 +40,7 @@ public class InvoiceService {
         if (StringUtils.hasText(contract)) {
             orders = apsOrderRepository.getByContractAndPeriodAndActive(contract, period);
         } else {
-            Long agencyId = SecurityUtils.getCurrentAgencyId();
+            Long agencyId = userService.getCurrentAgencyId();
             orders = apsOrderRepository.getByAgencyAndPeriodAndActive(agencyId, period);
         }
         return orders.stream()

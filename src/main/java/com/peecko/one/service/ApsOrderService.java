@@ -24,20 +24,14 @@ public class ApsOrderService {
     private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
     private final ApsPlanRepository apsPlanRepository;
     private final ApsOrderRepository apsOrderRepository;
-    private final InvoiceRepository invoiceRepository;
-    private final ApsPricingRepository apsPricingRepository;
-    private final CustomerRepository customerRepository;
+    private final UserService userService;
 
     public ApsOrderService(
             ApsPlanRepository apsPlanRepository,
-            ApsOrderRepository apsOrderRepository,
-            InvoiceRepository invoiceRepository,
-            ApsPricingRepository apsPricingRepository, CustomerRepository customerRepository) {
+            ApsOrderRepository apsOrderRepository, UserService userService) {
         this.apsPlanRepository = apsPlanRepository;
         this.apsOrderRepository = apsOrderRepository;
-        this.invoiceRepository = invoiceRepository;
-        this.apsPricingRepository = apsPricingRepository;
-        this.customerRepository = customerRepository;
+        this.userService = userService;
     }
 
     public ApsOrder create(ApsOrder apsOrder) {
@@ -77,7 +71,7 @@ public class ApsOrderService {
     }
 
     public List<ApsOrder> findAll(ApsOrderListRequest request) {
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        Long agencyId = userService.getCurrentAgencyId();
         Specification<ApsOrder> spec = ApsOrderSpecs.agency(agencyId);
         if (StringUtils.hasText(request.getContract())) {
             spec = spec.and(ApsOrderSpecs.contractLike(request.getContract()));
@@ -116,7 +110,6 @@ public class ApsOrderService {
         return apsOrderRepository.findAll();
     }
 
-
     public List<ApsOrderInfo> batchOrders(Integer period, String contract) {
         YearMonth yearMonth = PeriodUtils.getYearMonth(period);
         LocalDate periodEnds = yearMonth.atEndOfMonth();
@@ -127,7 +120,7 @@ public class ApsOrderService {
             orders = apsOrderRepository.getByContactAndPeriod(contract, period);
             plans = apsPlanRepository.getByContractAndDatesAndActive(contract, periodStarts, periodEnds);
         } else {
-            Long agencyId = SecurityUtils.getCurrentAgencyId();
+            Long agencyId = userService.getCurrentAgencyId();
             orders = apsOrderRepository.getByAgencyAndPeriod(agencyId, period);
             plans = apsPlanRepository.getByAgencyAndDatesAndActive(agencyId, periodStarts, periodEnds);
         }

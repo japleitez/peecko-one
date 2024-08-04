@@ -32,6 +32,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @Column(name = "agency_id")
+    private Long agencyId;
+
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(min = 1, max = 50)
@@ -99,6 +102,14 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getAgencyId() {
+        return agencyId;
+    }
+
+    public void setAgencyId(Long agencyId) {
+        this.agencyId = agencyId;
     }
 
     public String getLogin() {

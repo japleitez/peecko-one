@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class InvoiceEmailService {
+    private final UserService userService;
     private final EmailService emailService;
     private final AgencyRepository agencyRepository;
     private final ApsOrderRepository apsOrderRepository;
@@ -31,7 +32,8 @@ public class InvoiceEmailService {
     private final TemplateEngine templateEngine;
     private final MessageSource messageSource;
 
-    public InvoiceEmailService(EmailService emailService, AgencyRepository agencyRepository, ApsOrderRepository apsOrderRepository, CustomerRepository customerRepository, TemplateEngine templateEngine, MessageSource messageSource) {
+    public InvoiceEmailService(UserService userService, EmailService emailService, AgencyRepository agencyRepository, ApsOrderRepository apsOrderRepository, CustomerRepository customerRepository, TemplateEngine templateEngine, MessageSource messageSource) {
+        this.userService = userService;
         this.emailService = emailService;
         this.agencyRepository = agencyRepository;
         this.apsOrderRepository = apsOrderRepository;
@@ -42,11 +44,12 @@ public class InvoiceEmailService {
 
     public List<ApsOrderInfo> batchInvoiceEmail(String contract, Integer period) {
         List<ApsOrder> orders;
-        Agency agency = agencyRepository.getReferenceById(SecurityUtils.getCurrentAgencyId());
+        Long agencyId = userService.getCurrentAgencyId();;
+        Agency agency = agencyRepository.getReferenceById(agencyId);
         if (StringUtils.hasText(contract)) {
             orders = apsOrderRepository.getByContactAndPeriod(contract, period);
         } else {
-            orders = apsOrderRepository.getByAgencyAndPeriod(agency.getId(), period);
+            orders = apsOrderRepository.getByAgencyAndPeriod(agencyId, period);
         }
         return orders.stream().map(order -> sendEmail(agency, order)).collect(Collectors.toList());
     }

@@ -13,12 +13,14 @@ import java.util.Map;
 
 @Service
 public class InvoicePdfService {
-    private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
+    private final UserService userService;
     private final InvoiceRepository invoiceRepository;
     private final PdfService pdfService;
     private final PropertyService propertyService;
+    private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
 
-    public InvoicePdfService(InvoiceRepository invoiceRepository, PdfService pdfService, PropertyService propertyService) {
+    public InvoicePdfService(UserService userService, InvoiceRepository invoiceRepository, PdfService pdfService, PropertyService propertyService) {
+        this.userService = userService;
         this.invoiceRepository = invoiceRepository;
         this.pdfService = pdfService;
         this.propertyService = propertyService;
@@ -28,7 +30,7 @@ public class InvoicePdfService {
         if (StringUtils.hasText(contract)) {
             invoiceRepository.findByContractAndPeriod(contract, period).forEach(this::generatePDF);
         } else {
-            Long agencyId = SecurityUtils.getCurrentAgencyId();
+            Long agencyId = userService.getCurrentAgencyId();
             invoiceRepository.findByAgencyAndPeriod(agencyId, period).forEach(this::generatePDF);
         }
     }

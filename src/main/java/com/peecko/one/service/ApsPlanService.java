@@ -21,11 +21,12 @@ import java.util.Optional;
 
 @Service
 public class ApsPlanService {
+    private final UserService userService;
     private final ApsPlanRepository apsPlanRepository;
-
     private final CustomerRepository customerRepository;
 
-    public ApsPlanService(ApsPlanRepository apsPlanRepository, CustomerRepository customerRepository) {
+    public ApsPlanService(UserService userService, ApsPlanRepository apsPlanRepository, CustomerRepository customerRepository) {
+        this.userService = userService;
         this.apsPlanRepository = apsPlanRepository;
         this.customerRepository = customerRepository;
     }
@@ -92,12 +93,12 @@ public class ApsPlanService {
     }
 
     public List<ApsPlan> getPlansByStates(List<PlanState> states) {
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        Long agencyId = userService.getCurrentAgencyId();
         return apsPlanRepository.getByAgencyAndStates(agencyId, states);
     }
 
     public Page<ApsPlan> findAll(ApsPlanListRequest request, Pageable pageable) {
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
+        Long agencyId = userService.getCurrentAgencyId();
         Specification<ApsPlan> spec = ApsPlanSpecs.agencyId(agencyId);
         if (StringUtils.hasText(request.getContract())) {
             spec = spec.and(ApsPlanSpecs.contract(request.getContract()));

@@ -24,13 +24,6 @@ public final class SecurityUtils {
 
     private SecurityUtils() {}
 
-    public static Long getCurrentAgencyId() {
-        return 1L;
-    }
-    public static Agency getCurrentUserAgency() {
-        return Agency.of(getCurrentAgencyId());
-    }
-
     /**
      * Get the login of the current user.
      *

@@ -20,11 +20,13 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
+    private final UserService userService;
 
     private final AgencyRepository agencyRepository;
     private final CustomerRepository customerRepository;
 
-    public CustomerService(AgencyRepository agencyRepository, CustomerRepository customerRepository) {
+    public CustomerService(UserService userService, AgencyRepository agencyRepository, CustomerRepository customerRepository) {
+        this.userService = userService;
         this.agencyRepository = agencyRepository;
         this.customerRepository = customerRepository;
     }
@@ -74,14 +76,15 @@ public class CustomerService {
     }
 
     public List<Customer> findByCustomerAndStates(List<CustomerState> states) {
-        Agency agency = SecurityUtils.getCurrentUserAgency();
+        Long agencyId = userService.getCurrentAgencyId();
+        Agency agency = agencyRepository.getReferenceById(agencyId);
         return customerRepository.findByAgencyAndCustomerState(agency, states);
     }
 
 
     public Page<Customer> findAll(CustomerListRequest request, Pageable pageable) {
-        Agency agency = SecurityUtils.getCurrentUserAgency();
-        Specification<Customer> spec = CustomerSpecs.agency(agency.getId());
+        Long agencyId = userService.getCurrentAgencyId();
+        Specification<Customer> spec = CustomerSpecs.agency(agencyId);
         if (StringUtils.hasText(request.getCode())) {
             spec = spec.and(CustomerSpecs.codeLike(request.getCode()));
         }

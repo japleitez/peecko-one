@@ -40,10 +40,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api/aps-orders")
 @Transactional
 public class ApsOrderResource {
-
-    public static final String ERR_VALIDATION = ErrorConstants.ERR_VALIDATION;
     private final Logger log = LoggerFactory.getLogger(ApsOrderResource.class);
-
     private static final String ENTITY_NAME = "apsOrder";
 
     @Value("${jhipster.clientApp.name}")
