@@ -32,6 +32,7 @@
     <include file="config/liquibase/changelog/20231220183256_added_entity_Coach.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220183356_added_entity_Invoice.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20231220183456_added_entity_InvoiceItem.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20231220183156_added_entity_VideoFav.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20231220181456_added_entity_constraints_ApsDevice.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/20231220181656_added_entity_constraints_jhi_user.xml" relativeToChangelogFile="false"/>
