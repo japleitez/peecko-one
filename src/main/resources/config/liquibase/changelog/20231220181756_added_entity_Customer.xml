@@ -26,7 +26,7 @@
             <column name="state" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="close_reason" type="varchar(255)">
+            <column name="license" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="billing_email" type="varchar(255)">

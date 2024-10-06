@@ -36,6 +36,9 @@ public class ApsMembership implements Serializable {
     @Column(name = "username", nullable = false)
     private String username;
 
+    @Column(name = "customer_id")
+    private Long customerId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "apsMemberships", "invoices", "apsPlan" }, allowSetters = true)
     private ApsOrder apsOrder;
@@ -96,6 +99,19 @@ public class ApsMembership implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public ApsMembership customerId(Long customerId) {
+        this.setCustomerId(customerId);
+        return this;
     }
 
     public ApsOrder getApsOrder() {

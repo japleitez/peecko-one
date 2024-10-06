@@ -7,27 +7,21 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added the entity ApsMembership.
+        Added the entity HelpItem.
     -->
-    <changeSet id="20231220182156-1" author="jhipster">
-        <createTable tableName="aps_membership">
+    <changeSet id="20231220184003-1" author="jhipster">
+        <createTable tableName="label">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="period" type="integer">
+            <column name="language" type="varchar(30)">
                 <constraints nullable="false" />
             </column>
-            <column name="license" type="varchar(255)">
+            <column name="code" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="username" type="varchar(255)">
+            <column name="text" type="varchar(255)">
                 <constraints nullable="false" />
-            </column>
-            <column name="customer_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="aps_order_id" type="bigint">
-                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>

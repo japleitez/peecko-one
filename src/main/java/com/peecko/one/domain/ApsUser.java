@@ -17,7 +17,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "aps_user")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class ApsUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -69,13 +68,12 @@ public class ApsUser implements Serializable {
     @Column(name = "updated")
     private Instant updated;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsUser")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "aps_user_id")
     @JsonIgnoreProperties(value = { "apsUser" }, allowSetters = true)
     private Set<ApsDevice> apsDevices = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsUser")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "videoItems", "apsUser" }, allowSetters = true)
     private Set<PlayList> playLists = new HashSet<>();
 

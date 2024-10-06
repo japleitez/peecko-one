@@ -103,7 +103,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="closeReason" *ngIf="ua.closeReason.listable">
+            <th scope="col" jhiSortBy="closeReason" *ngIf="ua.license.listable">
               <div class="d-flex">
                 <span>Close Reason</span>
 
@@ -204,7 +204,7 @@
               <td *ngIf="ua.activated.listable">{{ customer.activated | formatMediumDate }}</td>
               <td *ngIf="ua.closed.listable">{{ customer.closed | formatMediumDate }}</td>
 
-              <td *ngIf="ua.closeReason.listable">{{ customer.closeReason }}</td>
+              <td *ngIf="ua.license.listable">{{ customer.license }}</td>
               <td *ngIf="ua.billingEmail.listable">{{ customer.billingEmail }}</td>
               <td *ngIf="ua.logo.listable">{{ customer.logo }}</td>
               <td *ngIf="ua.notes.listable">{{ customer.notes }}</td>

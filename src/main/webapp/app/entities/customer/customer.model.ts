@@ -11,7 +11,7 @@ export interface ICustomer {
   name?: string | null;
   country?: string | null;
   state?: keyof typeof CustomerState | null;
-  closeReason?: string | null;
+  license?: string | null;
   billingEmail?: string | null;
   vatId?: string | null;
   vatRate?: number | null;
@@ -38,7 +38,7 @@ export interface CustomerAccess {
   name: FieldAccess;
   country: FieldAccess;
   state: FieldAccess;
-  closeReason: FieldAccess;
+  license: FieldAccess;
   billingEmail: FieldAccess;
   vatId: FieldAccess;
   vatRate: FieldAccess;
@@ -65,7 +65,7 @@ CUSTOMER_USER_ACCESS = {
   name: { listable: true, visible: true, disabled: false },
   country: { listable: true, visible: true, disabled: false },
   state: { listable: true, visible: true, disabled: false },
-  closeReason: { listable: false, visible: true, disabled: false },
+  license: { listable: true, visible: true, disabled: false },
   billingEmail: { listable: false, visible: true, disabled: false },
   vatId: { listable: false, visible: true, disabled: false },
   vatRate: { listable: true, visible: true, disabled: false },

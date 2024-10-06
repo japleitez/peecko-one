@@ -131,9 +131,6 @@ public class CustomerService {
                 if (!customer.getState().equals(input.getState())) {
                     customer.setState(input.getState());
                 }
-                if (input.getCloseReason() != null) {
-                    customer.setCloseReason(input.getCloseReason());
-                }
                 updateDates(customer);
                 return customer;
             })

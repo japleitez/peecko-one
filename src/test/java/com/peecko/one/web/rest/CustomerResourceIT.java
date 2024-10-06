@@ -45,7 +45,6 @@ class CustomerResourceIT {
     private static final CustomerState UPDATED_STATE = CustomerState.TRIAL;
 
     private static final String DEFAULT_CLOSE_REASON = "AAAAAAAAAA";
-    private static final String UPDATED_CLOSE_REASON = "BBBBBBBBBB";
 
     private static final String DEFAULT_EMAIL_DOMAINS = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL_DOMAINS = "BBBBBBBBBB";
@@ -112,7 +111,6 @@ class CustomerResourceIT {
             .name(DEFAULT_NAME)
             .country(DEFAULT_COUNTRY)
             .state(DEFAULT_STATE)
-            .closeReason(DEFAULT_CLOSE_REASON)
             .billingEmail(DEFAULT_EMAIL_DOMAINS)
             .vatId(DEFAULT_VAT_ID)
             .bank(DEFAULT_BANK)
@@ -140,7 +138,6 @@ class CustomerResourceIT {
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
             .state(UPDATED_STATE)
-            .closeReason(UPDATED_CLOSE_REASON)
             .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
@@ -178,7 +175,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(DEFAULT_COUNTRY);
         assertThat(testCustomer.getState()).isEqualTo(DEFAULT_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(DEFAULT_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(DEFAULT_BANK);
@@ -365,7 +361,6 @@ class CustomerResourceIT {
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
             .state(UPDATED_STATE)
-            .closeReason(UPDATED_CLOSE_REASON)
             .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
@@ -395,7 +390,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(UPDATED_COUNTRY);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(UPDATED_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(UPDATED_BANK);
@@ -503,7 +497,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(DEFAULT_COUNTRY);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(DEFAULT_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(DEFAULT_BANK);
@@ -535,7 +528,6 @@ class CustomerResourceIT {
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
             .state(UPDATED_STATE)
-            .closeReason(UPDATED_CLOSE_REASON)
             .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
@@ -565,7 +557,6 @@ class CustomerResourceIT {
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(UPDATED_COUNTRY);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
         assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(UPDATED_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(UPDATED_BANK);

@@ -17,7 +17,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "customer")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,13 +39,13 @@ public class Customer implements Serializable {
     @Column(name = "country", nullable = false)
     private String country;
 
+    @Column(name = "license")
+    private String license;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private CustomerState state;
-
-    @Column(name = "close_reason")
-    private String closeReason;
 
     @Column(name = "billing_email")
     private String billingEmail;
@@ -162,6 +161,19 @@ public class Customer implements Serializable {
         this.country = country;
     }
 
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
+    public Customer license(String license) {
+        this.setLicense(license);
+        return this;
+    }
+
     public CustomerState getState() {
         return this.state;
     }
@@ -173,19 +185,6 @@ public class Customer implements Serializable {
 
     public void setState(CustomerState state) {
         this.state = state;
-    }
-
-    public String getCloseReason() {
-        return this.closeReason;
-    }
-
-    public Customer closeReason(String closeReason) {
-        this.setCloseReason(closeReason);
-        return this;
-    }
-
-    public void setCloseReason(String closeReason) {
-        this.closeReason = closeReason;
     }
 
     public String getBillingEmail() {
@@ -469,7 +468,6 @@ public class Customer implements Serializable {
             ", name='" + getName() + "'" +
             ", country='" + getCountry() + "'" +
             ", state='" + getState() + "'" +
-            ", closeReason='" + getCloseReason() + "'" +
             ", billingEmail='" + getBillingEmail() + "'" +
             ", vatId='" + getVatId() + "'" +
             ", bank='" + getBank() + "'" +

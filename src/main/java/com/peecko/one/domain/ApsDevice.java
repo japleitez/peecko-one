@@ -43,6 +43,7 @@ public class ApsDevice implements Serializable {
     private Instant installedOn;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aps_user_id")
     @JsonIgnoreProperties(value = { "apsDevices", "playLists" }, allowSetters = true)
     private ApsUser apsUser;
 
