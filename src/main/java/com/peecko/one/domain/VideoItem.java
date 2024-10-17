@@ -18,21 +18,24 @@ public class VideoItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "previous")
-    private String previous;
 
     @Column(name = "code")
     private String code;
 
-    @Column(name = "next")
-    private String next;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "previous_video_item_id")
+    private VideoItem next;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "next_video_item_id")
+    private VideoItem previous;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "play_list_id", nullable = false)
     @JsonIgnoreProperties(value = { "videoItems", "apsUser" }, allowSetters = true)
     private PlayList playList;
 
@@ -51,16 +54,16 @@ public class VideoItem implements Serializable {
         this.id = id;
     }
 
-    public String getPrevious() {
+    public VideoItem getPrevious() {
         return this.previous;
     }
 
-    public VideoItem previous(String previous) {
+    public VideoItem previous(VideoItem previous) {
         this.setPrevious(previous);
         return this;
     }
 
-    public void setPrevious(String previous) {
+    public void setPrevious(VideoItem previous) {
         this.previous = previous;
     }
 
@@ -77,16 +80,16 @@ public class VideoItem implements Serializable {
         this.code = code;
     }
 
-    public String getNext() {
+    public VideoItem getNext() {
         return this.next;
     }
 
-    public VideoItem next(String next) {
+    public VideoItem next(VideoItem next) {
         this.setNext(next);
         return this;
     }
 
-    public void setNext(String next) {
+    public void setNext(VideoItem next) {
         this.next = next;
     }
 

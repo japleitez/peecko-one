@@ -42,14 +42,15 @@ public class PlayList implements Serializable {
     @Column(name = "updated", nullable = false)
     private Instant updated;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "playList")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "apsDevices", "playLists" }, allowSetters = true)
+    private ApsUser apsUser;
+
+    @OneToMany(mappedBy = "playList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "playList" }, allowSetters = true)
     private Set<VideoItem> videoItems = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "apsDevices", "playLists" }, allowSetters = true)
-    private ApsUser apsUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

@@ -1,4 +1,4 @@
-package com.peecko.one.service.dto;
+package com.peecko.one.domain.dto;
 
 public class MemberDTO {
     String username;

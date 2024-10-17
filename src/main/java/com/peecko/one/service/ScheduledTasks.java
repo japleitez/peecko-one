@@ -1,4 +1,4 @@
-package com.peecko.one.scheduling;
+package com.peecko.one.service;
 
 import com.peecko.one.service.ApsPlanTaskService;
 import org.springframework.scheduling.annotation.Async;

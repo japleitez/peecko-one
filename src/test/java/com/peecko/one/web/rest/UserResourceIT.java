@@ -10,7 +10,7 @@ import com.peecko.one.domain.Authority;
 import com.peecko.one.domain.User;
 import com.peecko.one.repository.UserRepository;
 import com.peecko.one.security.AuthoritiesConstants;
-import com.peecko.one.service.dto.AdminUserDTO;
+import com.peecko.one.domain.dto.AdminUserDTO;
 import com.peecko.one.service.mapper.UserMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;

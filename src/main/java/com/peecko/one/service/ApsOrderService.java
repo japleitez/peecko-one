@@ -2,8 +2,7 @@ package com.peecko.one.service;
 
 import com.peecko.one.domain.*;
 import com.peecko.one.repository.*;
-import com.peecko.one.security.SecurityUtils;
-import com.peecko.one.service.info.ApsOrderInfo;
+import com.peecko.one.domain.dto.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.service.specs.ApsOrderSpecs;
 import com.peecko.one.utils.PeriodUtils;
@@ -35,13 +34,10 @@ public class ApsOrderService {
     }
 
     public ApsOrder create(ApsOrder apsOrder) {
-        Optional<ApsPlan> optionalApsPlan = apsPlanRepository.findById(apsOrder.getApsPlan().getId());
-        if (optionalApsPlan.isPresent()) {
-            ApsPlan apsPlan = optionalApsPlan.get();
-            apsOrder.setCustomerId(apsPlan.getCustomer().getId());
-            apsOrder.setCountry(apsPlan.getCustomer().getCountry());
-            apsOrder.setAgencyId(apsPlan.getCustomer().getAgency().getId());
-        }
+        ApsPlan apsPlan = apsPlanRepository.findById(apsOrder.getApsPlan().getId()).orElseThrow();
+        apsOrder.setCustomerId(apsPlan.getCustomer().getId());
+        apsOrder.setCountry(apsPlan.getCustomer().getCountry());
+        apsOrder.setAgencyId(apsPlan.getCustomer().getAgency().getId());
         return apsOrderRepository.save(apsOrder);
     }
 

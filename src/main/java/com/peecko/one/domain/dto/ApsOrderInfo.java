@@ -1,4 +1,4 @@
-package com.peecko.one.service.info;
+package com.peecko.one.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.peecko.one.domain.ApsOrder;

@@ -6,7 +6,7 @@ import com.peecko.one.repository.UserRepository;
 import com.peecko.one.security.AuthoritiesConstants;
 import com.peecko.one.service.MailService;
 import com.peecko.one.service.UserService;
-import com.peecko.one.service.dto.AdminUserDTO;
+import com.peecko.one.domain.dto.AdminUserDTO;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import com.peecko.one.web.rest.errors.EmailAlreadyUsedException;
 import com.peecko.one.web.rest.errors.LoginAlreadyUsedException;

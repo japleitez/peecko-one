@@ -37,11 +37,8 @@ public class CustomerService {
     }
 
     public Customer update(Customer customer) {
-        Optional<Agency> optionalAgency = agencyRepository.findById(customer.getAgency().getId());
-        if (optionalAgency.isPresent()) {
-            Agency agency = optionalAgency.get();
-            customer.setCountry(agency.getCountry());
-        }
+        Agency agency = agencyRepository.findById(customer.getAgency().getId()).orElseThrow();
+        customer.setCountry(agency.getCountry());
         updateDates(customer);
         return customerRepository.save(customer);
     }

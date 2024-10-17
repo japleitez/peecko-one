@@ -1,12 +1,10 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
-import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.*;
-import com.peecko.one.service.info.ApsOrderInfo;
+import com.peecko.one.domain.dto.ApsOrderInfo;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import com.peecko.one.web.rest.errors.ErrorConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 

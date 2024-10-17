@@ -7,7 +7,7 @@ import com.peecko.one.domain.ApsMembership;
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.repository.ApsMembershipRepository;
 import com.peecko.one.repository.ApsOrderRepository;
-import com.peecko.one.service.dto.MemberDTO;
+import com.peecko.one.domain.dto.MemberDTO;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

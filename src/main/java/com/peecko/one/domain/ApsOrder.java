@@ -1,7 +1,7 @@
 package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.peecko.one.service.info.ApsOrderInfo;
+import com.peecko.one.domain.dto.ApsOrderInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package com.peecko.one.web.rest.vm;
 
-import com.peecko.one.service.dto.AdminUserDTO;
+import com.peecko.one.domain.dto.AdminUserDTO;
 import jakarta.validation.constraints.Size;
 
 /**
