@@ -23,16 +23,16 @@
             <column name="customer_id" type="bigint">
                 <constraints nullable="false" />
             </column>
-            <column name="contract" type="varchar(255)">
+            <column name="contract" type="varchar(32)">
                 <constraints nullable="false" />
             </column>
-            <column name="pricing" type="varchar(255)">
+            <column name="pricing" type="varchar(12)">
                 <constraints nullable="false" />
             </column>
-            <column name="state" type="varchar(255)">
+            <column name="state" type="varchar(12)">
                 <constraints nullable="false" />
             </column>
-            <column name="license" type="varchar(255)">
+            <column name="license" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
             <column name="starts" type="date">

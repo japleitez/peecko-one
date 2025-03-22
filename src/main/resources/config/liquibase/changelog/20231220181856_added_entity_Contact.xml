@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="type" type="varchar(255)">
+            <column name="type" type="varchar(12)">
                 <constraints nullable="false" />
             </column>
             <column name="name" type="varchar(255)">
@@ -26,19 +26,19 @@
             <column name="line_2" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="zip" type="varchar(255)">
+            <column name="zip" type="varchar(10)">
                 <constraints nullable="true" />
             </column>
-            <column name="city" type="varchar(255)">
+            <column name="city" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
-            <column name="country" type="varchar(255)">
+            <column name="country" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="email" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="phone" type="varchar(255)">
+            <column name="phone" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="notes" type="varchar(255)">

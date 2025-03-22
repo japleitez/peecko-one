@@ -29,16 +29,16 @@
             <column name="private_verified" type="boolean">
                 <constraints nullable="false" />
             </column>
-            <column name="language" type="varchar(255)">
+            <column name="language" type="varchar(10)">
                 <constraints nullable="false" />
             </column>
-            <column name="license" type="varchar(255)">
+            <column name="license" type="varchar(20)">
                 <constraints nullable="true" />
             </column>
             <column name="active" type="boolean">
                 <constraints nullable="false" />
             </column>
-            <column name="password" type="varchar(255)">
+            <column name="password" type="varchar(100)">
                 <constraints nullable="true" />
             </column>
             <column name="created" type="${datetimeType}">

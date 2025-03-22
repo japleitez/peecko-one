@@ -29,7 +29,7 @@
             <column name="period" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="license" type="varchar(255)">
+            <column name="license" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
             <column name="unit_price" type="double">
@@ -41,7 +41,7 @@
             <column name="number_of_users" type="integer" defaultValue="0">
                 <constraints nullable="true" />
             </column>
-            <column name="invoice_number" type="varchar(255)">
+            <column name="invoice_number" type="varchar(20)">
                 <constraints nullable="true" />
             </column>
             <column name="invoice_sent" type="boolean" defaultValue="false">
