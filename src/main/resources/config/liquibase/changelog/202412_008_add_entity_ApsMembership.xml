@@ -14,20 +14,20 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="period" type="integer">
-                <constraints nullable="false" />
-            </column>
-            <column name="license" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="username" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
             <column name="customer_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="aps_order_id" type="bigint">
                 <constraints nullable="true" />
+            </column>
+            <column name="period" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="license" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>

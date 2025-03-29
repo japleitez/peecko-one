@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="country" type="varchar(10)">
+            <column name="country" type="varchar(2)">
                 <constraints nullable="true" />
             </column>
             <column name="agency_id" type="bigint">
@@ -32,7 +32,7 @@
             <column name="period" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="number" type="varchar(255)">
+            <column name="number" type="varchar(50)">
                 <constraints nullable="false" />
             </column>
             <column name="subtotal" type="double">
@@ -65,7 +65,7 @@
             <column name="notes" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="customer_vat_id" type="varchar(255)">
+            <column name="customer_vat_id" type="varchar(30)">
                 <constraints nullable="true" />
             </column>
             <column name="filename" type="varchar(255)">

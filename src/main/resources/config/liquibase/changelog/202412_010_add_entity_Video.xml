@@ -14,22 +14,22 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="code" type="varchar(255)">
+            <column name="code" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
-            <column name="title" type="varchar(255)">
+            <column name="title" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
             <column name="duration" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="language" type="varchar(255)">
+            <column name="language" type="varchar(2)">
                 <constraints nullable="false" />
             </column>
-            <column name="tags" type="varchar(255)">
+            <column name="tags" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
-            <column name="player" type="varchar(255)">
+            <column name="player" type="varchar(10)">
                 <constraints nullable="false" />
             </column>
             <column name="thumbnail" type="varchar(255)">
@@ -38,10 +38,10 @@
             <column name="url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="audience" type="varchar(255)">
+            <column name="audience" type="varchar(10)">
                 <constraints nullable="true" />
             </column>
-            <column name="intensity" type="varchar(255)">
+            <column name="intensity" type="varchar(10)">
                 <constraints nullable="true" />
             </column>
             <column name="filename" type="varchar(255)">

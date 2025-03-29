@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="country" type="varchar(10)">
+            <column name="country" type="varchar(2)">
                 <constraints nullable="false" />
             </column>
             <column name="agency_id" type="bigint">
@@ -23,7 +23,7 @@
             <column name="customer_id" type="bigint">
                 <constraints nullable="false" />
             </column>
-            <column name="contract" type="varchar(32)">
+            <column name="contract" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
             <column name="pricing" type="varchar(12)">

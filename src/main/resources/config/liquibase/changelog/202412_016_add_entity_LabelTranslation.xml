@@ -14,10 +14,10 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="label" type="varchar(255)">
+            <column name="label" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
-            <column name="lang" type="varchar(255)">
+            <column name="lang" type="varchar(2)">
                 <constraints nullable="false" />
             </column>
             <column name="translation" type="varchar(255)">

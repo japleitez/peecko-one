@@ -14,28 +14,28 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="type" type="varchar(255)">
+            <column name="type" type="varchar(50)">
                 <constraints nullable="false" />
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="name" type="varchar(150)">
                 <constraints nullable="false" />
             </column>
-            <column name="email" type="varchar(255)">
+            <column name="email" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="website" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="instagram" type="varchar(255)">
+            <column name="instagram" type="varchar(70)">
                 <constraints nullable="true" />
             </column>
-            <column name="phone_number" type="varchar(255)">
+            <column name="phone_number" type="varchar(30)">
                 <constraints nullable="true" />
             </column>
-            <column name="country" type="varchar(255)">
+            <column name="country" type="varchar(2)">
                 <constraints nullable="true" />
             </column>
-            <column name="speaks" type="varchar(255)">
+            <column name="speaks" type="varchar(100)">
                 <constraints nullable="true" />
             </column>
             <column name="resume" type="varchar(255)">
