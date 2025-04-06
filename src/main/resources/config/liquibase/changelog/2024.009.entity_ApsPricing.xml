@@ -18,7 +18,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="customer_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="index" type="integer">
                 <constraints nullable="false" />
@@ -51,7 +51,6 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="country" type="string"/>
-            <column name="customer_id" type="numeric"/>
             <column name="index" type="numeric"/>
             <column name="min_quantity" type="numeric"/>
             <column name="unit_price" type="numeric"/>

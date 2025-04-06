@@ -1,6 +1,6 @@
-id;country;customer_id;index;min_quantity;unit_price
-1;LU;1;1;0;12.50
-2;LU;1;2;50;12.00
-3;LU;1;3;100;11.50
-4;LU;1;4;200;11.00
-5;LU;1;5;300;10.50
+id;country;index;min_quantity;unit_price
+1;LU;1;0;12.50
+2;LU;2;50;12.00
+3;LU;3;100;11.50
+4;LU;4;200;11.00
+5;LU;5;300;10.50

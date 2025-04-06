@@ -29,7 +29,7 @@
             <column name="language" type="varchar(2)">
                 <constraints nullable="false" />
             </column>
-            <column name="tags" type="varchar(50)">
+            <column name="tags" type="varchar(70)">
                 <constraints nullable="true" />
             </column>
             <column name="thumbnail" type="varchar(255)">

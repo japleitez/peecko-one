@@ -26,10 +26,10 @@
             <column name="website" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="instagram" type="varchar(70)">
+            <column name="instagram" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="phone_number" type="varchar(30)">
+            <column name="phone_number" type="varchar(25)">
                 <constraints nullable="true" />
             </column>
             <column name="country" type="varchar(2)">
