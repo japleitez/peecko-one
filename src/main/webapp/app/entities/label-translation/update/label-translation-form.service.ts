@@ -20,7 +20,7 @@ type LabelTranslationFormGroupContent = {
   id: FormControl<ILabelTranslation['id'] | NewLabelTranslation['id']>;
   label: FormControl<ILabelTranslation['label']>;
   lang: FormControl<ILabelTranslation['lang']>;
-  translation: FormControl<ILabelTranslation['translation']>;
+  text: FormControl<ILabelTranslation['text']>;
 };
 
 export type LabelTranslationFormGroup = FormGroup<LabelTranslationFormGroupContent>;
@@ -45,8 +45,8 @@ export class LabelTranslationFormService {
       ),
       label: new FormControl({ value: labelTranslationRawValue.label, disabled: ua.label.disabled }, { validators: [Validators.required] }),
       lang: new FormControl({ value: labelTranslationRawValue.lang, disabled: ua.lang.disabled }, { validators: [Validators.required] }),
-      translation: new FormControl(
-        { value: labelTranslationRawValue.translation, disabled: ua.translation.disabled },
+      text: new FormControl(
+        { value: labelTranslationRawValue.text, disabled: ua.text.disabled },
         { validators: [Validators.required] },
       ),
     });

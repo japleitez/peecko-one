@@ -34,8 +34,8 @@ public class LabelTranslation implements Serializable {
     private Language lang;
 
     @NotNull
-    @Column(name = "translation", nullable = false)
-    private String translation;
+    @Column(name = "text", nullable = false)
+    private String text;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -78,17 +78,17 @@ public class LabelTranslation implements Serializable {
         this.lang = lang;
     }
 
-    public String getTranslation() {
-        return this.translation;
+    public String getText() {
+        return this.text;
     }
 
-    public LabelTranslation translation(String translation) {
-        this.setTranslation(translation);
+    public LabelTranslation text(String text) {
+        this.setText(text);
         return this;
     }
 
-    public void setTranslation(String translation) {
-        this.translation = translation;
+    public void setText(String text) {
+        this.text = text;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -117,7 +117,7 @@ public class LabelTranslation implements Serializable {
             "id=" + getId() +
             ", label='" + getLabel() + "'" +
             ", lang='" + getLang() + "'" +
-            ", translation='" + getTranslation() + "'" +
+            ", text='" + getText() + "'" +
             "}";
     }
 }

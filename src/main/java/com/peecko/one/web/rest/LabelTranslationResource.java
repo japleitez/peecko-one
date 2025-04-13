@@ -137,8 +137,8 @@ public class LabelTranslationResource {
                 if (labelTranslation.getLang() != null) {
                     existingLabelTranslation.setLang(labelTranslation.getLang());
                 }
-                if (labelTranslation.getTranslation() != null) {
-                    existingLabelTranslation.setTranslation(labelTranslation.getTranslation());
+                if (labelTranslation.getText() != null) {
+                    existingLabelTranslation.setText(labelTranslation.getText());
                 }
 
                 return existingLabelTranslation;

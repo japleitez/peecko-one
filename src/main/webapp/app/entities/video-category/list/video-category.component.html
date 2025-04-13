@@ -56,13 +56,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="label" *ngIf="ua.label.listable">
-              <div class="d-flex">
-                <span>Label</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
@@ -95,7 +88,6 @@
               </td>
               <td *ngIf="ua.code.listable">{{ videoCategory.code }}</td>
               <td *ngIf="ua.title.listable">{{ videoCategory.title }}</td>
-              <td *ngIf="ua.label.listable">{{ videoCategory.label }}</td>
               <td *ngIf="ua.created.listable">{{ videoCategory.created | formatMediumDatetime }}</td>
               <td *ngIf="ua.released.listable">{{ videoCategory.released | formatMediumDatetime }}</td>
               <td *ngIf="ua.archived.listable">{{ videoCategory.archived | formatMediumDatetime }}</td>

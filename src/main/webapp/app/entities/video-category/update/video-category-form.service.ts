@@ -35,7 +35,6 @@ type VideoCategoryFormGroupContent = {
   id: FormControl<VideoCategoryFormRawValue['id'] | NewVideoCategory['id']>;
   code: FormControl<VideoCategoryFormRawValue['code']>;
   title: FormControl<VideoCategoryFormRawValue['title']>;
-  label: FormControl<VideoCategoryFormRawValue['label']>;
   created: FormControl<VideoCategoryFormRawValue['created']>;
   released: FormControl<VideoCategoryFormRawValue['released']>;
   archived: FormControl<VideoCategoryFormRawValue['archived']>;
@@ -62,9 +61,6 @@ export class VideoCategoryFormService {
         { validators: [Validators.required],
       }),
       title: new FormControl({ value: videoCategoryRawValue.title, disabled: ua.title.disabled },
-        { validators: [Validators.required],
-      }),
-      label: new FormControl({ value: videoCategoryRawValue.label, disabled: ua.label.disabled },
         { validators: [Validators.required],
       }),
       created: new FormControl({ value: videoCategoryRawValue.created, disabled: ua.created.disabled }),

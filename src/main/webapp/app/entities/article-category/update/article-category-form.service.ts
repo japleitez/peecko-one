@@ -40,7 +40,6 @@ type ArticleCategoryFormGroupContent = {
   id: FormControl<ArticleCategoryFormRawValue['id'] | NewArticleCategory['id']>;
   code: FormControl<ArticleCategoryFormRawValue['code']>;
   title: FormControl<ArticleCategoryFormRawValue['title']>;
-  label: FormControl<ArticleCategoryFormRawValue['label']>;
   created: FormControl<ArticleCategoryFormRawValue['created']>;
   release: FormControl<ArticleCategoryFormRawValue['release']>;
   archived: FormControl<ArticleCategoryFormRawValue['archived']>;
@@ -67,9 +66,6 @@ export class ArticleCategoryFormService {
         { validators: [Validators.required],
       }),
       title: new FormControl({ value: articleCategoryRawValue.title, disabled: ua.title.disabled },
-        { validators: [Validators.required],
-      }),
-      label: new FormControl({ value: articleCategoryRawValue.label, disabled: ua.label.disabled },
         { validators: [Validators.required],
       }),
       created: new FormControl({ value: articleCategoryRawValue.created, disabled: ua.created.disabled }),

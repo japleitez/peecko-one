@@ -20,9 +20,6 @@
             <column name="title" type="varchar(150)">
                 <constraints nullable="false" />
             </column>
-            <column name="label" type="varchar(100)">
-                <constraints nullable="false" />
-            </column>
             <column name="created" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>

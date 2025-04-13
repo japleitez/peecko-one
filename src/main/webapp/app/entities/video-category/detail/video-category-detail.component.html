@@ -23,10 +23,6 @@
           <dd *ngIf="ua.title.visible">
             <span>{{ videoCategory.title }}</span>
           </dd>
-          <dt *ngIf="ua.label.visible"><span>Label</span></dt>
-          <dd *ngIf="ua.label.visible">
-            <span>{{ videoCategory.label }}</span>
-          </dd>
           <dt *ngIf="ua.created.visible"><span>Created</span></dt>
           <dd *ngIf="ua.created.visible">
             <span>{{ videoCategory.created | formatMediumDatetime }}</span>

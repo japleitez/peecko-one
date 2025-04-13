@@ -37,9 +37,6 @@ class VideoCategoryResourceIT {
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_LABEL = "AAAAAAAAAA";
-    private static final String UPDATED_LABEL = "BBBBBBBBBB";
-
     private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -76,7 +73,6 @@ class VideoCategoryResourceIT {
         VideoCategory videoCategory = new VideoCategory()
             .code(DEFAULT_CODE)
             .title(DEFAULT_TITLE)
-            .label(DEFAULT_LABEL)
             .created(DEFAULT_CREATED)
             .released(DEFAULT_RELEASED)
             .archived(DEFAULT_ARCHIVED);
@@ -93,7 +89,6 @@ class VideoCategoryResourceIT {
         VideoCategory videoCategory = new VideoCategory()
             .code(UPDATED_CODE)
             .title(UPDATED_TITLE)
-            .label(UPDATED_LABEL)
             .created(UPDATED_CREATED)
             .released(UPDATED_RELEASED)
             .archived(UPDATED_ARCHIVED);
@@ -120,7 +115,6 @@ class VideoCategoryResourceIT {
         VideoCategory testVideoCategory = videoCategoryList.get(videoCategoryList.size() - 1);
         assertThat(testVideoCategory.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testVideoCategory.getTitle()).isEqualTo(DEFAULT_TITLE);
-        assertThat(testVideoCategory.getLabel()).isEqualTo(DEFAULT_LABEL);
         assertThat(testVideoCategory.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testVideoCategory.getReleased()).isEqualTo(DEFAULT_RELEASED);
         assertThat(testVideoCategory.getArchived()).isEqualTo(DEFAULT_ARCHIVED);
@@ -182,8 +176,6 @@ class VideoCategoryResourceIT {
     @Transactional
     void checkLabelIsRequired() throws Exception {
         int databaseSizeBeforeTest = videoCategoryRepository.findAll().size();
-        // set the field null
-        videoCategory.setLabel(null);
 
         // Create the VideoCategory, which fails.
 
@@ -209,7 +201,6 @@ class VideoCategoryResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(videoCategory.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)))
             .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].released").value(hasItem(DEFAULT_RELEASED.toString())))
             .andExpect(jsonPath("$.[*].archived").value(hasItem(DEFAULT_ARCHIVED.toString())));
@@ -229,7 +220,6 @@ class VideoCategoryResourceIT {
             .andExpect(jsonPath("$.id").value(videoCategory.getId().intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
-            .andExpect(jsonPath("$.label").value(DEFAULT_LABEL))
             .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
             .andExpect(jsonPath("$.released").value(DEFAULT_RELEASED.toString()))
             .andExpect(jsonPath("$.archived").value(DEFAULT_ARCHIVED.toString()));
@@ -257,7 +247,6 @@ class VideoCategoryResourceIT {
         updatedVideoCategory
             .code(UPDATED_CODE)
             .title(UPDATED_TITLE)
-            .label(UPDATED_LABEL)
             .created(UPDATED_CREATED)
             .released(UPDATED_RELEASED)
             .archived(UPDATED_ARCHIVED);
@@ -276,7 +265,6 @@ class VideoCategoryResourceIT {
         VideoCategory testVideoCategory = videoCategoryList.get(videoCategoryList.size() - 1);
         assertThat(testVideoCategory.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testVideoCategory.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testVideoCategory.getLabel()).isEqualTo(UPDATED_LABEL);
         assertThat(testVideoCategory.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testVideoCategory.getReleased()).isEqualTo(UPDATED_RELEASED);
         assertThat(testVideoCategory.getArchived()).isEqualTo(UPDATED_ARCHIVED);
@@ -371,7 +359,6 @@ class VideoCategoryResourceIT {
         VideoCategory testVideoCategory = videoCategoryList.get(videoCategoryList.size() - 1);
         assertThat(testVideoCategory.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testVideoCategory.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testVideoCategory.getLabel()).isEqualTo(DEFAULT_LABEL);
         assertThat(testVideoCategory.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testVideoCategory.getReleased()).isEqualTo(UPDATED_RELEASED);
         assertThat(testVideoCategory.getArchived()).isEqualTo(UPDATED_ARCHIVED);
@@ -392,7 +379,6 @@ class VideoCategoryResourceIT {
         partialUpdatedVideoCategory
             .code(UPDATED_CODE)
             .title(UPDATED_TITLE)
-            .label(UPDATED_LABEL)
             .created(UPDATED_CREATED)
             .released(UPDATED_RELEASED)
             .archived(UPDATED_ARCHIVED);
@@ -411,7 +397,6 @@ class VideoCategoryResourceIT {
         VideoCategory testVideoCategory = videoCategoryList.get(videoCategoryList.size() - 1);
         assertThat(testVideoCategory.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testVideoCategory.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testVideoCategory.getLabel()).isEqualTo(UPDATED_LABEL);
         assertThat(testVideoCategory.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testVideoCategory.getReleased()).isEqualTo(UPDATED_RELEASED);
         assertThat(testVideoCategory.getArchived()).isEqualTo(UPDATED_ARCHIVED);

@@ -35,10 +35,6 @@ public class VideoCategory implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @NotNull
-    @Column(name = "label", nullable = false)
-    private String label;
-
     @Column(name = "created")
     private Instant created;
 
@@ -92,19 +88,6 @@ public class VideoCategory implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getLabel() {
-        return this.label;
-    }
-
-    public VideoCategory label(String label) {
-        this.setLabel(label);
-        return this;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public Instant getCreated() {
@@ -203,10 +186,6 @@ public class VideoCategory implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", title='" + getTitle() + "'" +
-            ", label='" + getLabel() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", released='" + getReleased() + "'" +
-            ", archived='" + getArchived() + "'" +
             "}";
     }
 }

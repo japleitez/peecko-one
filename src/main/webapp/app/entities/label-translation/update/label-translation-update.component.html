@@ -42,19 +42,19 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.translation.visible">
-          <label class="form-label" for="field_translation">Translation</label>
+        <div class="mb-3" *ngIf="ua.text.visible">
+          <label class="form-label" for="field_text">Text</label>
           <input
             type="text"
             class="form-control"
-            name="translation"
-            id="field_translation"
-            data-cy="translation"
+            name="text"
+            id="field_text"
+            data-cy="text"
             formControlName="translation"
           />
-          @if (editForm.get('translation')!.invalid && (editForm.get('translation')!.dirty || editForm.get('translation')!.touched)) {
+          @if (editForm.get('text')!.invalid && (editForm.get('text')!.dirty || editForm.get('text')!.touched)) {
             <div>
-              @if (editForm.get('translation')?.errors?.required) {
+              @if (editForm.get('text')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
             </div>

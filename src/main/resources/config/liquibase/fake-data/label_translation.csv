@@ -1,5 +1,4 @@
-id;label;lang;translation
-1;clear;EN;clear
-2;clear;DE;clear
-3;clear;FR;clear
-4;clear;ES;clear
+id;label;lang;text
+1;vc.upper-body;EN;Upper Body
+2;vc.upper-body;FR;Haut du corps
+3;vc.upper-body;DE;Oberkörper

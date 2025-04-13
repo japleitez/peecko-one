@@ -5,7 +5,7 @@ export interface ILabelTranslation {
   id: number;
   label?: string | null;
   lang?: keyof typeof Language | null;
-  translation?: string | null;
+  text?: string | null;
 }
 
 export type NewLabelTranslation = Omit<ILabelTranslation, 'id'> & { id: null };
@@ -14,7 +14,7 @@ export interface LabelAccess {
   id: FieldAccess;
   label: FieldAccess;
   lang: FieldAccess;
-  translation: FieldAccess;
+  text: FieldAccess;
 }
 
 export let LABEL_ACCESS: LabelAccess;
@@ -23,5 +23,5 @@ LABEL_ACCESS = {
   id: { listable: false, visible: true, disabled: true },
   label: { listable: true, visible: true, disabled: false },
   lang: { listable: true, visible: true, disabled: false },
-  translation: { listable: true, visible: true, disabled: false },
+  text: { listable: true, visible: true, disabled: false },
 };

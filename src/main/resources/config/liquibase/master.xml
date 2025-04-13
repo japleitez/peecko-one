@@ -35,7 +35,6 @@
     <include file="/config/liquibase/changelog/2024.022.entity_VideoFav.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.023.entity_HelpItem.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.024.entity_InvalidJwt.xml" relativeToChangelogFile="false"/>
-    <include file="/config/liquibase/changelog/2024.025.entity_Label.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.026.entity_Language.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.027.entity_PinCode.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
