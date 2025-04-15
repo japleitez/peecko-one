@@ -39,7 +39,6 @@ export const sampleWithFullData: ICustomer = {
   created: dayjs('2023-12-19T22:17'),
   updated: dayjs('2023-12-20T12:16'),
   trialed: dayjs('2023-12-20T08:00'),
-  declined: dayjs('2023-12-20T04:03'),
   activated: dayjs('2023-12-20T09:05'),
   closed: dayjs('2023-12-20T14:00'),
 };

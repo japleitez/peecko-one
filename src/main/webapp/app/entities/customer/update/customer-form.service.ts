@@ -19,11 +19,10 @@ type CustomerFormGroupInput = ICustomer | PartialWithRequiredKeyOf<NewCustomer>;
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends ICustomer | NewCustomer> = Omit<T, 'created' | 'updated' | 'trialed' | 'declined' | 'activated' | 'closed'> & {
+type FormValueOf<T extends ICustomer | NewCustomer> = Omit<T, 'created' | 'updated' | 'trialed' | 'activated' | 'closed'> & {
   created?: string | null;
   updated?: string | null;
   trialed?: string | null;
-  declined?: string | null;
   activated?: string | null;
   closed?: string | null;
 };
@@ -32,7 +31,7 @@ type CustomerFormRawValue = FormValueOf<ICustomer>;
 
 type NewCustomerFormRawValue = FormValueOf<NewCustomer>;
 
-type CustomerFormDefaults = Pick<NewCustomer, 'id' | 'created' | 'updated' | 'trialed' | 'declined' | 'activated' | 'closed'>;
+type CustomerFormDefaults = Pick<NewCustomer, 'id' | 'created' | 'updated' | 'trialed' | 'activated' | 'closed'>;
 
 type CustomerFormGroupContent = {
   id: FormControl<CustomerFormRawValue['id'] | NewCustomer['id']>;
@@ -51,7 +50,6 @@ type CustomerFormGroupContent = {
   created: FormControl<CustomerFormRawValue['created']>;
   updated: FormControl<CustomerFormRawValue['updated']>;
   trialed: FormControl<CustomerFormRawValue['trialed']>;
-  declined: FormControl<CustomerFormRawValue['declined']>;
   activated: FormControl<CustomerFormRawValue['activated']>;
   closed: FormControl<CustomerFormRawValue['closed']>;
   agency: FormControl<CustomerFormRawValue['agency']>;
@@ -74,19 +72,14 @@ export class CustomerFormService {
           validators: [Validators.required],
         },
       ),
-      code: new FormControl( { value: customerRawValue.code, disabled: ua.code.disabled },
-      { validators: [Validators.required], }),
-      name: new FormControl( { value: customerRawValue.name, disabled: ua.name.disabled },
-        { validators: [Validators.required], }),
-      country: new FormControl({ value: customerRawValue.country, disabled: ua.country.disabled },
-        { validators: [Validators.required], }),
-      state: new FormControl({ value: customerRawValue.state, disabled: ua.state.disabled },
-        { validators: [Validators.required], }),
+      code: new FormControl({ value: customerRawValue.code, disabled: ua.code.disabled }, { validators: [Validators.required] }),
+      name: new FormControl({ value: customerRawValue.name, disabled: ua.name.disabled }, { validators: [Validators.required] }),
+      country: new FormControl({ value: customerRawValue.country, disabled: ua.country.disabled }, { validators: [Validators.required] }),
+      state: new FormControl({ value: customerRawValue.state, disabled: ua.state.disabled }, { validators: [Validators.required] }),
       license: new FormControl({ value: customerRawValue.license, disabled: ua.license.disabled }),
       billingEmail: new FormControl({ value: customerRawValue.billingEmail, disabled: ua.billingEmail.disabled }),
       vatId: new FormControl({ value: customerRawValue.vatId, disabled: ua.vatId.disabled }),
-      vatRate: new FormControl({ value: customerRawValue.vatRate, disabled: ua.vatRate.disabled },
-        { validators: [Validators.required], }),
+      vatRate: new FormControl({ value: customerRawValue.vatRate, disabled: ua.vatRate.disabled }, { validators: [Validators.required] }),
       bank: new FormControl({ value: customerRawValue.bank, disabled: ua.bank.disabled }),
       iban: new FormControl({ value: customerRawValue.iban, disabled: ua.iban.disabled }),
       logo: new FormControl({ value: customerRawValue.logo, disabled: ua.logo.disabled }),
@@ -94,11 +87,9 @@ export class CustomerFormService {
       created: new FormControl({ value: customerRawValue.created, disabled: ua.created.disabled }),
       updated: new FormControl({ value: customerRawValue.updated, disabled: ua.updated.disabled }),
       trialed: new FormControl({ value: customerRawValue.trialed, disabled: ua.trialed.disabled }),
-      declined: new FormControl({ value: customerRawValue.declined, disabled: ua.declined.disabled }),
       activated: new FormControl({ value: customerRawValue.activated, disabled: ua.activated.disabled }),
       closed: new FormControl({ value: customerRawValue.closed, disabled: ua.closed.disabled }),
-      agency: new FormControl({ value: customerRawValue.agency, disabled: ua.agency.disabled },
-        { validators: [Validators.required], }),
+      agency: new FormControl({ value: customerRawValue.agency, disabled: ua.agency.disabled }, { validators: [Validators.required] }),
     });
   }
 
@@ -121,10 +112,9 @@ export class CustomerFormService {
 
     return {
       id: null,
-      created: null,
+      created: currentTime,
       updated: null,
       trialed: null,
-      declined: null,
       activated: null,
       closed: null,
     };
@@ -136,7 +126,6 @@ export class CustomerFormService {
       created: dayjs(rawCustomer.created, DATE_TIME_FORMAT),
       updated: dayjs(rawCustomer.updated, DATE_TIME_FORMAT),
       trialed: dayjs(rawCustomer.trialed, DATE_TIME_FORMAT),
-      declined: dayjs(rawCustomer.declined, DATE_TIME_FORMAT),
       activated: dayjs(rawCustomer.activated, DATE_TIME_FORMAT),
       closed: dayjs(rawCustomer.closed, DATE_TIME_FORMAT),
     };
@@ -150,7 +139,6 @@ export class CustomerFormService {
       created: customer.created ? customer.created.format(DATE_TIME_FORMAT) : undefined,
       updated: customer.updated ? customer.updated.format(DATE_TIME_FORMAT) : undefined,
       trialed: customer.trialed ? customer.trialed.format(DATE_TIME_FORMAT) : undefined,
-      declined: customer.declined ? customer.declined.format(DATE_TIME_FORMAT) : undefined,
       activated: customer.activated ? customer.activated.format(DATE_TIME_FORMAT) : undefined,
       closed: customer.closed ? customer.closed.format(DATE_TIME_FORMAT) : undefined,
     };

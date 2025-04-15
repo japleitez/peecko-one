@@ -83,10 +83,6 @@
           <dd *ngIf="ua.trialed.visible">
             <span>{{ customer.trialed | formatMediumDatetime }}</span>
           </dd>
-          <dt *ngIf="ua.declined.visible"><span>Declined</span></dt>
-          <dd *ngIf="ua.declined.visible">
-            <span>{{ customer.declined | formatMediumDatetime }}</span>
-          </dd>
           <dt *ngIf="ua.activated.visible"><span>Activated</span></dt>
           <dd *ngIf="ua.activated.visible">
             <span>{{ customer.activated | formatMediumDatetime }}</span>

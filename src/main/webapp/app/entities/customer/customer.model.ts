@@ -22,7 +22,6 @@ export interface ICustomer {
   created?: dayjs.Dayjs | null;
   updated?: dayjs.Dayjs | null;
   trialed?: dayjs.Dayjs | null;
-  declined?: dayjs.Dayjs | null;
   activated?: dayjs.Dayjs | null;
   closed?: dayjs.Dayjs | null;
   contacts?: IContact[] | null;
@@ -49,7 +48,6 @@ export interface CustomerAccess {
   created: FieldAccess;
   updated: FieldAccess;
   trialed: FieldAccess;
-  declined: FieldAccess;
   activated: FieldAccess;
   closed: FieldAccess;
   contacts: FieldAccess;
@@ -76,10 +74,9 @@ CUSTOMER_USER_ACCESS = {
   created: { listable: false, visible: true, disabled: true },
   trialed: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
-  declined: { listable: false, visible: true, disabled: true },
   activated: { listable: true, visible: true, disabled: true },
   closed: { listable: false, visible: true, disabled: true },
   contacts: { listable: false, visible: true, disabled: false },
   apsPlans: { listable: false, visible: true, disabled: false },
-  agency: { listable: false, visible: true, disabled: false }
+  agency: { listable: false, visible: true, disabled: false },
 };

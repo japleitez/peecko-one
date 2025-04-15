@@ -11,7 +11,6 @@ const requireRestSample: RestCustomer = {
   created: sampleWithRequiredData.created?.toJSON(),
   updated: sampleWithRequiredData.updated?.toJSON(),
   trialed: sampleWithRequiredData.trialed?.toJSON(),
-  declined: sampleWithRequiredData.declined?.toJSON(),
   activated: sampleWithRequiredData.activated?.toJSON(),
   closed: sampleWithRequiredData.closed?.toJSON(),
 };

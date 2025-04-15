@@ -13,11 +13,10 @@ import { ICustomer, NewCustomer } from '../customer.model';
 
 export type PartialUpdateCustomer = Partial<ICustomer> & Pick<ICustomer, 'id'>;
 
-type RestOf<T extends ICustomer | NewCustomer> = Omit<T, 'created' | 'updated' | 'trialed' | 'declined' | 'activated' | 'closed'> & {
+type RestOf<T extends ICustomer | NewCustomer> = Omit<T, 'created' | 'updated' | 'trialed' | 'activated' | 'closed'> & {
   created?: string | null;
   updated?: string | null;
   trialed?: string | null;
-  declined?: string | null;
   activated?: string | null;
   closed?: string | null;
 };
@@ -80,7 +79,6 @@ export class CustomerService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
-
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -119,7 +117,6 @@ export class CustomerService {
       created: customer.created?.toJSON() ?? null,
       updated: customer.updated?.toJSON() ?? null,
       trialed: customer.trialed?.toJSON() ?? null,
-      declined: customer.declined?.toJSON() ?? null,
       activated: customer.activated?.toJSON() ?? null,
       closed: customer.closed?.toJSON() ?? null,
     };
@@ -131,7 +128,6 @@ export class CustomerService {
       created: restCustomer.created ? dayjs(restCustomer.created) : undefined,
       updated: restCustomer.updated ? dayjs(restCustomer.updated) : undefined,
       trialed: restCustomer.trialed ? dayjs(restCustomer.trialed) : undefined,
-      declined: restCustomer.declined ? dayjs(restCustomer.declined) : undefined,
       activated: restCustomer.activated ? dayjs(restCustomer.activated) : undefined,
       closed: restCustomer.closed ? dayjs(restCustomer.closed) : undefined,
     };
