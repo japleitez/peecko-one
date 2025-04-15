@@ -44,14 +44,7 @@
 
         <div class="mb-3" *ngIf="ua.text.visible">
           <label class="form-label" for="field_text">Text</label>
-          <input
-            type="text"
-            class="form-control"
-            name="text"
-            id="field_text"
-            data-cy="text"
-            formControlName="translation"
-          />
+          <input type="text" class="form-control" name="text" id="field_text" data-cy="text" formControlName="text" />
           @if (editForm.get('text')!.invalid && (editForm.get('text')!.dirty || editForm.get('text')!.touched)) {
             <div>
               @if (editForm.get('text')?.errors?.required) {

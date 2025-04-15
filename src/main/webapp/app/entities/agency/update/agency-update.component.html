@@ -65,7 +65,7 @@
         </div>
 
         <div class="mb-3" *ngIf="ua.country.visible">
-          <label class="form-label" for="field_country">Country</label>
+          <label class="form-label" for="field_country">Country (ISO2)</label>
           <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
           @if (editForm.get('country')!.invalid && (editForm.get('country')!.dirty || editForm.get('country')!.touched)) {
             <div>
