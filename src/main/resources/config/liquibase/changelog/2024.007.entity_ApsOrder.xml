@@ -15,13 +15,13 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="country" type="varchar(2)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="agency_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="customer_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="aps_plan_id" type="bigint">
                 <constraints nullable="false" />
@@ -39,7 +39,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="number_of_users" type="integer" defaultValue="0">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="invoice_number" type="varchar(20)">
                 <constraints nullable="true" />

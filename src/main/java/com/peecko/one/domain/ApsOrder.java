@@ -45,7 +45,7 @@ public class ApsOrder implements Serializable {
     @Column(name = "vat_rate", nullable = false)
     private Double vatRate;
 
-    @Column(name = "number_of_users", nullable = false)
+    @Column(name = "number_of_users")
     private Integer numberOfUsers;
 
     @Column(name = "invoice_number")
@@ -72,6 +72,7 @@ public class ApsOrder implements Serializable {
 
     @Column(name = "customer_id")
     private Long customerId;
+
     @Column(name = "agency_id")
     private Long agencyId;
 
@@ -80,8 +81,7 @@ public class ApsOrder implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public ApsOrder() {
-    }
+    public ApsOrder() {}
 
     public ApsOrder(Long id) {
         this.id = id;
@@ -299,7 +299,7 @@ public class ApsOrder implements Serializable {
         this.country = country;
     }
 
-    public ApsOrder country (String country) {
+    public ApsOrder country(String country) {
         this.setCountry(country);
         return this;
     }

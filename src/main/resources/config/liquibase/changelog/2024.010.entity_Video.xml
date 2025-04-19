@@ -41,7 +41,7 @@
             <column name="audience" type="varchar(10)">
                 <constraints nullable="true" />
             </column>
-            <column name="intensity" type="varchar(10)">
+            <column name="intensity" type="varchar(20)">
                 <constraints nullable="true" />
             </column>
             <column name="filename" type="varchar(255)">

@@ -7,7 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.ApsPricing;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ApsPricingRepository;
+import com.peecko.one.repository.CustomerRepository;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ApsPricingResourceIT {
 
     private static final Long DEFAULT_CUSTOMER_ID = 1L;
-    private static final Long UPDATED_CUSTOMER_ID = 2L;
+    private static final String DEFAULT_COUNTRY = "LU";
 
     private static final Integer DEFAULT_INDEX = 1;
     private static final Integer UPDATED_INDEX = 2;
@@ -51,12 +53,17 @@ class ApsPricingResourceIT {
     private ApsPricingRepository apsPricingRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
     private MockMvc restApsPricingMockMvc;
 
     private ApsPricing apsPricing;
+
+    private Customer customer;
 
     /**
      * Create an entity for this test.
@@ -66,6 +73,7 @@ class ApsPricingResourceIT {
      */
     public static ApsPricing createEntity(EntityManager em) {
         ApsPricing apsPricing = new ApsPricing()
+            .country(DEFAULT_COUNTRY)
             .index(DEFAULT_INDEX)
             .minQuantity(DEFAULT_MIN_QUANTITY)
             .unitPrice(DEFAULT_UNIT_PRICE);
@@ -79,16 +87,17 @@ class ApsPricingResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ApsPricing createUpdatedEntity(EntityManager em) {
-        ApsPricing apsPricing = new ApsPricing()
-            .index(UPDATED_INDEX)
-            .minQuantity(UPDATED_MIN_QUANTITY)
-            .unitPrice(UPDATED_UNIT_PRICE);
+        ApsPricing apsPricing = new ApsPricing().index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
         return apsPricing;
     }
 
     @BeforeEach
     public void initTest() {
+        customer = CustomerResourceIT.createEntity(em);
+        customer = customerRepository.saveAndFlush(customer);
+
         apsPricing = createEntity(em);
+        apsPricing.setCustomer(customer);
     }
 
     @Test
@@ -104,6 +113,7 @@ class ApsPricingResourceIT {
         List<ApsPricing> apsPricingList = apsPricingRepository.findAll();
         assertThat(apsPricingList).hasSize(databaseSizeBeforeCreate + 1);
         ApsPricing testApsPricing = apsPricingList.get(apsPricingList.size() - 1);
+        assertThat(testApsPricing.getCountry()).isEqualTo(DEFAULT_COUNTRY);
         assertThat(testApsPricing.getIndex()).isEqualTo(DEFAULT_INDEX);
         assertThat(testApsPricing.getMinQuantity()).isEqualTo(DEFAULT_MIN_QUANTITY);
         assertThat(testApsPricing.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
@@ -125,21 +135,6 @@ class ApsPricingResourceIT {
         // Validate the ApsPricing in the database
         List<ApsPricing> apsPricingList = apsPricingRepository.findAll();
         assertThat(apsPricingList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkCustomerIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = apsPricingRepository.findAll().size();
-
-        // Create the ApsPricing, which fails.
-
-        restApsPricingMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(apsPricing)))
-            .andExpect(status().isBadRequest());
-
-        List<ApsPricing> apsPricingList = apsPricingRepository.findAll();
-        assertThat(apsPricingList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -222,7 +217,6 @@ class ApsPricingResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(apsPricing.getId().intValue()))
-            .andExpect(jsonPath("$.customerId").value(DEFAULT_CUSTOMER_ID.intValue()))
             .andExpect(jsonPath("$.index").value(DEFAULT_INDEX))
             .andExpect(jsonPath("$.minQuantity").value(DEFAULT_MIN_QUANTITY))
             .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()));
@@ -247,10 +241,7 @@ class ApsPricingResourceIT {
         ApsPricing updatedApsPricing = apsPricingRepository.findById(apsPricing.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedApsPricing are not directly saved in db
         em.detach(updatedApsPricing);
-        updatedApsPricing
-            .index(UPDATED_INDEX)
-            .minQuantity(UPDATED_MIN_QUANTITY)
-            .unitPrice(UPDATED_UNIT_PRICE);
+        updatedApsPricing.index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
 
         restApsPricingMockMvc
             .perform(
@@ -336,7 +327,7 @@ class ApsPricingResourceIT {
         // Update the apsPricing using partial update
         ApsPricing partialUpdatedApsPricing = new ApsPricing();
         partialUpdatedApsPricing.setId(apsPricing.getId());
-
+        partialUpdatedApsPricing.setIndex(UPDATED_INDEX);
 
         restApsPricingMockMvc
             .perform(
@@ -367,10 +358,7 @@ class ApsPricingResourceIT {
         ApsPricing partialUpdatedApsPricing = new ApsPricing();
         partialUpdatedApsPricing.setId(apsPricing.getId());
 
-        partialUpdatedApsPricing
-            .index(UPDATED_INDEX)
-            .minQuantity(UPDATED_MIN_QUANTITY)
-            .unitPrice(UPDATED_UNIT_PRICE);
+        partialUpdatedApsPricing.index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
 
         restApsPricingMockMvc
             .perform(

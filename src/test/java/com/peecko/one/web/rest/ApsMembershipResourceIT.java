@@ -7,7 +7,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.ApsMembership;
+import com.peecko.one.domain.ApsOrder;
+import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.repository.ApsMembershipRepository;
+import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.repository.ApsPlanRepository;
+import com.peecko.one.repository.CustomerRepository;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Random;
@@ -48,12 +54,27 @@ class ApsMembershipResourceIT {
     private ApsMembershipRepository apsMembershipRepository;
 
     @Autowired
+    private ApsOrderRepository apsOrderRepository;
+
+    @Autowired
+    private ApsPlanRepository apsPlanRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
     private MockMvc restApsMembershipMockMvc;
 
     private ApsMembership apsMembership;
+
+    private Customer customer;
+
+    private ApsPlan apsPlan;
+
+    private ApsOrder apsOrder;
 
     /**
      * Create an entity for this test.
@@ -79,7 +100,19 @@ class ApsMembershipResourceIT {
 
     @BeforeEach
     public void initTest() {
+        customer = CustomerResourceIT.createEntity(em);
+        customer = customerRepository.saveAndFlush(customer);
+
+        apsPlan = ApsPlanResourceIT.createEntity(em);
+        apsPlan.setCustomer(customer);
+        apsPlan = apsPlanRepository.saveAndFlush(apsPlan);
+
+        apsOrder = ApsOrderResourceIT.createEntity(em);
+        apsOrder.setApsPlan(apsPlan);
+        apsOrder = apsOrderRepository.saveAndFlush(apsOrder);
+
         apsMembership = createEntity(em);
+        apsMembership.setApsOrder(apsOrder);
     }
 
     @Test
@@ -175,9 +208,11 @@ class ApsMembershipResourceIT {
         // Initialize the database
         apsMembershipRepository.saveAndFlush(apsMembership);
 
+        String params = "?sort=id,desc&apsOrderId=" + apsMembership.getApsOrder().getId();
+
         // Get all the apsMembershipList
         restApsMembershipMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + params))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(apsMembership.getId().intValue())))

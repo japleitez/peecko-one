@@ -3,12 +3,13 @@ package com.peecko.one.service;
 import com.peecko.one.config.Constants;
 import com.peecko.one.domain.Authority;
 import com.peecko.one.domain.User;
+import com.peecko.one.domain.dto.AdminUserDTO;
+import com.peecko.one.domain.dto.UserDTO;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.AuthorityRepository;
 import com.peecko.one.repository.UserRepository;
 import com.peecko.one.security.AuthoritiesConstants;
 import com.peecko.one.security.SecurityUtils;
-import com.peecko.one.domain.dto.AdminUserDTO;
-import com.peecko.one.domain.dto.UserDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -35,6 +36,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final AgencyRepository agencyRepository;
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -43,11 +45,13 @@ public class UserService {
 
     public UserService(
         UserRepository userRepository,
+        AgencyRepository agencyRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
+        this.agencyRepository = agencyRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
@@ -116,6 +120,7 @@ public class UserService {
                 }
             });
         User newUser = new User();
+        newUser.setAgencyId(getDefaultAgencyId()); // default agency has initial control of new users
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin().toLowerCase());
         // new user gets initially a generated password
@@ -152,6 +157,7 @@ public class UserService {
 
     public User createUser(AdminUserDTO userDTO) {
         User user = new User();
+        user.setAgencyId(getDefaultAgencyId()); // default agency has initial control of new users
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -328,5 +334,9 @@ public class UserService {
         if (user.getEmail() != null) {
             Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
         }
+    }
+
+    Long getDefaultAgencyId() {
+        return agencyRepository.findAll().get(0).getId();
     }
 }

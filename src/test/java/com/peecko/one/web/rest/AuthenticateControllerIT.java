@@ -10,9 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.peecko.one.IntegrationTest;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.User;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.UserRepository;
 import com.peecko.one.web.rest.vm.LoginVM;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,15 +35,28 @@ class AuthenticateControllerIT {
     private UserRepository userRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private MockMvc mockMvc;
 
+    private Agency agency;
+
+    @BeforeEach
+    void initTest() {
+        agency = AgencyResourceIT.createEntity(null);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
+    }
+
     @Test
     @Transactional
     void testAuthorize() throws Exception {
         User user = new User();
+        user.setAgencyId(agency.getId());
         user.setLogin("user-jwt-controller");
         user.setEmail("user-jwt-controller@example.com");
         user.setActivated(true);
@@ -64,6 +80,7 @@ class AuthenticateControllerIT {
     @Transactional
     void testAuthorizeWithRememberMe() throws Exception {
         User user = new User();
+        user.setAgencyId(agency.getId());
         user.setLogin("user-jwt-controller-remember-me");
         user.setEmail("user-jwt-controller-remember-me@example.com");
         user.setActivated(true);

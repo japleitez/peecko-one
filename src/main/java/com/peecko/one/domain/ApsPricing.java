@@ -66,6 +66,11 @@ public class ApsPricing implements Serializable {
         this.country = country;
     }
 
+    public ApsPricing country(String country) {
+        this.setCountry(country);
+        return this;
+    }
+
     public Integer getIndex() {
         return this.index;
     }
@@ -104,6 +109,7 @@ public class ApsPricing implements Serializable {
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
+
     public Customer getCustomer() {
         return this.customer;
     }

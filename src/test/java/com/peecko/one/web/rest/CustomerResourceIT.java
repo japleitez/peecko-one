@@ -38,8 +38,8 @@ class CustomerResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
-    private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
+    private static final String DEFAULT_COUNTRY = "LU";
+    private static final String UPDATED_COUNTRY = "FR";
 
     private static final CustomerState DEFAULT_STATE = CustomerState.NEW;
     private static final CustomerState UPDATED_STATE = CustomerState.TRIAL;
@@ -51,6 +51,9 @@ class CustomerResourceIT {
 
     private static final String DEFAULT_VAT_ID = "AAAAAAAAAA";
     private static final String UPDATED_VAT_ID = "BBBBBBBBBB";
+
+    private static final Double DEFAULT_VAT_RATE = 1D;
+    private static final Double UPDATED_VAT_RATE = 2D;
 
     private static final String DEFAULT_BANK = "AAAAAAAAAA";
     private static final String UPDATED_BANK = "BBBBBBBBBB";
@@ -113,6 +116,7 @@ class CustomerResourceIT {
             .state(DEFAULT_STATE)
             .billingEmail(DEFAULT_EMAIL_DOMAINS)
             .vatId(DEFAULT_VAT_ID)
+            .vatRate(DEFAULT_VAT_RATE)
             .bank(DEFAULT_BANK)
             .iban(DEFAULT_IBAN)
             .logo(DEFAULT_LOGO)

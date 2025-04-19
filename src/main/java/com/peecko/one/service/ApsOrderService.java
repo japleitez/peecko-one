@@ -1,33 +1,31 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.*;
-import com.peecko.one.repository.*;
 import com.peecko.one.domain.dto.ApsOrderInfo;
+import com.peecko.one.repository.*;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.service.specs.ApsOrderSpecs;
 import com.peecko.one.utils.PeriodUtils;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
 public class ApsOrderService {
+
     private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
     private final ApsPlanRepository apsPlanRepository;
     private final ApsOrderRepository apsOrderRepository;
     private final UserService userService;
 
-    public ApsOrderService(
-            ApsPlanRepository apsPlanRepository,
-            ApsOrderRepository apsOrderRepository, UserService userService) {
+    public ApsOrderService(ApsPlanRepository apsPlanRepository, ApsOrderRepository apsOrderRepository, UserService userService) {
         this.apsPlanRepository = apsPlanRepository;
         this.apsOrderRepository = apsOrderRepository;
         this.userService = userService;
@@ -35,9 +33,10 @@ public class ApsOrderService {
 
     public ApsOrder create(ApsOrder apsOrder) {
         ApsPlan apsPlan = apsPlanRepository.findById(apsOrder.getApsPlan().getId()).orElseThrow();
-        apsOrder.setCustomerId(apsPlan.getCustomer().getId());
-        apsOrder.setCountry(apsPlan.getCustomer().getCountry());
-        apsOrder.setAgencyId(apsPlan.getCustomer().getAgency().getId());
+        Customer customer = apsPlan.getCustomer();
+        apsOrder.setCountry(customer.getCountry());
+        apsOrder.setAgencyId(apsPlan.getId());
+        apsOrder.setCustomerId(customer.getId());
         return apsOrderRepository.save(apsOrder);
     }
 
@@ -140,5 +139,4 @@ public class ApsOrderService {
         }
         return ApsOrderInfo.of(apsOrder);
     }
-
 }

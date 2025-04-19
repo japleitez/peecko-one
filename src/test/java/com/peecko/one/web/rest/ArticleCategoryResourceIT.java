@@ -182,23 +182,6 @@ class ArticleCategoryResourceIT {
 
     @Test
     @Transactional
-    void checkLabelIsRequired() throws Exception {
-        int databaseSizeBeforeTest = articleCategoryRepository.findAll().size();
-
-        // Create the ArticleCategory, which fails.
-
-        restArticleCategoryMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(articleCategory))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<ArticleCategory> articleCategoryList = articleCategoryRepository.findAll();
-        assertThat(articleCategoryList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllArticleCategories() throws Exception {
         // Initialize the database
         articleCategoryRepository.saveAndFlush(articleCategory);

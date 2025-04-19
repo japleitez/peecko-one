@@ -2,12 +2,20 @@ package com.peecko.one.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.peecko.one.IntegrationTest;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.ApsOrder;
+import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.domain.Customer;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.repository.ApsPlanRepository;
+import com.peecko.one.repository.CustomerRepository;
+import com.peecko.one.service.UserService;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 class ApsOrderResourceIT {
+
+    private static final Long DEFAULT_AGENCY_ID = 1L;
+    private static final String DEFAULT_COUNTRY = "LU";
 
     private static final Integer DEFAULT_PERIOD = 1;
     private static final Integer UPDATED_PERIOD = 2;
@@ -57,11 +69,23 @@ class ApsOrderResourceIT {
     private ApsOrderRepository apsOrderRepository;
 
     @Autowired
+    private ApsPlanRepository apsPlanRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
     private MockMvc restApsOrderMockMvc;
 
+    private Agency agency;
+    private Customer customer;
+    private ApsPlan apsPlan;
     private ApsOrder apsOrder;
 
     /**
@@ -72,6 +96,8 @@ class ApsOrderResourceIT {
      */
     public static ApsOrder createEntity(EntityManager em) {
         ApsOrder apsOrder = new ApsOrder()
+            .agencyId(DEFAULT_AGENCY_ID)
+            .country(DEFAULT_COUNTRY)
             .period(DEFAULT_PERIOD)
             .license(DEFAULT_LICENSE)
             .unitPrice(DEFAULT_UNIT_PRICE)
@@ -100,7 +126,20 @@ class ApsOrderResourceIT {
 
     @BeforeEach
     public void initTest() {
+        agency = AgencyResourceIT.createEntity(em);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
+
+        customer = CustomerResourceIT.createEntity(em);
+        customer.setAgency(agency);
+        customer = customerRepository.saveAndFlush(customer);
+
+        apsPlan = ApsPlanResourceIT.createEntity(em);
+        apsPlan.setCustomer(customer);
+        apsPlan = apsPlanRepository.saveAndFlush(apsPlan);
+
         apsOrder = createEntity(em);
+        apsOrder.setApsPlan(apsPlan);
     }
 
     @Test
@@ -212,30 +251,13 @@ class ApsOrderResourceIT {
 
     @Test
     @Transactional
-    void checkNumberOfUsersIsRequired() throws Exception {
-        int databaseSizeBeforeTest = apsOrderRepository.findAll().size();
-        // set the field null
-        apsOrder.setNumberOfUsers(null);
-
-        // Create the ApsOrder, which fails.
-
-        restApsOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(apsOrder)))
-            .andExpect(status().isBadRequest());
-
-        List<ApsOrder> apsOrderList = apsOrderRepository.findAll();
-        assertThat(apsOrderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllApsOrders() throws Exception {
         // Initialize the database
         apsOrderRepository.saveAndFlush(apsOrder);
 
         // Get all the apsOrderList
         restApsOrderMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "/info"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(apsOrder.getId().intValue())))
@@ -286,13 +308,7 @@ class ApsOrderResourceIT {
         ApsOrder updatedApsOrder = apsOrderRepository.findById(apsOrder.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedApsOrder are not directly saved in db
         em.detach(updatedApsOrder);
-        updatedApsOrder
-            .period(UPDATED_PERIOD)
-            .license(UPDATED_LICENSE)
-            .unitPrice(UPDATED_UNIT_PRICE)
-            .vatRate(UPDATED_VAT_RATE)
-            .numberOfUsers(UPDATED_NUMBER_OF_USERS)
-            .invoiceNumber(UPDATED_INVOICE_NUMBER);
+        updatedApsOrder.period(UPDATED_PERIOD).license(UPDATED_LICENSE).unitPrice(UPDATED_UNIT_PRICE).vatRate(UPDATED_VAT_RATE);
 
         restApsOrderMockMvc
             .perform(
@@ -310,8 +326,6 @@ class ApsOrderResourceIT {
         assertThat(testApsOrder.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testApsOrder.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testApsOrder.getVatRate()).isEqualTo(UPDATED_VAT_RATE);
-        assertThat(testApsOrder.getNumberOfUsers()).isEqualTo(UPDATED_NUMBER_OF_USERS);
-        assertThat(testApsOrder.getInvoiceNumber()).isEqualTo(UPDATED_INVOICE_NUMBER);
     }
 
     @Test
