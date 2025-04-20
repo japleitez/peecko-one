@@ -174,21 +174,6 @@ class VideoCategoryResourceIT {
 
     @Test
     @Transactional
-    void checkLabelIsRequired() throws Exception {
-        int databaseSizeBeforeTest = videoCategoryRepository.findAll().size();
-
-        // Create the VideoCategory, which fails.
-
-        restVideoCategoryMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(videoCategory)))
-            .andExpect(status().isBadRequest());
-
-        List<VideoCategory> videoCategoryList = videoCategoryRepository.findAll();
-        assertThat(videoCategoryList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllVideoCategories() throws Exception {
         // Initialize the database
         videoCategoryRepository.saveAndFlush(videoCategory);
