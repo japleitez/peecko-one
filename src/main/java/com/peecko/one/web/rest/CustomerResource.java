@@ -3,8 +3,8 @@ package com.peecko.one.web.rest;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
 import com.peecko.one.service.CustomerService;
-import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import com.peecko.one.service.request.CustomerListRequest;
+import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -86,7 +86,7 @@ public class CustomerResource {
         validateUpdateInput(customer, id);
         Customer result = customerService.update(customer);
         return ResponseEntity
-            .accepted()
+            .ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(customer);
     }
@@ -127,7 +127,8 @@ public class CustomerResource {
         @RequestParam(required = false) String code,
         @RequestParam(required = false) String name,
         @RequestParam(required = false) CustomerState state,
-        @ParameterObject Pageable pageable) {
+        @ParameterObject Pageable pageable
+    ) {
         log.debug("REST request to get a page of Customers");
         CustomerListRequest request = new CustomerListRequest(code, name, state);
         Page<Customer> page = customerService.findAll(request, pageable);
@@ -183,5 +184,4 @@ public class CustomerResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
     }
-
 }

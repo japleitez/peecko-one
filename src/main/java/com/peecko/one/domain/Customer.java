@@ -97,7 +97,7 @@ public class Customer implements Serializable {
     @JsonIgnoreProperties(value = { "apsOrders", "customer" }, allowSetters = true)
     private Set<ApsPlan> apsPlans = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "customers", "apsPricings" }, allowSetters = true)
     private Agency agency;
 

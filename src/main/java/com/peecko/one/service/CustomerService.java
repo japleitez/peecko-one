@@ -7,19 +7,19 @@ import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.request.CustomerListRequest;
+import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
 public class CustomerService {
+
     private final UserService userService;
 
     private final AgencyRepository agencyRepository;
@@ -78,7 +78,6 @@ public class CustomerService {
         return customerRepository.findByAgencyAndCustomerState(agency, states);
     }
 
-
     public Page<Customer> findAll(CustomerListRequest request, Pageable pageable) {
         Long agencyId = userService.getCurrentAgencyId();
         Specification<Customer> spec = CustomerSpecs.agency(agencyId);
@@ -105,7 +104,8 @@ public class CustomerService {
                     customer.setName(input.getName());
                 }
                 if (input.getCountry() != null) {
-                    customer.setCountry(input.getCountry());
+                    Agency agency = agencyRepository.findById(customer.getAgency().getId()).orElseThrow();
+                    customer.setCountry(agency.getCountry());
                 }
                 if (input.getBillingEmail() != null) {
                     customer.setBillingEmail(input.getBillingEmail());
@@ -133,5 +133,4 @@ public class CustomerService {
             })
             .map(customerRepository::save);
     }
-
 }
