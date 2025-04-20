@@ -15,22 +15,22 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="country" type="varchar(2)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="agency_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="customer_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="aps_plan_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="aps_order_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="period" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="number" type="varchar(50)">
                 <constraints nullable="false" />

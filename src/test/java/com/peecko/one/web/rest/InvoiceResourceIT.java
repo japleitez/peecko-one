@@ -6,8 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.peecko.one.IntegrationTest;
-import com.peecko.one.domain.Invoice;
-import com.peecko.one.repository.InvoiceRepository;
+import com.peecko.one.domain.*;
+import com.peecko.one.repository.*;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -76,12 +76,29 @@ class InvoiceResourceIT {
     private InvoiceRepository invoiceRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private ApsPlanRepository apsPlanRepository;
+
+    @Autowired
+    private ApsOrderRepository apsOrderRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
     private MockMvc restInvoiceMockMvc;
 
     private Invoice invoice;
+
+    private Agency agency;
+    private Customer customer;
+    private ApsPlan apsPlan;
+    private ApsOrder apsOrder;
 
     /**
      * Create an entity for this test.
@@ -129,7 +146,29 @@ class InvoiceResourceIT {
 
     @BeforeEach
     public void initTest() {
+        agency = AgencyResourceIT.createEntity(em);
+        agency.setId(1L);
+        agencyRepository.saveAndFlush(agency);
+
+        customer = CustomerResourceIT.createEntity(em);
+        customer.setAgency(agency);
+        customerRepository.saveAndFlush(customer);
+
+        apsPlan = ApsPlanResourceIT.createEntity(em);
+        apsPlan.setCustomer(customer);
+        apsPlanRepository.saveAndFlush(apsPlan);
+
+        apsOrder = ApsOrderResourceIT.createEntity(em);
+        apsOrder.setApsPlan(apsPlan);
+        apsOrderRepository.saveAndFlush(apsOrder);
+
         invoice = createEntity(em);
+        invoice.setAgencyId(agency.getId());
+        invoice.setCustomerId(customer.getId());
+        invoice.setApsPlanId(apsPlan.getId());
+        invoice.setPeriod(apsOrder.getPeriod());
+        invoice.setCountry(apsOrder.getCountry());
+        invoice.setApsOrder(apsOrder);
     }
 
     @Test
