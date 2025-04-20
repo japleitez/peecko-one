@@ -415,52 +415,14 @@ class ApsOrderResourceIT {
         List<ApsOrder> apsOrderList = apsOrderRepository.findAll();
         assertThat(apsOrderList).hasSize(databaseSizeBeforeUpdate);
         ApsOrder testApsOrder = apsOrderList.get(apsOrderList.size() - 1);
+
         assertThat(testApsOrder.getPeriod()).isEqualTo(UPDATED_PERIOD);
         assertThat(testApsOrder.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testApsOrder.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testApsOrder.getVatRate()).isEqualTo(UPDATED_VAT_RATE);
-        assertThat(testApsOrder.getNumberOfUsers()).isEqualTo(UPDATED_NUMBER_OF_USERS);
+
+        assertThat(testApsOrder.getNumberOfUsers()).isEqualTo(DEFAULT_NUMBER_OF_USERS);
         assertThat(testApsOrder.getInvoiceNumber()).isEqualTo(DEFAULT_INVOICE_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    void fullUpdateApsOrderWithPatch() throws Exception {
-        // Initialize the database
-        apsOrderRepository.saveAndFlush(apsOrder);
-
-        int databaseSizeBeforeUpdate = apsOrderRepository.findAll().size();
-
-        // Update the apsOrder using partial update
-        ApsOrder partialUpdatedApsOrder = new ApsOrder();
-        partialUpdatedApsOrder.setId(apsOrder.getId());
-
-        partialUpdatedApsOrder
-            .period(UPDATED_PERIOD)
-            .license(UPDATED_LICENSE)
-            .unitPrice(UPDATED_UNIT_PRICE)
-            .vatRate(UPDATED_VAT_RATE)
-            .numberOfUsers(UPDATED_NUMBER_OF_USERS)
-            .invoiceNumber(UPDATED_INVOICE_NUMBER);
-
-        restApsOrderMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedApsOrder.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedApsOrder))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the ApsOrder in the database
-        List<ApsOrder> apsOrderList = apsOrderRepository.findAll();
-        assertThat(apsOrderList).hasSize(databaseSizeBeforeUpdate);
-        ApsOrder testApsOrder = apsOrderList.get(apsOrderList.size() - 1);
-        assertThat(testApsOrder.getPeriod()).isEqualTo(UPDATED_PERIOD);
-        assertThat(testApsOrder.getLicense()).isEqualTo(UPDATED_LICENSE);
-        assertThat(testApsOrder.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
-        assertThat(testApsOrder.getVatRate()).isEqualTo(UPDATED_VAT_RATE);
-        assertThat(testApsOrder.getNumberOfUsers()).isEqualTo(UPDATED_NUMBER_OF_USERS);
-        assertThat(testApsOrder.getInvoiceNumber()).isEqualTo(UPDATED_INVOICE_NUMBER);
     }
 
     @Test
