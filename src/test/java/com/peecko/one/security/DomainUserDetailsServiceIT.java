@@ -4,8 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import com.peecko.one.IntegrationTest;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.User;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.UserRepository;
+import com.peecko.one.web.rest.AgencyResourceIT;
 import java.util.Locale;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,12 +37,22 @@ class DomainUserDetailsServiceIT {
     private UserRepository userRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
     @Qualifier("userDetailsService")
     private UserDetailsService domainUserDetailsService;
 
+    private Agency agency;
+
     @BeforeEach
     public void init() {
+        agency = AgencyResourceIT.createEntity(null);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
+
         User userOne = new User();
+        userOne.setAgencyId(agency.getId());
         userOne.setLogin(USER_ONE_LOGIN);
         userOne.setPassword(RandomStringUtils.randomAlphanumeric(60));
         userOne.setActivated(true);
@@ -50,6 +63,7 @@ class DomainUserDetailsServiceIT {
         userRepository.save(userOne);
 
         User userTwo = new User();
+        userTwo.setAgencyId(agency.getId());
         userTwo.setLogin(USER_TWO_LOGIN);
         userTwo.setPassword(RandomStringUtils.randomAlphanumeric(60));
         userTwo.setActivated(true);
@@ -60,6 +74,7 @@ class DomainUserDetailsServiceIT {
         userRepository.save(userTwo);
 
         User userThree = new User();
+        userThree.setAgencyId(agency.getId());
         userThree.setLogin(USER_THREE_LOGIN);
         userThree.setPassword(RandomStringUtils.randomAlphanumeric(60));
         userThree.setActivated(false);
