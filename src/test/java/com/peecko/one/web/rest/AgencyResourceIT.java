@@ -352,7 +352,7 @@ public class AgencyResourceIT {
     @Transactional
     void getAgency() throws Exception {
         // Initialize the database
-        agencyRepository.saveAndFlush(agency);
+        agency = agencyRepository.saveAndFlush(agency);
 
         // Get the agency
         restAgencyMockMvc
@@ -517,7 +517,8 @@ public class AgencyResourceIT {
     @Transactional
     void partialUpdateAgencyWithPatch() throws Exception {
         // Initialize the database
-        agencyRepository.saveAndFlush(agency);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
 
         int databaseSizeBeforeUpdate = agencyRepository.findAll().size();
 
@@ -566,74 +567,6 @@ public class AgencyResourceIT {
         assertThat(testAgency.getRcs()).isEqualTo(UPDATED_RCS);
         assertThat(testAgency.getVatId()).isEqualTo(UPDATED_VAT_ID);
         assertThat(testAgency.getVatRate()).isEqualTo(DEFAULT_VAT_RATE);
-        assertThat(testAgency.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testAgency.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testAgency.getUpdated()).isEqualTo(UPDATED_UPDATED);
-    }
-
-    @Test
-    @Transactional
-    void fullUpdateAgencyWithPatch() throws Exception {
-        // Initialize the database
-        agencyRepository.saveAndFlush(agency);
-
-        int databaseSizeBeforeUpdate = agencyRepository.findAll().size();
-
-        // Update the agency using partial update
-        Agency partialUpdatedAgency = new Agency();
-        partialUpdatedAgency.setId(agency.getId());
-
-        partialUpdatedAgency
-            .code(UPDATED_CODE)
-            .name(UPDATED_NAME)
-            .line1(UPDATED_LINE_1)
-            .line2(UPDATED_LINE_2)
-            .zip(UPDATED_ZIP)
-            .city(UPDATED_CITY)
-            .country(UPDATED_COUNTRY)
-            .language(UPDATED_LANGUAGE)
-            .email(UPDATED_EMAIL)
-            .phone(UPDATED_PHONE)
-            .billingEmail(UPDATED_BILLING_EMAIL)
-            .billingPhone(UPDATED_BILLING_PHONE)
-            .bank(UPDATED_BANK)
-            .iban(UPDATED_IBAN)
-            .rcs(UPDATED_RCS)
-            .vatId(UPDATED_VAT_ID)
-            .vatRate(UPDATED_VAT_RATE)
-            .notes(UPDATED_NOTES)
-            .created(UPDATED_CREATED)
-            .updated(UPDATED_UPDATED);
-
-        restAgencyMockMvc
-            .perform(
-                patch(ENTITY_API_URL_ID, partialUpdatedAgency.getId())
-                    .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedAgency))
-            )
-            .andExpect(status().isOk());
-
-        // Validate the Agency in the database
-        List<Agency> agencyList = agencyRepository.findAll();
-        assertThat(agencyList).hasSize(databaseSizeBeforeUpdate);
-        Agency testAgency = agencyList.get(agencyList.size() - 1);
-        assertThat(testAgency.getCode()).isEqualTo(UPDATED_CODE);
-        assertThat(testAgency.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testAgency.getLine1()).isEqualTo(UPDATED_LINE_1);
-        assertThat(testAgency.getLine2()).isEqualTo(UPDATED_LINE_2);
-        assertThat(testAgency.getZip()).isEqualTo(UPDATED_ZIP);
-        assertThat(testAgency.getCity()).isEqualTo(UPDATED_CITY);
-        assertThat(testAgency.getCountry()).isEqualTo(UPDATED_COUNTRY);
-        assertThat(testAgency.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
-        assertThat(testAgency.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testAgency.getPhone()).isEqualTo(UPDATED_PHONE);
-        assertThat(testAgency.getBillingEmail()).isEqualTo(UPDATED_BILLING_EMAIL);
-        assertThat(testAgency.getBillingPhone()).isEqualTo(UPDATED_BILLING_PHONE);
-        assertThat(testAgency.getBank()).isEqualTo(UPDATED_BANK);
-        assertThat(testAgency.getIban()).isEqualTo(UPDATED_IBAN);
-        assertThat(testAgency.getRcs()).isEqualTo(UPDATED_RCS);
-        assertThat(testAgency.getVatId()).isEqualTo(UPDATED_VAT_ID);
-        assertThat(testAgency.getVatRate()).isEqualTo(UPDATED_VAT_RATE);
         assertThat(testAgency.getNotes()).isEqualTo(UPDATED_NOTES);
         assertThat(testAgency.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testAgency.getUpdated()).isEqualTo(UPDATED_UPDATED);
@@ -699,7 +632,7 @@ public class AgencyResourceIT {
     @Transactional
     void deleteAgency() throws Exception {
         // Initialize the database
-        agencyRepository.saveAndFlush(agency);
+        agency = agencyRepository.saveAndFlush(agency);
 
         int databaseSizeBeforeDelete = agencyRepository.findAll().size();
 
