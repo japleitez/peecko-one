@@ -1,6 +1,8 @@
 package com.peecko.one.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -14,6 +16,7 @@ import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.AuthorityRepository;
 import com.peecko.one.repository.UserRepository;
 import com.peecko.one.security.AuthoritiesConstants;
+import com.peecko.one.service.MailService;
 import com.peecko.one.service.UserService;
 import com.peecko.one.web.rest.vm.KeyAndPasswordVM;
 import com.peecko.one.web.rest.vm.ManagedUserVM;
@@ -25,6 +28,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -60,6 +64,9 @@ class AccountResourceIT {
 
     @Autowired
     private MockMvc restAccountMockMvc;
+
+    @MockBean
+    private MailService mailService;
 
     private Agency agency;
 
@@ -140,6 +147,8 @@ class AccountResourceIT {
             .andExpect(status().isCreated());
 
         assertThat(userRepository.findOneByLogin("test-register-valid")).isPresent();
+
+        verify(mailService).sendActivationEmail(any(User.class));
     }
 
     @Test
@@ -685,6 +694,8 @@ class AccountResourceIT {
         restAccountMockMvc
             .perform(post("/api/account/reset-password/init").content("password-reset@example.com"))
             .andExpect(status().isOk());
+
+        verify(mailService).sendPasswordResetMail(user);
     }
 
     @Test
