@@ -17,20 +17,20 @@
             <column name="code" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
-            <column name="name" type="varchar(100)">
+            <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="line_1" type="varchar(150)">
+            <column name="line_1" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="line_2" type="varchar(150)">
+            <column name="line_2" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="zip" type="varchar(10)">
                 <constraints nullable="true" />
             </column>
-            <column name="city" type="varchar(50)">
-                <constraints nullable="false" />
+            <column name="city" type="varchar(100)">
+                <constraints nullable="true" />
             </column>
             <column name="country" type="varchar(2)">
                 <constraints nullable="false" />
@@ -38,13 +38,13 @@
             <column name="language" type="varchar(2)">
                 <constraints nullable="false" />
             </column>
-            <column name="email" type="varchar(50)">
+            <column name="email" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="phone" type="varchar(20)">
+            <column name="phone" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="billing_email" type="varchar(50)">
+            <column name="billing_email" type="varchar(70)">
                 <constraints nullable="true" />
             </column>
             <column name="billing_phone" type="varchar(20)">
@@ -56,10 +56,10 @@
             <column name="iban" type="varchar(30)">
                 <constraints nullable="true" />
             </column>
-            <column name="rcs" type="varchar(30)">
+            <column name="rcs" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
-            <column name="vat_id" type="varchar(30)">
+            <column name="vat_id" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="vat_rate" type="double">

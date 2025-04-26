@@ -26,10 +26,10 @@
             <column name="contract" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
-            <column name="pricing" type="varchar(12)">
+            <column name="pricing" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
-            <column name="state" type="varchar(12)">
+            <column name="state" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
             <column name="license" type="varchar(20)">
