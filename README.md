@@ -109,10 +109,20 @@ create src/main/webapp/app/my-component/my-component.component.ts
 update src/main/webapp/app/app.config.ts
 ```
 
+## Building for dev
+
+Be sure, Docker is running before running this command (because tests must be executed)
+To build the application from source, run:
+
+```
+./mvnw -Pdev clean verify
+```
+
 ## Building for production
 
 ### Packaging as jar
 
+Be sure, Docker is running before running this command (because tests must be executed)
 To build the final jar and optimize the admin application for production, run:
 
 ```
