@@ -17,7 +17,7 @@
             <column name="code" type="varchar(10)">
                 <constraints nullable="false" />
             </column>
-            <column name="email" type="varchar(50)">
+            <column name="email" type="varchar(150)">
                 <constraints nullable="false" />
             </column>
             <column name="agency_email" type="varchar(50)">

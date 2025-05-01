@@ -25,8 +25,8 @@ public class LabelTranslation implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "label", nullable = false)
-    private String label;
+    @Column(name = "code", nullable = false)
+    private String code;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -52,17 +52,17 @@ public class LabelTranslation implements Serializable {
         this.id = id;
     }
 
-    public String getLabel() {
-        return this.label;
+    public String getCode() {
+        return this.code;
     }
 
-    public LabelTranslation label(String label) {
-        this.setLabel(label);
+    public LabelTranslation code(String code) {
+        this.setCode(code);
         return this;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Language getLang() {
@@ -115,7 +115,7 @@ public class LabelTranslation implements Serializable {
     public String toString() {
         return "LabelTranslation{" +
             "id=" + getId() +
-            ", label='" + getLabel() + "'" +
+            ", code='" + getCode() + "'" +
             ", lang='" + getLang() + "'" +
             ", text='" + getText() + "'" +
             "}";

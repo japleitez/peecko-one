@@ -11,7 +11,7 @@
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="/config/liquibase/changelog/2024.000.entity_Agency.xml" relativeToChangelogFile="false"/>
-    <include file="/config/liquibase/changelog/2024.001.entity_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2024.001.entity_AgencyUser.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.002.entity_ApsUser.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.003.entity_ApsDevice.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.004.entity_Customer.xml" relativeToChangelogFile="false"/>

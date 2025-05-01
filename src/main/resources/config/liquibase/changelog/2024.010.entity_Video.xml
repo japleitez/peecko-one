@@ -17,7 +17,7 @@
             <column name="code" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
-            <column name="title" type="varchar(255)">
+            <column name="title" type="varchar(150)">
                 <constraints nullable="false" />
             </column>
             <column name="duration" type="integer">

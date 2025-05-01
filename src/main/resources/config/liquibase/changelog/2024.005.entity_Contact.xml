@@ -17,7 +17,7 @@
             <column name="type" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="name" type="varchar(150)">
                 <constraints nullable="false" />
             </column>
             <column name="line_1" type="varchar(255)">
@@ -29,16 +29,16 @@
             <column name="zip" type="varchar(10)">
                 <constraints nullable="true" />
             </column>
-            <column name="city" type="varchar(100)">
+            <column name="city" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="country" type="varchar(2)">
                 <constraints nullable="true" />
             </column>
-            <column name="email" type="varchar(70)">
+            <column name="email" type="varchar(150)">
                 <constraints nullable="true" />
             </column>
-            <column name="phone" type="varchar(25)">
+            <column name="phone" type="varchar(20)">
                 <constraints nullable="true" />
             </column>
             <column name="notes" type="varchar(255)">

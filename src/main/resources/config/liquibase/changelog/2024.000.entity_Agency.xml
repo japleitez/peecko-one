@@ -9,7 +9,7 @@
     <!--
         Added the entity Agency.
     -->
-    <changeSet id="2024-003-1" author="jhipster">
+    <changeSet id="2024-000-1" author="jhipster">
         <createTable tableName="agency">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -17,7 +17,7 @@
             <column name="code" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="name" type="varchar(150)">
                 <constraints nullable="false" />
             </column>
             <column name="line_1" type="varchar(255)">
@@ -29,7 +29,7 @@
             <column name="zip" type="varchar(10)">
                 <constraints nullable="true" />
             </column>
-            <column name="city" type="varchar(100)">
+            <column name="city" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="country" type="varchar(2)">
@@ -38,13 +38,13 @@
             <column name="language" type="varchar(2)">
                 <constraints nullable="false" />
             </column>
-            <column name="email" type="varchar(255)">
+            <column name="email" type="varchar(150)">
                 <constraints nullable="true" />
             </column>
-            <column name="phone" type="varchar(255)">
+            <column name="phone" type="varchar(100)">
                 <constraints nullable="true" />
             </column>
-            <column name="billing_email" type="varchar(70)">
+            <column name="billing_email" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="billing_phone" type="varchar(20)">
@@ -53,7 +53,7 @@
             <column name="bank" type="varchar(150)">
                 <constraints nullable="true" />
             </column>
-            <column name="iban" type="varchar(30)">
+            <column name="iban" type="varchar(40)">
                 <constraints nullable="true" />
             </column>
             <column name="rcs" type="varchar(50)">
@@ -90,7 +90,7 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="2024-003-1-data" author="jhipster">
+    <changeSet id="2024-000-1-data" author="jhipster">
         <loadData
                   file="config/liquibase/fake-data/agency.csv"
                   separator=";"
