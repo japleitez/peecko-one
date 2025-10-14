@@ -1,8 +1,2 @@
 id;agency_id;country;vat_rate;state;code;name
-1;1;LU;17.0;NEW;LU-EY;EY Luxembourg
-2;1;LU;17.0;NEW;LU-PWC;PwC Luxembourg
-3;1;LU;17.0;NEW;LU-KPMG;KPMG Luxembourg
-4;1;LU;17.0;NEW;LU-DELOITTE;Deloitte Luxembourg
-5;1;LU;17.0;NEW;LU-AMAZON;Amazon Luxembourg
-6;1;LU;17.0;NEW;LU-ARCELOR;Arcelor Mittal Luxembourg
-7;1;LU;17.0;NEW;LU-DEBANK;Deutsche Bank AG Luxembourg
+1;1;LU;17.0;NEW;LU-EY;Hello Luxembourg

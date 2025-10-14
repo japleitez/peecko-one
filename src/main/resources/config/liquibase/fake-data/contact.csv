@@ -1,4 +1,4 @@
 id;customer_id;type;name;line_1;zip;city;country;email;phone;created
-1;6;PRIMARY;Julien Assange;7 Rue Clement;2030;Contern;LU;julien.assange@deloitte.lu;998.433.7149;2024-01-01
-2;6;PAYMENT;Anna Cropper;7 Rue Clement;2030;Contern;LU;anna.cropper@deloitte.lu;998.433.7150;2024-01-01
-3;6;OTHER;Vincent Kartheiser;7 Rue Clement;2030;Contern;LU;vincent.kartheiser@deloitte.lu;998.433.7151;2024-01-01
+1;1;PRIMARY;Dwayne Johnson;7 Rue Clement;2030;Contern;LU;dwayne.johnson@hello.lu;691.433.149;2025-01-01
+2;1;PAYMENT;Ryan Reynolds;7 Rue Clement;2030;Contern;LU;ryan.reynolds@hello.lu;691.433.710;2025-01-01
+3;1;OTHER;Kevin Hart;7 Rue Clement;2030;Contern;LU;kevin.hart@hello.lu;691.433.715;2025-01-01
