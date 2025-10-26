@@ -957,9 +957,9 @@
             <id>prod</id>
             <properties>
                 <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}</spring.profiles.active>
+                <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}</spring.profiles.active>
                 <profile.test>testprod</profile.test>
-                <liquibase-plugin.url>jdbc:postgresql://localhost:5432/admin</liquibase-plugin.url>
+                <liquibase-plugin.url>jdbc:postgresql://pwa-rds-dev.cvswuu602c9n.eu-central-1.rds.amazonaws.com:5432/pwa-rds-dev</liquibase-plugin.url>
                 <liquibase-plugin.username>pwa_app</liquibase-plugin.username>
                 <liquibase-plugin.password>pwa-app-100$</liquibase-plugin.password>
             </properties>

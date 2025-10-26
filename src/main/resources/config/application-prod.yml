@@ -33,13 +33,18 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://pwa-rds-dev.cvswuu602c9n.eu-central-1.rds.amazonaws.com:5432/pwa-rds-dev
     username: pwa_app
-    password: postgres
+    password: pwa-app-100$
     hikari:
       poolName: Hikari
       auto-commit: false
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod, faker
+    enabled: true
+    change-log: /config/liquibase/master.xml
+    default-schema: pwa
+    drop-first: false # avoid dropping the schema first in production
+    test-rollback-on-update: false # disable rollback testing for performance
   mail:
     host: smtp.office365.com
     port: 587
