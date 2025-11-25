@@ -20,7 +20,7 @@ public class ScheduledTasks {
     }
 
     @Async
-    @Scheduled(cron = "0 0/5 * * * *", zone = "Europe/Paris")
+    //TODO @Scheduled(cron = "0 0/5 * * * *", zone = "Europe/Paris") ERROR IN SQL due to entity foreign key
     public void closeExpiredPlans() {
         apsPlanTaskService.closeExpiredPlans();
     }
