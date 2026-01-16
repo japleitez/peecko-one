@@ -1,0 +1,15 @@
+[Unit]
+Description=Dev PWA Application
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/opt/peecko
+ExecStart=/usr/bin/java -jar /opt/peecko/admin.jar --spring.profiles.active=prod
+Restart=always
+RestartSec=10
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

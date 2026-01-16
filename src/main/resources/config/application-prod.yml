@@ -37,6 +37,7 @@ spring:
     hikari:
       poolName: Hikari
       auto-commit: false
+      schema: pwa
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod, faker
@@ -85,6 +86,7 @@ spring:
 # ===================================================================
 server:
   port: 8080
+  address: 127.0.0.1 # localhost for security
   shutdown: graceful # see https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-graceful-shutdown
   compression:
     enabled: true
