@@ -13,10 +13,10 @@
           </div>
         }
 
-        <div class="mb-3" *ngIf="ua.label.visible">
-          <label class="form-label" for="field_label">Label</label>
-          <input type="text" class="form-control" name="label" id="field_label" data-cy="label" formControlName="label" />
-          @if (editForm.get('label')!.invalid && (editForm.get('label')!.dirty || editForm.get('label')!.touched)) {
+        <div class="mb-3" *ngIf="ua.code.visible">
+          <label class="form-label" for="field_code">Code</label>
+          <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
+          @if (editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)) {
             <div>
               @if (editForm.get('label')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>

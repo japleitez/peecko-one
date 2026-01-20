@@ -2,27 +2,27 @@ import { ILabelTranslation, NewLabelTranslation } from './label-translation.mode
 
 export const sampleWithRequiredData: ILabelTranslation = {
   id: 14298,
-  label: 'up yum',
+  code: 'up yum',
   lang: 'EN',
   text: 'whoever roof',
 };
 
 export const sampleWithPartialData: ILabelTranslation = {
   id: 6503,
-  label: 'aw rapidly',
+  code: 'aw rapidly',
   lang: 'FR',
   text: 'sewer postbox which',
 };
 
 export const sampleWithFullData: ILabelTranslation = {
   id: 30426,
-  label: 'diner yuck',
+  code: 'diner yuck',
   lang: 'FR',
   text: 'livid nervous wetly',
 };
 
 export const sampleWithNewData: NewLabelTranslation = {
-  label: 'or hopeful',
+  code: 'or hopeful',
   lang: 'EN',
   text: 'where overcome punctually',
   id: null,
