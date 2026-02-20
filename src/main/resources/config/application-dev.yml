@@ -2,18 +2,15 @@
 # Spring Boot configuration for the "dev" profile.
 # This configuration overrides the application.yml file.
 # ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties. Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
-# ===================================================================
-
 logging:
   level:
     ROOT: DEBUG
     tech.jhipster: DEBUG
     org.hibernate.SQL: DEBUG
     com.peecko.one: DEBUG
+
+server:
+  port: 8080
 
 spring:
   devtools:
@@ -53,8 +50,6 @@ spring:
   thymeleaf:
     cache: false
 
-server:
-  port: 8080
 
 # ===================================================================
 # JHipster specific properties
@@ -105,3 +100,4 @@ jhipster:
 # ===================================================================
 
 # application:
+

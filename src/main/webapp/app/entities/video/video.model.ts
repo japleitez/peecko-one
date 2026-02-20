@@ -61,7 +61,7 @@ VIDEO_ACCESS = {
   tags: { listable: false, visible: true, disabled: false },
   player: { listable: true, visible: true, disabled: false },
   thumbnail: { listable: false, visible: true, disabled: false },
-  url: { listable: false, visible: true, disabled: false },
+  url: { listable: true, visible: true, disabled: false },
   audience: { listable: false, visible: true, disabled: false },
   intensity: { listable: false, visible: true, disabled: false },
   filename: { listable: true, visible: true, disabled: false },
