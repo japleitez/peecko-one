@@ -2,12 +2,16 @@
 # Spring Boot configuration for the "prod" profile.
 # This configuration overrides the application.yml file.
 # ===================================================================
-
 logging:
   level:
-    ROOT: INFO
-    tech.jhipster: INFO
-    com.peecko.one: INFO
+    ROOT: WARN
+    tech.jhipster: WARN
+    com.peecko.api: INFO
+    org.springframework: WARN
+    org.springframework.web: WARN
+    org.hibernate: WARN
+    org.hibernate.sql: WARN
+    org.hibernate.type.descriptor.sql: WARN
 
 management:
   prometheus:

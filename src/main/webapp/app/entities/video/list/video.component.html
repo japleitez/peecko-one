@@ -62,13 +62,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="duration" *ngIf="ua.duration.listable">
-              <div class="d-flex">
-                <span>Duration</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="language" *ngIf="ua.language.listable">
               <div class="d-flex">
                 <span>Language</span>
@@ -76,16 +69,23 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="tags" *ngIf="ua.tags.listable">
+            <th scope="col" jhiSortBy="duration" *ngIf="ua.duration.listable">
               <div class="d-flex">
-                <span>Tags</span>
+                <span>Duration</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="player" *ngIf="ua.player.listable">
+            <th scope="col" jhiSortBy="filename" *ngIf="ua.filename.listable">
               <div class="d-flex">
-                <span>Player</span>
+                <span>Filename</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="url" *ngIf="ua.url.listable">
+              <div class="d-flex">
+                <span>Url</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -97,9 +97,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="url" *ngIf="ua.url.listable">
+            <th scope="col" jhiSortBy="player" *ngIf="ua.player.listable">
               <div class="d-flex">
-                <span>Url</span>
+                <span>Player</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -118,9 +118,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="filename" *ngIf="ua.filename.listable">
+            <th scope="col" jhiSortBy="tags" *ngIf="ua.tags.listable">
               <div class="d-flex">
-                <span>Filename</span>
+                <span>Tags</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -177,16 +177,16 @@
               </td>
               <td *ngIf="ua.code.listable">{{ video.code }}</td>
               <td *ngIf="ua.title.listable">{{ video.title }}</td>
-              <td *ngIf="ua.duration.listable">{{ video.duration }}</td>
               <td *ngIf="ua.language.listable">{{ video.language }}</td>
-              <td *ngIf="ua.tags.listable">{{ video.tags }}</td>
-              <td *ngIf="ua.player.listable">{{ video.player }}</td>
-              <td *ngIf="ua.thumbnail.listable">{{ video.thumbnail }}</td>
+              <td *ngIf="ua.duration.listable">{{ video.duration }}</td>
+              <td *ngIf="ua.filename.listable">{{ video.filename }}</td>
               <td *ngIf="ua.url.listable">{{ video.url | slice:85 }}</td>
+              <td *ngIf="ua.thumbnail.listable">{{ video.thumbnail | slice:0:10 }}...</td>
+              <td *ngIf="ua.player.listable">{{ video.player }}</td>
               <td *ngIf="ua.audience.listable">{{ video.audience }}</td>
               <td *ngIf="ua.intensity.listable">{{ video.intensity }}</td>
-              <td *ngIf="ua.filename.listable">{{ video.filename }}</td>
-              <td *ngIf="ua.description.listable">{{ video.description }}</td>
+              <td *ngIf="ua.tags.listable">{{ video.tags }}</td>
+              <td *ngIf="ua.description.listable">{{ video.description | slice:0:10 }}...</td>
               <td *ngIf="ua.created.listable">{{ video.created | formatMediumDate }}</td>
               <td *ngIf="ua.released.listable">{{ video.released | formatMediumDate }}</td>
               <td *ngIf="ua.archived.listable">{{ video.archived | formatMediumDate }}</td>

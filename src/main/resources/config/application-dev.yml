@@ -4,10 +4,14 @@
 # ===================================================================
 logging:
   level:
-    ROOT: DEBUG
-    tech.jhipster: DEBUG
-    org.hibernate.SQL: DEBUG
-    com.peecko.one: DEBUG
+    ROOT: WARN
+    com.peecko.one: INFO
+    tech.jhipster: WARN
+    org.springframework: WARN
+    org.springframework.web: WARN
+    org.hibernate: WARN
+    org.hibernate.sql: WARN
+    org.hibernate.type.descriptor.sql: WARN
 
 server:
   port: 8080
