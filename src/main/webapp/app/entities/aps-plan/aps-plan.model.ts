@@ -51,8 +51,8 @@ APS_PLAN_ACCESS = {
   ends: { listable: true, visible: true, disabled: false },
   unitPrice: { listable: true, visible: true, disabled: false },
   notes: { listable: false, visible: true, disabled: false },
-  created: { listable: false, visible: true, disabled: false },
+  created: { listable: true, visible: true, disabled: false },
   updated: { listable: false, visible: true, disabled: false },
   apsOrders: { listable: true, visible: true, disabled: false },
-  customer: { listable: true, visible: true, disabled: false }
-}
+  customer: { listable: true, visible: true, disabled: false },
+};
