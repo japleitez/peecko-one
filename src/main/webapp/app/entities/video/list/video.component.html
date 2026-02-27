@@ -181,12 +181,12 @@
               <td *ngIf="ua.duration.listable">{{ video.duration }}</td>
               <td *ngIf="ua.filename.listable">{{ video.filename }}</td>
               <td *ngIf="ua.url.listable">{{ video.url | slice:85 }}</td>
-              <td *ngIf="ua.thumbnail.listable">{{ video.thumbnail | slice:0:10 }}...</td>
+              <td *ngIf="ua.thumbnail.listable">{{ video.thumbnail | slice:0:15 }}...</td>
               <td *ngIf="ua.player.listable">{{ video.player }}</td>
               <td *ngIf="ua.audience.listable">{{ video.audience }}</td>
               <td *ngIf="ua.intensity.listable">{{ video.intensity }}</td>
               <td *ngIf="ua.tags.listable">{{ video.tags }}</td>
-              <td *ngIf="ua.description.listable">{{ video.description | slice:0:10 }}...</td>
+              <td *ngIf="ua.description.listable">{{ video.description | slice:0:15 }}...</td>
               <td *ngIf="ua.created.listable">{{ video.created | formatMediumDate }}</td>
               <td *ngIf="ua.released.listable">{{ video.released | formatMediumDate }}</td>
               <td *ngIf="ua.archived.listable">{{ video.archived | formatMediumDate }}</td>
