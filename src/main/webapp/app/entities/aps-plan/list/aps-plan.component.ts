@@ -38,8 +38,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
     MatInputModule,
     ReactiveFormsModule,
     NgbInputDatepicker,
-    FaIconComponent
-  ]
+    FaIconComponent,
+  ],
 })
 export class ApsPlanComponent implements OnInit {
   ua: ApsPlanAccess = this.getApsPlanUserAccess();
@@ -85,6 +85,7 @@ export class ApsPlanComponent implements OnInit {
 
   navToApsOrder(a: IApsPlan) {
     this.apsPlanData.setContract(a.contract);
+    this.customerData.setCode(a.customer?.code);
     this.router.navigate(['/aps-order'], {
       relativeTo: this.activatedRoute.parent,
     });
@@ -194,5 +195,4 @@ export class ApsPlanComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
-
 }

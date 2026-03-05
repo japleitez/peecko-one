@@ -28,7 +28,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/admin
+    url: jdbc:postgresql://192.168.178.125:5432/admin
     username: admin
     password:
     hikari:
@@ -53,7 +53,6 @@ spring:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
-
 
 # ===================================================================
 # JHipster specific properties

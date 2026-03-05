@@ -49,7 +49,7 @@ import { ICustomer } from '../../customer/customer.model';
     NgbInputDatepicker,
     FaIconComponent,
     FontAwesomeModule,
-  ]
+  ],
 })
 export class ApsOrderComponent implements OnInit {
   ua: ApsOrderAccess = this.getPlanOrderAccess();
@@ -73,6 +73,7 @@ export class ApsOrderComponent implements OnInit {
   period: string | null | undefined = null;
   starts: string | null | undefined = null;
   ends: string | null | undefined = null;
+  currentPeriod: string = '';
 
   constructor(
     protected apsOrderService: ApsOrderService,
@@ -88,6 +89,7 @@ export class ApsOrderComponent implements OnInit {
   ) {
     this.contract = this.apsPlanData.getContract();
     this.customer = this.customerData.getCode();
+    this.currentPeriod = new Date().toISOString().slice(0, 7).replace('-', '');
   }
 
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
@@ -95,6 +97,12 @@ export class ApsOrderComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.refresh();
+  }
+
+  onStartChange(value: any) {
+    if (value) {
+      this.period = '';
+    }
   }
 
   /*
@@ -191,9 +199,9 @@ export class ApsOrderComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityInfoArrayResponseType> {
     this.isLoading = true;
-    const batchOrders: boolean = (this.loadAction === this.BATCH_ORDERS);
-    const batchInvoices: boolean = (this.loadAction === this.BATCH_INVOICES);
-    const batchEmails: boolean = (this.loadAction === this.BATCH_EMAILS);
+    const batchOrders: boolean = this.loadAction === this.BATCH_ORDERS;
+    const batchInvoices: boolean = this.loadAction === this.BATCH_INVOICES;
+    const batchEmails: boolean = this.loadAction === this.BATCH_EMAILS;
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
@@ -260,18 +268,21 @@ export class ApsOrderComponent implements OnInit {
   }
 
   downloadInvoice(apsOrder: IApsOrderInfo): void {
-    this.apsOrderService.downloadInvoice(apsOrder.id).subscribe(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = apsOrder.invoiceNumber + '.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }, error => {
-      console.error('Error downloading file:', error);
-    });
+    this.apsOrderService.downloadInvoice(apsOrder.id).subscribe(
+      blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = apsOrder.invoiceNumber + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error => {
+        console.error('Error downloading file:', error);
+      },
+    );
   }
 
   protected disabledGenerate(): boolean {
@@ -281,5 +292,4 @@ export class ApsOrderComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
-
 }
