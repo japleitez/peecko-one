@@ -6,10 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!--
-        Added the entity Customer.
-    -->
-    <changeSet id="2024-004-1" author="jhipster">
+    <changeSet id="2024-005-Customer-sequence" author="jhipster">
+        <createSequence sequenceName="customer_id_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024-005-Customer-entity" author="jhipster">
         <createTable tableName="customer">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -79,32 +80,6 @@
         <dropDefaultValue tableName="customer" columnName="declined" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="customer" columnName="activated" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="customer" columnName="closed" columnDataType="${datetimeType}"/>
-    </changeSet>
-
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
-
-    <!--
-        Load sample data generated with Faker.js
-        - This data can be easily edited using a CSV editor (or even MS Excel) and
-          is located in the 'src/main/resources/config/liquibase/fake-data' directory
-        - By default this data is applied when running with the JHipster 'dev' profile.
-          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
-          Spring Boot configuration key.
-    -->
-    <changeSet id="2024-004-1-data" author="jhipster" context="faker">
-        <loadData
-                  file="config/liquibase/fake-data/customer.csv"
-                  separator=";"
-                  tableName="customer"
-                  usePreparedStatements="true">
-            <column name="id" type="numeric"/>
-            <column name="agency_id" type="numeric"/>
-            <column name="country" type="string"/>
-            <column name="vat_rate" type="numeric"/>
-            <column name="state" type="string"/>
-            <column name="code" type="string"/>
-            <column name="name" type="string"/>
-        </loadData>
     </changeSet>
 
 </databaseChangeLog>

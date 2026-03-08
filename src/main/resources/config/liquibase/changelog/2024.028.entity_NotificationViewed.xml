@@ -6,10 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!--
-        Added the entity Notification Viewed.
-    -->
-    <changeSet id="2024-028-1" author="jhipster">
+    <changeSet id="2024-028-NotificationViewed-sequence" author="jhipster">
+        <createSequence sequenceName="notification_viewed_id_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024-028-NotificationViewed-entity" author="jhipster">
         <createTable tableName="notification_viewed">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>

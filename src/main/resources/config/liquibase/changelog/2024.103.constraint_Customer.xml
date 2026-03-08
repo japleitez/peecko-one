@@ -3,10 +3,8 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <!--
-        Added the constraints for entity Customer.
-    -->
-    <changeSet id="2024-102-2" author="jhipster">
+
+    <changeSet id="2024-103-Customer-constraint" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="agency_id"
                                  baseTableName="customer"
@@ -15,4 +13,5 @@
                                  referencedTableName="agency"
                                  />
     </changeSet>
+
 </databaseChangeLog>

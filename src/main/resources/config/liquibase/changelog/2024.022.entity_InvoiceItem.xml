@@ -6,10 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!--
-        Added the entity InvoiceItem.
-    -->
-    <changeSet id="2024-021-1" author="jhipster">
+    <changeSet id="2024-022-InvoiceItem-sequence" author="jhipster">
+        <createSequence sequenceName="invoice_item_id_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024-022-InvoiceItem-entity" author="jhipster">
         <createTable tableName="invoice_item">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -41,7 +42,6 @@
             <column name="invoice_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
 

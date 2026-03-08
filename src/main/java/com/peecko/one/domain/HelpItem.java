@@ -11,8 +11,8 @@ import java.io.Serializable;
 public class HelpItem implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "help_item_id_gen")
+    @SequenceGenerator(name = "help_item_id_gen", sequenceName = "help_item_id_seq")
     @Column(name = "id")
     private Long id;
 

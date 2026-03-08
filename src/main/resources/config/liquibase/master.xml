@@ -10,6 +10,7 @@
     <property name="uuidType" value="uuid" dbms="postgresql"/>
     <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
+    <!-- Entities -->
     <include file="/config/liquibase/changelog/2024.001.entity_Agency.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.002.entity_AgencyUser.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.003.entity_ApsUser.xml" relativeToChangelogFile="false"/>
@@ -38,7 +39,8 @@
     <include file="/config/liquibase/changelog/2024.026.entity_Language.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.027.entity_PinCode.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.028.entity_NotificationViewed.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+
+    <!-- Constraint -->
     <include file="/config/liquibase/changelog/2024.101.constraint_ApsDevice.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.102.constraint_jhi_user.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.103.constraint_Customer.xml" relativeToChangelogFile="false"/>
@@ -53,6 +55,8 @@
     <include file="/config/liquibase/changelog/2024.112.constraint_VideoItem.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.113.constraint_Invoice.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2024.114.constraint_InvoiceItem.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+
+    <!-- Data -->
+    <include file="/config/liquibase/changelog/2024.201.data.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>

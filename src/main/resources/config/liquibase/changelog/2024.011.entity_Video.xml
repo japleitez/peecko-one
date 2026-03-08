@@ -6,10 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!--
-        Added the entity Video.
-    -->
-    <changeSet id="2024-010-1" author="jhipster">
+    <changeSet id="2024-011-Video-sequence" author="jhipster">
+        <createSequence sequenceName="video_id_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024-011-Video-entity" author="jhipster">
         <createTable tableName="video">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -65,7 +66,6 @@
             <column name="coach_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="video" columnName="created" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="video" columnName="released" columnDataType="${datetimeType}"/>

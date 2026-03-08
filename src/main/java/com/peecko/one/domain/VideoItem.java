@@ -18,7 +18,8 @@ public class VideoItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "video_item_id_gen")
+    @SequenceGenerator(name = "video_item_id_gen", sequenceName = "video_item_id_seq")
     @Column(name = "id")
     private Long id;
 

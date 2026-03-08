@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
+    <changeSet id="2024-003-ApsUser-sequence" author="jhipster">
+        <createSequence sequenceName="aps_user_id_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
 
-    <!--
-        Added the entity ApsUser.
-    -->
-    <changeSet id="2024-001-1" author="jhipster">
+    <changeSet id="2024-003-ApsUser-entity" author="jhipster">
         <createTable tableName="aps_user">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>

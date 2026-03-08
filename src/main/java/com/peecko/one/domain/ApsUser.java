@@ -22,8 +22,8 @@ public class ApsUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aps_user_id_gen")
+    @SequenceGenerator(name = "aps_user_id_gen", sequenceName = "aps_user_id_seq")
     @Column(name = "id")
     private Long id;
 

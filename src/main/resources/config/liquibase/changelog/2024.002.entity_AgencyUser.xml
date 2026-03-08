@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="2024-001-1" author="jhipster">
-        <createSequence sequenceName="sequence_generator" startValue="1050" incrementBy="50"/>
+    <changeSet id="2024-002-agency-user-sequence" author="jhipster">
+        <createSequence sequenceName="jhi_user_id_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
-    <changeSet id="2024-001-2" author="jhipster">
+    <changeSet id="2024-002-agency-user-entity" author="jhipster">
         <createTable tableName="jhi_user">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -103,7 +103,7 @@
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
-    <changeSet id="2024-001-3" author="jhipster" context="test">
+    <changeSet id="2024-002-jhi-date-time-wrapper" author="jhipster" context="test">
         <createTable tableName="jhi_date_time_wrapper">
             <column  name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="jhi_date_time_wrapperPK"/>
@@ -117,4 +117,5 @@
             <column name="local_date" type="date"/>
         </createTable>
     </changeSet>
+
 </databaseChangeLog>

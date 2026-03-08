@@ -12,8 +12,8 @@ public class InvalidJwt implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invalid_jwt_id_gen")
+    @SequenceGenerator(name = "invalid_jwt_id_gen", sequenceName = "invalid_jwt_id_seq")
     @Column(name = "id")
     private Long id;
 

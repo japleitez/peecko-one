@@ -19,8 +19,8 @@ public class ApsPricing implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aps_pricing_gen")
+    @SequenceGenerator(name = "aps_pricing_gen", sequenceName = "aps_pricing_seq")
     @Column(name = "id")
     private Long id;
 

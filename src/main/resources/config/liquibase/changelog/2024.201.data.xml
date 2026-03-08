@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <changeSet id="2024-201-Customer-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/customer.csv"
+            separator=";"
+            tableName="customer"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="agency_id" type="numeric"/>
+            <column name="country" type="string"/>
+            <column name="vat_rate" type="numeric"/>
+            <column name="state" type="string"/>
+            <column name="code" type="string"/>
+            <column name="name" type="string"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="2024-201-Contact-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/contact.csv"
+            separator=";"
+            tableName="contact"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="customer_id" type="numeric"/>
+            <column name="type" type="string"/>
+            <column name="name" type="string"/>
+            <column name="line_1" type="string"/>
+            <column name="zip" type="string"/>
+            <column name="city" type="string"/>
+            <column name="country" type="string"/>
+            <column name="email" type="string"/>
+            <column name="phone" type="string"/>
+            <column name="created" type="date"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="2024-201-ApsPricing-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/aps_pricing.csv"
+            separator=";"
+            tableName="aps_pricing"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="country" type="string"/>
+            <column name="index" type="numeric"/>
+            <column name="min_quantity" type="numeric"/>
+            <column name="unit_price" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="2024-201-LabelTranslation-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/label_translation.csv"
+            separator=";"
+            tableName="label_translation"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="code" type="string"/>
+            <column name="lang" type="string"/>
+            <column name="text" type="string"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

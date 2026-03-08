@@ -6,10 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!--
-        Added the entity Coach.
-    -->
-    <changeSet id="2024-019-1" author="jhipster">
+    <changeSet id="2024-020-Coach-sequence" author="jhipster">
+        <createSequence sequenceName="coach_id_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024-020-Coach-entity" author="jhipster">
         <createTable tableName="coach">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -50,7 +51,6 @@
             <column name="updated" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="coach" columnName="created" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="coach" columnName="updated" columnDataType="${datetimeType}"/>
