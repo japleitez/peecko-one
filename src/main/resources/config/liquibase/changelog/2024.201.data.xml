@@ -43,6 +43,9 @@
         </loadData>
     </changeSet>
 
+    <!--
+    id;country;index;min_quantity;max_quantity;unit_price;premium_price
+    -->
     <changeSet id="2024-201-ApsPricing-data" author="jhipster" context="faker">
         <loadData
             file="config/liquibase/fake-data/aps_pricing.csv"
@@ -53,7 +56,29 @@
             <column name="country" type="string"/>
             <column name="index" type="numeric"/>
             <column name="min_quantity" type="numeric"/>
+            <column name="max_quantity" type="numeric"/>
             <column name="unit_price" type="numeric"/>
+            <column name="premium_price" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;type;name;email;website;country;speaks;created
+    -->
+    <changeSet id="2024-201-Coach-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/coach.csv"
+            separator=";"
+            tableName="coach"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="type" type="string"/>
+            <column name="name" type="string"/>
+            <column name="email" type="string"/>
+            <column name="website" type="string"/>
+            <column name="country" type="string"/>
+            <column name="speaks" type="string"/>
+            <column name="created" type="date"/>
         </loadData>
     </changeSet>
 
@@ -67,6 +92,51 @@
             <column name="code" type="string"/>
             <column name="lang" type="string"/>
             <column name="text" type="string"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;order;code;title;created;released
+    -->
+    <changeSet id="2024-201-VideoCategory-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/video_category.csv"
+            separator=";"
+            tableName="video_category"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="order" type="numeric"/>
+            <column name="code" type="string"/>
+            <column name="title" type="string"/>
+            <column name="created" type="date"/>
+            <column name="released" type="date"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;coach_id;video_category_id;code;title;language;tags;player;audience;intensity;filename;description;url;created;released
+    -->
+    <changeSet id="2024-016-Video-data" author="jhipster" context="faker">
+        <loadData
+            file="config/liquibase/fake-data/video.csv"
+            separator=";"
+            tableName="video"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="coach_id" type="numeric"/>
+            <column name="video_category_id" type="numeric"/>
+            <column name="code" type="string"/>
+            <column name="title" type="string"/>
+            <column name="language" type="string"/>
+            <column name="tags" type="string"/>
+            <column name="player" type="string"/>
+            <column name="audience" type="string"/>
+            <column name="intensity" type="string"/>
+            <column name="filename" type="string"/>
+            <column name="description" type="string"/>
+            <column name="url" type="string"/>
+            <column name="created" type="date"/>
+            <column name="released" type="date"/>
         </loadData>
     </changeSet>
 

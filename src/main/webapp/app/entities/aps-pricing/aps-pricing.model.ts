@@ -7,7 +7,9 @@ export interface IApsPricing {
   country?: string | null;
   index?: number | null;
   minQuantity?: number | null;
+  maxQuantity?: number | null;
   unitPrice?: number | null;
+  premiumPrice?: number | null;
   customer?: ICustomer | null;
 }
 
@@ -18,7 +20,9 @@ export interface ApsPricingAccess {
   country: FieldAccess;
   index: FieldAccess;
   minQuantity: FieldAccess;
+  maxQuantity: FieldAccess;
   unitPrice: FieldAccess;
+  premiumPrice: FieldAccess;
   customer: FieldAccess;
 }
 
@@ -29,6 +33,8 @@ APS_PRICING_ACCESS = {
   country: { listable: true, visible: true, disabled: false },
   index: { listable: true, visible: true, disabled: false },
   minQuantity: { listable: true, visible: true, disabled: false },
+  maxQuantity: { listable: true, visible: true, disabled: false },
   unitPrice: { listable: true, visible: true, disabled: false },
+  premiumPrice: { listable: true, visible: true, disabled: false },
   customer: { listable: true, visible: true, disabled: false },
 }

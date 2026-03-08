@@ -36,8 +36,16 @@ public class ApsPricing implements Serializable {
     private Integer minQuantity;
 
     @NotNull
+    @Column(name = "max_quantity", nullable = false)
+    private Integer maxQuantity;
+
+    @NotNull
     @Column(name = "unit_price", nullable = false)
     private Double unitPrice;
+
+    @NotNull
+    @Column(name = "premium_price", nullable = false)
+    private Double premiumPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
@@ -97,6 +105,19 @@ public class ApsPricing implements Serializable {
         this.minQuantity = minQuantity;
     }
 
+    public Integer getMaxQuantity() {
+        return this.maxQuantity;
+    }
+
+    public ApsPricing maxQuantity(Integer maxQuantity) {
+        this.setMaxQuantity(maxQuantity);
+        return this;
+    }
+
+    public void setMaxQuantity(Integer maxQuantity) {
+        this.maxQuantity = maxQuantity;
+    }
+
     public Double getUnitPrice() {
         return this.unitPrice;
     }
@@ -108,6 +129,19 @@ public class ApsPricing implements Serializable {
 
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public Double getPremiumPrice() {
+        return this.premiumPrice;
+    }
+
+    public ApsPricing premiumPrice(Double premiumPrice) {
+        this.setPremiumPrice(premiumPrice);
+        return this;
+    }
+
+    public void setPremiumPrice(Double premiumPrice) {
+        this.premiumPrice = premiumPrice;
     }
 
     public Customer getCustomer() {

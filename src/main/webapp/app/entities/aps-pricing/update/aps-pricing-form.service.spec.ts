@@ -24,7 +24,9 @@ describe('ApsPricing Form Service', () => {
             customerId: expect.any(Object),
             index: expect.any(Object),
             minQuantity: expect.any(Object),
+            maxQuantity: expect.any(Object),
             unitPrice: expect.any(Object),
+            premiumPrice: expect.any(Object),
           }),
         );
       });
@@ -39,7 +41,9 @@ describe('ApsPricing Form Service', () => {
             customerId: expect.any(Object),
             index: expect.any(Object),
             minQuantity: expect.any(Object),
+            maxQuantity: expect.any(Object),
             unitPrice: expect.any(Object),
+            premiumPrice: expect.any(Object),
           }),
         );
       });

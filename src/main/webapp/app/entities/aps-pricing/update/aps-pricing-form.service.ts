@@ -22,7 +22,9 @@ type ApsPricingFormGroupContent = {
   customer: FormControl<IApsPricing['customer']>;
   index: FormControl<IApsPricing['index']>;
   minQuantity: FormControl<IApsPricing['minQuantity']>;
+  maxQuantity: FormControl<IApsPricing['maxQuantity']>;
   unitPrice: FormControl<IApsPricing['unitPrice']>;
+  premiumPrice: FormControl<IApsPricing['premiumPrice']>;
 };
 
 export type ApsPricingFormGroup = FormGroup<ApsPricingFormGroupContent>;
@@ -54,9 +56,15 @@ export class ApsPricingFormService {
       minQuantity: new FormControl({ value: apsPricingRawValue.minQuantity, disabled: ua.minQuantity.disabled  },
         { validators: [Validators.required],
       }),
+      maxQuantity: new FormControl({ value: apsPricingRawValue.maxQuantity, disabled: ua.maxQuantity.disabled  },
+        { validators: [Validators.required],
+        }),
       unitPrice: new FormControl({ value: apsPricingRawValue.unitPrice, disabled: ua.unitPrice.disabled  },
         { validators: [Validators.required],
       }),
+      premiumPrice: new FormControl({ value: apsPricingRawValue.premiumPrice, disabled: ua.premiumPrice.disabled  },
+        { validators: [Validators.required],
+        }),
     });
   }
 

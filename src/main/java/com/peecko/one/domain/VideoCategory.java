@@ -28,6 +28,10 @@ public class VideoCategory implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "order", nullable = false)
+    private Integer order;
+
+    @NotNull
     @Column(name = "code", nullable = false)
     private String code;
 
@@ -62,6 +66,19 @@ public class VideoCategory implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getOrder() {
+        return this.order;
+    }
+
+    public VideoCategory order(Integer order) {
+        this.setOrder(order);
+        return this;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 
     public String getCode() {

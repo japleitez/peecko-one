@@ -69,9 +69,23 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="minQuantity" *ngIf="ua.maxQuantity.listable">
+              <div class="d-flex">
+                <span>Max Quantity</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="unitPrice" *ngIf="ua.unitPrice.listable">
               <div class="d-flex">
-                <span>Unit Price</span>
+                <span>Basic Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="unitPrice" *ngIf="ua.premiumPrice.listable">
+              <div class="d-flex">
+                <span>Premium Price</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -95,7 +109,9 @@
               <td *ngIf="ua.country.listable">{{ apsPricing.country }}</td>
               <td *ngIf="ua.index.listable">{{ apsPricing.index }}</td>
               <td *ngIf="ua.minQuantity.listable">{{ apsPricing.minQuantity }}</td>
+              <td *ngIf="ua.maxQuantity.listable">{{ apsPricing.maxQuantity }}</td>
               <td *ngIf="ua.unitPrice.listable">{{ apsPricing.unitPrice }}</td>
+              <td *ngIf="ua.premiumPrice.listable">{{ apsPricing.premiumPrice }}</td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/aps-pricing', apsPricing.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

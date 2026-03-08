@@ -35,9 +35,17 @@
           <dd *ngIf="ua.minQuantity.visible">
             <span>{{ apsPricing.minQuantity }}</span>
           </dd>
-          <dt *ngIf="ua.unitPrice.visible"><span>Unit Price</span></dt>
+          <dt *ngIf="ua.maxQuantity.visible"><span>Max Quantity</span></dt>
+          <dd *ngIf="ua.maxQuantity.visible">
+            <span>{{ apsPricing.maxQuantity }}</span>
+          </dd>
+          <dt *ngIf="ua.unitPrice.visible"><span>Basic Price</span></dt>
           <dd *ngIf="ua.unitPrice.visible">
             <span>{{ apsPricing.unitPrice }}</span>
+          </dd>
+          <dt *ngIf="ua.premiumPrice.visible"><span>Premium Price</span></dt>
+          <dd *ngIf="ua.premiumPrice.visible">
+            <span>{{ apsPricing.premiumPrice }}</span>
           </dd>
         </dl>
 
