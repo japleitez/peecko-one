@@ -21,8 +21,8 @@ public class Contact implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_id_gen")
-    @SequenceGenerator(name = "contact_id_gen", sequenceName = "contact_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_gen")
+    @SequenceGenerator(name = "contact_gen", sequenceName = "contact_seq")
     @Column(name = "id")
     private Long id;
 

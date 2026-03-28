@@ -23,8 +23,8 @@ public class Agency implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agency_id_gen")
-    @SequenceGenerator(name = "agency_id_gen", sequenceName = "agency_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agency_gen")
+    @SequenceGenerator(name = "agency_gen", sequenceName = "agency_seq")
     @Column(name = "id")
     private Long id;
 

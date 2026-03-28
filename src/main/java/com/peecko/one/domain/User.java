@@ -28,8 +28,8 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jhi_user_id_gen")
-    @SequenceGenerator(name = "jhi_user_id_gen", sequenceName = "jhi_user_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jhi_user_gen")
+    @SequenceGenerator(name = "jhi_user_gen", sequenceName = "jhi_user_seq")
     @Column(name = "id")
     private Long id;
 

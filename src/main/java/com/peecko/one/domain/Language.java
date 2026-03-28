@@ -2,17 +2,17 @@ package com.peecko.one.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.Serializable;
 
 @Entity
 @Table(name = "language")
 public class Language implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "language_id_gen")
-    @SequenceGenerator(name = "language_id_gen", sequenceName = "language_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "language_gen")
+    @SequenceGenerator(name = "language_gen", sequenceName = "language_seq")
     @Column(name = "id")
     private Long id;
 
@@ -28,8 +28,7 @@ public class Language implements Serializable {
     @Column(name = "active")
     private Boolean active;
 
-    public Language() {
-    }
+    public Language() {}
 
     public Language(String code, String name, Boolean active) {
         this.code = code;

@@ -44,7 +44,7 @@
     </changeSet>
 
     <!--
-    id;country;index;min_quantity;max_quantity;unit_price;premium_price
+    id;index;country;min_quantity;max_quantity;fitness_price;wellness_price
     -->
     <changeSet id="2024-201-ApsPricing-data" author="jhipster" context="faker">
         <loadData
@@ -53,12 +53,12 @@
             tableName="aps_pricing"
             usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="country" type="string"/>
             <column name="index" type="numeric"/>
+            <column name="country" type="string"/>
             <column name="min_quantity" type="numeric"/>
             <column name="max_quantity" type="numeric"/>
-            <column name="unit_price" type="numeric"/>
-            <column name="premium_price" type="numeric"/>
+            <column name="fitness_price" type="numeric"/>
+            <column name="wellness_price" type="numeric"/>
         </loadData>
     </changeSet>
 
@@ -96,7 +96,7 @@
     </changeSet>
 
     <!--
-    id;order;code;title;created;released
+    id;pos;code;title;created;released
     -->
     <changeSet id="2024-201-VideoCategory-data" author="jhipster" context="faker">
         <loadData
@@ -105,7 +105,7 @@
             tableName="video_category"
             usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="order" type="numeric"/>
+            <column name="pos" type="numeric"/>
             <column name="code" type="string"/>
             <column name="title" type="string"/>
             <column name="created" type="date"/>
@@ -114,7 +114,7 @@
     </changeSet>
 
     <!--
-    id;coach_id;video_category_id;code;title;language;tags;player;audience;intensity;filename;description;url;created;released
+    id;coach_id;video_category_id;code;title;language;tags;player;audience;intensity;filename;url;description;created;released
     -->
     <changeSet id="2024-016-Video-data" author="jhipster" context="faker">
         <loadData
@@ -133,8 +133,8 @@
             <column name="audience" type="string"/>
             <column name="intensity" type="string"/>
             <column name="filename" type="string"/>
-            <column name="description" type="string"/>
             <column name="url" type="string"/>
+            <column name="description" type="string"/>
             <column name="created" type="date"/>
             <column name="released" type="date"/>
         </loadData>

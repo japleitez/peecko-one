@@ -3,7 +3,6 @@ package com.peecko.one.domain;
 import com.peecko.one.domain.enumeration.Language;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.Serializable;
 
 @Entity
@@ -11,8 +10,8 @@ import java.io.Serializable;
 public class HelpItem implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "help_item_id_gen")
-    @SequenceGenerator(name = "help_item_id_gen", sequenceName = "help_item_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "help_item_gen")
+    @SequenceGenerator(name = "help_item_gen", sequenceName = "help_item_seq")
     @Column(name = "id")
     private Long id;
 
@@ -29,8 +28,7 @@ public class HelpItem implements Serializable {
     @Column(name = "answer")
     private String answer;
 
-    public HelpItem() {
-    }
+    public HelpItem() {}
 
     public HelpItem(Language lang, String question, String answer) {
         this.lang = lang;

@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="2024-003-ApsUser-sequence" author="jhipster">
-        <createSequence sequenceName="aps_user_id_seq" startValue="1000" incrementBy="50"/>
+        <createSequence sequenceName="aps_user_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
     <changeSet id="2024-003-ApsUser-entity" author="jhipster">

@@ -19,8 +19,8 @@ public class LabelTranslation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "label_translation_id_gen")
-    @SequenceGenerator(name = "label_translation_id_gen", sequenceName = "label_translation_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "label_translation_gen")
+    @SequenceGenerator(name = "label_translation_gen", sequenceName = "label_translation_seq")
     @Column(name = "id")
     private Long id;
 

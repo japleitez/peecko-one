@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="2024-025-InvalidJwt-sequence" author="jhipster">
-        <createSequence sequenceName="invalid_jwt_id_seq" startValue="1000" incrementBy="50"/>
+        <createSequence sequenceName="invalid_jwt_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
     <changeSet id="2024-025-InvalidJwt-entity" author="jhipster">

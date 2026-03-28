@@ -18,8 +18,8 @@ public class VideoItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "video_item_id_gen")
-    @SequenceGenerator(name = "video_item_id_gen", sequenceName = "video_item_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "video_item_gen")
+    @SequenceGenerator(name = "video_item_gen", sequenceName = "video_item_seq")
     @Column(name = "id")
     private Long id;
 
@@ -29,7 +29,6 @@ public class VideoItem implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "previous_video_item_id")
     private VideoItem next;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "next_video_item_id")

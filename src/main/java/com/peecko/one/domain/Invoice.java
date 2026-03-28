@@ -19,11 +19,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Invoice implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_id_gen")
-    @SequenceGenerator(name = "invoice_id_gen", sequenceName = "invoice_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_gen")
+    @SequenceGenerator(name = "invoice_gen", sequenceName = "invoice_seq")
     @Column(name = "id")
     private Long id;
 

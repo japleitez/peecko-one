@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="2024-018-PlayList-sequence" author="jhipster">
-        <createSequence sequenceName="play_list_id_seq" startValue="1000" incrementBy="50"/>
+        <createSequence sequenceName="play_list_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
     <changeSet id="2024-018-PlayList-entity" author="jhipster">

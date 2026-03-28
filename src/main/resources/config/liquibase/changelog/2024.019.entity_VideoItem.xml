@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="2024-019-VideoItem-sequence" author="jhipster">
-        <createSequence sequenceName="video_item_id_seq" startValue="1000" incrementBy="50"/>
+        <createSequence sequenceName="video_item_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
     <changeSet id="2024-019-VideoItem-entity" author="jhipster">

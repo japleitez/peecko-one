@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="2024-005-Customer-sequence" author="jhipster">
-        <createSequence sequenceName="customer_id_seq" startValue="1000" incrementBy="50"/>
+        <createSequence sequenceName="customer_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
     <changeSet id="2024-005-Customer-entity" author="jhipster">
