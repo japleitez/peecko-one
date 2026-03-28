@@ -8,8 +8,8 @@ export interface IApsPricing {
   index?: number | null;
   minQuantity?: number | null;
   maxQuantity?: number | null;
-  unitPrice?: number | null;
-  premiumPrice?: number | null;
+  fitnessPrice?: number | null;
+  wellnessPrice?: number | null;
   customer?: ICustomer | null;
 }
 
@@ -21,8 +21,8 @@ export interface ApsPricingAccess {
   index: FieldAccess;
   minQuantity: FieldAccess;
   maxQuantity: FieldAccess;
-  unitPrice: FieldAccess;
-  premiumPrice: FieldAccess;
+  fitnessPrice: FieldAccess;
+  wellnessPrice: FieldAccess;
   customer: FieldAccess;
 }
 
@@ -34,7 +34,7 @@ APS_PRICING_ACCESS = {
   index: { listable: true, visible: true, disabled: false },
   minQuantity: { listable: true, visible: true, disabled: false },
   maxQuantity: { listable: true, visible: true, disabled: false },
-  unitPrice: { listable: true, visible: true, disabled: false },
-  premiumPrice: { listable: true, visible: true, disabled: false },
+  fitnessPrice: { listable: true, visible: true, disabled: false },
+  wellnessPrice: { listable: true, visible: true, disabled: false },
   customer: { listable: true, visible: true, disabled: false },
 }

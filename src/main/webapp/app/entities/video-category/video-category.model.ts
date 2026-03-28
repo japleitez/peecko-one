@@ -4,6 +4,7 @@ import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface IVideoCategory {
   id: number;
+  pos?: number | 0;
   code?: string | null;
   title?: string | null;
   created?: dayjs.Dayjs | null;
@@ -16,6 +17,7 @@ export type NewVideoCategory = Omit<IVideoCategory, 'id'> & { id: null };
 
 export interface VideoCategoryAccess {
   id: FieldAccess;
+  pos: FieldAccess;
   code: FieldAccess;
   title: FieldAccess;
   created: FieldAccess;
@@ -28,6 +30,7 @@ export let VIDEO_CATEGORY_ACCESS: VideoCategoryAccess;
 
 VIDEO_CATEGORY_ACCESS = {
   id: { listable: false, visible: true, disabled: true },
+  pos: { listable: true, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   title: { listable: true, visible: true, disabled: false },
   created: { listable: true, visible: true, disabled: true },

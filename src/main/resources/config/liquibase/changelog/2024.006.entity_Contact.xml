@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="2024-006-contact-sequence" author="jhipster">
+    <changeSet id="2024-006-Contact-sequence" author="jhipster">
         <createSequence sequenceName="contact_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
-    <changeSet id="2024-006-contact-entity" author="jhipster">
+    <changeSet id="2024-006-Contact-entity" author="jhipster">
         <createTable tableName="contact">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>

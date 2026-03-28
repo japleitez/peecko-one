@@ -39,7 +39,7 @@ spring:
       schema: pwa
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
-    contexts: prod, faker
+    contexts: prod, init_data
     enabled: true
     change-log: /config/liquibase/master.xml
     default-schema: pwa

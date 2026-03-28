@@ -94,7 +94,7 @@ public class InvoiceService {
                 apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(country, BASE_CUSTOMER_ID, numberOfUsers);
             }
             if (!apsPricings.isEmpty()) {
-                unitPrice = apsPricings.get(0).getUnitPrice();
+                unitPrice = apsPricings.get(0).getFitnessPrice();
             }
         }
 

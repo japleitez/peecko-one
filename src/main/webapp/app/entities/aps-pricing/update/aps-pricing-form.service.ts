@@ -23,8 +23,8 @@ type ApsPricingFormGroupContent = {
   index: FormControl<IApsPricing['index']>;
   minQuantity: FormControl<IApsPricing['minQuantity']>;
   maxQuantity: FormControl<IApsPricing['maxQuantity']>;
-  unitPrice: FormControl<IApsPricing['unitPrice']>;
-  premiumPrice: FormControl<IApsPricing['premiumPrice']>;
+  unitPrice: FormControl<IApsPricing['fitnessPrice']>;
+  premiumPrice: FormControl<IApsPricing['wellnessPrice']>;
 };
 
 export type ApsPricingFormGroup = FormGroup<ApsPricingFormGroupContent>;
@@ -59,10 +59,10 @@ export class ApsPricingFormService {
       maxQuantity: new FormControl({ value: apsPricingRawValue.maxQuantity, disabled: ua.maxQuantity.disabled  },
         { validators: [Validators.required],
         }),
-      unitPrice: new FormControl({ value: apsPricingRawValue.unitPrice, disabled: ua.unitPrice.disabled  },
+      unitPrice: new FormControl({ value: apsPricingRawValue.fitnessPrice, disabled: ua.fitnessPrice.disabled  },
         { validators: [Validators.required],
       }),
-      premiumPrice: new FormControl({ value: apsPricingRawValue.premiumPrice, disabled: ua.premiumPrice.disabled  },
+      premiumPrice: new FormControl({ value: apsPricingRawValue.wellnessPrice, disabled: ua.wellnessPrice.disabled  },
         { validators: [Validators.required],
         }),
     });

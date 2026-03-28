@@ -40,12 +40,12 @@ public class ApsPricing implements Serializable {
     private Integer maxQuantity;
 
     @NotNull
-    @Column(name = "unit_price", nullable = false)
-    private Double unitPrice;
+    @Column(name = "fitness_price", nullable = false)
+    private Double fitnessPrice;
 
     @NotNull
-    @Column(name = "premium_price", nullable = false)
-    private Double premiumPrice;
+    @Column(name = "wellness_price", nullable = false)
+    private Double wellnessPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
@@ -118,30 +118,30 @@ public class ApsPricing implements Serializable {
         this.maxQuantity = maxQuantity;
     }
 
-    public Double getUnitPrice() {
-        return this.unitPrice;
+    public Double getFitnessPrice() {
+        return this.fitnessPrice;
     }
 
-    public ApsPricing unitPrice(Double unitPrice) {
-        this.setUnitPrice(unitPrice);
+    public ApsPricing fitnessPrice(Double unitPrice) {
+        this.setFitnessPrice(unitPrice);
         return this;
     }
 
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setFitnessPrice(Double fitnessPrice) {
+        this.fitnessPrice = fitnessPrice;
     }
 
-    public Double getPremiumPrice() {
-        return this.premiumPrice;
+    public Double getWellnessPrice() {
+        return this.wellnessPrice;
     }
 
-    public ApsPricing premiumPrice(Double premiumPrice) {
-        this.setPremiumPrice(premiumPrice);
+    public ApsPricing wellnessPrice(Double wellnessPrice) {
+        this.setWellnessPrice(wellnessPrice);
         return this;
     }
 
-    public void setPremiumPrice(Double premiumPrice) {
-        this.premiumPrice = premiumPrice;
+    public void setWellnessPrice(Double premiumPrice) {
+        this.wellnessPrice = premiumPrice;
     }
 
     public Customer getCustomer() {
@@ -181,7 +181,7 @@ public class ApsPricing implements Serializable {
             "id=" + getId() +
             ", index=" + getIndex() +
             ", minQuantity=" + getMinQuantity() +
-            ", unitPrice=" + getUnitPrice() +
+            ", unitPrice=" + getFitnessPrice() +
             "}";
     }
 }

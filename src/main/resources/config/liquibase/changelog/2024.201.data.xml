@@ -7,9 +7,9 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
 
-    <changeSet id="2024-201-Customer-data" author="jhipster" context="faker">
+    <changeSet id="2024-201-Customer-data" author="jhipster" context="init_data">
         <loadData
-            file="config/liquibase/fake-data/customer.csv"
+            file="config/liquibase/init_data/customer.csv"
             separator=";"
             tableName="customer"
             usePreparedStatements="true">
@@ -23,9 +23,9 @@
         </loadData>
     </changeSet>
 
-    <changeSet id="2024-201-Contact-data" author="jhipster" context="faker">
+    <changeSet id="2024-201-Contact-data" author="jhipster" context="init_data">
         <loadData
-            file="config/liquibase/fake-data/contact.csv"
+            file="config/liquibase/init_data/contact.csv"
             separator=";"
             tableName="contact"
             usePreparedStatements="true">
@@ -46,9 +46,9 @@
     <!--
     id;index;country;min_quantity;max_quantity;fitness_price;wellness_price
     -->
-    <changeSet id="2024-201-ApsPricing-data" author="jhipster" context="faker">
+    <changeSet id="2024-201-ApsPricing-data" author="jhipster" context="init_data">
         <loadData
-            file="config/liquibase/fake-data/aps_pricing.csv"
+            file="config/liquibase/init_data/aps_pricing.csv"
             separator=";"
             tableName="aps_pricing"
             usePreparedStatements="true">
@@ -65,9 +65,9 @@
     <!--
     id;type;name;email;website;country;speaks;created
     -->
-    <changeSet id="2024-201-Coach-data" author="jhipster" context="faker">
+    <changeSet id="2024-201-Coach-data" author="jhipster" context="init_data">
         <loadData
-            file="config/liquibase/fake-data/coach.csv"
+            file="config/liquibase/init_data/coach.csv"
             separator=";"
             tableName="coach"
             usePreparedStatements="true">
@@ -82,9 +82,9 @@
         </loadData>
     </changeSet>
 
-    <changeSet id="2024-201-LabelTranslation-data" author="jhipster" context="faker">
+    <changeSet id="2024-201-LabelTranslation-data" author="jhipster" context="init_data">
         <loadData
-            file="config/liquibase/fake-data/label_translation.csv"
+            file="config/liquibase/init_data/label_translation.csv"
             separator=";"
             tableName="label_translation"
             usePreparedStatements="true">
@@ -98,9 +98,9 @@
     <!--
     id;pos;code;title;created;released
     -->
-    <changeSet id="2024-201-VideoCategory-data" author="jhipster" context="faker">
+    <changeSet id="2024-201-VideoCategory-data" author="jhipster" context="init_data">
         <loadData
-            file="config/liquibase/fake-data/video_category.csv"
+            file="config/liquibase/init_data/video_category.csv"
             separator=";"
             tableName="video_category"
             usePreparedStatements="true">
@@ -116,9 +116,9 @@
     <!--
     id;coach_id;video_category_id;code;title;language;tags;player;audience;intensity;filename;url;description;created;released
     -->
-    <changeSet id="2024-016-Video-data" author="jhipster" context="faker">
+    <changeSet id="2024-016-Video-data" author="jhipster" context="init_data">
         <loadData
-            file="config/liquibase/fake-data/video.csv"
+            file="config/liquibase/init_data/video.csv"
             separator=";"
             tableName="video"
             usePreparedStatements="true">

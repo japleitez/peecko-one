@@ -76,7 +76,7 @@ class ApsPricingResourceIT {
             .country(DEFAULT_COUNTRY)
             .index(DEFAULT_INDEX)
             .minQuantity(DEFAULT_MIN_QUANTITY)
-            .unitPrice(DEFAULT_UNIT_PRICE);
+            .fitnessPrice(DEFAULT_UNIT_PRICE);
         return apsPricing;
     }
 
@@ -87,7 +87,7 @@ class ApsPricingResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ApsPricing createUpdatedEntity(EntityManager em) {
-        ApsPricing apsPricing = new ApsPricing().index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
+        ApsPricing apsPricing = new ApsPricing().index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).fitnessPrice(UPDATED_UNIT_PRICE);
         return apsPricing;
     }
 
@@ -116,7 +116,7 @@ class ApsPricingResourceIT {
         assertThat(testApsPricing.getCountry()).isEqualTo(DEFAULT_COUNTRY);
         assertThat(testApsPricing.getIndex()).isEqualTo(DEFAULT_INDEX);
         assertThat(testApsPricing.getMinQuantity()).isEqualTo(DEFAULT_MIN_QUANTITY);
-        assertThat(testApsPricing.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
+        assertThat(testApsPricing.getFitnessPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
     }
 
     @Test
@@ -176,7 +176,7 @@ class ApsPricingResourceIT {
     void checkUnitPriceIsRequired() throws Exception {
         int databaseSizeBeforeTest = apsPricingRepository.findAll().size();
         // set the field null
-        apsPricing.setUnitPrice(null);
+        apsPricing.setFitnessPrice(null);
 
         // Create the ApsPricing, which fails.
 
@@ -241,7 +241,7 @@ class ApsPricingResourceIT {
         ApsPricing updatedApsPricing = apsPricingRepository.findById(apsPricing.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedApsPricing are not directly saved in db
         em.detach(updatedApsPricing);
-        updatedApsPricing.index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
+        updatedApsPricing.index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).fitnessPrice(UPDATED_UNIT_PRICE);
 
         restApsPricingMockMvc
             .perform(
@@ -257,7 +257,7 @@ class ApsPricingResourceIT {
         ApsPricing testApsPricing = apsPricingList.get(apsPricingList.size() - 1);
         assertThat(testApsPricing.getIndex()).isEqualTo(UPDATED_INDEX);
         assertThat(testApsPricing.getMinQuantity()).isEqualTo(UPDATED_MIN_QUANTITY);
-        assertThat(testApsPricing.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
+        assertThat(testApsPricing.getFitnessPrice()).isEqualTo(UPDATED_UNIT_PRICE);
     }
 
     @Test
@@ -343,7 +343,7 @@ class ApsPricingResourceIT {
         ApsPricing testApsPricing = apsPricingList.get(apsPricingList.size() - 1);
         assertThat(testApsPricing.getIndex()).isEqualTo(UPDATED_INDEX);
         assertThat(testApsPricing.getMinQuantity()).isEqualTo(DEFAULT_MIN_QUANTITY);
-        assertThat(testApsPricing.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
+        assertThat(testApsPricing.getFitnessPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
     }
 
     @Test
@@ -358,7 +358,7 @@ class ApsPricingResourceIT {
         ApsPricing partialUpdatedApsPricing = new ApsPricing();
         partialUpdatedApsPricing.setId(apsPricing.getId());
 
-        partialUpdatedApsPricing.index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
+        partialUpdatedApsPricing.index(UPDATED_INDEX).minQuantity(UPDATED_MIN_QUANTITY).fitnessPrice(UPDATED_UNIT_PRICE);
 
         restApsPricingMockMvc
             .perform(
@@ -374,7 +374,7 @@ class ApsPricingResourceIT {
         ApsPricing testApsPricing = apsPricingList.get(apsPricingList.size() - 1);
         assertThat(testApsPricing.getIndex()).isEqualTo(UPDATED_INDEX);
         assertThat(testApsPricing.getMinQuantity()).isEqualTo(UPDATED_MIN_QUANTITY);
-        assertThat(testApsPricing.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
+        assertThat(testApsPricing.getFitnessPrice()).isEqualTo(UPDATED_UNIT_PRICE);
     }
 
     @Test

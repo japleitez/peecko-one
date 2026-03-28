@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="2024-002-agency-user-sequence" author="jhipster">
+    <changeSet id="2024-002-AgencyUser-sequence" author="jhipster">
         <createSequence sequenceName="jhi_user_seq" startValue="1000" incrementBy="50"/>
     </changeSet>
 
-    <changeSet id="2024-002-agency-user-entity" author="jhipster">
+    <changeSet id="2024-002-AgencyUser-entity" author="jhipster">
         <createTable tableName="jhi_user">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -78,14 +78,14 @@
                                 columnDataType="varchar(60)"
                                 tableName="jhi_user"/>
         <loadData
-                  file="config/liquibase/data/authority.csv"
+                  file="config/liquibase/init_data/authority.csv"
                   separator=";"
                   tableName="jhi_authority"
                   usePreparedStatements="true">
             <column name="name" type="string"/>
         </loadData>
         <loadData
-                  file="config/liquibase/data/user.csv"
+                  file="config/liquibase/init_data/user.csv"
                   separator=";"
                   tableName="jhi_user"
                   usePreparedStatements="true">
@@ -94,7 +94,7 @@
             <column name="created_date" type="timestamp"/>
         </loadData>
         <loadData
-                  file="config/liquibase/data/user_authority.csv"
+                  file="config/liquibase/init_data/user_authority.csv"
                   separator=";"
                   tableName="jhi_user_authority"
                   usePreparedStatements="true">

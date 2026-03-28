@@ -30,10 +30,10 @@
             <column name="max_quantity" type="integer">
                 <constraints nullable="false" />
             </column>
-            <column name="unit_price" type="double">
+            <column name="fitness_price" type="double">
                 <constraints nullable="false" />
             </column>
-            <column name="premium_price" type="double">
+            <column name="wellness_price" type="double">
                 <constraints nullable="false" />
             </column>
         </createTable>

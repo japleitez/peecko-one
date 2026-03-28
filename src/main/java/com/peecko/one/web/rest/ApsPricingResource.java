@@ -136,8 +136,8 @@ public class ApsPricingResource {
                 if (apsPricing.getMinQuantity() != null) {
                     existingApsPricing.setMinQuantity(apsPricing.getMinQuantity());
                 }
-                if (apsPricing.getUnitPrice() != null) {
-                    existingApsPricing.setUnitPrice(apsPricing.getUnitPrice());
+                if (apsPricing.getFitnessPrice() != null) {
+                    existingApsPricing.setFitnessPrice(apsPricing.getFitnessPrice());
                 }
 
                 return existingApsPricing;

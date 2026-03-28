@@ -28,8 +28,8 @@ public class VideoCategory implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "order", nullable = false)
-    private Integer order;
+    @Column(name = "pos", nullable = false)
+    private Integer pos;
 
     @NotNull
     @Column(name = "code", nullable = false)
@@ -68,17 +68,17 @@ public class VideoCategory implements Serializable {
         this.id = id;
     }
 
-    public Integer getOrder() {
-        return this.order;
+    public Integer getPos() {
+        return this.pos;
     }
 
-    public VideoCategory order(Integer order) {
-        this.setOrder(order);
+    public VideoCategory pos(Integer pos) {
+        this.setPos(pos);
         return this;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setPos(Integer pos) {
+        this.pos = pos;
     }
 
     public String getCode() {
