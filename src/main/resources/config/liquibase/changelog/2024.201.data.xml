@@ -119,7 +119,7 @@
     </changeSet>
 
     <!--
-    id;coach_id;video_category_id;code;title;language;tags;player;audience;intensity;filename;url;description;created;released
+    id;coach_id;video_category_id;code;title;duration;language;tags;player;audience;intensity;filename;url;thumbnail;description;created;released
     -->
     <changeSet id="2024-016-Video-data" author="jhipster" context="init_data">
         <loadData
@@ -132,6 +132,7 @@
             <column name="video_category_id" type="numeric"/>
             <column name="code" type="string"/>
             <column name="title" type="string"/>
+            <column name="duration" type="numeric"/>
             <column name="language" type="string"/>
             <column name="tags" type="string"/>
             <column name="player" type="string"/>
@@ -139,6 +140,7 @@
             <column name="intensity" type="string"/>
             <column name="filename" type="string"/>
             <column name="url" type="string"/>
+            <column name="thumbnail" type="string"/>
             <column name="description" type="string"/>
             <column name="created" type="date"/>
             <column name="released" type="date"/>
