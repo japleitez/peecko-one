@@ -82,6 +82,10 @@
         </loadData>
     </changeSet>
 
+    <!--
+    id;code;lang;text
+    -->
+
     <changeSet id="2024-201-LabelTranslation-data" author="jhipster" context="init_data">
         <loadData
             file="config/liquibase/init_data/label_translation.csv"
