@@ -5,5 +5,6 @@ package com.peecko.one.domain.enumeration;
  */
 public enum PricingType {
     FIXED,
-    BRACKET,
+    FITNESS,
+    WELLNESS,
 }

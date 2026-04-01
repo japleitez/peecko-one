@@ -1,13 +1,12 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
-import com.peecko.one.service.*;
 import com.peecko.one.domain.dto.ApsOrderInfo;
+import com.peecko.one.service.*;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,11 +37,14 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api/aps-orders")
 @Transactional
 public class ApsOrderResource {
+
     private final Logger log = LoggerFactory.getLogger(ApsOrderResource.class);
     private static final String ENTITY_NAME = "apsOrder";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+
+    private final UserService userService;
     private final InvoiceService invoiceService;
     private final InvoicePdfService invoicePdfService;
     private final InvoiceEmailService invoiceEmailService;
@@ -50,7 +52,16 @@ public class ApsOrderResource {
     private final PropertyService propertyService;
     private final ApsMembershipService apsMembershipService;
 
-    public ApsOrderResource(InvoiceService invoiceService, InvoicePdfService invoicePdfService, InvoiceEmailService invoiceEmailService, ApsOrderService apsOrderService, PropertyService propertyService, ApsMembershipService apsMembershipService) {
+    public ApsOrderResource(
+        UserService userService,
+        InvoiceService invoiceService,
+        InvoicePdfService invoicePdfService,
+        InvoiceEmailService invoiceEmailService,
+        ApsOrderService apsOrderService,
+        PropertyService propertyService,
+        ApsMembershipService apsMembershipService
+    ) {
+        this.userService = userService;
         this.invoiceService = invoiceService;
         this.invoicePdfService = invoicePdfService;
         this.invoiceEmailService = invoiceEmailService;
@@ -151,34 +162,32 @@ public class ApsOrderResource {
         @RequestParam(required = false) String contract,
         @RequestParam(required = false) Integer period,
         @RequestParam(required = false) Integer starts,
-        @RequestParam(required = false) Integer ends) {
+        @RequestParam(required = false) Integer ends
+    ) {
         log.debug("REST request to get ApsOrders------------------");
         ApsOrderListRequest request = new ApsOrderListRequest(customer, contract, period, starts, ends);
         return apsOrderService.findAll(request).stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
     @GetMapping("/batch/orders")
-    public List<ApsOrderInfo> batchOrders(
-        @RequestParam() Integer period,
-        @RequestParam(required = false) String contract) {
+    public List<ApsOrderInfo> batchOrders(@RequestParam Integer period, @RequestParam(required = false) String contract) {
         log.debug("REST request to generate ApsOrders in batch");
         return apsOrderService.batchOrders(period, contract);
     }
 
     @GetMapping("/batch/invoices")
-    public List<ApsOrderInfo> batchInvoices(
-        @RequestParam() Integer period,
-        @RequestParam(required = false) String contract) {
+    public List<ApsOrderInfo> batchInvoices(@RequestParam Integer period, @RequestParam(required = false) String contract) {
         log.debug("REST request to generate Invoices in batch");
-        List<ApsOrderInfo> list = invoiceService.batchInvoice(period, contract);
-        new Thread(new InvoiceGenerator(period, contract)).start();
-        return list;
+        if (StringUtils.hasText(contract)) {
+            return invoiceService.batchInvoiceForContract(contract, period);
+        } else {
+            Long agencyId = userService.getCurrentAgencyId();
+            return invoiceService.batchInvoiceForAgency(agencyId, period);
+        }
     }
 
     @GetMapping("/batch/emails")
-    public List<ApsOrderInfo> batchEmails(
-        @RequestParam() Integer period,
-        @RequestParam(required = false) String contract) {
+    public List<ApsOrderInfo> batchEmails(@RequestParam Integer period, @RequestParam(required = false) String contract) {
         log.debug("REST request to generate Emails in batch");
         return invoiceEmailService.batchInvoiceEmail(contract, period);
     }
@@ -208,7 +217,8 @@ public class ApsOrderResource {
             return ResponseEntity.notFound().build();
         }
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .contentLength(file.length())
@@ -232,9 +242,7 @@ public class ApsOrderResource {
     }
 
     @PostMapping("/import/members")
-    public ResponseEntity<?> createBulkMembership(
-        @RequestParam() Long apsOrderId,
-        @RequestParam() MultipartFile file) {
+    public ResponseEntity<?> createBulkMembership(@RequestParam Long apsOrderId, @RequestParam MultipartFile file) {
         log.debug("REST request to import ApsMembership file : {}", file.getName());
         int count = apsMembershipService.importMembers(apsOrderId, file);
         log.info("batch imported {} apsMemberships for apsOrder {} from file {}", apsOrderId, file.getName(), count);
@@ -242,12 +250,15 @@ public class ApsOrderResource {
     }
 
     private class InvoiceGenerator implements Runnable {
+
         private final String contract;
         private final Integer period;
+
         public InvoiceGenerator(Integer period, String contract) {
             this.period = period;
             this.contract = contract;
         }
+
         @Override
         public void run() {
             invoicePdfService.batchInvoicePDF(contract, period);

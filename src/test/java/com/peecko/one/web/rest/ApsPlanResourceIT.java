@@ -43,7 +43,7 @@ class ApsPlanResourceIT {
     private static final String UPDATED_CONTRACT = "BBBBBBBBBB";
 
     private static final PricingType DEFAULT_PRICING = PricingType.FIXED;
-    private static final PricingType UPDATED_PRICING = PricingType.BRACKET;
+    private static final PricingType UPDATED_PRICING = PricingType.FITNESS;
 
     private static final PlanState DEFAULT_STATE = PlanState.TRIAL;
     private static final PlanState UPDATED_STATE = PlanState.TRIAL;

@@ -1,4 +1,5 @@
 export enum PricingType {
   FIXED = 'FIXED',
-  BRACKET = 'BRACKET',
+  FITNESS = 'FITNESS',
+  WELLNESS = 'WELLNESS',
 }

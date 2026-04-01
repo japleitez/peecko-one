@@ -13,7 +13,7 @@ export const sampleWithRequiredData: IApsPlan = {
 export const sampleWithPartialData: IApsPlan = {
   id: 8779,
   contract: 'regarding ringed whoever',
-  pricing: 'BRACKET',
+  pricing: 'FITNESS',
   state: 'CLOSED',
   starts: dayjs('2023-12-19'),
   ends: dayjs('2023-12-20'),
@@ -26,7 +26,7 @@ export const sampleWithPartialData: IApsPlan = {
 export const sampleWithFullData: IApsPlan = {
   id: 11497,
   contract: 'crowded',
-  pricing: 'BRACKET',
+  pricing: 'FITNESS',
   state: 'TRIAL',
   license: 'lubricate beginner pfft',
   starts: dayjs('2023-12-20'),
@@ -39,7 +39,7 @@ export const sampleWithFullData: IApsPlan = {
 
 export const sampleWithNewData: NewApsPlan = {
   contract: 'scheme count strive',
-  pricing: 'BRACKET',
+  pricing: 'WELLNESS',
   state: 'CLOSED',
   unitPrice: 5551.51,
   id: null,

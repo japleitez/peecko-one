@@ -1,32 +1,36 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.*;
+import com.peecko.one.domain.dto.ApsOrderInfo;
 import com.peecko.one.domain.enumeration.PricingType;
 import com.peecko.one.domain.enumeration.ProductType;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPricingRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.repository.InvoiceRepository;
-import com.peecko.one.domain.dto.ApsOrderInfo;
 import com.peecko.one.utils.PeriodUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class InvoiceService {
+
     private final UserService userService;
     private final ApsOrderRepository apsOrderRepository;
     private final InvoiceRepository invoiceRepository;
     private final CustomerRepository customerRepository;
     private final ApsPricingRepository apsPricingRepository;
 
-    private final static Long BASE_CUSTOMER_ID = 1L;
-
-    public InvoiceService(UserService userService, ApsOrderRepository apsOrderRepository, InvoiceRepository invoiceRepository, CustomerRepository customerRepository, ApsPricingRepository apsPricingRepository) {
+    public InvoiceService(
+        UserService userService,
+        ApsOrderRepository apsOrderRepository,
+        InvoiceRepository invoiceRepository,
+        CustomerRepository customerRepository,
+        ApsPricingRepository apsPricingRepository
+    ) {
         this.userService = userService;
         this.apsOrderRepository = apsOrderRepository;
         this.invoiceRepository = invoiceRepository;
@@ -34,23 +38,24 @@ public class InvoiceService {
         this.apsPricingRepository = apsPricingRepository;
     }
 
-    public List<ApsOrderInfo> batchInvoice(Integer period, String contract) {
-        List<ApsOrder> orders;
-        if (StringUtils.hasText(contract)) {
-            orders = apsOrderRepository.getByContractAndPeriodAndActive(contract, period);
-        } else {
-            Long agencyId = userService.getCurrentAgencyId();
-            orders = apsOrderRepository.getByAgencyAndPeriodAndActive(agencyId, period);
+    public List<ApsOrderInfo> batchInvoiceForAgency(Long agencyId, Integer period) {
+        return generateInvoices(apsOrderRepository.getByAgencyAndPeriodAndActive(agencyId, period));
+    }
+
+    public List<ApsOrderInfo> batchInvoiceForContract(String contract, Integer period) {
+        return generateInvoices(apsOrderRepository.getByContractAndPeriodAndActive(contract, period));
+    }
+
+    private List<ApsOrderInfo> generateInvoices(List<ApsOrder> orders) {
+        if (orders.isEmpty()) {
+            return List.of();
         }
-        return orders.stream()
-            .filter(ApsOrder::hasSubscribers)
-            .map(this::getOrCreateInvoice)
-            .toList();
+        return orders.stream().filter(ApsOrder::hasSubscribers).map(this::getOrCreateInvoice).toList();
     }
 
     private ApsOrderInfo getOrCreateInvoice(ApsOrder apsOrder) {
         if (apsOrder.getInvoice() == null) {
-            InvoiceItem invoiceItem = generateInvoiceItem(apsOrder.getAgencyId(), apsOrder);
+            InvoiceItem invoiceItem = generateInvoiceItem(apsOrder);
             Invoice invoice = new Invoice();
             invoice.setNumber(generateInvoiceNumber(apsOrder.getAgencyId(), apsOrder.getPeriod()));
             invoice.setDueDate(PeriodUtils.parsePeriodDay(apsOrder.getPeriod(), "09"));
@@ -76,31 +81,40 @@ public class InvoiceService {
 
     private String generateInvoiceNumber(Long agencyId, Integer period) {
         Long count = invoiceRepository.countByAgencyIdAndPeriod(agencyId, period);
-        return  "PCK" + period + String.format("%05d", count);
+        return "PCK" + period + String.format("%05d", count);
     }
 
-    private InvoiceItem generateInvoiceItem(Long agencyId, ApsOrder apsOrder) {
+    private InvoiceItem generateInvoiceItem(ApsOrder apsOrder) {
         Double unitPrice = 0D;
         String description = apsOrder.getNumberOfUsers() + " peecko app license(s)";
-        String country = apsOrder.getCountry();
-        Long customerId = apsOrder.getCustomerId();
-        Integer numberOfUsers = apsOrder.getNumberOfUsers();
-        PricingType pricingType = apsOrder.getApsPlan().getPricing();
+        final String country = apsOrder.getCountry();
+        final Long customerId = apsOrder.getCustomerId();
+        final Integer numberOfUsers = apsOrder.getNumberOfUsers();
+        final PricingType pricingType = apsOrder.getApsPlan().getPricing();
         if (PricingType.FIXED.equals(pricingType)) {
             unitPrice = apsOrder.getApsPlan().getUnitPrice();
-        } else if (PricingType.BRACKET.equals(pricingType)) {
-            List<ApsPricing> apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(country, customerId, numberOfUsers);
+        } else {
+            List<ApsPricing> apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(
+                country,
+                customerId,
+                numberOfUsers
+            );
             if (apsPricings.isEmpty()) {
-                apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(country, BASE_CUSTOMER_ID, numberOfUsers);
+                Long baseCustomerId = userService.getCurrentAgencyId(); // 1L
+                apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(country, baseCustomerId, numberOfUsers);
             }
             if (!apsPricings.isEmpty()) {
-                unitPrice = apsPricings.get(0).getFitnessPrice();
+                if (PricingType.FITNESS.equals(pricingType)) {
+                    unitPrice = apsPricings.get(0).getFitnessPrice();
+                } else {
+                    unitPrice = apsPricings.get(0).getWellnessPrice();
+                }
             }
         }
 
         final DecimalFormat df = new DecimalFormat("#.##");
         double subTotal = Double.parseDouble(df.format(numberOfUsers * unitPrice));
-        double vat =   Double.parseDouble(df.format (subTotal * apsOrder.getVatRate() / 100.0));
+        double vat = Double.parseDouble(df.format((subTotal * apsOrder.getVatRate()) / 100.0));
         double total = subTotal + vat;
 
         InvoiceItem item = new InvoiceItem();
@@ -114,5 +128,4 @@ public class InvoiceService {
         item.description(description);
         return item;
     }
-
 }
