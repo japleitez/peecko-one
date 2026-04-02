@@ -1,14 +1,14 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsOrder;
+import com.peecko.one.domain.Invoice;
 import com.peecko.one.domain.dto.ApsOrderInfo;
+import com.peecko.one.repository.InvoiceRepository;
 import com.peecko.one.service.*;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,8 +19,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +40,7 @@ public class ApsOrderResource {
 
     private final Logger log = LoggerFactory.getLogger(ApsOrderResource.class);
     private static final String ENTITY_NAME = "apsOrder";
+    private final InvoiceRepository invoiceRepository;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -49,7 +50,6 @@ public class ApsOrderResource {
     private final InvoicePdfService invoicePdfService;
     private final InvoiceEmailService invoiceEmailService;
     private final ApsOrderService apsOrderService;
-    private final PropertyService propertyService;
     private final ApsMembershipService apsMembershipService;
 
     public ApsOrderResource(
@@ -58,16 +58,16 @@ public class ApsOrderResource {
         InvoicePdfService invoicePdfService,
         InvoiceEmailService invoiceEmailService,
         ApsOrderService apsOrderService,
-        PropertyService propertyService,
-        ApsMembershipService apsMembershipService
+        ApsMembershipService apsMembershipService,
+        InvoiceRepository invoiceRepository
     ) {
         this.userService = userService;
         this.invoiceService = invoiceService;
         this.invoicePdfService = invoicePdfService;
         this.invoiceEmailService = invoiceEmailService;
         this.apsOrderService = apsOrderService;
-        this.propertyService = propertyService;
         this.apsMembershipService = apsMembershipService;
+        this.invoiceRepository = invoiceRepository;
     }
 
     /**
@@ -206,23 +206,19 @@ public class ApsOrderResource {
     }
 
     @GetMapping("/{id}/download/invoice")
-    public ResponseEntity<InputStreamResource> downloadInvoice(@PathVariable("id") Long id) throws FileNotFoundException {
-        String invoiceNumber = apsOrderService.findById(id).map(ApsOrder::getInvoiceNumber).orElse(null);
-        if (!StringUtils.hasText(invoiceNumber)) {
-            return ResponseEntity.notFound().build();
-        }
-        String pathname = propertyService.resolveInvoicePathname(invoiceNumber);
-        File file = new File(pathname);
-        if (!file.exists()) {
-            return ResponseEntity.notFound().build();
-        }
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-        return ResponseEntity
-            .ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .contentLength(file.length())
-            .body(resource);
+    public ResponseEntity<byte[]> downloadInvoice(@PathVariable("id") Long id) {
+        Invoice invoice = invoiceRepository
+            .findOneByApsOrderId(id)
+            .orElseThrow(() -> new BadRequestAlertException("ApsOrder", ENTITY_NAME, "idinvalid"));
+        byte[] pdfBytes = invoicePdfService.generatePdfInvoice(invoice);
+        String filename = invoice.getNumber() + ".pdf";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", filename);
+        headers.setContentLength(pdfBytes.length);
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
     /**
@@ -247,21 +243,5 @@ public class ApsOrderResource {
         int count = apsMembershipService.importMembers(apsOrderId, file);
         log.info("batch imported {} apsMemberships for apsOrder {} from file {}", apsOrderId, file.getName(), count);
         return ResponseEntity.ok(Collections.singletonMap("count", count));
-    }
-
-    private class InvoiceGenerator implements Runnable {
-
-        private final String contract;
-        private final Integer period;
-
-        public InvoiceGenerator(Integer period, String contract) {
-            this.period = period;
-            this.contract = contract;
-        }
-
-        @Override
-        public void run() {
-            invoicePdfService.batchInvoicePDF(contract, period);
-        }
     }
 }
