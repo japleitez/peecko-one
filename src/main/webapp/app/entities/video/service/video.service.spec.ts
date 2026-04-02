@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { IVideo } from '../video.model';
-import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../video.test-samples';
+import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData } from '../video.test-samples';
 
 import { VideoService, RestVideo } from './video.service';
 

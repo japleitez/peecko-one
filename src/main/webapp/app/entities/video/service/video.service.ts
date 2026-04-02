@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
 
-import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IVideo, NewVideo } from '../video.model';
