@@ -87,11 +87,6 @@ const routes: Routes = [
     loadChildren: () => import('./play-list/play-list.routes'),
   },
   {
-    path: 'video-item',
-    data: { pageTitle: 'VideoItems' },
-    loadChildren: () => import('./video-item/video-item.routes'),
-  },
-  {
     path: 'coach',
     data: { pageTitle: 'Coaches' },
     loadChildren: () => import('./coach/coach.routes'),

@@ -70,10 +70,6 @@ export const EntityNavbarItems: NavbarItem[] = [
     route: '/play-list',
   },
   {
-    name: 'VideoItem',
-    route: '/video-item',
-  },
-  {
     name: 'Coach',
     route: '/coach',
   },

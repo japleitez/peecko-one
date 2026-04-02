@@ -81,26 +81,6 @@ export class VideoService {
     return o1 && o2 ? this.getVideoIdentifier(o1) === this.getVideoIdentifier(o2) : o1 === o2;
   }
 
-  addVideoToCollectionIfMissing<Type extends Pick<IVideo, 'id'>>(
-    videoCollection: Type[],
-    ...videosToCheck: (Type | null | undefined)[]
-  ): Type[] {
-    const videos: Type[] = videosToCheck.filter(isPresent);
-    if (videos.length > 0) {
-      const videoCollectionIdentifiers = videoCollection.map(videoItem => this.getVideoIdentifier(videoItem)!);
-      const videosToAdd = videos.filter(videoItem => {
-        const videoIdentifier = this.getVideoIdentifier(videoItem);
-        if (videoCollectionIdentifiers.includes(videoIdentifier)) {
-          return false;
-        }
-        videoCollectionIdentifiers.push(videoIdentifier);
-        return true;
-      });
-      return [...videosToAdd, ...videoCollection];
-    }
-    return videoCollection;
-  }
-
   protected convertDateFromClient<T extends IVideo | NewVideo | PartialUpdateVideo>(video: T): RestOf<T> {
     return {
       ...video,

@@ -6,7 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A VideoItem.
+ * A VideoFav.
  */
 @Entity
 @Table(name = "video_fav")

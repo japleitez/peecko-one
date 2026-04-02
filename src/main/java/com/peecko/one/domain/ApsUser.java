@@ -74,7 +74,7 @@ public class ApsUser implements Serializable {
     private Set<ApsDevice> apsDevices = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsUser")
-    @JsonIgnoreProperties(value = { "videoItems", "apsUser" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "apsUser" }, allowSetters = true)
     private Set<PlayList> playLists = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

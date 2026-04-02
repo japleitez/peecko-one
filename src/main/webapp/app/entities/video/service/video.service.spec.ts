@@ -98,64 +98,6 @@ describe('Video Service', () => {
       expect(expectedResult).toBe(expected);
     });
 
-    describe('addVideoToCollectionIfMissing', () => {
-      it('should add a Video to an empty array', () => {
-        const video: IVideo = sampleWithRequiredData;
-        expectedResult = service.addVideoToCollectionIfMissing([], video);
-        expect(expectedResult).toHaveLength(1);
-        expect(expectedResult).toContain(video);
-      });
-
-      it('should not add a Video to an array that contains it', () => {
-        const video: IVideo = sampleWithRequiredData;
-        const videoCollection: IVideo[] = [
-          {
-            ...video,
-          },
-          sampleWithPartialData,
-        ];
-        expectedResult = service.addVideoToCollectionIfMissing(videoCollection, video);
-        expect(expectedResult).toHaveLength(2);
-      });
-
-      it("should add a Video to an array that doesn't contain it", () => {
-        const video: IVideo = sampleWithRequiredData;
-        const videoCollection: IVideo[] = [sampleWithPartialData];
-        expectedResult = service.addVideoToCollectionIfMissing(videoCollection, video);
-        expect(expectedResult).toHaveLength(2);
-        expect(expectedResult).toContain(video);
-      });
-
-      it('should add only unique Video to an array', () => {
-        const videoArray: IVideo[] = [sampleWithRequiredData, sampleWithPartialData, sampleWithFullData];
-        const videoCollection: IVideo[] = [sampleWithRequiredData];
-        expectedResult = service.addVideoToCollectionIfMissing(videoCollection, ...videoArray);
-        expect(expectedResult).toHaveLength(3);
-      });
-
-      it('should accept varargs', () => {
-        const video: IVideo = sampleWithRequiredData;
-        const video2: IVideo = sampleWithPartialData;
-        expectedResult = service.addVideoToCollectionIfMissing([], video, video2);
-        expect(expectedResult).toHaveLength(2);
-        expect(expectedResult).toContain(video);
-        expect(expectedResult).toContain(video2);
-      });
-
-      it('should accept null and undefined values', () => {
-        const video: IVideo = sampleWithRequiredData;
-        expectedResult = service.addVideoToCollectionIfMissing([], null, video, undefined);
-        expect(expectedResult).toHaveLength(1);
-        expect(expectedResult).toContain(video);
-      });
-
-      it('should return initial array if no Video is added', () => {
-        const videoCollection: IVideo[] = [sampleWithRequiredData];
-        expectedResult = service.addVideoToCollectionIfMissing(videoCollection, undefined, null);
-        expect(expectedResult).toEqual(videoCollection);
-      });
-    });
-
     describe('compareVideo', () => {
       it('Should return true if both entities are null', () => {
         const entity1 = null;

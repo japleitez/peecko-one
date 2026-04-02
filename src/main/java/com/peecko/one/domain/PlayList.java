@@ -46,13 +46,6 @@ public class PlayList implements Serializable {
     @JsonIgnoreProperties(value = { "apsDevices", "playLists" }, allowSetters = true)
     private ApsUser apsUser;
 
-    @OneToMany(mappedBy = "playList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "playList" }, allowSetters = true)
-    private Set<VideoItem> videoItems = new HashSet<>();
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Long getId() {
         return this.id;
     }
@@ -118,37 +111,6 @@ public class PlayList implements Serializable {
         this.updated = updated;
     }
 
-    public Set<VideoItem> getVideoItems() {
-        return this.videoItems;
-    }
-
-    public void setVideoItems(Set<VideoItem> videoItems) {
-        if (this.videoItems != null) {
-            this.videoItems.forEach(i -> i.setPlayList(null));
-        }
-        if (videoItems != null) {
-            videoItems.forEach(i -> i.setPlayList(this));
-        }
-        this.videoItems = videoItems;
-    }
-
-    public PlayList videoItems(Set<VideoItem> videoItems) {
-        this.setVideoItems(videoItems);
-        return this;
-    }
-
-    public PlayList addVideoItem(VideoItem videoItem) {
-        this.videoItems.add(videoItem);
-        videoItem.setPlayList(this);
-        return this;
-    }
-
-    public PlayList removeVideoItem(VideoItem videoItem) {
-        this.videoItems.remove(videoItem);
-        videoItem.setPlayList(null);
-        return this;
-    }
-
     public ApsUser getApsUser() {
         return this.apsUser;
     }
@@ -161,8 +123,6 @@ public class PlayList implements Serializable {
         this.setApsUser(apsUser);
         return this;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
