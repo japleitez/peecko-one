@@ -1,15 +1,18 @@
 package com.peecko.one.web.rest;
 
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.ApsOrder;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.Invoice;
 import com.peecko.one.domain.dto.ApsOrderInfo;
+import com.peecko.one.repository.AgencyRepository;
+import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.repository.InvoiceRepository;
 import com.peecko.one.service.*;
 import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -41,6 +44,7 @@ public class ApsOrderResource {
     private final Logger log = LoggerFactory.getLogger(ApsOrderResource.class);
     private static final String ENTITY_NAME = "apsOrder";
     private final InvoiceRepository invoiceRepository;
+    private final CustomerRepository customerRepository;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -51,6 +55,7 @@ public class ApsOrderResource {
     private final InvoiceEmailService invoiceEmailService;
     private final ApsOrderService apsOrderService;
     private final ApsMembershipService apsMembershipService;
+    private final AgencyRepository agencyRepository;
 
     public ApsOrderResource(
         UserService userService,
@@ -59,7 +64,9 @@ public class ApsOrderResource {
         InvoiceEmailService invoiceEmailService,
         ApsOrderService apsOrderService,
         ApsMembershipService apsMembershipService,
-        InvoiceRepository invoiceRepository
+        InvoiceRepository invoiceRepository,
+        AgencyRepository agencyRepository,
+        CustomerRepository customerRepository
     ) {
         this.userService = userService;
         this.invoiceService = invoiceService;
@@ -68,6 +75,8 @@ public class ApsOrderResource {
         this.apsOrderService = apsOrderService;
         this.apsMembershipService = apsMembershipService;
         this.invoiceRepository = invoiceRepository;
+        this.agencyRepository = agencyRepository;
+        this.customerRepository = customerRepository;
     }
 
     /**
@@ -208,9 +217,11 @@ public class ApsOrderResource {
     @GetMapping("/{id}/download/invoice")
     public ResponseEntity<byte[]> downloadInvoice(@PathVariable("id") Long id) {
         Invoice invoice = invoiceRepository
-            .findOneByApsOrderId(id)
+            .findByApsOrderId(id)
             .orElseThrow(() -> new BadRequestAlertException("ApsOrder", ENTITY_NAME, "idinvalid"));
-        byte[] pdfBytes = invoicePdfService.generatePdfInvoice(invoice);
+        Agency agency = agencyRepository.getReferenceById(userService.getCurrentAgencyId());
+        Customer customer = customerRepository.getReferenceById(invoice.getCustomerId());
+        byte[] pdfBytes = invoicePdfService.generatePdfInvoice(agency, customer, invoice);
         String filename = invoice.getNumber() + ".pdf";
 
         HttpHeaders headers = new HttpHeaders();

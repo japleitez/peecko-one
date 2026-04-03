@@ -3,32 +3,31 @@ package com.peecko.one.service;
 import com.peecko.one.domain.ApsPlan;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.PlanState;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.ApsPlanRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.request.ApsPlanListRequest;
 import com.peecko.one.service.specs.ApsPlanSpecs;
+import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
 public class ApsPlanService {
+
     private final UserService userService;
     private final ApsPlanRepository apsPlanRepository;
-    private final CustomerRepository customerRepository;
 
-    public ApsPlanService(UserService userService, ApsPlanRepository apsPlanRepository, CustomerRepository customerRepository) {
+    public ApsPlanService(UserService userService, ApsPlanRepository apsPlanRepository) {
         this.userService = userService;
         this.apsPlanRepository = apsPlanRepository;
-        this.customerRepository = customerRepository;
     }
 
     public boolean notFound(Long id) {
@@ -39,8 +38,8 @@ public class ApsPlanService {
         Instant now = Instant.now();
         apsPlan.setCreated(now);
         apsPlan.setUpdated(now);
-        Customer customer = customerRepository.getReferenceById(apsPlan.getCustomer().getId());
-        apsPlan.setAgencyId(customer.getAgency().getId());
+        Long agencyId = userService.getCurrentAgencyId();
+        apsPlan.setAgencyId(agencyId);
         return apsPlanRepository.save(apsPlan);
     }
 
@@ -54,6 +53,7 @@ public class ApsPlanService {
             apsPlanRepository.deleteById(id);
         }
     }
+
     public Optional<ApsPlan> loadById(Long id) {
         return apsPlanRepository.loadById(id);
     }
@@ -117,5 +117,4 @@ public class ApsPlanService {
         }
         return apsPlanRepository.findAll(spec, pageable);
     }
-
 }
