@@ -3,92 +3,73 @@ package com.peecko.one.service;
 import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.Invoice;
-import com.peecko.one.domain.InvoiceItem;
-import com.peecko.one.repository.InvoiceRepository;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Service
 public class InvoicePdfService {
 
-    private final UserService userService;
-    private final InvoiceRepository invoiceRepository;
-    private final PdfService pdfService;
-    private final PropertyService propertyService;
-    private final Logger log = LoggerFactory.getLogger(ApsOrderService.class);
-    private final PdfGeneratorService pdfGeneratorService;
+    private final TemplateEngine templateEngine;
+    private final InvoicePdfGeneratorService invoicePdfGeneratorService;
 
-    public InvoicePdfService(
-        UserService userService,
-        InvoiceRepository invoiceRepository,
-        PdfService pdfService,
-        PropertyService propertyService,
-        PdfGeneratorService pdfGeneratorService
-    ) {
-        this.userService = userService;
-        this.invoiceRepository = invoiceRepository;
-        this.pdfService = pdfService;
-        this.propertyService = propertyService;
-        this.pdfGeneratorService = pdfGeneratorService;
+    public InvoicePdfService(TemplateEngine templateEngine, InvoicePdfGeneratorService invoicePdfGeneratorService) {
+        this.templateEngine = templateEngine;
+        this.invoicePdfGeneratorService = invoicePdfGeneratorService;
     }
 
     public byte[] generatePdfInvoice(Agency agency, Customer customer, Invoice invoice) {
-        String template = propertyService.getInvoiceTemplate();
-        Map<String, Object> invoiceData = buildInvoiceData(agency, customer, invoice);
-        String html = pdfService.generateContent(template, invoiceData);
-        // Clean the HTML for strict XML parsers
-        html = html.trim().replaceAll("(?s)^\\s*<!doctype html>", "<!DOCTYPE html>");
-        // Force proper doctype and remove any BOM
-        if (html.startsWith("\uFEFF")) {
-            html = html.substring(1);
+        Map<String, Object> invoiceData = getInvoiceData(agency, customer, invoice);
+        try {
+            return invoicePdfGeneratorService.generate(invoiceData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return pdfGeneratorService.generatePdfFromHtml(html);
     }
 
-    private Map<String, Object> buildInvoiceData(Agency agency, Customer customer, Invoice invoice) {
+    private Map<String, Object> getInvoiceData(Agency agency, Customer customer, Invoice invoice) {
         Map<String, Object> data = new HashMap<>();
 
-        data.put("invoiceNumber", invoice.getNumber());
-        data.put("invoiceIssue", invoice.getIssued());
-        data.put("invoiceDue", invoice.getDueDate());
+        data.put(InvoiceField.INVOICE_NUMBER, invoice.getNumber());
+        data.put(InvoiceField.INVOICE_ISSUE, invoice.getIssued());
+        data.put(InvoiceField.INVOICE_DUE, invoice.getDueDate());
 
-        data.put("agencyName", agency.getName());
-        data.put("agencyAddressStreet", agency.getLine1());
-        data.put("agencyAddressCity", agency.getZip() + " " + agency.getCity());
-        data.put("agencyAddressCountry", agency.getCountry());
+        data.put(InvoiceField.AGENCY_NAME, agency.getName());
+        data.put(InvoiceField.AGENCY_ADDRESS_STREET, agency.getLine1());
+        data.put(InvoiceField.AGENCY_ADDRESS_CITY, agency.getZip() + " " + agency.getCity());
+        data.put(InvoiceField.AGENCY_ADDRESS_COUNTRY, agency.getCountry());
 
-        data.put("agencyVatNumber", agency.getVatId());
-        data.put("agencyBankIban", agency.getIban());
-        data.put("agencyBankSwift", agency.getBank());
+        data.put(InvoiceField.AGENCY_VAT_NUMBER, agency.getVatId());
+        data.put(InvoiceField.AGENCY_BANK_IBAN, agency.getIban());
+        data.put(InvoiceField.AGENCY_BANK_SWIFT, agency.getBank());
 
-        data.put("clientName", customer.getName());
-        data.put("clientAddressStreet", "todo: street");
-        data.put("clientAddressCity", "todo: city");
-        data.put("clientAddressCountry", "todo: country");
-        data.put("clientVatNumber", customer.getVatId());
-        data.put("clientCode", customer.getCode());
+        data.put(InvoiceField.CLIENT_NAME, customer.getName());
+        data.put(InvoiceField.CLIENT_ADDRESS_STREET, "tod: street");
+        data.put(InvoiceField.CLIENT_ADDRESS_CITY, "todo: city");
+        data.put(InvoiceField.CLIENT_ADDRESS_COUNTRY, "todo: country");
+        data.put(InvoiceField.CLIENT_VAT_NUMBER, customer.getVatId());
+        data.put(InvoiceField.CLIENT_CODE, customer.getCode());
 
-        data.put("dataFrom", "todo");
-        data.put("dateTo", "todo");
+        data.put(InvoiceField.DATE_FROM, "todo");
+        data.put(InvoiceField.DATE_TO, "todo");
 
         invoice
             .getInvoiceItems()
             .forEach(item -> {
-                data.put("itemDescription", item.getDescription());
-                data.put("itemQuantity", item.getQuantity());
-                data.put("itemUnitPrice", item.getUnitPrice());
-                data.put("itemSubtotal", item.getSubtotal());
+                data.put(InvoiceField.ITEM_DESCRIPTION, item.getDescription());
+                data.put(InvoiceField.ITEM_QUANTITY, item.getQuantity());
+                data.put(InvoiceField.ITEM_UNIT_PRICE, item.getUnitPrice());
+                data.put(InvoiceField.ITEM_SUBTOTAL, item.getSubtotal());
 
-                data.put("invoiceVatRate", item.getVatRate());
-                data.put("invoiceVat", item.getVat());
-                data.put("invoiceTotal", item.getTotal());
+                data.put(InvoiceField.INVOICE_VAT_RATE, item.getVatRate());
+                data.put(InvoiceField.INVOICE_VAT, item.getVat());
+                data.put(InvoiceField.INVOICE_TOTAL, item.getTotal());
             });
 
-        data.put("agencyFooterLine1", "todo: footer 1");
-        data.put("agencyFooterLine2", "todo: footer 2");
+        data.put(InvoiceField.AGENCY_FOOTER_LINE1, "todo: footer 1");
 
         return data;
     }

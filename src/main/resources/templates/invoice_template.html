@@ -3,16 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invoice ${invoice.number}</title>
+    <title>Invoice ${invoiceNumber}</title>
     <style>
-      /* Reset */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
-      /* A4 Margins: 15mm sides, 18mm top/bottom */
       html,
       body {
         width: 210mm;
@@ -36,7 +34,6 @@
         flex: 1;
       }
 
-      /* Print */
       @page {
         size: A4;
         margin: 0; /* padding handled by body */
@@ -56,7 +53,6 @@
         }
       }
 
-      /* HEADER */
       .header {
         display: flex;
         justify-content: space-between;
@@ -116,12 +112,10 @@
         font-weight: 500;
       }
 
-      /* PARTIES */
       .parties {
         display: flex;
-        justify-content: space-between;
-        gap: 24px;
-        margin-bottom: 22px;
+        gap: 0 3mm;
+        margin-bottom: 8mm;
       }
 
       .party {
@@ -162,7 +156,6 @@
         display: block;
       }
 
-      /* PERIOD BAR */
       .period-bar {
         background: #f8f9ff;
         border: 1px solid #e5e7eb;
@@ -196,7 +189,6 @@
         color: #1a1a2e;
       }
 
-      /* DIVIDERS */
       .divider {
         border: none;
         border-top: 1.5px solid #e5e7eb;
@@ -207,14 +199,10 @@
         border-top: 2px solid #1a1a2e;
       }
 
-      /*  ITEMS TABLE 4 columns: Description, Qty, Unit Price, Amount */
-
-      /* Shared column widths (referenced by both tables via CSS variables).
-       * c-unitprice and c-amount MUST match s-label and s-value in summary. */
       :root {
         --col-qty: 56px;
-        --col-unitprice: 88px; /* Unit Price  ↔  Tax label  */
-        --col-amount: 88px; /* Amount      ↔  Tax value  */
+        --col-unitprice: 88px;
+        --col-amount: 88px;
       }
 
       table.items-table {
@@ -274,7 +262,6 @@
         text-align: right;
       }
 
-      /* SUMMARY TABLE  */
       table.summary-table {
         width: 100%;
         border-collapse: collapse;
@@ -313,7 +300,6 @@
         font-weight: 500;
       }
 
-      /* Total row */
       .summary-table tr.total-row td {
         padding: 8px 10px;
       }
@@ -333,7 +319,6 @@
         border-radius: 0 6px 6px 0;
       }
 
-      /* FOOTER — pinned to bottom of the A4 page */
       .footer {
         flex-shrink: 0; /* never shrinks */
         padding-top: 10px;
@@ -350,9 +335,7 @@
     </style>
   </head>
   <body>
-    <!-- PAGE CONTENT (grows to fill the page) -->
     <div class="page-content">
-      <!-- HEADER -->
       <div class="header">
         <div class="header-left">
           <div class="invoice-label">Invoice</div>
@@ -363,17 +346,16 @@
           <div class="date-grid">
             <div class="date-item">
               <label>Issue Date</label>
-              <span th:text="${invoiceIssue}"></span>
+              <span><span th:text="${invoiceIssue}"></span></span>
             </div>
             <div class="date-item">
               <label>Due Date</label>
-              <span th:text="${invoiceDue}"></span>
+              <span><span th:text="${invoiceDue}"></span></span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- PARTIES -->
       <div class="parties">
         <div class="party">
           <div class="party-role">From</div>
@@ -384,9 +366,9 @@
             <span th:text="${agencyAddressCountry}"></span>
           </address>
           <div class="meta">
-            <span th:text="|VAT: ${agencyVatNumber}"></span>
-            <span th:text="|IBAN: ${agencyBankIban}"></span>
-            <span th:text="|SWIFT: ${agencyBankWwift}"></span>
+            <span>VAT: <span th:text="${agencyVatNumber}"></span></span>
+            <span>IBAN: <span th:text="${agencyBankIban}"></span></span>
+            <span>SWIFT: <span th:text="${agencyBankSwift}"></span></span>
           </div>
         </div>
 
@@ -399,26 +381,23 @@
             <span th:text="${clientAddressCountry}"></span>
           </address>
           <div class="meta">
-            <span th:text="|VAT: ${clientVatNumber}"></span>
+            <span>VAT: <span th:text="${clientVatNumber}"></span></span>
           </div>
         </div>
       </div>
 
-      <!-- PERIOD BAR -->
       <div class="period-bar">
         <div>
           <div class="period-label">Invoice Period</div>
-          <div class="period-value"><span th:text="${dateFrom}"></span> <span th:text="${dateTo}"></span></div>
+          <div class="period-value"><span th:text="${dateFrom}"></span> - <span th:text="${dateTo}"></span></div>
         </div>
         <div class="customer-code">
           Customer Account: <strong><span th:text="${clientCode}"></span></strong>
         </div>
       </div>
 
-      <!-- SECTION DIVIDER -->
       <hr class="divider dark" />
 
-      <!-- ITEMS TABLE -->
       <table class="items-table">
         <colgroup>
           <col class="c-desc" />
@@ -435,18 +414,15 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Repeat this <tr> for each line item ↓ -->
           <tr>
             <td><span th:text="${itemDescription}"></span></td>
             <td><span th:text="${itemQuantity}"></span></td>
             <td><span th:text="${itemUnitPrice}"></span></td>
             <td><span th:text="${itemSubtotal}"></span></td>
           </tr>
-          <!-- ↑ End repeat ↑ -->
         </tbody>
       </table>
 
-      <!-- SUMMARY (columns aligned to items table) -->
       <table class="summary-table">
         <colgroup>
           <col class="s-spacer" />
@@ -456,7 +432,7 @@
         <tbody>
           <tr>
             <td class="s-spacer-cell"></td>
-            <td class="s-label-cell"><span th:text="|Tax Rate ${invoiceVatRate}"></span></td>
+            <td class="s-label-cell">Tax Rate (<span th:text="${invoiceVatRate}"></span>)</td>
             <td class="s-value-cell"><span th:text="${invoiceVat}"></span></td>
           </tr>
           <tr class="total-row">
@@ -467,15 +443,11 @@
         </tbody>
       </table>
 
-      <!-- LIGHT DIVIDER after summary -->
       <hr class="divider" style="margin-top: 22px" />
     </div>
-    <!-- page-content -->
 
-    <!-- FOOTER — pinned to page bottom via flexbox -->
     <footer class="footer">
       <p><span th:text="${agencyFooterLine1}"></span></p>
-      <p><span th:text="${agencyFooterLine2}"></span></p>
     </footer>
   </body>
 </html>
