@@ -1,11 +1,10 @@
 package com.peecko.one.web.rest;
 
-import com.peecko.one.domain.Agency;
-import com.peecko.one.domain.ApsOrder;
-import com.peecko.one.domain.Customer;
-import com.peecko.one.domain.Invoice;
+import com.peecko.one.domain.*;
 import com.peecko.one.domain.dto.ApsOrderInfo;
+import com.peecko.one.domain.enumeration.ContactType;
 import com.peecko.one.repository.AgencyRepository;
+import com.peecko.one.repository.ContactRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.repository.InvoiceRepository;
 import com.peecko.one.service.*;
@@ -45,6 +44,7 @@ public class ApsOrderResource {
     private static final String ENTITY_NAME = "apsOrder";
     private final InvoiceRepository invoiceRepository;
     private final CustomerRepository customerRepository;
+    private final ContactRepository contactRepository;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -66,7 +66,8 @@ public class ApsOrderResource {
         ApsMembershipService apsMembershipService,
         InvoiceRepository invoiceRepository,
         AgencyRepository agencyRepository,
-        CustomerRepository customerRepository
+        CustomerRepository customerRepository,
+        ContactRepository contactRepository
     ) {
         this.userService = userService;
         this.invoiceService = invoiceService;
@@ -77,6 +78,7 @@ public class ApsOrderResource {
         this.invoiceRepository = invoiceRepository;
         this.agencyRepository = agencyRepository;
         this.customerRepository = customerRepository;
+        this.contactRepository = contactRepository;
     }
 
     /**
@@ -216,12 +218,11 @@ public class ApsOrderResource {
 
     @GetMapping("/{id}/download/invoice")
     public ResponseEntity<byte[]> downloadInvoice(@PathVariable("id") Long id) {
-        Invoice invoice = invoiceRepository
-            .findByApsOrderId(id)
-            .orElseThrow(() -> new BadRequestAlertException("ApsOrder", ENTITY_NAME, "idinvalid"));
+        Invoice invoice = invoiceRepository.findByApsOrderId(id).orElseThrow(() -> new RuntimeException("Invalid invoice id"));
         Agency agency = agencyRepository.getReferenceById(userService.getCurrentAgencyId());
         Customer customer = customerRepository.getReferenceById(invoice.getCustomerId());
-        byte[] pdfBytes = invoicePdfService.generatePdfInvoice(agency, customer, invoice);
+        Contact contact = contactRepository.findByCustomerAndType(customer.getId(), ContactType.PRIMARY).orElseThrow(RuntimeException::new);
+        byte[] pdfBytes = invoicePdfService.generatePdfInvoice(agency, customer, contact, invoice);
         String filename = invoice.getNumber() + ".pdf";
 
         HttpHeaders headers = new HttpHeaders();

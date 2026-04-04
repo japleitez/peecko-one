@@ -106,7 +106,7 @@ public class ApsOrderService {
     }
 
     public List<ApsOrderInfo> batchOrders(Integer period, String contract) {
-        YearMonth yearMonth = PeriodUtils.getYearMonth(period);
+        YearMonth yearMonth = PeriodUtils.parse(period);
         LocalDate periodEnds = yearMonth.atEndOfMonth();
         LocalDate periodStarts = yearMonth.atDay(1);
         List<ApsOrder> orders;
