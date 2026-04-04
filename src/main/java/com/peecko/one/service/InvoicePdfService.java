@@ -39,50 +39,56 @@ public class InvoicePdfService {
         String template = propertyService.getInvoiceTemplate();
         Map<String, Object> invoiceData = buildInvoiceData(agency, customer, invoice);
         String html = pdfService.generateContent(template, invoiceData);
+        // Clean the HTML for strict XML parsers
+        html = html.trim().replaceAll("(?s)^\\s*<!doctype html>", "<!DOCTYPE html>");
+        // Force proper doctype and remove any BOM
+        if (html.startsWith("\uFEFF")) {
+            html = html.substring(1);
+        }
         return pdfGeneratorService.generatePdfFromHtml(html);
     }
 
     private Map<String, Object> buildInvoiceData(Agency agency, Customer customer, Invoice invoice) {
         Map<String, Object> data = new HashMap<>();
 
-        data.put("invoice.number", invoice.getNumber());
-        data.put("invoice.issue", invoice.getIssued());
-        data.put("invoice.due", invoice.getDueDate());
+        data.put("invoiceNumber", invoice.getNumber());
+        data.put("invoiceIssue", invoice.getIssued());
+        data.put("invoiceDue", invoice.getDueDate());
 
-        data.put("agency.name", agency.getName());
-        data.put("agency.address.street", agency.getLine1());
-        data.put("agency.address.city", agency.getZip() + " " + agency.getCity());
-        data.put("agency.address.country", agency.getCountry());
+        data.put("agencyName", agency.getName());
+        data.put("agencyAddressStreet", agency.getLine1());
+        data.put("agencyAddressCity", agency.getZip() + " " + agency.getCity());
+        data.put("agencyAddressCountry", agency.getCountry());
 
-        data.put("agency.vat.number", agency.getVatId());
-        data.put("agency.bank.iban", agency.getIban());
-        data.put("agency.bank.swift", agency.getBank());
+        data.put("agencyVatNumber", agency.getVatId());
+        data.put("agencyBankIban", agency.getIban());
+        data.put("agencyBankSwift", agency.getBank());
 
-        data.put("client.name", customer.getName());
-        data.put("client.address.street", "todo: street");
-        data.put("client.address.city", "todo: city");
-        data.put("client.address.country", "todo: country");
-        data.put("client.vat.number", customer.getVatId());
-        data.put("client.code", customer.getCode());
+        data.put("clientName", customer.getName());
+        data.put("clientAddressStreet", "todo: street");
+        data.put("clientAddressCity", "todo: city");
+        data.put("clientAddressCountry", "todo: country");
+        data.put("clientVatNumber", customer.getVatId());
+        data.put("clientCode", customer.getCode());
 
-        data.put("data.from", "todo: dd/MM/yyyy");
-        data.put("date.to", "todo: dd/MM/yyyy");
+        data.put("dataFrom", "todo");
+        data.put("dateTo", "todo");
 
         invoice
             .getInvoiceItems()
             .forEach(item -> {
-                data.put("item.description", item.getDescription());
-                data.put("item.quantity", item.getQuantity());
-                data.put("item.unit.price", item.getUnitPrice());
-                data.put("item.subtotal", item.getSubtotal());
+                data.put("itemDescription", item.getDescription());
+                data.put("itemQuantity", item.getQuantity());
+                data.put("itemUnitPrice", item.getUnitPrice());
+                data.put("itemSubtotal", item.getSubtotal());
 
-                data.put("invoice.vat.rate", item.getVatRate());
-                data.put("invoice.vat", item.getVat());
-                data.put("invoice.total", item.getTotal());
+                data.put("invoiceVatRate", item.getVatRate());
+                data.put("invoiceVat", item.getVat());
+                data.put("invoiceTotal", item.getTotal());
             });
 
-        data.put("agency.footer.line1", "todo: footer 1");
-        data.put("agency.footer.line2", "todo: footer 2");
+        data.put("agencyFooterLine1", "todo: footer 1");
+        data.put("agencyFooterLine2", "todo: footer 2");
 
         return data;
     }
