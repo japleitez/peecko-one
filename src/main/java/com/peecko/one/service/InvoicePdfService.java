@@ -1,6 +1,7 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.*;
+import com.peecko.one.utils.EuroFormatter;
 import com.peecko.one.utils.InstantUtils;
 import com.peecko.one.utils.PeriodUtils;
 import java.io.IOException;
@@ -69,12 +70,12 @@ public class InvoicePdfService {
             .forEach(item -> {
                 data.put(InvoiceField.ITEM_DESCRIPTION, item.getDescription());
                 data.put(InvoiceField.ITEM_QUANTITY, item.getQuantity());
-                data.put(InvoiceField.ITEM_UNIT_PRICE, item.getUnitPrice());
-                data.put(InvoiceField.ITEM_SUBTOTAL, item.getSubtotal());
+                data.put(InvoiceField.ITEM_UNIT_PRICE, EuroFormatter.format(item.getUnitPrice()));
+                data.put(InvoiceField.ITEM_SUBTOTAL, EuroFormatter.format(item.getSubtotal()));
 
                 data.put(InvoiceField.INVOICE_VAT_RATE, item.getVatRate());
-                data.put(InvoiceField.INVOICE_VAT, item.getVat());
-                data.put(InvoiceField.INVOICE_TOTAL, item.getTotal());
+                data.put(InvoiceField.INVOICE_VAT, EuroFormatter.format(item.getVat()));
+                data.put(InvoiceField.INVOICE_TOTAL, EuroFormatter.format(item.getTotal()));
             });
 
         data.put(

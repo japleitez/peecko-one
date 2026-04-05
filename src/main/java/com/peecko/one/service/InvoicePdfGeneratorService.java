@@ -157,8 +157,8 @@ public class InvoicePdfGeneratorService {
         left.add(
             new Paragraph("#" + val(data, InvoiceField.INVOICE_NUMBER))
                 .setFont(regular)
-                .setFontSize(10)
-                .setFontColor(MID_GRAY)
+                .setFontSize(11)
+                .setFontColor(BADGE_BLUE)
                 .setMarginTop(2)
                 .setPadding(0)
         );
@@ -167,7 +167,7 @@ public class InvoicePdfGeneratorService {
         // -- Right cell
         Cell right = new Cell().setBorder(Border.NO_BORDER).setPadding(0).setTextAlignment(TextAlignment.RIGHT);
 
-        // Badge
+        /** Badge
         right.add(
             new Paragraph("Due " + val(data, InvoiceField.INVOICE_DUE))
                 .setFont(bold)
@@ -182,6 +182,7 @@ public class InvoicePdfGeneratorService {
                 .setTextAlignment(TextAlignment.RIGHT)
                 .setMarginBottom(6)
         );
+        */
 
         // Date grid (Issue / Due)
         Table dateGrid = new Table(new float[] { 1, 1 }).useAllAvailableWidth().setBorder(Border.NO_BORDER).setMargin(0).setPadding(0);

@@ -86,7 +86,7 @@ public class InvoiceService {
 
     private InvoiceItem generateInvoiceItem(ApsOrder apsOrder) {
         Double unitPrice = 0D;
-        String description = apsOrder.getNumberOfUsers() + " peecko app license(s)";
+        String description = "Monthly b2b subscription to peecko app - plan " + apsOrder.getApsPlan().getPricing().toString().toLowerCase();
         final String country = apsOrder.getCountry();
         final Long customerId = apsOrder.getCustomerId();
         final Integer numberOfUsers = apsOrder.getNumberOfUsers();

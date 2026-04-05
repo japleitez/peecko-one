@@ -87,6 +87,6 @@ public enum Country {
 
     @Override
     public String toString() {
-        return name() + " (" + nativeName + ")";
+        return nativeName;
     }
 }
