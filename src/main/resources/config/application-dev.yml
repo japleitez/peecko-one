@@ -4,19 +4,21 @@
 # ===================================================================
 logging:
   level:
-    ROOT: WARN
-    com.peecko.one: INFO
-    tech.jhipster: WARN
-    org.springframework: WARN
-    org.springframework.web: WARN
-    org.hibernate: WARN
-    org.hibernate.sql: WARN
-    org.hibernate.type.descriptor.sql: WARN
+    root: INFO
+    com.peecko.one: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG # useful to debug auth flows
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    com.zaxxer.hikari: DEBUG # SQL connection pool details
+    liquibase: DEBUG
 
 server:
   port: 8080
 
 spring:
+  application:
+    name: peecko-one-app
   devtools:
     restart:
       enabled: true
@@ -103,4 +105,3 @@ jhipster:
 # ===================================================================
 
 # application:
-

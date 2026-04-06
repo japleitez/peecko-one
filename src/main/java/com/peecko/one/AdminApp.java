@@ -31,6 +31,7 @@ public class AdminApp {
 
     public AdminApp(Environment env) {
         this.env = env;
+        log.info(env.getProperty("spring.application.name"));
     }
 
     /**

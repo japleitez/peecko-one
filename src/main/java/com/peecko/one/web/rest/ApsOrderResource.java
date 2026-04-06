@@ -175,20 +175,20 @@ public class ApsOrderResource {
         @RequestParam(required = false) Integer starts,
         @RequestParam(required = false) Integer ends
     ) {
-        log.debug("REST request to get ApsOrders------------------");
+        log.info("REST request to get ApsOrders------------------");
         ApsOrderListRequest request = new ApsOrderListRequest(customer, contract, period, starts, ends);
         return apsOrderService.findAll(request).stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
     @GetMapping("/batch/orders")
     public List<ApsOrderInfo> batchOrders(@RequestParam Integer period, @RequestParam(required = false) String contract) {
-        log.debug("REST request to generate ApsOrders in batch");
+        log.info("REST request to generate ApsOrders in batch");
         return apsOrderService.batchOrders(period, contract);
     }
 
     @GetMapping("/batch/invoices")
     public List<ApsOrderInfo> batchInvoices(@RequestParam Integer period, @RequestParam(required = false) String contract) {
-        log.debug("REST request to generate Invoices in batch");
+        log.info("REST request to generate Invoices in batch");
         if (StringUtils.hasText(contract)) {
             return invoiceService.batchInvoiceForContract(contract, period);
         } else {

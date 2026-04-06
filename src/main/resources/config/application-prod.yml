@@ -4,14 +4,14 @@
 # ===================================================================
 logging:
   level:
-    ROOT: WARN
-    tech.jhipster: WARN
-    com.peecko.api: INFO
-    org.springframework: WARN
-    org.springframework.web: WARN
-    org.hibernate: WARN
-    org.hibernate.sql: WARN
-    org.hibernate.type.descriptor.sql: WARN
+    root: INFO
+    com.peecko.one: INFO
+    org.springframework.web: WARM
+    org.springframework.security: WARM
+    org.hibernate.SQL: WARM
+    org.hibernate.orm.jdbc.bind: WARM
+    com.zaxxer.hikari: WARM
+    liquibase: WARM
 
 management:
   prometheus:
@@ -20,6 +20,8 @@ management:
         enabled: false
 
 spring:
+  application:
+    name: peecko-one-app
   devtools:
     restart:
       enabled: false
