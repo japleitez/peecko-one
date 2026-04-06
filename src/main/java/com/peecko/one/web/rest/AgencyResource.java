@@ -2,7 +2,6 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Agency;
 import com.peecko.one.repository.AgencyRepository;
-import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.UserService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -242,9 +241,8 @@ public class AgencyResource {
 
     @GetMapping("/current")
     public ResponseEntity<Agency> getAgency() {
-         Long agencyId = userService.getCurrentAgencyId();
-         Optional<Agency> agency = agencyRepository.findById(agencyId);
-         return ResponseUtil.wrapOrNotFound(agency);
+        Long agencyId = userService.getCurrentAgencyId();
+        Optional<Agency> agency = agencyRepository.findById(agencyId);
+        return ResponseUtil.wrapOrNotFound(agency);
     }
-
 }

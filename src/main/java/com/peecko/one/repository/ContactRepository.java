@@ -1,7 +1,6 @@
 package com.peecko.one.repository;
 
 import com.peecko.one.domain.Contact;
-import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.ContactType;
 import java.util.List;
 import java.util.Optional;

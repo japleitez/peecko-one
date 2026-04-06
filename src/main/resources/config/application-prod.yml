@@ -21,7 +21,7 @@ management:
 
 spring:
   application:
-    name: peecko-one-app
+    name: peecko-admin-prod
   devtools:
     restart:
       enabled: false

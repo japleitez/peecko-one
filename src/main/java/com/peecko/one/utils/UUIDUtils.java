@@ -1,9 +1,7 @@
 package com.peecko.one.utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.StringBuilders;
-
 import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class UUIDUtils {
 
@@ -24,5 +22,4 @@ public abstract class UUIDUtils {
     public static String randomUUIDSize(int length) {
         return StringUtils.right(UUID.randomUUID().toString().replace("-", ""), length);
     }
-
 }

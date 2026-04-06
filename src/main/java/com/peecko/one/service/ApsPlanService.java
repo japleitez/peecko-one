@@ -1,12 +1,8 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.ApsPlan;
-import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.PlanState;
-import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.ApsPlanRepository;
-import com.peecko.one.repository.CustomerRepository;
-import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.request.ApsPlanListRequest;
 import com.peecko.one.service.specs.ApsPlanSpecs;
 import java.time.Instant;

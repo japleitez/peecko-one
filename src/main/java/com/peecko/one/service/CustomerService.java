@@ -5,7 +5,6 @@ import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
 import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.CustomerRepository;
-import com.peecko.one.security.SecurityUtils;
 import com.peecko.one.service.request.CustomerListRequest;
 import java.time.Instant;
 import java.util.List;
