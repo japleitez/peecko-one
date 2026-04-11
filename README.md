@@ -248,6 +248,21 @@ When running Docker Desktop on MacOS Big Sur or later, consider enabling experim
 
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
+### Using Podman to simplify development (optional)
+
+Download installer for restrictive environments (fully offline and all-in-one best for corporate restricted)
+https://podman-desktop.io/downloads
+
+# Open PowerShell and run these commands
+
+podman machine init
+podman machine start
+
+# Verify installation
+
+podman --version
+podman info
+
 ## Continuous Integration (optional)
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
