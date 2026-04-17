@@ -13,9 +13,11 @@ $env:NAT_GW_ID="nat-040e4d9884053de04"
 $env:PUBLIC_RT="rtb-04f6798903bf6a38f"
 $env:PRIVATE_RT="rtb-08990426383859f88"
 $env:DB_RT="rtb-01beec46618e0501e"
-$env:ALB_SG="sg-0b9932c81673d5a78"
-$env:APP_SG="sg-0532f38eb63092e6d"
-$env:RDS_SG="sg-0360a3db428decfd7"
+$env:ALB_SG="sg-031342540a4bef66d"
+$env:APP_SG="sg-067f9f3726458e934"
+$env:RDS_SG="sg-0221e2a60dd31012c"
+$env:DB_PASSWORD="K7mP9xL2vQ8rT5nB4wZ6cH3jF9gY1sA8eD2kL5pQ7rT9uV3xW6yZ8"
+$env:RDS_ENDPOINT="prod-peecko-db.cvswuu602c9n.eu-central-1.rds.amazonaws.com"
 
 # see all environment variables
 
