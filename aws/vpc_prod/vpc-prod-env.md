@@ -1,12 +1,15 @@
 # Resources IDs in Production environment
 
+$env:AWS_REGION="eu-central-1"
+$env:AWS_PROFILE="default"
+$env:RESOURCE_PREFIX="prod-peecko"
 $env:VPC_ID="vpc-03e69010829f69220"
 $env:PUBLIC_SUBNET_1A="subnet-0255945639b9abd5b"
 $env:PUBLIC_SUBNET_1B="subnet-029a8d4991274990e"
-$env:PRIVATE_SUBNET_1A="subnet-074b78068995f3a48"
-$env:PRIVATE_SUBNET_1B="subnet-0299004642c71ffa6"
-$env:DB_SUBNET_1A="subnet-0b5700678e8510999"
-$env:DB_SUBNET_1B="subnet-0d4077e0ac8af73a1"
+$env:PRIVATE_SUBNET_1A="subnet-0f9cedcfb4172de01"
+$env:PRIVATE_SUBNET_1B="subnet-07e1e10032fa80aee"
+$env:DB_SUBNET_1A="subnet-0366b466b466abe1f"
+$env:DB_SUBNET_1B="subnet-0a10916ddcbe6c6fe"
 $env:IGW_ID="igw-0b6780a80ef55eacd"
 $env:NAT_EIP="eipalloc-061479d185698a27b"
 $env:NAT_GW_ID="nat-040e4d9884053de04"
@@ -27,3 +30,17 @@ Get-ChildItem Env:
 
 $env:NAT_GW_ID
 Get-ChildItem Env:NAT_GW_ID
+
+# Steps DONE
+
+step-01-01
+step-01-02
+step-01-03
+step-01-04
+step-01-05
+step-02-01
+step-02-02
+step-03-01
+step-03-02
+
+# Steps ON-GOING
