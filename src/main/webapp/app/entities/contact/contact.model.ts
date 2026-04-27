@@ -1,5 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { ICustomer } from 'app/entities/customer/customer.model';
+import { Country } from 'app/entities/enumerations/country.model';
 import { ContactType } from 'app/entities/enumerations/contact-type.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
@@ -11,7 +12,7 @@ export interface IContact {
   line2?: string | null;
   zip?: string | null;
   city?: string | null;
-  country?: string | null;
+  country?: keyof typeof Country | null;
   email?: string | null;
   phone?: string | null;
   notes?: string | null;
@@ -55,5 +56,5 @@ CONTACT_USER_ACCESS = {
   notes: { listable: false, visible: true, disabled: false },
   created: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
-  customer: { listable: true, visible: true, disabled: false }
-}
+  customer: { listable: true, visible: true, disabled: false },
+};

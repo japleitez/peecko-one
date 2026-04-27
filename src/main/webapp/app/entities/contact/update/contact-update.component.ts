@@ -9,6 +9,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { CustomerService } from 'app/entities/customer/service/customer.service';
+import { Country } from 'app/entities/enumerations/country.model';
 import { ContactType } from 'app/entities/enumerations/contact-type.model';
 import { ContactService } from '../service/contact.service';
 import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
@@ -20,13 +21,14 @@ import { CustomerSelectorComponent } from '../../customer/customer-selector/cust
   standalone: true,
   selector: 'jhi-contact-update',
   templateUrl: './contact-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent],
 })
 export class ContactUpdateComponent implements OnInit {
   ua: ContactAccess = this.getContactUserAccess();
   isSaving = false;
   contact: IContact | null = null;
   contactTypeValues = Object.keys(ContactType);
+  customerCountryValues = Object.keys(Country);
 
   customersSharedCollection: ICustomer[] = [];
 
@@ -114,5 +116,4 @@ export class ContactUpdateComponent implements OnInit {
   customerControl() {
     return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
   }
-
 }

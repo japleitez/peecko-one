@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { Country } from 'app/entities/enumerations/country.model';
 import { CoachType } from 'app/entities/enumerations/coach-type.model';
 import { COACH_ACCESS, CoachAccess, ICoach } from '../coach.model';
 import { CoachService } from '../service/coach.service';
@@ -23,6 +24,7 @@ export class CoachUpdateComponent implements OnInit {
   isSaving = false;
   coach: ICoach | null = null;
   coachTypeValues = Object.keys(CoachType);
+  customerCountryValues = Object.keys(Country);
 
   editForm: CoachFormGroup = this.coachFormService.createCoachFormGroup(undefined, this.getCoachAccess());
 

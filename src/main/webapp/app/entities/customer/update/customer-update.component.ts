@@ -9,6 +9,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
+import { Country } from '../../enumerations/country.model';
 import { CustomerState } from 'app/entities/enumerations/customer-state.model';
 import { CustomerService } from '../service/customer.service';
 import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
@@ -21,13 +22,14 @@ import { CustomerSelectorComponent } from '../customer-selector/customer-selecto
   standalone: true,
   selector: 'jhi-customer-update',
   templateUrl: './customer-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, AgencySelectComponent, NgIf, CustomerSelectorComponent]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, AgencySelectComponent, NgIf, CustomerSelectorComponent],
 })
 export class CustomerUpdateComponent implements OnInit {
   ua: CustomerAccess = this.getCustomerUserAccess();
   isSaving = false;
   customer: ICustomer | null = null;
   customerStateValues = Object.keys(CustomerState);
+  customerCountryValues = Object.keys(Country);
 
   agenciesSharedCollection: IAgency[] = [];
 
@@ -53,10 +55,9 @@ export class CustomerUpdateComponent implements OnInit {
           this.editForm.get('agency')?.setValue(agency);
           const vatRate = response.body?.vatRate;
           this.editForm.get('vatRate')?.setValue(vatRate);
-          const country = response.body?.country;
-          this.editForm.get('country')?.setValue(country);
+          this.editForm.get('country')?.setValue(Country.LU);
           this.editForm.get('state')?.setValue(CustomerState.NEW);
-        })
+        });
       }
 
       this.loadRelationshipsOptions();
@@ -115,11 +116,10 @@ export class CustomerUpdateComponent implements OnInit {
   }
 
   protected getCustomerUserAccess(): CustomerAccess {
-    return CUSTOMER_USER_ACCESS
+    return CUSTOMER_USER_ACCESS;
   }
 
   agencyControl() {
     return this.editForm.get('agency') as FormControl<IAgency | string | null>;
   }
-
 }

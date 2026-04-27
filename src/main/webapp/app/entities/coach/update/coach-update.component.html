@@ -70,8 +70,20 @@
         </div>
 
         <div class="mb-3" *ngIf="ua.country.visible">
-          <label class="form-label" for="field_country">Country (ISO2)</label>
-          <input type="text" class="form-control" name="country" id="field_country" data-cy="country" formControlName="country" />
+          <label class="form-label" for="field_country">Country</label>
+          <select class="form-control" name="country" formControlName="country" id="field_country" data-cy="country">
+            <option [ngValue]="null"></option>
+            @for (customercountry of customerCountryValues; track $index) {
+              <option [value]="customercountry">{{ customercountry }}</option>
+            }
+          </select>
+          @if (editForm.get('country')!.invalid && (editForm.get('country')!.dirty || editForm.get('country')!.touched)) {
+            <div>
+              @if (editForm.get('country')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
         </div>
 
         <div class="mb-3" *ngIf="ua.speaks.visible">
