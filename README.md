@@ -263,9 +263,9 @@ podman machine start
 podman --version
 podman info
 
-# Run composite
+# Run composite (-d for detached mode)
 
-podman compose -f podman.yml up
+podman compose -f podman.yml up -d
 
 ## Continuous Integration (optional)
 
