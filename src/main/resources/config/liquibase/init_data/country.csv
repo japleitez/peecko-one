@@ -1,30 +1,15 @@
-code;name;locale;currency
-AT;Austria;AT;EUR
-BE;Belgium;BE;EUR
-BG;Bulgaria;BG;BGN
-HR;Croatia;HR;HRK
-CY;Cyprus;CY;EUR
-CZ;Czechia;CZ;CZK
-DK;Denmark;DK;DKK
-EE;Estonia;EE;EUR
-FI;Finland;FI;EUR
-FR;France;FR;EUR
-DE;Germany;DE;EUR
-GR;Greece;GR;EUR
-HU;Hungary;HU;HUF
-IE;Ireland;IE;EUR
-IT;Italy;IT;EUR
-LV;Latvia;LV;EUR
-LT;Lithuania;LT;EUR
-LU;Luxembourg;LU;EUR
-MT;Malta;MT;EUR
-NL;Netherlands;NL;EUR
-PL;Poland;PL;PLN
-PT;Portugal;PT;EUR
-RO;Romania;RO;RON
-SK;Slovakia;SK;EUR
-SI;Slovenia;SI;EUR
-ES;Spain;ES;EUR
-SE;Sweden;SE;SEK
-US;United States;US;USD
-SV;El Salvador;SV;USD
+code;name;locale;currency;language
+AT;Austria;AT;EUR;de
+BE;Belgium;BE;EUR;fr
+FR;France;FR;EUR;fr
+DE;Germany;DE;EUR;de
+GR;Greece;GR;EUR;el
+IE;Ireland;IE;EUR;en
+IT;Italy;IT;EUR;it
+LU;Luxembourg;LU;EUR;fr
+NL;Netherlands;NL;EUR;nl
+PL;Poland;PL;PLN;pl
+PT;Portugal;PT;EUR;pt
+ES;Spain;ES;EUR;es
+US;United States;US;USD;en
+SV;El Salvador;SV;USD;es

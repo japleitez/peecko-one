@@ -1,92 +1,86 @@
 package com.peecko.one.domain;
 
-/**
- * ISO 3166-1 alpha-2 codes for all 27 EU member states,
- * with each country's name in its own official language.
- */
-public enum Country {
-    // A
-    AT("Österreich"),
-    BE("Belgique"),
-    BG("България"),
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
 
-    // C
-    CY("Κύπρος"),
-    CZ("Česká republika"),
+@Entity
+@Table(name = "country")
+public class Country {
 
-    // D
-    DE("Deutschland"),
-    DK("Danmark"),
+    @Id
+    @NotNull
+    @Column(name = "code", nullable = false)
+    private String code;
 
-    // E
-    EE("Eesti"),
-    ES("España"),
+    @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    // F
-    FI("Finland"),
-    FR("France"),
+    @NotNull
+    @Column(name = "locale", nullable = false)
+    private String locale;
 
-    // G
-    GR("Ελλάδα"),
+    @NotNull
+    @Column(name = "currency", nullable = false)
+    private String currency;
 
-    // H
-    HR("Hrvatska"),
-    HU("Magyarország"),
+    @NotNull
+    @Column(name = "language", nullable = false)
+    private String language;
 
-    // I
-    IE("Ireland"),
-    IT("Italia"),
-
-    // L
-    LT("Lietuva"),
-    LU("Luxembourg"),
-    LV("Latvija"),
-
-    // M
-    MT("Malta"),
-
-    // N
-    NL("Nederland"),
-
-    // P
-    PL("Polska"),
-    PT("Portugal"),
-
-    // R
-    RO("România"),
-
-    // S
-    SE("Sverige"),
-    SI("Slovenija"),
-    SK("Slovensko");
-
-    private final String nativeName;
-
-    Country(String nativeName) {
-        this.nativeName = nativeName;
+    public String getCode() {
+        return code;
     }
 
-    public String getNativeName() {
-        return nativeName;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    /**
-     * Look up a Country by its ISO 3166-1 alpha-2 code (case-insensitive).
-     *
-     * @param code the two-letter country code
-     * @return the matching Country, or empty if not found
-     */
-    public static java.util.Optional<Country> fromCode(String code) {
-        if (code == null) return java.util.Optional.empty();
-        try {
-            return java.util.Optional.of(valueOf(code.toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            return java.util.Optional.empty();
-        }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     @Override
-    public String toString() {
-        return nativeName;
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return Objects.equals(code, country.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(code);
     }
 }

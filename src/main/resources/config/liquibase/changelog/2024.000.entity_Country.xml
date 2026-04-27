@@ -18,14 +18,17 @@
                 <constraints nullable="false" />
             </column>
             <column name="currency" type="varchar(3)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
+            </column>
+            <column name="language" type="varchar(3)">
+                <constraints nullable="false" />
             </column>
         </createTable>
     </changeSet>
 
     <!--
         Country Data Setup
-        code;name;locale;currency
+        code;name;locale;currency;language
     -->
     <changeSet id="2024-000-Country-data" author="jhipster">
         <loadData
@@ -37,6 +40,7 @@
             <column name="name" type="string"/>
             <column name="locale" type="string"/>
             <column name="currency" type="string"/>
+            <column name="language" type="string"/>
         </loadData>
     </changeSet>
 
