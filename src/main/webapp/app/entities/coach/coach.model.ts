@@ -1,7 +1,7 @@
 import dayjs from 'dayjs/esm';
 import { IVideo } from 'app/entities/video/video.model';
 import { IArticle } from 'app/entities/article/article.model';
-import { Country } from 'app/entities/enumerations/country.model';
+import { CountryCode } from 'app/entities/enumerations/country.model';
 import { CoachType } from 'app/entities/enumerations/coach-type.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
@@ -13,7 +13,7 @@ export interface ICoach {
   website?: string | null;
   instagram?: string | null;
   phoneNumber?: string | null;
-  country?: keyof typeof Country | null;
+  country?: keyof typeof CountryCode | null;
   speaks?: string | null;
   resume?: string | null;
   notes?: string | null;

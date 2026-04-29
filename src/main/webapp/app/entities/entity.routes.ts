@@ -92,6 +92,11 @@ const routes: Routes = [
     loadChildren: () => import('./coach/coach.routes'),
   },
   {
+    path: 'country',
+    data: { pageTitle: 'Countries' },
+    loadChildren: () => import('./country/country.routes'),
+  },
+  {
     path: 'invoice',
     data: { pageTitle: 'Invoices' },
     loadChildren: () => import('./invoice/invoice.routes'),

@@ -2,7 +2,7 @@ import dayjs from 'dayjs/esm';
 import { IContact } from 'app/entities/contact/contact.model';
 import { IApsPlan } from 'app/entities/aps-plan/aps-plan.model';
 import { IAgency } from 'app/entities/agency/agency.model';
-import { Country } from '../enumerations/country.model';
+import { CountryCode } from '../enumerations/country.model';
 import { CustomerState } from 'app/entities/enumerations/customer-state.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
@@ -10,7 +10,7 @@ export interface ICustomer {
   id: number;
   code?: string | null;
   name?: string | null;
-  country?: keyof typeof Country | null;
+  country?: keyof typeof CountryCode | null;
   state?: keyof typeof CustomerState | null;
   license?: string | null;
   billingEmail?: string | null;

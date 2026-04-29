@@ -9,7 +9,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { CustomerService } from 'app/entities/customer/service/customer.service';
-import { Country } from 'app/entities/enumerations/country.model';
+import { CountryCode } from 'app/entities/enumerations/country.model';
 import { ContactType } from 'app/entities/enumerations/contact-type.model';
 import { ContactService } from '../service/contact.service';
 import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
@@ -28,7 +28,7 @@ export class ContactUpdateComponent implements OnInit {
   isSaving = false;
   contact: IContact | null = null;
   contactTypeValues = Object.keys(ContactType);
-  customerCountryValues = Object.keys(Country);
+  customerCountryValues = Object.keys(CountryCode);
 
   customersSharedCollection: ICustomer[] = [];
 

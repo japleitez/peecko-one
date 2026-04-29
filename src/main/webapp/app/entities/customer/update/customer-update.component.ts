@@ -9,7 +9,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
-import { Country } from '../../enumerations/country.model';
+import { CountryCode } from '../../enumerations/country.model';
 import { CustomerState } from 'app/entities/enumerations/customer-state.model';
 import { CustomerService } from '../service/customer.service';
 import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
@@ -29,7 +29,7 @@ export class CustomerUpdateComponent implements OnInit {
   isSaving = false;
   customer: ICustomer | null = null;
   customerStateValues = Object.keys(CustomerState);
-  customerCountryValues = Object.keys(Country);
+  customerCountryValues = Object.keys(CountryCode);
 
   agenciesSharedCollection: IAgency[] = [];
 
@@ -55,7 +55,7 @@ export class CustomerUpdateComponent implements OnInit {
           this.editForm.get('agency')?.setValue(agency);
           const vatRate = response.body?.vatRate;
           this.editForm.get('vatRate')?.setValue(vatRate);
-          this.editForm.get('country')?.setValue(Country.LU);
+          this.editForm.get('country')?.setValue(CountryCode.LU);
           this.editForm.get('state')?.setValue(CustomerState.NEW);
         });
       }

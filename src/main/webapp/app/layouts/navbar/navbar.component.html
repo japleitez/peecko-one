@@ -29,7 +29,6 @@
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         @if (account !== null) {
-
           <!-- BAR BACK-OFFICE -->
           <li
             ngbDropdown
@@ -314,8 +313,6 @@
               <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
             </ul>
           </li>
-
-
         }
 
         <li
@@ -343,6 +340,18 @@
               >
                 <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
                 <span>Agency</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/country"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span>Country</span>
               </a>
             </li>
             <li>

@@ -1,4 +1,4 @@
-export enum Country {
+export enum CountryCode {
   LU = 'LU',
   FR = 'FR',
   DE = 'DE',
