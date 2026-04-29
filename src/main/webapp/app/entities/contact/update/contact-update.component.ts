@@ -16,6 +16,7 @@ import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
 import { ContactFormService, ContactFormGroup } from './contact-form.service';
 import { NgIf } from '@angular/common';
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
+import { CountryService } from 'app/entities/country/service/country.service';
 
 @Component({
   standalone: true,
@@ -28,7 +29,7 @@ export class ContactUpdateComponent implements OnInit {
   isSaving = false;
   contact: IContact | null = null;
   contactTypeValues = Object.keys(ContactType);
-  customerCountryValues = Object.keys(CountryCode);
+  countries: CountryCode[] = [];
 
   customersSharedCollection: ICustomer[] = [];
 
@@ -38,6 +39,7 @@ export class ContactUpdateComponent implements OnInit {
     protected contactService: ContactService,
     protected contactFormService: ContactFormService,
     protected customerService: CustomerService,
+    protected countryService: CountryService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -52,6 +54,10 @@ export class ContactUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+    this.countryService
+      .query({ size: 1000, sort: ['name,asc'] })
+      .pipe(map(res => res.body ?? []))
+      .subscribe(countries => (this.countries = countries));
   }
 
   previousState(): void {

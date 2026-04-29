@@ -1,8 +1,4 @@
-export enum CountryCode {
-  LU = 'LU',
-  FR = 'FR',
-  DE = 'DE',
-  ES = 'ES',
-  IT = 'IT',
-  SV = 'SV',
+export interface CountryCode {
+  code: string;
+  name?: string | null;
 }

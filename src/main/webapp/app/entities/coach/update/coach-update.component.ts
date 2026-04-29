@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { CountryCode } from 'app/entities/enumerations/country.model';
 import { CoachType } from 'app/entities/enumerations/coach-type.model';
 import { COACH_ACCESS, CoachAccess, ICoach } from '../coach.model';
 import { CoachService } from '../service/coach.service';
 import { CoachFormService, CoachFormGroup } from './coach-form.service';
+import { CountryService } from 'app/entities/country/service/country.service';
+import { ICountry } from '../../country/country.model';
 
 @Component({
   standalone: true,
@@ -24,13 +25,14 @@ export class CoachUpdateComponent implements OnInit {
   isSaving = false;
   coach: ICoach | null = null;
   coachTypeValues = Object.keys(CoachType);
-  customerCountryValues = Object.keys(CountryCode);
+  countries: ICountry[] = [];
 
   editForm: CoachFormGroup = this.coachFormService.createCoachFormGroup(undefined, this.getCoachAccess());
 
   constructor(
     protected coachService: CoachService,
     protected coachFormService: CoachFormService,
+    protected countryService: CountryService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -41,6 +43,10 @@ export class CoachUpdateComponent implements OnInit {
         this.updateForm(coach);
       }
     });
+    this.countryService
+      .query({ size: 1000, sort: ['name,asc'] })
+      .pipe(map(res => res.body ?? []))
+      .subscribe(countries => (this.countries = countries));
   }
 
   previousState(): void {

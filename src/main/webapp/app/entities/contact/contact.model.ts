@@ -1,6 +1,5 @@
 import dayjs from 'dayjs/esm';
 import { ICustomer } from 'app/entities/customer/customer.model';
-import { CountryCode } from 'app/entities/enumerations/country.model';
 import { ContactType } from 'app/entities/enumerations/contact-type.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
@@ -12,7 +11,7 @@ export interface IContact {
   line2?: string | null;
   zip?: string | null;
   city?: string | null;
-  country?: keyof typeof CountryCode | null;
+  country?: string | null;
   email?: string | null;
   phone?: string | null;
   notes?: string | null;

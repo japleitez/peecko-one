@@ -2,7 +2,7 @@ import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface ICountry {
   code: string;
-  name?: string | null;
+  name: string | null;
   locale?: string | null;
   currency?: string | null;
   language?: string | null;
