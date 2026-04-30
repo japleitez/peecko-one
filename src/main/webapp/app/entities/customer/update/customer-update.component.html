@@ -2,15 +2,13 @@
 
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
   <div class="d-flex justify-content-center">
-    <!-- left form -->
+    <!-- panel 1 -->
     <div class="col-3 child-inline">
-      <div class="mb-3" *ngIf="ua.agency.visible">
-        @if (customer?.agency) {
-          <label class="form-label">Agency</label>
-          <input type="text" class="form-control-read" value="{{ customer?.agency?.name }}" [readonly]="true" />
-        } @else {
-          <agency-select [control]="agencyControl()" [cl]="'w-100'" [required]="false" id="field_agency"></agency-select>
-        }
+      <div class="mb-3" *ngIf="ua.id.visible">
+        <div class="mb-3">
+          <label class="form-label" for="field_id">Customer ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
       </div>
 
       <div class="mb-3" *ngIf="ua.name.visible">
@@ -63,19 +61,9 @@
         <label class="form-label" for="field_vatRate">Vat Rate</label>
         <input type="number" class="form-control" name="vatRate" id="field_vatRate" data-cy="vatRate" formControlName="vatRate" />
       </div>
-
-      <div class="mb-3" *ngIf="ua.bank.visible">
-        <label class="form-label" for="field_bank">Bank</label>
-        <input type="text" class="form-control" name="bank" id="field_bank" data-cy="bank" formControlName="bank" />
-      </div>
-
-      <div class="mb-3" *ngIf="ua.iban.visible">
-        <label class="form-label" for="field_iban">Iban</label>
-        <input type="text" class="form-control" name="iban" id="field_iban" data-cy="iban" formControlName="iban" />
-      </div>
     </div>
 
-    <!-- right form -->
+    <!-- panel 2 -->
     <div class="col-3 child-inline">
       <div class="mb-3" *ngIf="ua.state.visible">
         <label class="form-label" for="field_state">State</label>
@@ -111,6 +99,16 @@
         />
       </div>
 
+      <div class="mb-3" *ngIf="ua.bank.visible">
+        <label class="form-label" for="field_bank">Bank</label>
+        <input type="text" class="form-control" name="bank" id="field_bank" data-cy="bank" formControlName="bank" />
+      </div>
+
+      <div class="mb-3" *ngIf="ua.iban.visible">
+        <label class="form-label" for="field_iban">Iban</label>
+        <input type="text" class="form-control" name="iban" id="field_iban" data-cy="iban" formControlName="iban" />
+      </div>
+
       <div class="mb-3" *ngIf="ua.logo.visible">
         <label class="form-label" for="field_logo">Logo</label>
         <input type="text" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
@@ -122,8 +120,17 @@
       </div>
     </div>
 
-    <!-- 3rd panel -->
+    <!-- panel 3 -->
     <div class="col-2 child-inline">
+      <div class="mb-3" *ngIf="ua.agency.visible">
+        @if (customer?.agency) {
+          <label class="form-label">Agency</label>
+          <input type="text" class="form-control-read" value="{{ customer?.agency?.name }}" [readonly]="true" />
+        } @else {
+          <agency-select [control]="agencyControl()" [cl]="'w-100'" [required]="false" id="field_agency"></agency-select>
+        }
+      </div>
+
       <div class="mb-3" *ngIf="ua.created.visible">
         <label class="form-label" for="field_created">Created</label>
         <div class="d-flex">
@@ -186,42 +193,33 @@
 
       <div class="mb-3" *ngIf="ua.closed.visible">
         <label class="form-label" for="field_closed">Closed</label>
-        <div class="d-flex">
-          <input
-            id="field_closed"
-            data-cy="closed"
-            type="datetime-local"
-            class="form-control"
-            name="closed"
-            formControlName="closed"
-            placeholder="YYYY-MM-DD HH:mm"
-          />
-        </div>
-      </div>
-    </div>
-
-    <!-- 3rd panel -->
-    <div class="col-2 child-inline">
-      <div class="mb-3" *ngIf="ua.id.visible">
-        <div class="mb-3">
-          <label class="form-label" for="field_id">Customer ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
+        <input
+          id="field_closed"
+          data-cy="closed"
+          type="datetime-local"
+          class="form-control"
+          name="closed"
+          formControlName="closed"
+          placeholder="YYYY-MM-DD HH:mm"
+        />
       </div>
 
-      <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-        <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-      </button>
+      <br />
 
-      <button
-        type="submit"
-        id="save-entity"
-        data-cy="entityCreateSaveButton"
-        [disabled]="editForm.invalid || isSaving"
-        class="btn btn-primary"
-      >
-        <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
-      </button>
+      <div class="d-flex gap-2 mb-3">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
     </div>
   </div>
 </form>

@@ -60,7 +60,7 @@ public class InvoicePdfService {
 
         data.put(InvoiceField.AGENCY_VAT_NUMBER, agency.getVatId());
         data.put(InvoiceField.AGENCY_BANK_IBAN, agency.getIban());
-        data.put(InvoiceField.AGENCY_BANK_SWIFT, agency.getBank());
+        data.put(InvoiceField.AGENCY_BANK_SWIFT, agency.getBankSwift());
 
         data.put(InvoiceField.CLIENT_NAME, customer.getName());
         data.put(InvoiceField.CLIENT_ADDRESS_STREET, contact.getLine1());
