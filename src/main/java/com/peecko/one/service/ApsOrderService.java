@@ -33,10 +33,9 @@ public class ApsOrderService {
 
     public ApsOrder create(ApsOrder apsOrder) {
         ApsPlan apsPlan = apsPlanRepository.findById(apsOrder.getApsPlan().getId()).orElseThrow();
-        Customer customer = apsPlan.getCustomer();
-        apsOrder.setCountry(customer.getCountry());
-        apsOrder.setAgencyId(apsPlan.getId());
-        apsOrder.setCustomerId(customer.getId());
+        apsOrder.setAgencyId(apsPlan.getAgencyId());
+        apsOrder.setCountry(apsPlan.getCountry());
+        apsOrder.setCustomerId(apsPlan.getCustomer().getId());
         return apsOrderRepository.save(apsOrder);
     }
 

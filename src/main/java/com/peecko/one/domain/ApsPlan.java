@@ -72,6 +72,9 @@ public class ApsPlan implements Serializable {
     @Column(name = "agency_id")
     private Long agencyId;
 
+    @Column(name = "country")
+    private String country;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsPlan")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "apsMemberships", "invoices", "apsPlan" }, allowSetters = true)
@@ -237,6 +240,19 @@ public class ApsPlan implements Serializable {
 
     public void setAgencyId(Long agencyId) {
         this.agencyId = agencyId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public ApsPlan country(String country) {
+        this.setCountry(country);
+        return this;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Set<ApsOrder> getApsOrders() {

@@ -1,8 +1,10 @@
 package com.peecko.one.service;
 
 import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.repository.ApsPlanRepository;
+import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.service.request.ApsPlanListRequest;
 import com.peecko.one.service.specs.ApsPlanSpecs;
 import java.time.Instant;
@@ -19,10 +21,12 @@ import org.springframework.util.StringUtils;
 public class ApsPlanService {
 
     private final UserService userService;
+    private final CustomerRepository customerRepository;
     private final ApsPlanRepository apsPlanRepository;
 
-    public ApsPlanService(UserService userService, ApsPlanRepository apsPlanRepository) {
+    public ApsPlanService(UserService userService, CustomerRepository customerRepository, ApsPlanRepository apsPlanRepository) {
         this.userService = userService;
+        this.customerRepository = customerRepository;
         this.apsPlanRepository = apsPlanRepository;
     }
 
@@ -34,8 +38,9 @@ public class ApsPlanService {
         Instant now = Instant.now();
         apsPlan.setCreated(now);
         apsPlan.setUpdated(now);
-        Long agencyId = userService.getCurrentAgencyId();
-        apsPlan.setAgencyId(agencyId);
+        Customer customer = customerRepository.getReferenceById(apsPlan.getCustomer().getId());
+        apsPlan.setAgencyId(customer.getAgency().getId());
+        apsPlan.setCountry(customer.getCountry());
         return apsPlanRepository.save(apsPlan);
     }
 

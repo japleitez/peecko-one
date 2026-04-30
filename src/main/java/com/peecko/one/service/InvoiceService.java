@@ -85,13 +85,14 @@ public class InvoiceService {
 
     private InvoiceItem generateInvoiceItem(ApsOrder apsOrder) {
         Double unitPrice = 0D;
-        String description = "Monthly b2b subscription to peecko app - plan " + apsOrder.getApsPlan().getPricing().toString().toLowerCase();
+        final ApsPlan apsPlan = apsOrder.getApsPlan();
+        String description = "Monthly b2b subscription to peecko app - plan " + apsPlan.getPricing().name().toLowerCase();
         final String country = apsOrder.getCountry();
         final Long customerId = apsOrder.getCustomerId();
         final Integer numberOfUsers = apsOrder.getNumberOfUsers();
-        final PricingType pricingType = apsOrder.getApsPlan().getPricing();
+        final PricingType pricingType = apsPlan.getPricing();
         if (PricingType.FIXED.equals(pricingType)) {
-            unitPrice = apsOrder.getApsPlan().getUnitPrice();
+            unitPrice = apsPlan.getUnitPrice();
         } else {
             List<ApsPricing> apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(
                 country,
@@ -102,10 +103,10 @@ public class InvoiceService {
                 apsPricings = apsPricingRepository.findByCountryAndNumberOfUsers(country, numberOfUsers);
             }
             if (!apsPricings.isEmpty()) {
-                if (PricingType.FITNESS.equals(pricingType)) {
-                    unitPrice = apsPricings.get(0).getFitnessPrice();
-                } else {
+                if (PricingType.WELLNESS.equals(pricingType)) {
                     unitPrice = apsPricings.get(0).getWellnessPrice();
+                } else {
+                    unitPrice = apsPricings.get(0).getFitnessPrice();
                 }
             }
         }
