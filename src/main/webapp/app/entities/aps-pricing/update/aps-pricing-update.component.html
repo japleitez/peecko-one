@@ -14,7 +14,12 @@
         }
 
         <div class="mb-3" *ngIf="ua.customer.visible">
-          <customer-selector [control]="customerControl()" [required]="false" [cl]="'w-100'" id="field_customer"></customer-selector>
+          <div class="d-flex align-items-center gap-2">
+            <customer-selector [control]="customerControl()" [required]="false" [cl]="'w-100'" id="field_customer"></customer-selector>
+            @if (customerControl().value) {
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="customerControl().setValue(null)">Clear</button>
+            }
+          </div>
         </div>
 
         <div class="mb-3" *ngIf="ua.country.visible">
