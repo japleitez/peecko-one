@@ -46,6 +46,10 @@ type AgencyFormGroupContent = {
   billingPhone: FormControl<AgencyFormRawValue['billingPhone']>;
   bank: FormControl<AgencyFormRawValue['bank']>;
   iban: FormControl<AgencyFormRawValue['iban']>;
+  bankBeneficiary: FormControl<AgencyFormRawValue['bankBeneficiary']>;
+  bankAddress: FormControl<AgencyFormRawValue['bankAddress']>;
+  bankAccount: FormControl<AgencyFormRawValue['bankAccount']>;
+  bankSwift: FormControl<AgencyFormRawValue['bankSwift']>;
   rcs: FormControl<AgencyFormRawValue['rcs']>;
   vatId: FormControl<AgencyFormRawValue['vatId']>;
   vatRate: FormControl<AgencyFormRawValue['vatRate']>;
@@ -71,30 +75,24 @@ export class AgencyFormService {
           validators: [Validators.required],
         },
       ),
-      code: new FormControl( { value: agencyRawValue.code, disabled: ua.code.disabled },
-        { validators: [Validators.required],
-      }),
-      name: new FormControl({ value: agencyRawValue.name, disabled: ua.name.disabled },
-        { validators: [Validators.required],
-      }),
+      code: new FormControl({ value: agencyRawValue.code, disabled: ua.code.disabled }, { validators: [Validators.required] }),
+      name: new FormControl({ value: agencyRawValue.name, disabled: ua.name.disabled }, { validators: [Validators.required] }),
       line1: new FormControl({ value: agencyRawValue.line1, disabled: ua.line1.disabled }),
       line2: new FormControl({ value: agencyRawValue.line2, disabled: ua.line2.disabled }),
       zip: new FormControl({ value: agencyRawValue.zip, disabled: ua.zip.disabled }),
-      city: new FormControl({ value: agencyRawValue.city, disabled: ua.city.disabled },
-        { validators: [Validators.required],
-      }),
-      country: new FormControl({ value: agencyRawValue.country, disabled: ua.country.disabled },
-        { validators: [Validators.required],
-      }),
-      language: new FormControl({ value: agencyRawValue.language, disabled: ua.language.disabled },
-        { validators: [Validators.required],
-      }),
+      city: new FormControl({ value: agencyRawValue.city, disabled: ua.city.disabled }, { validators: [Validators.required] }),
+      country: new FormControl({ value: agencyRawValue.country, disabled: ua.country.disabled }, { validators: [Validators.required] }),
+      language: new FormControl({ value: agencyRawValue.language, disabled: ua.language.disabled }, { validators: [Validators.required] }),
       email: new FormControl({ value: agencyRawValue.email, disabled: ua.email.disabled }),
       phone: new FormControl({ value: agencyRawValue.phone, disabled: ua.phone.disabled }),
       billingEmail: new FormControl({ value: agencyRawValue.billingEmail, disabled: ua.billingEmail.disabled }),
       billingPhone: new FormControl({ value: agencyRawValue.billingPhone, disabled: ua.billingPhone.disabled }),
       bank: new FormControl({ value: agencyRawValue.bank, disabled: ua.bank.disabled }),
       iban: new FormControl({ value: agencyRawValue.iban, disabled: ua.iban.disabled }),
+      bankBeneficiary: new FormControl({ value: agencyRawValue.bankBeneficiary, disabled: ua.bankBeneficiary.disabled }),
+      bankAddress: new FormControl({ value: agencyRawValue.bankAddress, disabled: ua.bankAddress.disabled }),
+      bankAccount: new FormControl({ value: agencyRawValue.bankAccount, disabled: ua.bankAccount.disabled }),
+      bankSwift: new FormControl({ value: agencyRawValue.bankSwift, disabled: ua.bankSwift.disabled }),
       rcs: new FormControl({ value: agencyRawValue.rcs, disabled: ua.rcs.disabled }),
       vatId: new FormControl({ value: agencyRawValue.vatId, disabled: ua.vatId.disabled }),
       vatRate: new FormControl({ value: agencyRawValue.vatRate, disabled: ua.vatRate.disabled }),

@@ -57,6 +57,18 @@
             <column name="iban" type="varchar(40)">
                 <constraints nullable="true" />
             </column>
+            <column name="bank_beneficiary" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_address" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_account" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_swift" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
             <column name="rcs" type="varchar(50)">
                 <constraints nullable="true" />
             </column>

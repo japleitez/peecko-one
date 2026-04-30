@@ -16,7 +16,7 @@
             <span>{{ agency.id }}</span>
           </dd>
           <dt *ngIf="ua.code.visible"><span>Code</span></dt>
-          <dd  *ngIf="ua.code.visible">
+          <dd *ngIf="ua.code.visible">
             <span>{{ agency.code }}</span>
           </dd>
           <dt *ngIf="ua.name.visible"><span>Name</span></dt>
@@ -70,6 +70,22 @@
           <dt *ngIf="ua.iban.visible"><span>Iban</span></dt>
           <dd *ngIf="ua.iban.visible">
             <span>{{ agency.iban }}</span>
+          </dd>
+          <dt *ngIf="ua.bankBeneficiary.visible"><span>Bank Beneficiary</span></dt>
+          <dd *ngIf="ua.bankBeneficiary.visible">
+            <span>{{ agency.bankBeneficiary }}</span>
+          </dd>
+          <dt *ngIf="ua.bankAddress.visible"><span>Bank Address</span></dt>
+          <dd *ngIf="ua.bankAddress.visible">
+            <span>{{ agency.bankAddress }}</span>
+          </dd>
+          <dt *ngIf="ua.bankAccount.visible"><span>Bank Account</span></dt>
+          <dd *ngIf="ua.bankAccount.visible">
+            <span>{{ agency.bankAccount }}</span>
+          </dd>
+          <dt *ngIf="ua.bankSwift.visible"><span>Bank Swift</span></dt>
+          <dd *ngIf="ua.bankSwift.visible">
+            <span>{{ agency.bankSwift }}</span>
           </dd>
           <dt *ngIf="ua.rcs.visible"><span>Rcs</span></dt>
           <dd *ngIf="ua.rcs.visible">

@@ -142,6 +142,47 @@
           <input type="text" class="form-control" name="iban" id="field_iban" data-cy="iban" formControlName="iban" />
         </div>
 
+        <div class="mb-3" *ngIf="ua.bankBeneficiary.visible">
+          <label class="form-label" for="field_bankBeneficiary">Bank Beneficiary</label>
+          <input
+            type="text"
+            class="form-control"
+            name="bankBeneficiary"
+            id="field_bankBeneficiary"
+            data-cy="bankBeneficiary"
+            formControlName="bankBeneficiary"
+          />
+        </div>
+
+        <div class="mb-3" *ngIf="ua.bankAddress.visible">
+          <label class="form-label" for="field_bankAddress">Bank Address</label>
+          <input
+            type="text"
+            class="form-control"
+            name="bankAddress"
+            id="field_bankAddress"
+            data-cy="bankAddress"
+            formControlName="bankAddress"
+          />
+        </div>
+
+        <div class="mb-3" *ngIf="ua.bankAccount.visible">
+          <label class="form-label" for="field_bankAccount">Bank Account</label>
+          <input
+            type="text"
+            class="form-control"
+            name="bankAccount"
+            id="field_bankAccount"
+            data-cy="bankAccount"
+            formControlName="bankAccount"
+          />
+        </div>
+
+        <div class="mb-3" *ngIf="ua.bankSwift.visible">
+          <label class="form-label" for="field_bankSwift">Bank Swift</label>
+          <input type="text" class="form-control" name="bankSwift" id="field_bankSwift" data-cy="bankSwift" formControlName="bankSwift" />
+        </div>
+
         <div class="mb-3" *ngIf="ua.rcs.visible">
           <label class="form-label" for="field_rcs">Rcs</label>
           <input type="text" class="form-control" name="rcs" id="field_rcs" data-cy="rcs" formControlName="rcs" />

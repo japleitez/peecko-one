@@ -76,6 +76,18 @@ public class Agency implements Serializable {
     @Column(name = "iban")
     private String iban;
 
+    @Column(name = "bank_beneficiary")
+    private String bankBeneficiary;
+
+    @Column(name = "bank_address")
+    private String bankAddress;
+
+    @Column(name = "bank_account")
+    private String bankAccount;
+
+    @Column(name = "bank_swift")
+    private String bankSwift;
+
     @Column(name = "rcs")
     private String rcs;
 
@@ -297,6 +309,58 @@ public class Agency implements Serializable {
         this.iban = iban;
     }
 
+    public String getBankBeneficiary() {
+        return this.bankBeneficiary;
+    }
+
+    public Agency bankBeneficiary(String bankBeneficiary) {
+        this.setBankBeneficiary(bankBeneficiary);
+        return this;
+    }
+
+    public void setBankBeneficiary(String bankBeneficiary) {
+        this.bankBeneficiary = bankBeneficiary;
+    }
+
+    public String getBankAddress() {
+        return this.bankAddress;
+    }
+
+    public Agency bankAddress(String bankAddress) {
+        this.setBankAddress(bankAddress);
+        return this;
+    }
+
+    public void setBankAddress(String bankAddress) {
+        this.bankAddress = bankAddress;
+    }
+
+    public String getBankAccount() {
+        return this.bankAccount;
+    }
+
+    public Agency bankAccount(String bankAccount) {
+        this.setBankAccount(bankAccount);
+        return this;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public String getBankSwift() {
+        return this.bankSwift;
+    }
+
+    public Agency bankSwift(String bankSwift) {
+        this.setBankSwift(bankSwift);
+        return this;
+    }
+
+    public void setBankSwift(String bankSwift) {
+        this.bankSwift = bankSwift;
+    }
+
     public String getRcs() {
         return this.rcs;
     }
@@ -450,6 +514,10 @@ public class Agency implements Serializable {
             ", billingPhone='" + getBillingPhone() + "'" +
             ", bank='" + getBank() + "'" +
             ", iban='" + getIban() + "'" +
+            ", bankBeneficiary='" + getBankBeneficiary() + "'" +
+            ", bankAddress='" + getBankAddress() + "'" +
+            ", bankAccount='" + getBankAccount() + "'" +
+            ", bankSwift='" + getBankSwift() + "'" +
             ", rcs='" + getRcs() + "'" +
             ", vatId='" + getVatId() + "'" +
             ", vatRate=" + getVatRate() +

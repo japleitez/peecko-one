@@ -20,6 +20,10 @@ export interface IAgency {
   billingPhone?: string | null;
   bank?: string | null;
   iban?: string | null;
+  bankBeneficiary?: string | null;
+  bankAddress?: string | null;
+  bankAccount?: string | null;
+  bankSwift?: string | null;
   rcs?: string | null;
   vatId?: string | null;
   vatRate?: number | null;
@@ -48,6 +52,10 @@ export interface AgencyAccess {
   billingPhone: FieldAccess;
   bank: FieldAccess;
   iban: FieldAccess;
+  bankBeneficiary: FieldAccess;
+  bankAddress: FieldAccess;
+  bankAccount: FieldAccess;
+  bankSwift: FieldAccess;
   rcs: FieldAccess;
   vatId: FieldAccess;
   vatRate: FieldAccess;
@@ -63,6 +71,10 @@ export let AGENCY_USER_ACCESS: AgencyAccess;
 AGENCY_USER_ACCESS = {
   apsPricings: { listable: false, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
+  bankBeneficiary: { listable: false, visible: true, disabled: false },
+  bankAddress: { listable: false, visible: true, disabled: false },
+  bankAccount: { listable: false, visible: true, disabled: false },
+  bankSwift: { listable: false, visible: true, disabled: false },
   billingEmail: { listable: true, visible: true, disabled: false },
   billingPhone: { listable: true, visible: true, disabled: false },
   city: { listable: true, visible: true, disabled: false },
@@ -83,5 +95,5 @@ AGENCY_USER_ACCESS = {
   updated: { listable: false, visible: true, disabled: true },
   vatId: { listable: false, visible: true, disabled: false },
   vatRate: { listable: false, visible: true, disabled: false },
-  zip: { listable: false, visible: true, disabled: false }
+  zip: { listable: false, visible: true, disabled: false },
 };
