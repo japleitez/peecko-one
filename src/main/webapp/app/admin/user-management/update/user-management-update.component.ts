@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import { IUser } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
+import { AgencyService } from 'app/entities/agency/service/agency.service';
+import { IAgency } from 'app/entities/agency/agency.model';
 
 const userTemplate = {} as IUser;
 
@@ -20,6 +22,7 @@ const newUser: IUser = {
 })
 export default class UserManagementUpdateComponent implements OnInit {
   authorities: string[] = [];
+  agencies: IAgency[] = [];
   isSaving = false;
 
   editForm = new FormGroup({
@@ -41,10 +44,12 @@ export default class UserManagementUpdateComponent implements OnInit {
     }),
     activated: new FormControl(userTemplate.activated, { nonNullable: true }),
     authorities: new FormControl(userTemplate.authorities, { nonNullable: true }),
+    agencyId: new FormControl(userTemplate.agencyId),
   });
 
   constructor(
     private userService: UserManagementService,
+    private agencyService: AgencyService,
     private route: ActivatedRoute,
   ) {}
 
@@ -57,6 +62,7 @@ export default class UserManagementUpdateComponent implements OnInit {
       }
     });
     this.userService.authorities().subscribe(authorities => (this.authorities = authorities));
+    this.agencyService.query().subscribe(res => (this.agencies = res.body ?? []));
   }
 
   previousState(): void {

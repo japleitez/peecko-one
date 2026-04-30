@@ -157,7 +157,7 @@ public class UserService {
 
     public User createUser(AdminUserDTO userDTO) {
         User user = new User();
-        user.setAgencyId(getDefaultAgencyId()); // default agency has initial control of new users
+        user.setAgencyId(userDTO.getAgencyId() != null ? userDTO.getAgencyId() : getDefaultAgencyId());
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -213,6 +213,9 @@ public class UserService {
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
+                if (userDTO.getAgencyId() != null) {
+                    user.setAgencyId(userDTO.getAgencyId());
+                }
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO
