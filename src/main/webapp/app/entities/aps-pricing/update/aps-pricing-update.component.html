@@ -64,15 +64,66 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.fitnessPrice.visible">
-          <label class="form-label" for="field_unitPrice">Unit Price</label>
-          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
-          @if (editForm.get('unitPrice')!.invalid && (editForm.get('unitPrice')!.dirty || editForm.get('unitPrice')!.touched)) {
+        <div class="mb-3" *ngIf="ua.maxQuantity.visible">
+          <label class="form-label" for="field_maxQuantity">Max Quantity</label>
+          <input
+            type="number"
+            class="form-control"
+            name="maxQuantity"
+            id="field_maxQuantity"
+            data-cy="maxQuantity"
+            formControlName="maxQuantity"
+          />
+          @if (editForm.get('maxQuantity')!.invalid && (editForm.get('maxQuantity')!.dirty || editForm.get('maxQuantity')!.touched)) {
             <div>
-              @if (editForm.get('unitPrice')?.errors?.required) {
+              @if (editForm.get('maxQuantity')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('maxQuantity')?.errors?.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3" *ngIf="ua.fitnessPrice.visible">
+          <label class="form-label" for="field_fitnessPrice">Fitness Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="fitnessPrice"
+            id="field_fitnessPrice"
+            data-cy="fitnessPrice"
+            formControlName="fitnessPrice"
+          />
+          @if (editForm.get('fitnessPrice')!.invalid && (editForm.get('fitnessPrice')!.dirty || editForm.get('fitnessPrice')!.touched)) {
+            <div>
+              @if (editForm.get('fitnessPrice')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
               <small class="form-text text-danger" [hidden]="!editForm.get('unitPrice')?.errors?.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3" *ngIf="ua.wellnessPrice.visible">
+          <label class="form-label" for="field_wellnessPrice">Wellness Price</label>
+          <input
+            type="number"
+            class="form-control"
+            name="wellnessPrice"
+            id="field_wellnessPrice"
+            data-cy="wellnessPrice"
+            formControlName="wellnessPrice"
+          />
+          @if (editForm.get('wellnessPrice')!.invalid && (editForm.get('wellnessPrice')!.dirty || editForm.get('wellnessPrice')!.touched)) {
+            <div>
+              @if (editForm.get('wellnessPrice')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              <small class="form-text text-danger" [hidden]="!editForm.get('wellnessPrice')?.errors?.number"
                 >This field should be a number.</small
               >
             </div>

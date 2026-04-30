@@ -25,8 +25,8 @@ describe('ApsPricing Form Service', () => {
             index: expect.any(Object),
             minQuantity: expect.any(Object),
             maxQuantity: expect.any(Object),
-            unitPrice: expect.any(Object),
-            premiumPrice: expect.any(Object),
+            fitnessPrice: expect.any(Object),
+            wellnessPrice: expect.any(Object),
           }),
         );
       });
@@ -42,8 +42,8 @@ describe('ApsPricing Form Service', () => {
             index: expect.any(Object),
             minQuantity: expect.any(Object),
             maxQuantity: expect.any(Object),
-            unitPrice: expect.any(Object),
-            premiumPrice: expect.any(Object),
+            fitnessPrice: expect.any(Object),
+            wellnessPrice: expect.any(Object),
           }),
         );
       });

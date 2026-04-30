@@ -122,8 +122,8 @@ public class ApsPricing implements Serializable {
         return this.fitnessPrice;
     }
 
-    public ApsPricing fitnessPrice(Double unitPrice) {
-        this.setFitnessPrice(unitPrice);
+    public ApsPricing fitnessPrice(Double fitnessPrice) {
+        this.setFitnessPrice(fitnessPrice);
         return this;
     }
 
@@ -181,7 +181,9 @@ public class ApsPricing implements Serializable {
             "id=" + getId() +
             ", index=" + getIndex() +
             ", minQuantity=" + getMinQuantity() +
-            ", unitPrice=" + getFitnessPrice() +
+            ", maxQuantity=" + getMaxQuantity() +
+            ", fitnessPrice=" + getFitnessPrice() +
+            ", wellnessPrice=" + getWellnessPrice() +
             "}";
     }
 }
