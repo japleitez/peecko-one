@@ -99,8 +99,7 @@ public class InvoiceService {
                 numberOfUsers
             );
             if (apsPricings.isEmpty()) {
-                Long baseCustomerId = userService.getCurrentAgencyId(); // 1L
-                apsPricings = apsPricingRepository.findByCountryAndCustomerIdAndNumberOfUsers(country, baseCustomerId, numberOfUsers);
+                apsPricings = apsPricingRepository.findByCountryAndNumberOfUsers(country, numberOfUsers);
             }
             if (!apsPricings.isEmpty()) {
                 if (PricingType.FITNESS.equals(pricingType)) {

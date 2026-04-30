@@ -19,7 +19,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="customer_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="index" type="integer">
                 <constraints nullable="false" />

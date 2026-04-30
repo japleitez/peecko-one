@@ -44,7 +44,7 @@
     </changeSet>
 
     <!--
-    id;index;customer_id;country;min_quantity;max_quantity;fitness_price;wellness_price
+    id;index;country;min_quantity;max_quantity;fitness_price;wellness_price
     -->
     <changeSet id="2024-201-ApsPricing-data" author="jhipster" context="init_data">
         <loadData
@@ -54,7 +54,6 @@
             usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="index" type="numeric"/>
-            <column name="customer_id" type="numeric"/>
             <column name="country" type="string"/>
             <column name="min_quantity" type="numeric"/>
             <column name="max_quantity" type="numeric"/>

@@ -31,40 +31,41 @@ export type ApsPricingFormGroup = FormGroup<ApsPricingFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsPricingFormService {
-  createApsPricingFormGroup(apsPricing: ApsPricingFormGroupInput = { id: null }, ua: ApsPricingAccess = APS_PRICING_ACCESS): ApsPricingFormGroup {
+  createApsPricingFormGroup(
+    apsPricing: ApsPricingFormGroupInput = { id: null },
+    ua: ApsPricingAccess = APS_PRICING_ACCESS,
+  ): ApsPricingFormGroup {
     const apsPricingRawValue = {
       ...this.getFormDefaults(),
       ...apsPricing,
     };
     return new FormGroup<ApsPricingFormGroupContent>({
       id: new FormControl(
-        { value: apsPricingRawValue.id, disabled: ua.id.disabled  },
+        { value: apsPricingRawValue.id, disabled: ua.id.disabled },
         {
           nonNullable: true,
           validators: [Validators.required],
         },
       ),
-      country: new FormControl({ value: apsPricingRawValue.country, disabled: ua.country.disabled  },
-        { validators: [Validators.required],
-      }),
-      customer: new FormControl({ value: apsPricingRawValue.customer, disabled: ua.customer.disabled  },
-        { validators: [Validators.required],
-      }),
-      index: new FormControl({ value: apsPricingRawValue.index, disabled: ua.index.disabled  },
-        { validators: [Validators.required],
-      }),
-      minQuantity: new FormControl({ value: apsPricingRawValue.minQuantity, disabled: ua.minQuantity.disabled  },
-        { validators: [Validators.required],
-      }),
-      maxQuantity: new FormControl({ value: apsPricingRawValue.maxQuantity, disabled: ua.maxQuantity.disabled  },
-        { validators: [Validators.required],
-        }),
-      unitPrice: new FormControl({ value: apsPricingRawValue.fitnessPrice, disabled: ua.fitnessPrice.disabled  },
-        { validators: [Validators.required],
-      }),
-      premiumPrice: new FormControl({ value: apsPricingRawValue.wellnessPrice, disabled: ua.wellnessPrice.disabled  },
-        { validators: [Validators.required],
-        }),
+      country: new FormControl({ value: apsPricingRawValue.country, disabled: ua.country.disabled }, { validators: [Validators.required] }),
+      customer: new FormControl({ value: apsPricingRawValue.customer, disabled: ua.customer.disabled }),
+      index: new FormControl({ value: apsPricingRawValue.index, disabled: ua.index.disabled }, { validators: [Validators.required] }),
+      minQuantity: new FormControl(
+        { value: apsPricingRawValue.minQuantity, disabled: ua.minQuantity.disabled },
+        { validators: [Validators.required] },
+      ),
+      maxQuantity: new FormControl(
+        { value: apsPricingRawValue.maxQuantity, disabled: ua.maxQuantity.disabled },
+        { validators: [Validators.required] },
+      ),
+      unitPrice: new FormControl(
+        { value: apsPricingRawValue.fitnessPrice, disabled: ua.fitnessPrice.disabled },
+        { validators: [Validators.required] },
+      ),
+      premiumPrice: new FormControl(
+        { value: apsPricingRawValue.wellnessPrice, disabled: ua.wellnessPrice.disabled },
+        { validators: [Validators.required] },
+      ),
     });
   }
 

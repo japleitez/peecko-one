@@ -20,4 +20,9 @@ public interface ApsPricingRepository extends JpaRepository<ApsPricing, Long> {
         @Param("customerId") Long customerId,
         @Param("numberOfUsers") Integer numberOfUsers
     );
+
+    @Query(
+        "from ApsPricing p left join fetch p.customer where p.country = :country and p.minQuantity <= :numberOfUsers order by p.minQuantity desc"
+    )
+    List<ApsPricing> findByCountryAndNumberOfUsers(@Param("country") String country, @Param("numberOfUsers") Integer numberOfUsers);
 }
