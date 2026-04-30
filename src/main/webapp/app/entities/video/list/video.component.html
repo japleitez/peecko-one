@@ -24,6 +24,19 @@
 
   <jhi-alert></jhi-alert>
 
+  <div class="d-flex align-items-center mb-3 gap-2">
+    <label class="form-label mb-0 me-1" for="filterCategory">Category</label>
+    <select id="filterCategory" class="form-select w-auto" [(ngModel)]="filterCategoryId" (change)="onCategoryFilterChange()">
+      <option [ngValue]="null">— All —</option>
+      @for (cat of videoCategories; track cat.id) {
+        <option [ngValue]="cat.id">{{ cat.title }}</option>
+      }
+    </select>
+    @if (filterCategoryId != null) {
+      <button class="btn btn-outline-secondary btn-sm" (click)="clearCategoryFilter()">Clear</button>
+    }
+  </div>
+
   @if (videos?.length === 0) {
     <div class="alert alert-warning" id="no-result">
       <span>No Videos found</span>
@@ -180,13 +193,13 @@
               <td *ngIf="ua.language.listable">{{ video.language }}</td>
               <td *ngIf="ua.duration.listable">{{ video.duration }}</td>
               <td *ngIf="ua.filename.listable">{{ video.filename }}</td>
-              <td *ngIf="ua.url.listable">{{ video.url | slice:85 }}</td>
-              <td *ngIf="ua.thumbnail.listable">{{ video.thumbnail | slice:37 }}</td>
+              <td *ngIf="ua.url.listable">{{ video.url | slice: 85 }}</td>
+              <td *ngIf="ua.thumbnail.listable">{{ video.thumbnail | slice: 37 }}</td>
               <td *ngIf="ua.player.listable">{{ video.player }}</td>
               <td *ngIf="ua.audience.listable">{{ video.audience }}</td>
               <td *ngIf="ua.intensity.listable">{{ video.intensity }}</td>
               <td *ngIf="ua.tags.listable">{{ video.tags }}</td>
-              <td *ngIf="ua.description.listable">{{ video.description | slice:0:15 }}...</td>
+              <td *ngIf="ua.description.listable">{{ video.description | slice: 0 : 15 }}...</td>
               <td *ngIf="ua.created.listable">{{ video.created | formatMediumDate }}</td>
               <td *ngIf="ua.released.listable">{{ video.released | formatMediumDate }}</td>
               <td *ngIf="ua.archived.listable">{{ video.archived | formatMediumDate }}</td>

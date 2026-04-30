@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe } from 'app/shared/date';
-import FormatMediumDatePipe  from '../../../shared/date/format-medium-date.pipe';
+import FormatMediumDatePipe from '../../../shared/date/format-medium-date.pipe';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
 
@@ -17,6 +17,8 @@ import { IVideo, VIDEO_ACCESS, VideoAccess } from '../video.model';
 import { EntityArrayResponseType, VideoService } from '../service/video.service';
 import { VideoDeleteDialogComponent } from '../delete/video-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { VideoCategoryService } from 'app/entities/video-category/service/video-category.service';
+import { IVideoCategory } from 'app/entities/video-category/video-category.model';
 
 @Component({
   standalone: true,
@@ -34,12 +36,14 @@ import { NgIf } from '@angular/common';
     ItemCountComponent,
     NgIf,
     FormatMediumDatePipe,
-    FormatMediumDatePipe
-  ]
+    FormatMediumDatePipe,
+  ],
 })
 export class VideoComponent implements OnInit {
   ua: VideoAccess = this.getVideoAccess();
   videos?: IVideo[];
+  videoCategories: IVideoCategory[] = [];
+  filterCategoryId: number | null = null;
   isLoading = false;
 
   predicate = 'id';
@@ -51,6 +55,7 @@ export class VideoComponent implements OnInit {
 
   constructor(
     protected videoService: VideoService,
+    protected videoCategoryService: VideoCategoryService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
@@ -59,7 +64,17 @@ export class VideoComponent implements OnInit {
   trackId = (_index: number, item: IVideo): number => this.videoService.getVideoIdentifier(item);
 
   ngOnInit(): void {
+    this.videoCategoryService.query({ sort: ['title,asc'], size: 1000 }).subscribe(res => (this.videoCategories = res.body ?? []));
     this.load();
+  }
+
+  onCategoryFilterChange(): void {
+    this.navigateToPage(1);
+  }
+
+  clearCategoryFilter(): void {
+    this.filterCategoryId = null;
+    this.navigateToPage(1);
   }
 
   delete(video: IVideo): void {
@@ -131,6 +146,9 @@ export class VideoComponent implements OnInit {
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.filterCategoryId != null) {
+      queryObject['videoCategoryId'] = this.filterCategoryId;
+    }
     return this.videoService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -159,5 +177,4 @@ export class VideoComponent implements OnInit {
   protected getVideoAccess(): VideoAccess {
     return VIDEO_ACCESS;
   }
-
 }
