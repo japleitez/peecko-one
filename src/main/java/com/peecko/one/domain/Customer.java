@@ -1,6 +1,7 @@
 package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.peecko.one.domain.enumeration.CustomerState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -432,6 +433,18 @@ public class Customer implements Serializable {
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    @Transient
+    private boolean hasPrimaryContact;
+
+    @JsonProperty("hasPrimaryContact")
+    public boolean isHasPrimaryContact() {
+        return hasPrimaryContact;
+    }
+
+    public void setHasPrimaryContact(boolean hasPrimaryContact) {
+        this.hasPrimaryContact = hasPrimaryContact;
+    }
 
     public Customer cloneForSelection() {
         Customer clone = new Customer();

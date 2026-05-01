@@ -4,6 +4,7 @@ import com.peecko.one.domain.Contact;
 import com.peecko.one.domain.enumeration.ContactType;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,4 +26,7 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
     @Query("SELECT c FROM Contact c WHERE c.customer.id = :customerId and c.type = :type")
     Optional<Contact> findByCustomerAndType(@Param("customerId") Long customerId, @Param("type") ContactType type);
+
+    @Query("SELECT DISTINCT c.customer.id FROM Contact c WHERE c.customer.id IN :customerIds AND c.type = :type")
+    Set<Long> findCustomerIdsWithContactType(@Param("customerIds") List<Long> customerIds, @Param("type") ContactType type);
 }

@@ -2,14 +2,17 @@ package com.peecko.one.service;
 
 import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Customer;
+import com.peecko.one.domain.enumeration.ContactType;
 import com.peecko.one.domain.enumeration.CustomerState;
 import com.peecko.one.repository.AgencyRepository;
+import com.peecko.one.repository.ContactRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.service.request.CustomerListRequest;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,11 +26,18 @@ public class CustomerService {
 
     private final AgencyRepository agencyRepository;
     private final CustomerRepository customerRepository;
+    private final ContactRepository contactRepository;
 
-    public CustomerService(UserService userService, AgencyRepository agencyRepository, CustomerRepository customerRepository) {
+    public CustomerService(
+        UserService userService,
+        AgencyRepository agencyRepository,
+        CustomerRepository customerRepository,
+        ContactRepository contactRepository
+    ) {
         this.userService = userService;
         this.agencyRepository = agencyRepository;
         this.customerRepository = customerRepository;
+        this.contactRepository = contactRepository;
     }
 
     public Customer create(Customer customer) {
@@ -87,7 +97,13 @@ public class CustomerService {
         if (Objects.nonNull(request.getState())) {
             spec = spec.and(CustomerSpecs.stateEqual(request.getState()));
         }
-        return customerRepository.findAll(spec, pageable);
+        Page<Customer> page = customerRepository.findAll(spec, pageable);
+        List<Long> ids = page.getContent().stream().map(Customer::getId).toList();
+        if (!ids.isEmpty()) {
+            Set<Long> withPrimary = contactRepository.findCustomerIdsWithContactType(ids, ContactType.PRIMARY);
+            page.getContent().forEach(c -> c.setHasPrimaryContact(withPrimary.contains(c.getId())));
+        }
+        return page;
     }
 
     public Optional<Customer> partialUpdateCustomer(Customer input) {

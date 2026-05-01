@@ -27,6 +27,7 @@ export interface ICustomer {
   contacts?: IContact[] | null;
   apsPlans?: IApsPlan[] | null;
   agency?: IAgency | null;
+  hasPrimaryContact?: boolean | false | null;
 }
 
 export type NewCustomer = Omit<ICustomer, 'id'> & { id: null };

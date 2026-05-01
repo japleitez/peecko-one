@@ -204,7 +204,12 @@
 
               <td *ngIf="ua.license.listable">{{ customer.license }}</td>
               <td *ngIf="ua.state.listable">{{ customer.state }}</td>
-              <td *ngIf="ua.name.listable">{{ customer.name }}</td>
+              <td *ngIf="ua.name.listable">
+                {{ customer.name }}
+                @if (!customer.hasPrimaryContact) {
+                  <fa-icon icon="exclamation-triangle" class="text-warning ms-1" ngbTooltip="No primary contact"></fa-icon>
+                }
+              </td>
               <td *ngIf="ua.code.listable" id="{{ customer.code }}" (click)="copy(customer.code)">
                 <span>{{ customer.code }}</span>
               </td>

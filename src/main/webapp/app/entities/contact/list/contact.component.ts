@@ -15,6 +15,7 @@ import { ContactDeleteDialogComponent } from '../delete/contact-delete-dialog.co
 import { NgIf } from '@angular/common';
 import { ICustomer } from '../../customer/customer.model';
 import { CustomerData } from '../../customer/service/customer.data';
+import { CustomerService } from '../../customer/service/customer.service';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
@@ -31,8 +32,8 @@ import { MatInputModule } from '@angular/material/input';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     NgIf,
-    MatInputModule
-  ]
+    MatInputModule,
+  ],
 })
 export class ContactComponent implements OnInit {
   ua: ContactAccess = this.getContactUserAccess();
@@ -43,10 +44,11 @@ export class ContactComponent implements OnInit {
   ascending = true;
 
   customerCode: string | null | undefined = null;
-  customer: ICustomer | null = null;
+  customers: ICustomer[] = [];
 
   constructor(
     protected contactService: ContactService,
+    protected customerService: CustomerService,
     protected customerData: CustomerData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
@@ -59,6 +61,7 @@ export class ContactComponent implements OnInit {
   trackId = (_index: number, item: IContact): number => this.contactService.getContactIdentifier(item);
 
   ngOnInit(): void {
+    this.customerService.queryActive().subscribe(res => (this.customers = res.body ?? []));
     this.load();
   }
 
@@ -149,6 +152,5 @@ export class ContactComponent implements OnInit {
 
   protected getContactUserAccess(): ContactAccess {
     return CONTACT_USER_ACCESS;
-}
-
+  }
 }
