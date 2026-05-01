@@ -102,6 +102,9 @@ public class InvoiceService {
             if (apsPricings.isEmpty()) {
                 apsPricings = apsPricingRepository.findByCountryAndNumberOfUsers(country, numberOfUsers);
             }
+            if (apsPricings.isEmpty()) {
+                apsPricings = apsPricingRepository.findByCountryAndNumberOfUsers("LU", numberOfUsers);
+            }
             if (!apsPricings.isEmpty()) {
                 if (PricingType.WELLNESS.equals(pricingType)) {
                     unitPrice = apsPricings.get(0).getWellnessPrice();
