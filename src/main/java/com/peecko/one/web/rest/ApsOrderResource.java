@@ -218,6 +218,7 @@ public class ApsOrderResource {
 
     @GetMapping("/{id}/download/invoice")
     public ResponseEntity<byte[]> downloadInvoice(@PathVariable("id") Long id) {
+        log.debug("REST request to get download Invoice : {}", id);
         Invoice invoice = invoiceRepository.findByApsOrderId(id).orElseThrow(() -> new RuntimeException("Invalid invoice id"));
         Agency agency = agencyRepository.getReferenceById(userService.getCurrentAgencyId());
         Customer customer = customerRepository.getReferenceById(invoice.getCustomerId());

@@ -17,6 +17,7 @@ public final class InvoiceField {
     public static final String AGENCY_VAT_NUMBER = "agencyVatNumber";
     public static final String AGENCY_BANK_IBAN = "agencyBankIban";
     public static final String AGENCY_BANK_SWIFT = "agencyBankSwift";
+    public static final String AGENCY_BANK_ACCOUNT = "agencyBankAccount";
     public static final String AGENCY_FOOTER_LINE1 = "agencyFooterLine1";
 
     // ── Client (Bill To) ──────────────────────────────────────────────────────

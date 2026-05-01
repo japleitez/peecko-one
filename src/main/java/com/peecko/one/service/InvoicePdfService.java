@@ -11,30 +11,34 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 
 @Service
 public class InvoicePdfService {
 
-    private final TemplateEngine templateEngine;
     private final InvoicePdfGeneratorService invoicePdfGeneratorService;
     private final CountryService countryService;
+    private final MessageSource messageSource;
 
     public InvoicePdfService(
-        TemplateEngine templateEngine,
         InvoicePdfGeneratorService invoicePdfGeneratorService,
-        CountryService countryService
+        CountryService countryService,
+        MessageSource messageSource
     ) {
-        this.templateEngine = templateEngine;
         this.invoicePdfGeneratorService = invoicePdfGeneratorService;
         this.countryService = countryService;
+        this.messageSource = messageSource;
     }
 
     public byte[] generatePdfInvoice(Agency agency, Customer customer, Contact contact, Invoice invoice) {
+        Country country = countryService.findCountryByCode(customer.getCountry());
+        Locale locale = new Locale(country.getLanguage(), country.getLocale());
         Map<String, Object> invoiceData = getInvoiceData(agency, customer, contact, invoice);
+        Map<String, String> labels = getInvoiceLabels(locale);
         try {
-            return invoicePdfGeneratorService.generate(invoiceData);
+            return invoicePdfGeneratorService.generate(invoiceData, labels);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -59,8 +63,9 @@ public class InvoicePdfService {
         data.put(InvoiceField.AGENCY_ADDRESS_COUNTRY, countryService.getLocaleCountryName(agency.getCountry()));
 
         data.put(InvoiceField.AGENCY_VAT_NUMBER, agency.getVatId());
-        data.put(InvoiceField.AGENCY_BANK_IBAN, agency.getIban());
         data.put(InvoiceField.AGENCY_BANK_SWIFT, agency.getBankSwift());
+        data.put(InvoiceField.AGENCY_BANK_ACCOUNT, agency.getBankAccount());
+        data.put(InvoiceField.AGENCY_BANK_IBAN, agency.getIban());
 
         data.put(InvoiceField.CLIENT_NAME, customer.getName());
         data.put(InvoiceField.CLIENT_ADDRESS_STREET, contact.getLine1());
@@ -91,5 +96,30 @@ public class InvoicePdfService {
         );
 
         return data;
+    }
+
+    public Map<String, String> getInvoiceLabels(Locale locale) {
+        Map<String, String> labels = new HashMap<>();
+        String[] keys = {
+            InvoiceLabel.TITLE,
+            InvoiceLabel.FROM,
+            InvoiceLabel.BILL_TO,
+            InvoiceLabel.PERIOD,
+            InvoiceLabel.CUSTOMER_ACCOUNT,
+            InvoiceLabel.DESCRIPTION,
+            InvoiceLabel.QUANTITY,
+            InvoiceLabel.UNIT_PRICE,
+            InvoiceLabel.AMOUNT,
+            InvoiceLabel.TAX_RATE,
+            InvoiceLabel.TOTAL_DUE,
+            InvoiceLabel.VAT,
+            InvoiceLabel.ACCOUNT,
+            InvoiceLabel.ISSUE_DATE,
+            InvoiceLabel.DUE_DATE,
+        };
+        for (String key : keys) {
+            labels.put(key, messageSource.getMessage(key, null, locale));
+        }
+        return labels;
     }
 }

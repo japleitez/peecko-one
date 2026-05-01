@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * Generates an invoice PDF that mirrors the HTML template structure.
@@ -70,9 +71,9 @@ public class InvoicePdfGeneratorService {
      * @param data map whose keys are {@link InvoiceField} constants
      * @return raw PDF bytes ready to write to a file or HTTP response
      */
-    public byte[] generate(Map<String, Object> data) throws IOException {
+    public byte[] generate(Map<String, Object> data, Map<String, String> labels) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        writeTo(baos, data);
+        writeTo(baos, data, labels);
         return baos.toByteArray();
     }
 
@@ -82,7 +83,7 @@ public class InvoicePdfGeneratorService {
      * @param out  target stream (not closed by this method)
      * @param data map whose keys are {@link InvoiceField} constants
      */
-    public void writeTo(OutputStream out, Map<String, Object> data) throws IOException {
+    public void writeTo(OutputStream out, Map<String, Object> data, Map<String, String> labels) throws IOException {
         PdfWriter writer = new PdfWriter(out);
         PdfDocument pdfDoc = new PdfDocument(writer);
         Document document = new Document(pdfDoc, PageSize.A4);
@@ -95,15 +96,15 @@ public class InvoicePdfGeneratorService {
         float contentWidth = PageSize.A4.getWidth() - 2 * MARGIN_SIDE;
 
         // ── 1. Header row ─────────────────────────────────────────────────────
-        document.add(buildHeader(data, bold, regular, contentWidth));
+        document.add(buildHeader(data, labels, bold, regular, contentWidth));
         document.add(spacer(6));
 
         // ── 2. From / Bill To parties ─────────────────────────────────────────
-        document.add(buildParties(data, bold, regular, contentWidth));
+        document.add(buildParties(data, labels, bold, regular, contentWidth));
         document.add(spacer(4));
 
         // ── 3. Period bar ─────────────────────────────────────────────────────
-        document.add(buildPeriodBar(data, bold, regular, contentWidth));
+        document.add(buildPeriodBar(data, labels, bold, regular, contentWidth));
         document.add(spacer(6));
 
         // ── 4. Dark divider ───────────────────────────────────────────────────
@@ -111,10 +112,10 @@ public class InvoicePdfGeneratorService {
         document.add(spacer(4));
 
         // ── 5. Line-items table ───────────────────────────────────────────────
-        document.add(buildItemsTable(data, bold, regular, contentWidth));
+        document.add(buildItemsTable(data, labels, bold, regular, contentWidth));
 
         // ── 6. Summary table ──────────────────────────────────────────────────
-        document.add(buildSummaryTable(data, bold, regular, contentWidth));
+        document.add(buildSummaryTable(data, labels, bold, regular, contentWidth));
         document.add(spacer(8));
 
         // ── 7. Light divider ──────────────────────────────────────────────────
@@ -148,12 +149,14 @@ public class InvoicePdfGeneratorService {
     // ═════════════════════════════════════════════════════════════════════════
 
     /** Header: left = "Invoice" + number, right = badge + dates */
-    private Table buildHeader(Map<String, Object> data, PdfFont bold, PdfFont regular, float contentWidth) {
+    private Table buildHeader(Map<String, Object> data, Map<String, String> labels, PdfFont bold, PdfFont regular, float contentWidth) {
         Table table = twoColumnTable(contentWidth);
 
         // -- Left cell
         Cell left = new Cell().setBorder(Border.NO_BORDER).setPadding(0);
-        left.add(new Paragraph("Invoice").setFont(bold).setFontSize(22).setFontColor(DARK_NAVY).setMargin(0).setPadding(0));
+        left.add(
+            new Paragraph(labels.get(InvoiceLabel.TITLE)).setFont(bold).setFontSize(22).setFontColor(DARK_NAVY).setMargin(0).setPadding(0)
+        );
         left.add(
             new Paragraph("#" + val(data, InvoiceField.INVOICE_NUMBER))
                 .setFont(regular)
@@ -186,8 +189,12 @@ public class InvoicePdfGeneratorService {
 
         // Date grid (Issue / Due)
         Table dateGrid = new Table(new float[] { 1, 1 }).useAllAvailableWidth().setBorder(Border.NO_BORDER).setMargin(0).setPadding(0);
-        dateGrid.addCell(labelValueCell("Issue Date", val(data, InvoiceField.INVOICE_ISSUE), regular, bold, TextAlignment.RIGHT));
-        dateGrid.addCell(labelValueCell("Due Date", val(data, InvoiceField.INVOICE_DUE), regular, bold, TextAlignment.RIGHT));
+        dateGrid.addCell(
+            labelValueCell(labels.get(InvoiceLabel.ISSUE_DATE), val(data, InvoiceField.INVOICE_ISSUE), regular, bold, TextAlignment.RIGHT)
+        );
+        dateGrid.addCell(
+            labelValueCell(labels.get(InvoiceLabel.DUE_DATE), val(data, InvoiceField.INVOICE_DUE), regular, bold, TextAlignment.RIGHT)
+        );
         right.add(dateGrid);
 
         table.addCell(right);
@@ -195,13 +202,17 @@ public class InvoicePdfGeneratorService {
     }
 
     /** Two-column "From / Bill To" block */
-    private Table buildParties(Map<String, Object> data, PdfFont bold, PdfFont regular, float contentWidth) {
+    private Table buildParties(Map<String, Object> data, Map<String, String> labels, PdfFont bold, PdfFont regular, float contentWidth) {
         Table table = twoColumnTable(contentWidth);
 
         // From
+        String agencyBankAccount = val(data, InvoiceField.AGENCY_BANK_ACCOUNT);
+        String agencyBankLine = StringUtils.hasText(agencyBankAccount)
+            ? labels.get(InvoiceLabel.ACCOUNT).toUpperCase() + ": " + agencyBankAccount
+            : "IBAN: " + val(data, InvoiceField.AGENCY_BANK_IBAN);
         table.addCell(
             partyCell(
-                "From",
+                labels.get(InvoiceLabel.FROM),
                 val(data, InvoiceField.AGENCY_NAME),
                 new String[] {
                     val(data, InvoiceField.AGENCY_ADDRESS_STREET),
@@ -209,9 +220,9 @@ public class InvoicePdfGeneratorService {
                     val(data, InvoiceField.AGENCY_ADDRESS_COUNTRY),
                 },
                 new String[] {
-                    "VAT: " + val(data, InvoiceField.AGENCY_VAT_NUMBER),
-                    "IBAN: " + val(data, InvoiceField.AGENCY_BANK_IBAN),
+                    labels.get(InvoiceLabel.VAT) + ": " + val(data, InvoiceField.AGENCY_VAT_NUMBER),
                     "SWIFT: " + val(data, InvoiceField.AGENCY_BANK_SWIFT),
+                    agencyBankLine,
                 },
                 bold,
                 regular,
@@ -222,14 +233,14 @@ public class InvoicePdfGeneratorService {
         // Bill To
         table.addCell(
             partyCell(
-                "Bill To",
+                labels.get(InvoiceLabel.BILL_TO),
                 val(data, InvoiceField.CLIENT_NAME),
                 new String[] {
                     val(data, InvoiceField.CLIENT_ADDRESS_STREET),
                     val(data, InvoiceField.CLIENT_ADDRESS_CITY),
                     val(data, InvoiceField.CLIENT_ADDRESS_COUNTRY),
                 },
-                new String[] { "VAT: " + val(data, InvoiceField.CLIENT_VAT_NUMBER) },
+                new String[] { labels.get(InvoiceLabel.VAT) + ": " + val(data, InvoiceField.CLIENT_VAT_NUMBER) },
                 bold,
                 regular,
                 TextAlignment.RIGHT
@@ -240,14 +251,14 @@ public class InvoicePdfGeneratorService {
     }
 
     /** Rounded period bar with period and customer code */
-    private Table buildPeriodBar(Map<String, Object> data, PdfFont bold, PdfFont regular, float contentWidth) {
+    private Table buildPeriodBar(Map<String, Object> data, Map<String, String> labels, PdfFont bold, PdfFont regular, float contentWidth) {
         Table bar = twoColumnTable(contentWidth);
         bar.setBackgroundColor(PERIOD_BG).setBorder(new SolidBorder(BORDER_GRAY, 0.5f)).setBorderRadius(new BorderRadius(5));
 
         // Left: period
         Cell left = new Cell().setBorder(Border.NO_BORDER).setPaddingLeft(12).setPaddingTop(8).setPaddingBottom(8);
         left.add(
-            new Paragraph("Invoice Period")
+            new Paragraph(labels.get(InvoiceLabel.PERIOD))
                 .setFont(bold)
                 .setFontSize(7)
                 .setFontColor(LIGHT_GRAY)
@@ -271,7 +282,7 @@ public class InvoicePdfGeneratorService {
             .setTextAlignment(TextAlignment.RIGHT)
             .setVerticalAlignment(VerticalAlignment.MIDDLE);
         right.add(
-            new Paragraph("Customer Account: ")
+            new Paragraph(labels.get(InvoiceLabel.CUSTOMER_ACCOUNT) + ": ")
                 .add(new Text(val(data, InvoiceField.CLIENT_CODE)).setFont(bold))
                 .setFont(regular)
                 .setFontSize(9)
@@ -283,14 +294,19 @@ public class InvoicePdfGeneratorService {
     }
 
     /** Line-items table with dark header */
-    private Table buildItemsTable(Map<String, Object> data, PdfFont bold, PdfFont regular, float contentWidth) {
+    private Table buildItemsTable(Map<String, Object> data, Map<String, String> labels, PdfFont bold, PdfFont regular, float contentWidth) {
         float descWidth = contentWidth - COL_QTY - COL_UNIT_PRICE - COL_AMOUNT;
         Table table = new Table(new float[] { descWidth, COL_QTY, COL_UNIT_PRICE, COL_AMOUNT })
             .useAllAvailableWidth()
             .setBorder(Border.NO_BORDER);
 
         // Header row
-        String[] headers = { "Description", "Qty", "Unit Price", "Amount" };
+        String[] headers = {
+            labels.get(InvoiceLabel.DESCRIPTION),
+            labels.get(InvoiceLabel.QUANTITY),
+            labels.get(InvoiceLabel.UNIT_PRICE),
+            labels.get(InvoiceLabel.AMOUNT),
+        };
         for (int i = 0; i < headers.length; i++) {
             Cell hCell = new Cell().setBackgroundColor(DARK_NAVY).setBorder(Border.NO_BORDER).setPadding(7);
             hCell.add(
@@ -326,8 +342,14 @@ public class InvoicePdfGeneratorService {
     }
 
     /** Summary table: tax rate row + dark "Total Due" row */
-    private Table buildSummaryTable(Map<String, Object> data, PdfFont bold, PdfFont regular, float contentWidth) {
-        float labelW = COL_UNIT_PRICE;
+    private Table buildSummaryTable(
+        Map<String, Object> data,
+        Map<String, String> labels,
+        PdfFont bold,
+        PdfFont regular,
+        float contentWidth
+    ) {
+        float labelW = COL_UNIT_PRICE + mm(10);
         float valueW = COL_AMOUNT;
         float spacerW = contentWidth - labelW - valueW;
 
@@ -335,12 +357,14 @@ public class InvoicePdfGeneratorService {
 
         // Tax rate row
         table.addCell(emptyCell());
-        table.addCell(summaryLabelCell("Tax Rate (" + val(data, InvoiceField.INVOICE_VAT_RATE) + ")", regular, false));
+        table.addCell(
+            summaryLabelCell(labels.get(InvoiceLabel.TAX_RATE) + " (" + val(data, InvoiceField.INVOICE_VAT_RATE) + ")", regular, false)
+        );
         table.addCell(summaryValueCell(val(data, InvoiceField.INVOICE_VAT), regular, false));
 
         // Total Due row
         table.addCell(emptyCell());
-        table.addCell(summaryLabelCell("Total Due", bold, true));
+        table.addCell(summaryLabelCell(labels.get(InvoiceLabel.TOTAL_DUE), bold, true));
         table.addCell(summaryValueCell(val(data, InvoiceField.INVOICE_TOTAL), bold, true));
 
         return table;

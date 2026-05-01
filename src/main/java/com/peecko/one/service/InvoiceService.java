@@ -80,13 +80,13 @@ public class InvoiceService {
 
     private String generateInvoiceNumber(Long agencyId, Integer period) {
         Long count = invoiceRepository.countByAgencyIdAndPeriod(agencyId, period);
-        return "PCK" + period + String.format("%03d", count);
+        return agencyId + "." + period + "." + String.format("%03d", count);
     }
 
     private InvoiceItem generateInvoiceItem(ApsOrder apsOrder) {
         Double unitPrice = 0D;
         final ApsPlan apsPlan = apsOrder.getApsPlan();
-        String description = "Monthly b2b subscription to peecko app - plan " + apsPlan.getPricing().name().toLowerCase();
+        String description = "peecko app monthly subscription - plan " + apsPlan.getPricing().name().toLowerCase();
         final String country = apsOrder.getCountry();
         final Long customerId = apsOrder.getCustomerId();
         final Integer numberOfUsers = apsOrder.getNumberOfUsers();
