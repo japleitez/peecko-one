@@ -5,21 +5,27 @@ import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.domain.ApsPlan;
 
 public class ApsOrderInfo {
+
     private final Long id;
     private final Integer period;
     private final String license;
     private final Double unitPrice;
     private final Double vatRate;
     private final Integer numberOfUsers;
+    private final String filename;
     private final String invoiceNumber;
     private final String contract;
     private final String pricing;
+
     @JsonProperty("plnId")
     private final Long apsPlanId;
+
     @JsonProperty("plnState")
     private final String planState;
+
     @JsonProperty("cstName")
     private final String customer;
+
     @JsonProperty("cstState")
     private final String customerState;
 
@@ -31,12 +37,12 @@ public class ApsOrderInfo {
         String planState = null;
         String customer = null;
         String customerState = null;
-        if(apsPlan.getState()!= null) {
+        if (apsPlan.getState() != null) {
             planState = apsPlan.getState().name();
         }
-        if(apsPlan.getCustomer() != null) {
+        if (apsPlan.getCustomer() != null) {
             customer = apsPlan.getCustomer().getName();
-            if(apsPlan.getCustomer().getState() != null) {
+            if (apsPlan.getCustomer().getState() != null) {
                 customerState = apsPlan.getCustomer().getState().name();
             }
         }
@@ -47,6 +53,7 @@ public class ApsOrderInfo {
             apsOrder.getUnitPrice(),
             apsOrder.getVatRate(),
             apsOrder.getNumberOfUsers(),
+            apsOrder.getFilename(),
             apsOrder.getInvoiceNumber(),
             apsPlan.getContract(),
             apsPlan.getPricing().name(),
@@ -57,13 +64,29 @@ public class ApsOrderInfo {
         );
     }
 
-    private ApsOrderInfo(Long id, Integer period, String license, Double unitPrice, Double vatRate, Integer numberOfUsers, String invoiceNumber, String contract, String pricing, Long apsPlanId, String planState, String customer, String customerState) {
+    private ApsOrderInfo(
+        Long id,
+        Integer period,
+        String license,
+        Double unitPrice,
+        Double vatRate,
+        Integer numberOfUsers,
+        String filename,
+        String invoiceNumber,
+        String contract,
+        String pricing,
+        Long apsPlanId,
+        String planState,
+        String customer,
+        String customerState
+    ) {
         this.id = id;
         this.period = period;
         this.license = license;
         this.unitPrice = unitPrice;
         this.vatRate = vatRate;
         this.numberOfUsers = numberOfUsers;
+        this.filename = filename;
         this.invoiceNumber = invoiceNumber;
         this.contract = contract;
         this.pricing = pricing;
@@ -97,6 +120,10 @@ public class ApsOrderInfo {
         return numberOfUsers;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
     public String getInvoiceNumber() {
         return invoiceNumber;
     }
@@ -110,7 +137,9 @@ public class ApsOrderInfo {
     }
 
     @JsonProperty("plnId")
-    public Long getApsPlanId() { return apsPlanId; }
+    public Long getApsPlanId() {
+        return apsPlanId;
+    }
 
     @JsonProperty("plnState")
     public String getPlanState() {

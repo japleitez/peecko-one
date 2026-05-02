@@ -42,6 +42,9 @@
             <column name="number_of_users" type="integer" defaultValue="0">
                 <constraints nullable="false" />
             </column>
+            <column name="filename" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
             <column name="invoice_number" type="varchar(20)">
                 <constraints nullable="true" />
             </column>

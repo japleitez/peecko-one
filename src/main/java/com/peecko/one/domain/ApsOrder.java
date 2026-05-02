@@ -48,6 +48,9 @@ public class ApsOrder implements Serializable {
     @Column(name = "number_of_users")
     private Integer numberOfUsers;
 
+    @Column(name = "filename")
+    private String filename;
+
     @Column(name = "invoice_number")
     private String invoiceNumber;
 
@@ -163,6 +166,18 @@ public class ApsOrder implements Serializable {
 
     public void setNumberOfUsers(Integer numberOfUsers) {
         this.numberOfUsers = numberOfUsers;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public boolean isInvoiceSent() {
+        return invoiceSent;
     }
 
     public String getInvoiceNumber() {

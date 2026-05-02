@@ -5,6 +5,7 @@ import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface ICount {
   count: number;
+  filename?: string | null;
 }
 
 export interface IApsOrder {
@@ -21,7 +22,7 @@ export interface IApsOrder {
   apsPlan?: IApsPlan | null;
 }
 
-export type NewApsOrder = Omit<IApsOrder, 'id'> & { id: null, invoiceSent: false };
+export type NewApsOrder = Omit<IApsOrder, 'id'> & { id: null; invoiceSent: false };
 
 export interface IApsOrderInfo {
   id: number;
@@ -30,6 +31,7 @@ export interface IApsOrderInfo {
   unitPrice?: number | null;
   vatRate?: number | null;
   numberOfUsers?: number | null;
+  filename?: string | null;
   invoiceNumber?: string | null;
   invoiceSent: boolean;
   cstName: string | null;
@@ -62,4 +64,4 @@ APS_ORDER_USER_ACCESS = {
   numberOfUsers: { listable: true, visible: true, disabled: true },
   invoiceNumber: { listable: true, visible: true, disabled: true },
   plan: { listable: true, visible: true, disabled: false },
-}
+};

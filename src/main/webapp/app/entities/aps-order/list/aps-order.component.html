@@ -134,6 +134,11 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span>Filename</span>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="invoiceNumber" *ngIf="ua.invoiceNumber.listable">
               <div class="d-flex">
                 <span>Invoice</span>
@@ -168,13 +173,20 @@
               <td *ngIf="ua.unitPrice.listable">{{ apsOrder.unitPrice }}</td>
               <td *ngIf="ua.vatRate.listable">{{ apsOrder.vatRate }}</td>
               <td *ngIf="ua.numberOfUsers.listable">{{ apsOrder.numberOfUsers }}</td>
+              <td>{{ apsOrder.filename }}</td>
               <td *ngIf="ua.invoiceNumber.listable">
                 <a [routerLink]="" (click)="downloadInvoice(apsOrder)">{{ apsOrder.invoiceNumber }}</a>
                 <div *ngIf="apsOrder.invoiceSent">S</div>
               </td>
               <td class="text-end">
                 <div class="btn-group">
-                  <a (click)="navToMembership(apsOrder)" class="btn btn-info btn-sm" data-cy="entityApsPlansButton" title="membership">
+                  <a
+                    (click)="apsOrder.numberOfUsers && navToMembership(apsOrder)"
+                    class="btn btn-info btn-sm"
+                    [class.disabled]="!apsOrder.numberOfUsers"
+                    data-cy="entityApsPlansButton"
+                    title="membership"
+                  >
                     members
                   </a>
 

@@ -261,8 +261,11 @@ export class ApsOrderComponent implements OnInit {
       data: o,
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result.count) {
+      if (result?.count) {
         o.numberOfUsers = result.count;
+      }
+      if (result?.filename) {
+        o.filename = result.filename;
       }
     });
   }

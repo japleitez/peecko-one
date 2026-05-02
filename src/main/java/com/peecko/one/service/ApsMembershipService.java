@@ -5,19 +5,20 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.peecko.one.domain.ApsMembership;
 import com.peecko.one.domain.ApsOrder;
+import com.peecko.one.domain.dto.MemberDTO;
 import com.peecko.one.repository.ApsMembershipRepository;
 import com.peecko.one.repository.ApsOrderRepository;
-import com.peecko.one.domain.dto.MemberDTO;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 @Service
 public class ApsMembershipService {
+
     private final ApsMembershipRepository apsMembershipRepository;
 
     private final ApsOrderRepository apsOrderRepository;
@@ -28,15 +29,25 @@ public class ApsMembershipService {
     }
 
     public int importMembers(Long apsOrderId, MultipartFile file) {
-        ApsOrder apsOrder = apsOrderRepository.findById(apsOrderId).orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
+        ApsOrder apsOrder = apsOrderRepository
+            .findById(apsOrderId)
+            .orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
         List<MemberDTO> members = parseFile(file);
         List<ApsMembership> result = saveOrUpdateMembers(apsOrder.getId(), apsOrder.getPeriod(), apsOrder.getLicense(), members);
+        apsOrderRepository
+            .findById(apsOrderId)
+            .ifPresent(o -> {
+                o.setFilename(file.getOriginalFilename());
+                apsOrderRepository.save(o);
+            });
         return result.size();
     }
 
     public List<ApsMembership> saveOrUpdateMembers(Long apsOrderId, Integer period, String license, List<MemberDTO> members) {
         List<ApsMembership> list = members.stream().map(m -> saveOrUpdateMember(apsOrderId, period, license, m)).toList();
-        ApsOrder apsOrder = apsOrderRepository.findById(apsOrderId).orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
+        ApsOrder apsOrder = apsOrderRepository
+            .findById(apsOrderId)
+            .orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
         Long count = apsMembershipRepository.countByApsOrder(apsOrder);
         apsOrder.setNumberOfUsers(count.intValue());
         apsOrderRepository.save(apsOrder);
@@ -45,11 +56,12 @@ public class ApsMembershipService {
 
     private ApsMembership saveOrUpdateMember(Long apsOrderId, Integer period, String license, MemberDTO member) {
         ApsOrder apsOrder = new ApsOrder(apsOrderId);
-        ApsMembership apsMembership = apsMembershipRepository.findByApsOrderAndUsername(apsOrder, member.getUsername())
+        ApsMembership apsMembership = apsMembershipRepository
+            .findByApsOrderAndUsername(apsOrder, member.getUsername())
             .orElse(ApsMembership.of(apsOrder, period, license, member.getUsername()));
         if (apsMembership.getId() == null) {
             apsMembershipRepository.save(apsMembership);
-        } else if (!apsMembership.getLicense().equals(license)){
+        } else if (!apsMembership.getLicense().equals(license)) {
             apsMembership.setLicense(license);
             apsMembershipRepository.save(apsMembership);
         }

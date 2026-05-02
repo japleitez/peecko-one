@@ -4,20 +4,24 @@
   </h2>
 
   <div class="d-flex justify-content-end">
+    @if (customerCode) {
+      <span class="badge bg-info me-1">{{ customerCode }}</span>
+    }
+    @if (customerName) {
+      <span class="badge bg-secondary me-2">{{ customerName }}</span>
+    }
 
-    <input type="text" matInput placeholder="period" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="period" disabled>
+    <input type="text" matInput placeholder="contract" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="contract" disabled />
 
-    <input type="text" matInput placeholder="contract" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="contract" disabled>
+    <input type="text" matInput placeholder="period" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="period" disabled />
 
-    <input type="text" matInput placeholder="apsOrderId" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="apsOrderId">
+    <input type="text" matInput placeholder="apsOrderId" class="form-text w-15 me-2" maxlength="30" [(ngModel)]="apsOrderId" disabled />
 
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
       <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
     </button>
 
-    <button class="btn btn-info me-2" (click)="previousState()" type="submit">
-      <fa-icon icon="arrow-left"></fa-icon> <span> </span>
-    </button>
+    <button class="btn btn-info me-2" (click)="previousState()" type="submit"><fa-icon icon="arrow-left"></fa-icon> <span> </span></button>
 
     <button
       id="jh-create-entity"
@@ -28,7 +32,6 @@
       <fa-icon icon="plus"></fa-icon>
       <span>New Aps Membership</span>
     </button>
-
   </div>
 
   <jhi-alert-error></jhi-alert-error>

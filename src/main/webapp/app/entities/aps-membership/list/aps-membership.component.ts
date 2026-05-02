@@ -18,6 +18,7 @@ import { ApsOrderData } from '../../aps-order/aps-order.data';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { IApsOrder } from '../../aps-order/aps-order.model';
 import { ApsOrderService } from '../../aps-order/service/aps-order.service';
+import { ApsPlanService } from '../../aps-plan/service/aps-plan.service';
 
 @Component({
   standalone: true,
@@ -34,25 +35,28 @@ import { ApsOrderService } from '../../aps-order/service/aps-order.service';
     FormatMediumDatePipe,
     NgIf,
     MatInputModule,
-    FaIconComponent
-  ]
+    FaIconComponent,
+  ],
 })
 export class ApsMembershipComponent implements OnInit {
   ua: ApsMembershipAccess = this.getApsMembershipAccess();
   apsMemberships?: IApsMembership[];
   isLoading: boolean = false;
 
-  predicate :string = 'id';
-  ascending :boolean = true;
+  predicate: string = 'id';
+  ascending: boolean = true;
 
   apsOrderId: number | null | undefined = null;
   apsOrder: IApsOrder | null = null;
   period: number | null | undefined = null;
   contract: string | null | undefined = null;
+  customerCode: string | null | undefined = null;
+  customerName: string | null | undefined = null;
 
   constructor(
     protected apsMembershipService: ApsMembershipService,
     protected apsOrderService: ApsOrderService,
+    protected apsPlanService: ApsPlanService,
     protected apsOrderData: ApsOrderData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
@@ -86,17 +90,25 @@ export class ApsMembershipComponent implements OnInit {
 
   load(): void {
     if (this.apsOrderId) {
-      this.apsOrderService.find(this.apsOrderId)
-        .subscribe(resp => {
-          this.apsOrder = resp.body;
-          if (this.apsOrder) {
-            this.period = this.apsOrder?.period;
-            this.contract = this.apsOrder?.apsPlan?.contract;
-          } else {
-            this.period = null;
-            this.contract = null;
+      this.apsOrderService.find(this.apsOrderId).subscribe(resp => {
+        this.apsOrder = resp.body;
+        if (this.apsOrder) {
+          this.period = this.apsOrder.period;
+          this.contract = this.apsOrder.apsPlan?.contract;
+          const planId = this.apsOrder.apsPlan?.id;
+          if (planId) {
+            this.apsPlanService.find(planId).subscribe(planResp => {
+              this.customerCode = planResp.body?.customer?.code;
+              this.customerName = planResp.body?.customer?.name;
+            });
           }
-        });
+        } else {
+          this.period = null;
+          this.contract = null;
+          this.customerCode = null;
+          this.customerName = null;
+        }
+      });
     }
     this.loadFromBackendWithRouteInformations().subscribe({
       next: (res: EntityArrayResponseType) => {
@@ -173,5 +185,4 @@ export class ApsMembershipComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
-
 }

@@ -14,8 +14,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -252,9 +252,9 @@ public class ApsOrderResource {
 
     @PostMapping("/import/members")
     public ResponseEntity<?> createBulkMembership(@RequestParam Long apsOrderId, @RequestParam MultipartFile file) {
-        log.debug("REST request to import ApsMembership file : {}", file.getName());
+        log.debug("REST request to import ApsMembership file : {}", file.getOriginalFilename());
         int count = apsMembershipService.importMembers(apsOrderId, file);
-        log.info("batch imported {} apsMemberships for apsOrder {} from file {}", apsOrderId, file.getName(), count);
-        return ResponseEntity.ok(Collections.singletonMap("count", count));
+        log.info("batch imported {} apsMemberships for apsOrder {} from file {}", count, apsOrderId, file.getOriginalFilename());
+        return ResponseEntity.ok(Map.of("count", count, "filename", String.valueOf(file.getOriginalFilename())));
     }
 }
