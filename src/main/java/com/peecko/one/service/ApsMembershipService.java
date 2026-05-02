@@ -43,14 +43,19 @@ public class ApsMembershipService {
         return result.size();
     }
 
+    public void recalculateNumberOfUsers(Long apsOrderId) {
+        apsOrderRepository
+            .findById(apsOrderId)
+            .ifPresent(apsOrder -> {
+                Long count = apsMembershipRepository.countByApsOrder(apsOrder);
+                apsOrder.setNumberOfUsers(count.intValue());
+                apsOrderRepository.save(apsOrder);
+            });
+    }
+
     public List<ApsMembership> saveOrUpdateMembers(Long apsOrderId, Integer period, String license, List<MemberDTO> members) {
         List<ApsMembership> list = members.stream().map(m -> saveOrUpdateMember(apsOrderId, period, license, m)).toList();
-        ApsOrder apsOrder = apsOrderRepository
-            .findById(apsOrderId)
-            .orElseThrow(() -> new BadRequestAlertException("Invalid Order Id", "apsOrder", "orderId"));
-        Long count = apsMembershipRepository.countByApsOrder(apsOrder);
-        apsOrder.setNumberOfUsers(count.intValue());
-        apsOrderRepository.save(apsOrder);
+        recalculateNumberOfUsers(apsOrderId);
         return list;
     }
 

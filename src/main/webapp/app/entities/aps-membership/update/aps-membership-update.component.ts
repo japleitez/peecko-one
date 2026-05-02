@@ -26,6 +26,8 @@ export class ApsMembershipUpdateComponent implements OnInit {
   isSaving = false;
   apsMembership: IApsMembership | null = null;
   presetApsOrderId: number | null = null;
+  presetPeriod: number | null = null;
+  presetLicense: string | null = null;
 
   apsOrdersSharedCollection: IApsOrder[] = [];
 
@@ -43,6 +45,8 @@ export class ApsMembershipUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.presetApsOrderId = this.apsOrderData.getId() ?? null;
+    this.presetPeriod = this.apsOrderData.getPeriod() ?? null;
+    this.presetLicense = this.apsOrderData.getLicense() ?? null;
     this.activatedRoute.data.subscribe(({ apsMembership }) => {
       this.apsMembership = apsMembership;
       if (apsMembership) {
@@ -53,6 +57,14 @@ export class ApsMembershipUpdateComponent implements OnInit {
       } else if (this.presetApsOrderId) {
         this.editForm.controls.apsOrder.setValue({ id: this.presetApsOrderId } as IApsOrder);
         this.editForm.controls.apsOrder.disable();
+        if (this.presetPeriod) {
+          this.editForm.controls.period.setValue(this.presetPeriod);
+          this.editForm.controls.period.disable();
+        }
+        if (this.presetLicense) {
+          this.editForm.controls.license.setValue(this.presetLicense);
+          this.editForm.controls.license.disable();
+        }
       } else {
         this.loadRelationshipsOptions();
       }

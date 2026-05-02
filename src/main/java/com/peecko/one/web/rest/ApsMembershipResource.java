@@ -3,6 +3,7 @@ package com.peecko.one.web.rest;
 import com.peecko.one.domain.ApsMembership;
 import com.peecko.one.repository.ApsMembershipRepository;
 import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -37,12 +38,17 @@ public class ApsMembershipResource {
     private String applicationName;
 
     private final ApsMembershipRepository apsMembershipRepository;
-
     private final ApsOrderRepository apsOrderRepository;
+    private final ApsMembershipService apsMembershipService;
 
-    public ApsMembershipResource(ApsMembershipRepository apsMembershipRepository, ApsOrderRepository apsOrderRepository) {
+    public ApsMembershipResource(
+        ApsMembershipRepository apsMembershipRepository,
+        ApsOrderRepository apsOrderRepository,
+        ApsMembershipService apsMembershipService
+    ) {
         this.apsMembershipRepository = apsMembershipRepository;
         this.apsOrderRepository = apsOrderRepository;
+        this.apsMembershipService = apsMembershipService;
     }
 
     /**
@@ -59,6 +65,9 @@ public class ApsMembershipResource {
             throw new BadRequestAlertException("A new apsMembership cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ApsMembership result = apsMembershipRepository.save(apsMembership);
+        if (result.getApsOrder() != null) {
+            apsMembershipService.recalculateNumberOfUsers(result.getApsOrder().getId());
+        }
         return ResponseEntity
             .created(new URI("/api/aps-memberships/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -183,7 +192,14 @@ public class ApsMembershipResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteApsMembership(@PathVariable("id") Long id) {
         log.debug("REST request to delete ApsMembership : {}", id);
+        Long apsOrderId = apsMembershipRepository
+            .findById(id)
+            .map(m -> m.getApsOrder() != null ? m.getApsOrder().getId() : null)
+            .orElse(null);
         apsMembershipRepository.deleteById(id);
+        if (apsOrderId != null) {
+            apsMembershipService.recalculateNumberOfUsers(apsOrderId);
+        }
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

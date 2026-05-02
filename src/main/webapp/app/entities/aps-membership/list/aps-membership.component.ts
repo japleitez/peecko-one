@@ -49,6 +49,7 @@ export class ApsMembershipComponent implements OnInit {
   apsOrderId: number | null | undefined = null;
   apsOrder: IApsOrder | null = null;
   period: number | null | undefined = null;
+  license: string | null | undefined = null;
   contract: string | null | undefined = null;
   customerCode: string | null | undefined = null;
   customerName: string | null | undefined = null;
@@ -94,7 +95,10 @@ export class ApsMembershipComponent implements OnInit {
         this.apsOrder = resp.body;
         if (this.apsOrder) {
           this.period = this.apsOrder.period;
+          this.license = this.apsOrder.license;
           this.contract = this.apsOrder.apsPlan?.contract;
+          this.apsOrderData.setPeriod(this.period);
+          this.apsOrderData.setLicense(this.license);
           const planId = this.apsOrder.apsPlan?.id;
           if (planId) {
             this.apsPlanService.find(planId).subscribe(planResp => {
@@ -104,9 +108,12 @@ export class ApsMembershipComponent implements OnInit {
           }
         } else {
           this.period = null;
+          this.license = null;
           this.contract = null;
           this.customerCode = null;
           this.customerName = null;
+          this.apsOrderData.setPeriod(null);
+          this.apsOrderData.setLicense(null);
         }
       });
     }
