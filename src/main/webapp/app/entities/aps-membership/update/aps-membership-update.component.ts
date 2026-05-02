@@ -47,7 +47,9 @@ export class ApsMembershipUpdateComponent implements OnInit {
       this.apsMembership = apsMembership;
       if (apsMembership) {
         this.updateForm(apsMembership);
-        this.loadRelationshipsOptions();
+        if (!this.presetApsOrderId) {
+          this.loadRelationshipsOptions();
+        }
       } else if (this.presetApsOrderId) {
         this.editForm.controls.apsOrder.setValue({ id: this.presetApsOrderId } as IApsOrder);
         this.editForm.controls.apsOrder.disable();
