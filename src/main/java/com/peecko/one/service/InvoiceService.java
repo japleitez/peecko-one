@@ -102,9 +102,9 @@ public class InvoiceService {
     }
 
     private String generateInvoiceNumber(Long agencyId, Integer period) {
-        Long count = invoiceRepository.countByAgencyIdAndPeriod(agencyId, period);
+        Long count = invoiceRepository.countByAgencyIdAndPeriod(agencyId, period) + 1;
         String yymm = String.valueOf(period).substring(2);
-        return String.format("%d.%s%04d", agencyId, yymm, count);
+        return String.format("%d%s%04d", agencyId, yymm, count);
     }
 
     private InvoiceItem generateInvoiceItem(ApsOrder apsOrder) {
