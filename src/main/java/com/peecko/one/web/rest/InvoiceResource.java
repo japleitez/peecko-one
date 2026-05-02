@@ -152,7 +152,7 @@ public class InvoiceResource {
                 }
                 if (invoice.getPaid() != null) {
                     existingInvoice.setPaid(invoice.getPaid());
-                    existingInvoice.setDiff(invoice.getTotal() - invoice.getPaid());
+                    existingInvoice.setDiff(Math.round((invoice.getTotal() - invoice.getPaid()) * 100.0) / 100.0);
                 } else {
                     existingInvoice.setPaid(null);
                     existingInvoice.setDiff(null);
