@@ -55,5 +55,5 @@ INVOICE_ACCESS = {
   diff: { listable: true, visible: true, disabled: true },
   notes: { listable: false, visible: true, disabled: false },
   invoiceItems: { listable: false, visible: true, disabled: false },
-  apsOrder: { listable: true, visible: true, disabled: false },
+  apsOrder: { listable: true, visible: true, disabled: true },
 };

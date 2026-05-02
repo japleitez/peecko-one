@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,8 +43,6 @@ export class InvoiceUpdateComponent implements OnInit {
       if (invoice) {
         this.updateForm(invoice);
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -89,18 +87,6 @@ export class InvoiceUpdateComponent implements OnInit {
       this.apsOrdersSharedCollection,
       invoice.apsOrder,
     );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.apsOrderService
-      .query()
-      .pipe(map((res: HttpResponse<IApsOrder[]>) => res.body ?? []))
-      .pipe(
-        map((apsOrders: IApsOrder[]) =>
-          this.apsOrderService.addApsOrderToCollectionIfMissing<IApsOrder>(apsOrders, this.invoice?.apsOrder),
-        ),
-      )
-      .subscribe((apsOrders: IApsOrder[]) => (this.apsOrdersSharedCollection = apsOrders));
   }
 
   protected getInvoiceAccess(): InvoiceAccess {
