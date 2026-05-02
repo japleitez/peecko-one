@@ -131,9 +131,9 @@ public class ApsOrderService {
             apsOrder.setVatRate(apsPlan.getCustomer().getVatRate());
             apsOrder.setNumberOfUsers(0);
             apsOrder.setInvoiceNumber(null);
+            apsOrder.setAgencyId(apsPlan.getAgencyId());
             apsOrder.setCustomerId(apsPlan.getCustomer().getId());
             apsOrder.setCountry(apsPlan.getCustomer().getCountry());
-            apsOrder.setAgencyId(apsPlan.getCustomer().getId());
             apsOrder = apsOrderRepository.save(apsOrder);
         }
         return ApsOrderInfo.of(apsOrder);

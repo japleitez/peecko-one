@@ -188,11 +188,12 @@ public class ApsOrderResource {
 
     @GetMapping("/batch/invoices")
     public List<ApsOrderInfo> batchInvoices(@RequestParam Integer period, @RequestParam(required = false) String contract) {
-        log.info("REST request to generate Invoices in batch");
         if (StringUtils.hasText(contract)) {
+            log.info("REST request to generate Invoices for contract {} and period: {}", contract, period);
             return invoiceService.batchInvoiceForContract(contract, period);
         } else {
             Long agencyId = userService.getCurrentAgencyId();
+            log.info("REST request to generate Invoices for agencyId {} and period: {}", agencyId, period);
             return invoiceService.batchInvoiceForAgency(agencyId, period);
         }
     }
