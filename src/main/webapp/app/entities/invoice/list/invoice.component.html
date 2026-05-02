@@ -1,24 +1,63 @@
 <div>
   <h2 id="page-heading" data-cy="InvoiceHeading">
     <span>Invoices</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-invoice"
-        [routerLink]="['/invoice/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>New Invoice</span>
-      </button>
-    </div>
   </h2>
+
+  <div class="d-flex align-items-center mb-2 flex-wrap gap-2">
+    <select class="form-select w-auto" [(ngModel)]="customerId" name="customerId">
+      <option [ngValue]="null">-- All Customers --</option>
+      @for (customer of customers; track customer.id) {
+        <option [ngValue]="customer.id">{{ customer.name }} ({{ customer.code }})</option>
+      }
+    </select>
+
+    <input
+      type="number"
+      class="form-control w-auto"
+      [(ngModel)]="starts"
+      name="starts"
+      placeholder="From YYYYMM"
+      style="width: 160px !important"
+    />
+
+    <input
+      type="number"
+      class="form-control w-auto"
+      [(ngModel)]="ends"
+      name="ends"
+      placeholder="To YYYYMM"
+      style="width: 160px !important"
+    />
+
+    <input
+      type="text"
+      class="form-control w-auto"
+      [(ngModel)]="invoiceNumber"
+      name="invoiceNumber"
+      placeholder="Invoice number"
+      style="width: 160px !important"
+    />
+
+    <button class="btn btn-primary" (click)="search()" [disabled]="isLoading">
+      <fa-icon icon="search"></fa-icon>
+      <span> Search</span>
+    </button>
+
+    <button class="btn btn-secondary" (click)="clearFilter()" [disabled]="isLoading">
+      <fa-icon icon="times"></fa-icon>
+      <span> Clear</span>
+    </button>
+
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-invoice"
+      [routerLink]="['/invoice/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span> New Invoice</span>
+    </button>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -38,84 +77,72 @@
             <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="number" *ngIf="ua.number.listable">
               <div class="d-flex">
                 <span>Number</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="issued" *ngIf="ua.issued.listable">
               <div class="d-flex">
                 <span>Issued</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="dueDate" *ngIf="ua.dueDate.listable">
               <div class="d-flex">
                 <span>Due Date</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="saleDate" *ngIf="ua.saleDate.listable">
               <div class="d-flex">
                 <span>Sale Date</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="subtotal" *ngIf="ua.subtotal.listable">
               <div class="d-flex">
                 <span>Subtotal</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="vat" *ngIf="ua.vat.listable">
               <div class="d-flex">
                 <span>Vat</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="total" *ngIf="ua.total.listable">
               <div class="d-flex">
                 <span>Total</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="paid" *ngIf="ua.paid.listable">
               <div class="d-flex">
                 <span>Paid</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="paidDate" *ngIf="ua.paidDate.listable">
               <div class="d-flex">
                 <span>Paid Date</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="diff" *ngIf="ua.diff.listable">
               <div class="d-flex">
                 <span>Diff</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
             <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
               <div class="d-flex">
                 <span>Notes</span>
-
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>

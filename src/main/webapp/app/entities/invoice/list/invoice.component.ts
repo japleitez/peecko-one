@@ -12,6 +12,8 @@ import { SortService } from 'app/shared/sort/sort.service';
 import { IInvoice, INVOICE_ACCESS, InvoiceAccess } from '../invoice.model';
 import { EntityArrayResponseType, InvoiceService } from '../service/invoice.service';
 import { InvoiceDeleteDialogComponent } from '../delete/invoice-delete-dialog.component';
+import { ICustomer } from 'app/entities/customer/customer.model';
+import { CustomerService } from 'app/entities/customer/service/customer.service';
 
 @Component({
   standalone: true,
@@ -36,8 +38,16 @@ export class InvoiceComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
+  // search fields
+  customers: ICustomer[] = [];
+  customerId: number | null = null;
+  starts: string = '';
+  ends: string = '';
+  invoiceNumber: string = '';
+
   constructor(
     protected invoiceService: InvoiceService,
+    protected customerService: CustomerService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -47,13 +57,15 @@ export class InvoiceComponent implements OnInit {
   trackId = (_index: number, item: IInvoice): number => this.invoiceService.getInvoiceIdentifier(item);
 
   ngOnInit(): void {
+    this.customerService.queryActive().subscribe(res => {
+      this.customers = res.body ?? [];
+    });
     this.load();
   }
 
   delete(invoice: IInvoice): void {
     const modalRef = this.modalService.open(InvoiceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.invoice = invoice;
-    // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
@@ -72,6 +84,22 @@ export class InvoiceComponent implements OnInit {
         this.onResponseSuccess(res);
       },
     });
+  }
+
+  search(): void {
+    this.queryBackend(this.predicate, this.ascending).subscribe({
+      next: (res: EntityArrayResponseType) => {
+        this.onResponseSuccess(res);
+      },
+    });
+  }
+
+  clearFilter(): void {
+    this.customerId = null;
+    this.starts = '';
+    this.ends = '';
+    this.invoiceNumber = '';
+    this.load();
   }
 
   navigateToWithComponentValues(): void {
@@ -109,7 +137,19 @@ export class InvoiceComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    return this.invoiceService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    if (this.customerId) {
+      queryObject.customerId = this.customerId;
+    }
+    if (this.starts) {
+      queryObject.starts = this.starts;
+    }
+    if (this.ends) {
+      queryObject.ends = this.ends;
+    }
+    if (this.invoiceNumber) {
+      queryObject.number = this.invoiceNumber;
+    }
+    return this.invoiceService.search(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(predicate?: string, ascending?: boolean): void {

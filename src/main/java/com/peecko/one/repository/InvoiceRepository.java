@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpecificationExecutor<Invoice> {
     Long countByAgencyIdAndPeriod(Long agencyId, Integer period);
 
     @Query("from Invoice i left join fetch i.invoiceItems where i.agencyId = :agencyId and i.period = :period")

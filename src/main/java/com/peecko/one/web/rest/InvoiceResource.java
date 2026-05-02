@@ -2,6 +2,8 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Invoice;
 import com.peecko.one.repository.InvoiceRepository;
+import com.peecko.one.service.InvoiceService;
+import com.peecko.one.service.request.InvoiceListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -35,9 +37,11 @@ public class InvoiceResource {
     private String applicationName;
 
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceService invoiceService;
 
-    public InvoiceResource(InvoiceRepository invoiceRepository) {
+    public InvoiceResource(InvoiceRepository invoiceRepository, InvoiceService invoiceService) {
         this.invoiceRepository = invoiceRepository;
+        this.invoiceService = invoiceService;
     }
 
     /**
@@ -178,6 +182,20 @@ public class InvoiceResource {
     public List<Invoice> getAllInvoices() {
         log.debug("REST request to get all Invoices");
         return invoiceRepository.findAll();
+    }
+
+    /**
+     * {@code GET  /invoices/search} : search invoices by customer, period range, or invoice number.
+     */
+    @GetMapping("/search")
+    public List<Invoice> searchInvoices(
+        @RequestParam(required = false) Long customerId,
+        @RequestParam(required = false) Integer starts,
+        @RequestParam(required = false) Integer ends,
+        @RequestParam(required = false) String number
+    ) {
+        log.debug("REST request to search Invoices");
+        return invoiceService.findAll(new InvoiceListRequest(customerId, starts, ends, number));
     }
 
     /**

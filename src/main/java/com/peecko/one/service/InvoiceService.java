@@ -8,11 +8,16 @@ import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPricingRepository;
 import com.peecko.one.repository.CustomerRepository;
 import com.peecko.one.repository.InvoiceRepository;
+import com.peecko.one.service.request.InvoiceListRequest;
+import com.peecko.one.service.specs.InvoiceSpecs;
 import com.peecko.one.utils.PeriodUtils;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class InvoiceService {
@@ -35,6 +40,24 @@ public class InvoiceService {
         this.invoiceRepository = invoiceRepository;
         this.customerRepository = customerRepository;
         this.apsPricingRepository = apsPricingRepository;
+    }
+
+    public List<Invoice> findAll(InvoiceListRequest request) {
+        Long agencyId = userService.getCurrentAgencyId();
+        Specification<Invoice> spec = InvoiceSpecs.agencyId(agencyId);
+        if (Objects.nonNull(request.getCustomerId())) {
+            spec = spec.and(InvoiceSpecs.customerId(request.getCustomerId()));
+        }
+        if (Objects.nonNull(request.getStarts())) {
+            spec = spec.and(InvoiceSpecs.starts(request.getStarts()));
+        }
+        if (Objects.nonNull(request.getEnds())) {
+            spec = spec.and(InvoiceSpecs.ends(request.getEnds()));
+        }
+        if (StringUtils.hasText(request.getNumber())) {
+            spec = spec.and(InvoiceSpecs.numberLike(request.getNumber()));
+        }
+        return invoiceRepository.findAll(spec);
     }
 
     public List<ApsOrderInfo> batchInvoiceForAgency(Long agencyId, Integer period) {
