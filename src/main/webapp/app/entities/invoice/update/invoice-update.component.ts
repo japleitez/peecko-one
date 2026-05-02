@@ -54,7 +54,7 @@ export class InvoiceUpdateComponent implements OnInit {
     this.isSaving = true;
     const invoice = this.invoiceFormService.getInvoice(this.editForm);
     if (invoice.id !== null) {
-      this.subscribeToSaveResponse(this.invoiceService.update(invoice));
+      this.subscribeToSaveResponse(this.invoiceService.partialUpdate(invoice));
     } else {
       this.subscribeToSaveResponse(this.invoiceService.create(invoice));
     }

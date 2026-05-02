@@ -16,7 +16,7 @@ export interface IApsOrder {
   vatRate?: number | null;
   numberOfUsers?: number | null;
   invoiceNumber?: string | null;
-  invoiceSent: boolean;
+  invoiceSent?: boolean | null;
   apsMemberships?: IApsMembership[] | null;
   invoices?: IInvoice[] | null;
   apsPlan?: IApsPlan | null;
