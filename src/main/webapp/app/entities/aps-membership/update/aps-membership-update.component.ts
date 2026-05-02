@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IApsOrder } from 'app/entities/aps-order/aps-order.model';
 import { ApsOrderService } from 'app/entities/aps-order/service/aps-order.service';
+import { ApsOrderData } from 'app/entities/aps-order/aps-order.data';
 import { APS_MEMBERSHIP_USER_ACCESS, ApsMembershipAccess, IApsMembership } from '../aps-membership.model';
 import { ApsMembershipService } from '../service/aps-membership.service';
 import { ApsMembershipFormService, ApsMembershipFormGroup } from './aps-membership-form.service';
@@ -18,12 +19,13 @@ import { NgIf } from '@angular/common';
   standalone: true,
   selector: 'jhi-aps-membership-update',
   templateUrl: './aps-membership-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf],
 })
 export class ApsMembershipUpdateComponent implements OnInit {
   ua: ApsMembershipAccess = this.getApsMembershipAccess();
   isSaving = false;
   apsMembership: IApsMembership | null = null;
+  presetApsOrderId: number | null = null;
 
   apsOrdersSharedCollection: IApsOrder[] = [];
 
@@ -33,19 +35,25 @@ export class ApsMembershipUpdateComponent implements OnInit {
     protected apsMembershipService: ApsMembershipService,
     protected apsMembershipFormService: ApsMembershipFormService,
     protected apsOrderService: ApsOrderService,
+    protected apsOrderData: ApsOrderData,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
   compareApsOrder = (o1: IApsOrder | null, o2: IApsOrder | null): boolean => this.apsOrderService.compareApsOrder(o1, o2);
 
   ngOnInit(): void {
+    this.presetApsOrderId = this.apsOrderData.getId() ?? null;
     this.activatedRoute.data.subscribe(({ apsMembership }) => {
       this.apsMembership = apsMembership;
       if (apsMembership) {
         this.updateForm(apsMembership);
+        this.loadRelationshipsOptions();
+      } else if (this.presetApsOrderId) {
+        this.editForm.controls.apsOrder.setValue({ id: this.presetApsOrderId } as IApsOrder);
+        this.editForm.controls.apsOrder.disable();
+      } else {
+        this.loadRelationshipsOptions();
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -107,5 +115,4 @@ export class ApsMembershipUpdateComponent implements OnInit {
   protected getApsMembershipAccess(): ApsMembershipAccess {
     return APS_MEMBERSHIP_USER_ACCESS;
   }
-
 }
