@@ -152,17 +152,14 @@ public class InvoiceResource {
                 }
                 if (invoice.getPaid() != null) {
                     existingInvoice.setPaid(invoice.getPaid());
+                    existingInvoice.setDiff(invoice.getTotal() - invoice.getPaid());
+                } else {
+                    existingInvoice.setPaid(null);
+                    existingInvoice.setDiff(null);
                 }
                 if (invoice.getPaidDate() != null) {
                     existingInvoice.setPaidDate(invoice.getPaidDate());
                 }
-                if (invoice.getDiff() != null) {
-                    existingInvoice.setDiff(invoice.getDiff());
-                }
-                if (invoice.getNotes() != null) {
-                    existingInvoice.setNotes(invoice.getNotes());
-                }
-
                 return existingInvoice;
             })
             .map(invoiceRepository::save);
