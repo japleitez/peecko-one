@@ -23,4 +23,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
 
     @EntityGraph(attributePaths = { "invoiceItems" })
     Optional<Invoice> findByApsOrderId(Long apsOrderId);
+
+    @EntityGraph(attributePaths = { "invoiceItems" })
+    Optional<Invoice> findWithItemsById(Long id);
 }

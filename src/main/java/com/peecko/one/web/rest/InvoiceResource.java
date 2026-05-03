@@ -208,7 +208,7 @@ public class InvoiceResource {
     @GetMapping("/{id}")
     public ResponseEntity<Invoice> getInvoice(@PathVariable("id") Long id) {
         log.debug("REST request to get Invoice : {}", id);
-        Optional<Invoice> invoice = invoiceRepository.findById(id);
+        Optional<Invoice> invoice = invoiceRepository.findWithItemsById(id);
         return ResponseUtil.wrapOrNotFound(invoice);
     }
 

@@ -79,6 +79,15 @@ export class InvoiceUpdateComponent implements OnInit {
     }
   }
 
+  deleteItem(item: IInvoiceItem): void {
+    this.invoiceItemService.delete(item.id).subscribe({
+      next: () => {
+        this.invoiceItems = this.invoiceItems.filter(i => i.id !== item.id);
+        this.recalculateTotals();
+      },
+    });
+  }
+
   addItem(): void {
     if (!this.invoice?.id) return;
     const item: NewInvoiceItem = {
@@ -131,12 +140,8 @@ export class InvoiceUpdateComponent implements OnInit {
 
   protected updateForm(invoice: IInvoice): void {
     this.invoice = invoice;
+    this.invoiceItems = invoice.invoiceItems ?? [];
     this.invoiceFormService.resetForm(this.editForm, invoice);
-    if (invoice.id) {
-      this.invoiceItemService.query({ invoiceId: invoice.id }).subscribe(res => {
-        this.invoiceItems = res.body ?? [];
-      });
-    }
 
     this.apsOrdersSharedCollection = this.apsOrderService.addApsOrderToCollectionIfMissing<IApsOrder>(
       this.apsOrdersSharedCollection,
