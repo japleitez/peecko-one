@@ -7,23 +7,25 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3" *ngIf="ua.id.visible">
-            <label class="form-label" for="field_id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          <div class="d-flex gap-3 mb-3" *ngIf="ua.id.visible">
+            <div>
+              <label class="form-label" for="field_id">ID</label>
+              <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            </div>
+            @if (customerName) {
+              <div class="flex-fill">
+                <label class="form-label">Customer</label>
+                <input type="text" class="form-control" [value]="customerName" readonly />
+              </div>
+            }
+            @if (planContract) {
+              <div class="flex-fill">
+                <label class="form-label">Contract</label>
+                <input type="text" class="form-control" [value]="planContract" readonly />
+              </div>
+            }
           </div>
         }
-
-        <div class="mb-3" *ngIf="ua.number.visible">
-          <label class="form-label" for="field_number">Number</label>
-          <input type="text" class="form-control" name="number" id="field_number" data-cy="number" formControlName="number" />
-          @if (editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)) {
-            <div>
-              @if (editForm.get('number')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
 
         <div class="mb-3" *ngIf="ua.issued.visible">
           <label class="form-label" for="field_issued">Issued</label>
@@ -46,6 +48,18 @@
               <small class="form-text text-danger" [hidden]="!editForm.get('issued')?.errors?.datetimelocal"
                 >This field should be a date and time.</small
               >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3" *ngIf="ua.number.visible">
+          <label class="form-label" for="field_number">Number</label>
+          <input type="text" class="form-control" name="number" id="field_number" data-cy="number" formControlName="number" />
+          @if (editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)) {
+            <div>
+              @if (editForm.get('number')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
             </div>
           }
         </div>

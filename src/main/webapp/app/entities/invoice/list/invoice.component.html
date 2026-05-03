@@ -74,6 +74,21 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col">
+              <div class="d-flex">
+                <span>Customer</span>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span>Contract</span>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span>Period</span>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
               <div class="d-flex">
                 <span>ID</span>
@@ -158,6 +173,9 @@
         <tbody>
           @for (invoice of invoices; track trackId) {
             <tr data-cy="entityTable">
+              <td>{{ invoice.customerId ? customerMap[invoice.customerId] : '' }}</td>
+              <td>{{ invoice.apsPlanId ? planMap[invoice.apsPlanId] : '' }}</td>
+              <td>{{ invoice.apsOrder?.period }}</td>
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/invoice', invoice.id, 'view']">{{ invoice.id }}</a>
               </td>
@@ -185,9 +203,9 @@
                     <fa-icon icon="eye"></fa-icon>
                   </a>
 
-                  <a [routerLink]="['/invoice', invoice.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                  <button type="button" (click)="edit(invoice)" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
-                  </a>
+                  </button>
 
                   <button type="submit" (click)="delete(invoice)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                     <fa-icon icon="times"></fa-icon>

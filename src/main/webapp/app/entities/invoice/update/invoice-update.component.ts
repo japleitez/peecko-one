@@ -23,6 +23,8 @@ export class InvoiceUpdateComponent implements OnInit {
   ua: InvoiceAccess = this.getInvoiceAccess();
   isSaving = false;
   invoice: IInvoice | null = null;
+  customerName: string | null = null;
+  planContract: string | null = null;
 
   apsOrdersSharedCollection: IApsOrder[] = [];
 
@@ -38,6 +40,10 @@ export class InvoiceUpdateComponent implements OnInit {
   compareApsOrder = (o1: IApsOrder | null, o2: IApsOrder | null): boolean => this.apsOrderService.compareApsOrder(o1, o2);
 
   ngOnInit(): void {
+    const state = history.state;
+    this.customerName = state?.customerName ?? null;
+    this.planContract = state?.planContract ?? null;
+
     this.activatedRoute.data.subscribe(({ invoice }) => {
       this.invoice = invoice;
       if (invoice) {

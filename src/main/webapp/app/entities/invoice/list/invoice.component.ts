@@ -14,6 +14,7 @@ import { EntityArrayResponseType, InvoiceService } from '../service/invoice.serv
 import { InvoiceDeleteDialogComponent } from '../delete/invoice-delete-dialog.component';
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { CustomerService } from 'app/entities/customer/service/customer.service';
+import { ApsPlanService } from 'app/entities/aps-plan/service/aps-plan.service';
 
 @Component({
   standalone: true,
@@ -38,6 +39,9 @@ export class InvoiceComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
+  customerMap: Record<number, string> = {};
+  planMap: Record<number, string> = {};
+
   // search fields
   customers: ICustomer[] = [];
   customerId: number | null = null;
@@ -48,6 +52,7 @@ export class InvoiceComponent implements OnInit {
   constructor(
     protected invoiceService: InvoiceService,
     protected customerService: CustomerService,
+    protected apsPlanService: ApsPlanService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -59,6 +64,14 @@ export class InvoiceComponent implements OnInit {
   ngOnInit(): void {
     this.customerService.queryActive().subscribe(res => {
       this.customers = res.body ?? [];
+      const map: Record<number, string> = {};
+      this.customers.forEach(c => (map[c.id] = c.name ?? ''));
+      this.customerMap = map;
+    });
+    this.apsPlanService.queryTrialActive().subscribe(res => {
+      const map: Record<number, string> = {};
+      (res.body ?? []).forEach(p => (map[p.id] = p.contract ?? ''));
+      this.planMap = map;
     });
     this.load();
   }
@@ -92,6 +105,12 @@ export class InvoiceComponent implements OnInit {
         this.onResponseSuccess(res);
       },
     });
+  }
+
+  edit(invoice: IInvoice): void {
+    const customerName = invoice.customerId ? this.customerMap[invoice.customerId] ?? '' : '';
+    const planContract = invoice.apsPlanId ? this.planMap[invoice.apsPlanId] ?? '' : '';
+    this.router.navigate(['/invoice', invoice.id, 'edit'], { state: { customerName, planContract } });
   }
 
   clearFilter(): void {

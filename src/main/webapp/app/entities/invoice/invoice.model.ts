@@ -16,6 +16,9 @@ export interface IInvoice {
   paidDate?: dayjs.Dayjs | null;
   diff?: number | null;
   notes?: string | null;
+  customerId?: number | null;
+  apsPlanId?: number | null;
+  period?: number | null;
   invoiceItems?: IInvoiceItem[] | null;
   apsOrder?: IApsOrder | null;
 }
