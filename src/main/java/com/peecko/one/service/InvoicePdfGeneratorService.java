@@ -364,10 +364,15 @@ public class InvoicePdfGeneratorService {
 
         Table table = new Table(new float[] { spacerW, labelW, valueW }).useAllAvailableWidth().setBorder(Border.NO_BORDER);
 
+        // Subtotal row
+        table.addCell(emptyCell());
+        table.addCell(summaryLabelCell(labels.get(InvoiceLabel.SUBTOTAL), regular, false));
+        table.addCell(summaryValueCell(val(data, InvoiceField.INVOICE_SUBTOTAL), regular, false));
+
         // Tax rate row
         table.addCell(emptyCell());
         table.addCell(
-            summaryLabelCell(labels.get(InvoiceLabel.TAX_RATE) + " (" + val(data, InvoiceField.INVOICE_VAT_RATE) + ")", regular, false)
+            summaryLabelCell(labels.get(InvoiceLabel.TAX_RATE) + " (" + val(data, InvoiceField.INVOICE_VAT_RATE) + "%)", regular, false)
         );
         table.addCell(summaryValueCell(val(data, InvoiceField.INVOICE_VAT), regular, false));
 

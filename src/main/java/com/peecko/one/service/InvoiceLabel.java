@@ -13,6 +13,7 @@ public final class InvoiceLabel {
     public static final String QUANTITY = "invoice.label.quantity";
     public static final String UNIT_PRICE = "invoice.label.unit.price";
     public static final String AMOUNT = "invoice.label.amount";
+    public static final String SUBTOTAL = "invoice.label.subtotal";
     public static final String TAX_RATE = "invoice.label.taxRate";
     public static final String TOTAL_DUE = "invoice.label.totalDue";
     public static final String VAT = "invoice.label.vat";

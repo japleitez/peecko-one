@@ -41,6 +41,7 @@ public final class InvoiceField {
 
     // ── Totals ────────────────────────────────────────────────────────────────
     public static final String INVOICE_VAT_RATE = "invoiceVatRate";
+    public static final String INVOICE_SUBTOTAL = "invoiceSubtotal";
     public static final String INVOICE_VAT = "invoiceVat";
     public static final String INVOICE_TOTAL = "invoiceTotal";
 }
