@@ -32,7 +32,8 @@ public final class InvoiceField {
     public static final String DATE_FROM = "dateFrom";
     public static final String DATE_TO = "dateTo";
 
-    // ── Line Item ─────────────────────────────────────────────────────────────
+    // ── Line Items ────────────────────────────────────────────────────────────
+    public static final String ITEMS = "items";
     public static final String ITEM_DESCRIPTION = "itemDescription";
     public static final String ITEM_QUANTITY = "itemQuantity";
     public static final String ITEM_UNIT_PRICE = "itemUnitPrice";

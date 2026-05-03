@@ -7,8 +7,10 @@ import com.peecko.one.utils.PeriodUtils;
 import com.peecko.one.utils.PriceFormatter;
 import java.io.IOException;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import org.springframework.context.MessageSource;
@@ -77,14 +79,18 @@ public class InvoicePdfService {
         data.put(InvoiceField.DATE_FROM, PeriodUtils.getFirstDateAsString(yearMonth));
         data.put(InvoiceField.DATE_TO, PeriodUtils.getLastDateAsString(yearMonth));
 
+        List<Map<String, Object>> items = new ArrayList<>();
         invoice
             .getInvoiceItems()
             .forEach(item -> {
-                data.put(InvoiceField.ITEM_DESCRIPTION, item.getDescription());
-                data.put(InvoiceField.ITEM_QUANTITY, item.getQuantity());
-                data.put(InvoiceField.ITEM_UNIT_PRICE, PriceFormatter.formatPricePlain(item.getUnitPrice(), locale, currency));
-                data.put(InvoiceField.ITEM_SUBTOTAL, PriceFormatter.formatPricePlain(item.getSubtotal(), locale, currency));
+                Map<String, Object> itemData = new HashMap<>();
+                itemData.put(InvoiceField.ITEM_DESCRIPTION, item.getDescription());
+                itemData.put(InvoiceField.ITEM_QUANTITY, item.getQuantity());
+                itemData.put(InvoiceField.ITEM_UNIT_PRICE, PriceFormatter.formatPricePlain(item.getUnitPrice(), locale, currency));
+                itemData.put(InvoiceField.ITEM_SUBTOTAL, PriceFormatter.formatPricePlain(item.getSubtotal(), locale, currency));
+                items.add(itemData);
             });
+        data.put(InvoiceField.ITEMS, items);
 
         data.put(InvoiceField.INVOICE_VAT_RATE, invoice.getVatRate());
         data.put(InvoiceField.INVOICE_VAT, PriceFormatter.formatPricePlain(invoice.getVat(), locale, currency));

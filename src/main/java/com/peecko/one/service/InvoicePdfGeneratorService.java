@@ -16,6 +16,7 @@ import com.itextpdf.layout.properties.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -319,23 +320,31 @@ public class InvoicePdfGeneratorService {
             table.addHeaderCell(hCell);
         }
 
-        // Data row (single item; extend to loop for multiple items)
-        String[] rowValues = {
-            val(data, InvoiceField.ITEM_DESCRIPTION),
-            val(data, InvoiceField.ITEM_QUANTITY),
-            val(data, InvoiceField.ITEM_UNIT_PRICE),
-            val(data, InvoiceField.ITEM_SUBTOTAL),
-        };
-        for (int i = 0; i < rowValues.length; i++) {
-            Cell cell = new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(BORDER_GRAY, 0.5f)).setPadding(7);
-            cell.add(
-                new Paragraph(rowValues[i])
-                    .setFont(regular)
-                    .setFontSize(10)
-                    .setFontColor(BODY_TEXT)
-                    .setTextAlignment(i == 0 ? TextAlignment.LEFT : TextAlignment.RIGHT)
-            );
-            table.addCell(cell);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> items = (List<Map<String, Object>>) data.get(InvoiceField.ITEMS);
+        if (items != null) {
+            for (int row = 0; row < items.size(); row++) {
+                Map<String, Object> item = items.get(row);
+                String[] rowValues = {
+                    val(item, InvoiceField.ITEM_DESCRIPTION),
+                    val(item, InvoiceField.ITEM_QUANTITY),
+                    val(item, InvoiceField.ITEM_UNIT_PRICE),
+                    val(item, InvoiceField.ITEM_SUBTOTAL),
+                };
+                Color bg = (row % 2 == 1) ? ROW_ALT : null;
+                for (int i = 0; i < rowValues.length; i++) {
+                    Cell cell = new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(BORDER_GRAY, 0.5f)).setPadding(7);
+                    if (bg != null) cell.setBackgroundColor(bg);
+                    cell.add(
+                        new Paragraph(rowValues[i])
+                            .setFont(regular)
+                            .setFontSize(10)
+                            .setFontColor(BODY_TEXT)
+                            .setTextAlignment(i == 0 ? TextAlignment.LEFT : TextAlignment.RIGHT)
+                    );
+                    table.addCell(cell);
+                }
+            }
         }
 
         return table;
