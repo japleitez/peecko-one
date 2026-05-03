@@ -48,6 +48,7 @@ export class InvoiceComponent implements OnInit {
   starts: string = '';
   ends: string = '';
   invoiceNumber: string = '';
+  unpaid: boolean = false;
 
   constructor(
     protected invoiceService: InvoiceService,
@@ -118,6 +119,7 @@ export class InvoiceComponent implements OnInit {
     this.starts = '';
     this.ends = '';
     this.invoiceNumber = '';
+    this.unpaid = false;
     this.load();
   }
 
@@ -167,6 +169,9 @@ export class InvoiceComponent implements OnInit {
     }
     if (this.invoiceNumber) {
       queryObject.number = this.invoiceNumber;
+    }
+    if (this.unpaid) {
+      queryObject.unpaid = true;
     }
     return this.invoiceService.search(queryObject).pipe(tap(() => (this.isLoading = false)));
   }

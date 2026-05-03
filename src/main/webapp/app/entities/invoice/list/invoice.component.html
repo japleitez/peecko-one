@@ -38,6 +38,11 @@
       style="width: 160px !important"
     />
 
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="unpaidFilter" [(ngModel)]="unpaid" name="unpaid" />
+      <label class="form-check-label" for="unpaidFilter">Unpaid only</label>
+    </div>
+
     <button class="btn btn-primary" (click)="search()" [disabled]="isLoading">
       <fa-icon icon="search"></fa-icon>
       <span> Search</span>

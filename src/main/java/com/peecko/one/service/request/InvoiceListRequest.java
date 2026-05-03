@@ -6,12 +6,14 @@ public class InvoiceListRequest {
     private Integer starts;
     private Integer ends;
     private String number;
+    private boolean unpaid;
 
-    public InvoiceListRequest(Long customerId, Integer starts, Integer ends, String number) {
+    public InvoiceListRequest(Long customerId, Integer starts, Integer ends, String number, boolean unpaid) {
         this.customerId = customerId;
         this.starts = starts;
         this.ends = ends;
         this.number = number;
+        this.unpaid = unpaid;
     }
 
     public Long getCustomerId() {
@@ -28,5 +30,9 @@ public class InvoiceListRequest {
 
     public String getNumber() {
         return number;
+    }
+
+    public boolean isUnpaid() {
+        return unpaid;
     }
 }

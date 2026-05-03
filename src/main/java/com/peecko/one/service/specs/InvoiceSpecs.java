@@ -25,4 +25,8 @@ public class InvoiceSpecs extends BaseSpecs {
     public static Specification<Invoice> numberLike(String number) {
         return (root, query, cb) -> cb.like(root.get(Invoice_.NUMBER), anyText(number));
     }
+
+    public static Specification<Invoice> unpaid() {
+        return (root, query, cb) -> cb.or(cb.isNull(root.get(Invoice_.PAID)), cb.greaterThan(root.get(Invoice_.DIFF), 0.0));
+    }
 }

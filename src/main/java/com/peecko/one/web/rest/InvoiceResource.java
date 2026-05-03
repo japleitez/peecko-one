@@ -189,10 +189,11 @@ public class InvoiceResource {
         @RequestParam(required = false) Long customerId,
         @RequestParam(required = false) Integer starts,
         @RequestParam(required = false) Integer ends,
-        @RequestParam(required = false) String number
+        @RequestParam(required = false) String number,
+        @RequestParam(required = false, defaultValue = "false") boolean unpaid
     ) {
         log.debug("REST request to search Invoices");
-        return invoiceService.findAll(new InvoiceListRequest(customerId, starts, ends, number));
+        return invoiceService.findAll(new InvoiceListRequest(customerId, starts, ends, number, unpaid));
     }
 
     /**

@@ -57,6 +57,9 @@ public class InvoiceService {
         if (StringUtils.hasText(request.getNumber())) {
             spec = spec.and(InvoiceSpecs.numberLike(request.getNumber()));
         }
+        if (request.isUnpaid()) {
+            spec = spec.and(InvoiceSpecs.unpaid());
+        }
         return invoiceRepository.findAll(spec);
     }
 
