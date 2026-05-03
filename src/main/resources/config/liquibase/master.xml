@@ -61,4 +61,8 @@
     <!-- Data -->
     <include file="/config/liquibase/changelog/2024.201.data.xml" relativeToChangelogFile="false"/>
 
+    <!-- Updates -->
+    <include file="/config/liquibase/changelog/2026.001.update_InvoiceItem.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2026.002.update_Invoice.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>

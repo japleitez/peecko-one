@@ -148,6 +148,13 @@
             </div>
           </div>
 
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.vatRate.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_vatRate">VAT %</label>
+            <div class="flex-fill">
+              <input type="number" class="form-control" name="vatRate" id="field_vatRate" data-cy="vatRate" formControlName="vatRate" />
+            </div>
+          </div>
+
           <div class="d-flex align-items-center mb-1" *ngIf="ua.vat.visible">
             <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_vat">Vat</label>
             <div class="flex-fill">

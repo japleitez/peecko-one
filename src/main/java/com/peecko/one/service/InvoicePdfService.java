@@ -84,11 +84,11 @@ public class InvoicePdfService {
                 data.put(InvoiceField.ITEM_QUANTITY, item.getQuantity());
                 data.put(InvoiceField.ITEM_UNIT_PRICE, PriceFormatter.formatPricePlain(item.getUnitPrice(), locale, currency));
                 data.put(InvoiceField.ITEM_SUBTOTAL, PriceFormatter.formatPricePlain(item.getSubtotal(), locale, currency));
-
-                data.put(InvoiceField.INVOICE_VAT_RATE, item.getVatRate());
-                data.put(InvoiceField.INVOICE_VAT, PriceFormatter.formatPricePlain(item.getVat(), locale, currency));
-                data.put(InvoiceField.INVOICE_TOTAL, PriceFormatter.formatPrice(item.getTotal(), locale, currency));
             });
+
+        data.put(InvoiceField.INVOICE_VAT_RATE, invoice.getVatRate());
+        data.put(InvoiceField.INVOICE_VAT, PriceFormatter.formatPricePlain(invoice.getVat(), locale, currency));
+        data.put(InvoiceField.INVOICE_TOTAL, PriceFormatter.formatPrice(invoice.getTotal(), locale, currency));
 
         data.put(
             InvoiceField.AGENCY_FOOTER_LINE1,

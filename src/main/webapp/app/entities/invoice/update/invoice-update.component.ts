@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IApsOrder } from 'app/entities/aps-order/aps-order.model';
 import { ApsOrderService } from 'app/entities/aps-order/service/aps-order.service';
+import { ProductType } from 'app/entities/enumerations/product-type.model';
 import { IInvoice, INVOICE_ACCESS, InvoiceAccess } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
 import { InvoiceFormService, InvoiceFormGroup } from './invoice-form.service';
@@ -26,6 +27,10 @@ export class InvoiceUpdateComponent implements OnInit {
   customerName: string | null = null;
   planContract: string | null = null;
 
+  productTypes = Object.keys(ProductType) as Array<keyof typeof ProductType>;
+  newItem = { type: 'APP' as keyof typeof ProductType, description: '', quantity: 1, unitPrice: 0 };
+  isAddingItem = false;
+
   apsOrdersSharedCollection: IApsOrder[] = [];
 
   editForm: InvoiceFormGroup = this.invoiceFormService.createInvoiceFormGroup(undefined, this.getInvoiceAccess());
@@ -38,6 +43,10 @@ export class InvoiceUpdateComponent implements OnInit {
   ) {}
 
   compareApsOrder = (o1: IApsOrder | null, o2: IApsOrder | null): boolean => this.apsOrderService.compareApsOrder(o1, o2);
+
+  get itemSubtotal(): number {
+    return Math.round(this.newItem.quantity * this.newItem.unitPrice * 100) / 100;
+  }
 
   ngOnInit(): void {
     const state = history.state;

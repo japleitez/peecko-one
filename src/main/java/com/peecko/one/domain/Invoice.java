@@ -48,6 +48,9 @@ public class Invoice implements Serializable {
     @Column(name = "subtotal", nullable = false)
     private Double subtotal;
 
+    @Column(name = "vat_rate")
+    private Double vatRate;
+
     @NotNull
     @Column(name = "vat", nullable = false)
     private Double vat;
@@ -177,6 +180,19 @@ public class Invoice implements Serializable {
 
     public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Double getVatRate() {
+        return vatRate;
+    }
+
+    public Invoice vatRate(Double vatRate) {
+        this.setVatRate(vatRate);
+        return this;
+    }
+
+    public void setVatRate(Double vatRate) {
+        this.vatRate = vatRate;
     }
 
     public Double getVat() {
@@ -421,6 +437,7 @@ public class Invoice implements Serializable {
             ", dueDate='" + getDueDate() + "'" +
             ", saleDate='" + getSaleDate() + "'" +
             ", subtotal=" + getSubtotal() +
+            ", vatRate=" + getVatRate() +
             ", vat=" + getVat() +
             ", total=" + getTotal() +
             ", paid=" + getPaid() +

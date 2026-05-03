@@ -144,6 +144,9 @@ public class InvoiceResource {
                 if (invoice.getSubtotal() != null) {
                     existingInvoice.setSubtotal(invoice.getSubtotal());
                 }
+                if (invoice.getVatRate() != null) {
+                    existingInvoice.setVatRate(invoice.getVatRate());
+                }
                 if (invoice.getVat() != null) {
                     existingInvoice.setVat(invoice.getVat());
                 }

@@ -46,18 +46,6 @@ public class InvoiceItem implements Serializable {
     @Column(name = "subtotal", nullable = false)
     private Double subtotal;
 
-    @NotNull
-    @Column(name = "vat_rate", nullable = false)
-    private Double vatRate;
-
-    @NotNull
-    @Column(name = "vat", nullable = false)
-    private Double vat;
-
-    @NotNull
-    @Column(name = "total", nullable = false)
-    private Double total;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "invoiceItems", "apsOrder" }, allowSetters = true)
     private Invoice invoice;
@@ -142,45 +130,6 @@ public class InvoiceItem implements Serializable {
         this.subtotal = priceExtended;
     }
 
-    public Double getVatRate() {
-        return this.vatRate;
-    }
-
-    public InvoiceItem vatRate(Double vatRate) {
-        this.setVatRate(vatRate);
-        return this;
-    }
-
-    public void setVatRate(Double vatRate) {
-        this.vatRate = vatRate;
-    }
-
-    public Double getVat() {
-        return this.vat;
-    }
-
-    public InvoiceItem vat(Double vat) {
-        this.setVat(vat);
-        return this;
-    }
-
-    public void setVat(Double vatAmount) {
-        this.vat = vatAmount;
-    }
-
-    public Double getTotal() {
-        return this.total;
-    }
-
-    public InvoiceItem total(Double total) {
-        this.setTotal(total);
-        return this;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
     public Invoice getInvoice() {
         return this.invoice;
     }
@@ -223,9 +172,6 @@ public class InvoiceItem implements Serializable {
             ", quantity=" + quantity +
             ", priceUnit=" + unitPrice +
             ", subtotal=" + subtotal +
-            ", vatRate=" + vatRate +
-            ", vat=" + vat +
-            ", total=" + total +
             ", invoice=" + invoice +
             '}';
     }

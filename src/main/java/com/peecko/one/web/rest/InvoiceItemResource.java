@@ -5,7 +5,6 @@ import com.peecko.one.repository.InvoiceItemRepository;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -141,16 +140,6 @@ public class InvoiceItemResource {
                 if (invoiceItem.getSubtotal() != null) {
                     existingInvoiceItem.setSubtotal(invoiceItem.getSubtotal());
                 }
-                if (invoiceItem.getVatRate() != null) {
-                    existingInvoiceItem.setVatRate(invoiceItem.getVatRate());
-                }
-                if (invoiceItem.getVat() != null) {
-                    existingInvoiceItem.setVat(invoiceItem.getVat());
-                }
-                if (invoiceItem.getTotal() != null) {
-                    existingInvoiceItem.setTotal(invoiceItem.getTotal());
-                }
-
                 return existingInvoiceItem;
             })
             .map(invoiceItemRepository::save);

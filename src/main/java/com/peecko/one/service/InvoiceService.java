@@ -7,6 +7,7 @@ import com.peecko.one.domain.enumeration.ProductType;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.ApsPricingRepository;
 import com.peecko.one.repository.CustomerRepository;
+import com.peecko.one.repository.InvoiceItemRepository;
 import com.peecko.one.repository.InvoiceRepository;
 import com.peecko.one.service.request.InvoiceListRequest;
 import com.peecko.one.service.specs.InvoiceSpecs;
@@ -25,6 +26,7 @@ public class InvoiceService {
     private final UserService userService;
     private final ApsOrderRepository apsOrderRepository;
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceItemRepository invoiceItemRepository;
     private final CustomerRepository customerRepository;
     private final ApsPricingRepository apsPricingRepository;
 
@@ -32,12 +34,14 @@ public class InvoiceService {
         UserService userService,
         ApsOrderRepository apsOrderRepository,
         InvoiceRepository invoiceRepository,
+        InvoiceItemRepository invoiceItemRepository,
         CustomerRepository customerRepository,
         ApsPricingRepository apsPricingRepository
     ) {
         this.userService = userService;
         this.apsOrderRepository = apsOrderRepository;
         this.invoiceRepository = invoiceRepository;
+        this.invoiceItemRepository = invoiceItemRepository;
         this.customerRepository = customerRepository;
         this.apsPricingRepository = apsPricingRepository;
     }
@@ -61,6 +65,23 @@ public class InvoiceService {
             spec = spec.and(InvoiceSpecs.unpaid());
         }
         return invoiceRepository.findAll(spec);
+    }
+
+    public Invoice addInvoiceItem(Long invoiceId, InvoiceItem item) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow();
+        invoice.addInvoiceItem(item);
+        invoiceItemRepository.save(item);
+        double subtotal = round(invoice.getInvoiceItems().stream().mapToDouble(InvoiceItem::getSubtotal).sum());
+        double vatRate = invoice.getVatRate() != null ? invoice.getVatRate() : 0.0;
+        double vat = round((subtotal * vatRate) / 100.0);
+        double total = round(subtotal + vat);
+        invoice.setSubtotal(subtotal);
+        invoice.setVat(vat);
+        invoice.setTotal(total);
+        if (invoice.getPaid() != null) {
+            invoice.setDiff(round(total - invoice.getPaid()));
+        }
+        return invoiceRepository.save(invoice);
     }
 
     public List<ApsOrderInfo> batchInvoiceForAgency(Long agencyId, Integer period) {
@@ -91,9 +112,13 @@ public class InvoiceService {
             invoice.setCountry(apsOrder.getCountry());
             invoice.setCustomerId(apsOrder.getCustomerId());
             invoice.setApsPlanId(apsOrder.getApsPlan().getId());
-            invoice.setSubtotal(invoiceItem.getSubtotal());
-            invoice.setVat(invoiceItem.getVat());
-            invoice.setTotal(invoiceItem.getTotal());
+            double subTotal = invoiceItem.getSubtotal();
+            double vatRate = apsOrder.getVatRate();
+            double vat = round((subTotal * vatRate) / 100.0);
+            invoice.setVatRate(vatRate);
+            invoice.setSubtotal(subTotal);
+            invoice.setVat(vat);
+            invoice.setTotal(round(subTotal + vat));
             invoice.addInvoiceItem(invoiceItem);
             Customer customer = customerRepository.getReferenceById(apsOrder.getCustomerId());
             invoice.setCustomerId(customer.getId());
@@ -143,18 +168,17 @@ public class InvoiceService {
 
         final DecimalFormat df = new DecimalFormat("#.##");
         double subTotal = Double.parseDouble(df.format(numberOfUsers * unitPrice));
-        double vat = Double.parseDouble(df.format((subTotal * apsOrder.getVatRate()) / 100.0));
-        double total = subTotal + vat;
 
         InvoiceItem item = new InvoiceItem();
         item.type(ProductType.APP);
+        item.description(description);
         item.quantity(numberOfUsers);
         item.unitPrice(unitPrice);
         item.subtotal(subTotal);
-        item.vatRate(apsOrder.getVatRate());
-        item.vat(vat);
-        item.total(total);
-        item.description(description);
         return item;
+    }
+
+    private double round(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 }

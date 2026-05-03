@@ -5,4 +5,5 @@ package com.peecko.one.domain.enumeration;
  */
 public enum ProductType {
     APP,
+    SRV,
 }

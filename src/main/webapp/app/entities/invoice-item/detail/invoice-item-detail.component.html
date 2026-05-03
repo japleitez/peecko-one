@@ -15,6 +15,14 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ invoiceItem.id }}</span>
           </dd>
+          <dt *ngIf="ua.invoice.visible"><span>Invoice</span></dt>
+          <dd *ngIf="ua.invoice.visible">
+            @if (invoiceItem.invoice) {
+              <div>
+                <a [routerLink]="['/invoice', invoiceItem.invoice.id, 'view']">{{ invoiceItem.invoice.id }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.type.visible"><span>Type</span></dt>
           <dd *ngIf="ua.type.visible">
             <span>{{ invoiceItem.type }}</span>
@@ -34,26 +42,6 @@
           <dt *ngIf="ua.subtotal.visible"><span>Final Price</span></dt>
           <dd *ngIf="ua.subtotal.visible">
             <span>{{ invoiceItem.subtotal }}</span>
-          </dd>
-          <dt *ngIf="ua.vatRate.visible"><span>Vat Rate</span></dt>
-          <dd *ngIf="ua.vatRate.visible">
-            <span>{{ invoiceItem.vatRate }}</span>
-          </dd>
-          <dt *ngIf="ua.vat.visible"><span>Vat Amount</span></dt>
-          <dd *ngIf="ua.vat.visible">
-            <span>{{ invoiceItem.vat }}</span>
-          </dd>
-          <dt *ngIf="ua.total.visible"><span>Total</span></dt>
-          <dd *ngIf="ua.total.visible">
-            <span>{{ invoiceItem.total }}</span>
-          </dd>
-          <dt *ngIf="ua.invoice.visible"><span>Invoice</span></dt>
-          <dd *ngIf="ua.invoice.visible">
-            @if (invoiceItem.invoice) {
-              <div>
-                <a [routerLink]="['/invoice', invoiceItem.invoice.id, 'view']">{{ invoiceItem.invoice.id }}</a>
-              </div>
-            }
           </dd>
         </dl>
 

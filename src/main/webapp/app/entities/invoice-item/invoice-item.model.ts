@@ -9,9 +9,6 @@ export interface IInvoiceItem {
   quantity?: number | null;
   unitPrice?: number | null;
   subtotal?: number | null;
-  vatRate?: number | null;
-  vat?: number | null;
-  total?: number | null;
   invoice?: IInvoice | null;
 }
 
@@ -24,9 +21,6 @@ export interface InvoiceItemAccess {
   quantity: FieldAccess;
   unitPrice: FieldAccess;
   subtotal: FieldAccess;
-  vatRate: FieldAccess;
-  vat: FieldAccess;
-  total: FieldAccess;
   invoice: FieldAccess;
 }
 
@@ -39,8 +33,5 @@ INVOICE_ITEM_ACCESS = {
   quantity: { listable: true, visible: true, disabled: false },
   unitPrice: { listable: true, visible: true, disabled: false },
   subtotal: { listable: true, visible: true, disabled: false },
-  vatRate: { listable: true, visible: true, disabled: false },
-  vat: { listable: true, visible: true, disabled: false },
-  total: { listable: true, visible: true, disabled: false },
-  invoice: { listable: true, visible: true, disabled: false }
-}
+  invoice: { listable: true, visible: true, disabled: false },
+};

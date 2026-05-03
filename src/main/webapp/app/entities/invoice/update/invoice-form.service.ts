@@ -36,6 +36,7 @@ type InvoiceFormGroupContent = {
   dueDate: FormControl<InvoiceFormRawValue['dueDate']>;
   saleDate: FormControl<InvoiceFormRawValue['saleDate']>;
   subtotal: FormControl<InvoiceFormRawValue['subtotal']>;
+  vatRate: FormControl<InvoiceFormRawValue['vatRate']>;
   vat: FormControl<InvoiceFormRawValue['vat']>;
   total: FormControl<InvoiceFormRawValue['total']>;
   paid: FormControl<InvoiceFormRawValue['paid']>;
@@ -67,6 +68,7 @@ export class InvoiceFormService {
       dueDate: new FormControl({ value: invoiceRawValue.dueDate, disabled: ua.dueDate.disabled }, { validators: [Validators.required] }),
       saleDate: new FormControl({ value: invoiceRawValue.saleDate, disabled: ua.saleDate.disabled }, { validators: [Validators.required] }),
       subtotal: new FormControl({ value: invoiceRawValue.subtotal, disabled: ua.subtotal.disabled }, { validators: [Validators.required] }),
+      vatRate: new FormControl({ value: invoiceRawValue.vatRate, disabled: ua.vatRate.disabled }),
       vat: new FormControl({ value: invoiceRawValue.vat, disabled: ua.vat.disabled }, { validators: [Validators.required] }),
       total: new FormControl({ value: invoiceRawValue.total, disabled: ua.total.disabled }, { validators: [Validators.required] }),
       paid: new FormControl({ value: invoiceRawValue.paid, disabled: ua.paid.disabled }),

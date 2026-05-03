@@ -77,27 +77,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vatRate" *ngIf="ua.vatRate.listable">
-              <div class="d-flex">
-                <span>Vat Rate</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="vat" *ngIf="ua.vat.listable">
-              <div class="d-flex">
-                <span>Vat</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="total" *ngIf="ua.total.listable">
-              <div class="d-flex">
-                <span>Total</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="invoice.id" *ngIf="ua.invoice.listable">
               <div class="d-flex">
                 <span>Invoice</span>
@@ -118,9 +97,6 @@
               <td *ngIf="ua.quantity.listable">{{ invoiceItem.quantity }}</td>
               <td *ngIf="ua.unitPrice.listable">{{ invoiceItem.unitPrice }}</td>
               <td *ngIf="ua.subtotal.listable">{{ invoiceItem.subtotal }}</td>
-              <td *ngIf="ua.vatRate.listable">{{ invoiceItem.vatRate }}</td>
-              <td *ngIf="ua.vat.listable">{{ invoiceItem.vat }}</td>
-              <td *ngIf="ua.total.listable">{{ invoiceItem.total }}</td>
               <td *ngIf="ua.invoice.listable">
                 @if (invoiceItem.invoice) {
                   <div>
