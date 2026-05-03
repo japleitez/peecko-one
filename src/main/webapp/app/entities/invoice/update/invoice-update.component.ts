@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IApsOrder } from 'app/entities/aps-order/aps-order.model';
 import { ApsOrderService } from 'app/entities/aps-order/service/aps-order.service';
 import { ProductType } from 'app/entities/enumerations/product-type.model';
+import { IInvoiceItem, NewInvoiceItem } from 'app/entities/invoice-item/invoice-item.model';
+import { InvoiceItemService } from 'app/entities/invoice-item/service/invoice-item.service';
 import { IInvoice, INVOICE_ACCESS, InvoiceAccess } from '../invoice.model';
 import { InvoiceService } from '../service/invoice.service';
 import { InvoiceFormService, InvoiceFormGroup } from './invoice-form.service';
@@ -26,6 +28,7 @@ export class InvoiceUpdateComponent implements OnInit {
   invoice: IInvoice | null = null;
   customerName: string | null = null;
   planContract: string | null = null;
+  invoiceItems: IInvoiceItem[] = [];
 
   productTypes = Object.keys(ProductType) as Array<keyof typeof ProductType>;
   newItem = { type: 'APP' as keyof typeof ProductType, description: '', quantity: 1, unitPrice: 0 };
@@ -38,6 +41,7 @@ export class InvoiceUpdateComponent implements OnInit {
   constructor(
     protected invoiceService: InvoiceService,
     protected invoiceFormService: InvoiceFormService,
+    protected invoiceItemService: InvoiceItemService,
     protected apsOrderService: ApsOrderService,
     protected activatedRoute: ActivatedRoute,
   ) {}
@@ -75,6 +79,37 @@ export class InvoiceUpdateComponent implements OnInit {
     }
   }
 
+  addItem(): void {
+    if (!this.invoice?.id) return;
+    const item: NewInvoiceItem = {
+      id: null,
+      type: this.newItem.type,
+      description: this.newItem.description,
+      quantity: this.newItem.quantity,
+      unitPrice: this.newItem.unitPrice,
+      subtotal: this.itemSubtotal,
+      invoice: { id: this.invoice.id } as IInvoice,
+    };
+    this.invoiceItemService.create(item).subscribe({
+      next: res => {
+        if (res.body) {
+          this.invoiceItems = [...this.invoiceItems, res.body];
+          this.recalculateTotals();
+          this.newItem = { type: 'APP', description: '', quantity: 1, unitPrice: 0 };
+          this.isAddingItem = false;
+        }
+      },
+    });
+  }
+
+  recalculateTotals(): void {
+    const subtotal = Math.round(this.invoiceItems.reduce((sum, item) => sum + (item.subtotal ?? 0), 0) * 100) / 100;
+    const vatRate = this.editForm.get('vatRate')?.value ?? 0;
+    const vat = Math.round(subtotal * (vatRate / 100) * 100) / 100;
+    const total = Math.round((subtotal + vat) * 100) / 100;
+    this.editForm.patchValue({ subtotal, vat, total });
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IInvoice>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -97,6 +132,11 @@ export class InvoiceUpdateComponent implements OnInit {
   protected updateForm(invoice: IInvoice): void {
     this.invoice = invoice;
     this.invoiceFormService.resetForm(this.editForm, invoice);
+    if (invoice.id) {
+      this.invoiceItemService.query({ invoiceId: invoice.id }).subscribe(res => {
+        this.invoiceItems = res.body ?? [];
+      });
+    }
 
     this.apsOrdersSharedCollection = this.apsOrderService.addApsOrderToCollectionIfMissing<IApsOrder>(
       this.apsOrdersSharedCollection,

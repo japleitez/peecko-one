@@ -1,6 +1,7 @@
 package com.peecko.one.repository;
 
 import com.peecko.one.domain.InvoiceItem;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface InvoiceItemRepository extends JpaRepository<InvoiceItem, Long> {}
+public interface InvoiceItemRepository extends JpaRepository<InvoiceItem, Long> {
+    List<InvoiceItem> findByInvoiceId(Long invoiceId);
+}

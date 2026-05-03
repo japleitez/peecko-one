@@ -164,7 +164,11 @@ public class InvoiceItemResource {
     }
 
     @GetMapping("")
-    public List<InvoiceItem> getAll() {
+    public List<InvoiceItem> getAll(@RequestParam(value = "invoiceId", required = false) Long invoiceId) {
+        if (invoiceId != null) {
+            log.debug("REST request to get InvoiceItems for Invoice : {}", invoiceId);
+            return invoiceItemRepository.findByInvoiceId(invoiceId);
+        }
         log.debug("REST request to get all InvoiceItems");
         return invoiceItemRepository.findAll();
     }
