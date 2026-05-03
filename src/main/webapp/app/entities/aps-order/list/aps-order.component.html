@@ -39,7 +39,7 @@
     <input type="text" matInput class="form-text w-10 me-2" maxlength="7" [(ngModel)]="ends" placeholder="end" />
 
     <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading">
-      <fa-icon icon="refresh" [spin]="isLoading"></fa-icon>
+      <fa-icon icon="refresh" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
       <span> </span>
     </button>
 

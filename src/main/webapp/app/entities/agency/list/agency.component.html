@@ -4,7 +4,7 @@
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span>Refresh</span>
       </button>
 
@@ -70,112 +70,112 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="zip"  *ngIf="ua.zip.listable">
+            <th scope="col" jhiSortBy="zip" *ngIf="ua.zip.listable">
               <div class="d-flex">
                 <span>Zip</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="city"  *ngIf="ua.city.listable">
+            <th scope="col" jhiSortBy="city" *ngIf="ua.city.listable">
               <div class="d-flex">
                 <span>City</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="country"  *ngIf="ua.country.listable">
+            <th scope="col" jhiSortBy="country" *ngIf="ua.country.listable">
               <div class="d-flex">
                 <span>Country</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="language"  *ngIf="ua.language.listable">
+            <th scope="col" jhiSortBy="language" *ngIf="ua.language.listable">
               <div class="d-flex">
                 <span>Language</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="phone"  *ngIf="ua.phone.listable">
+            <th scope="col" jhiSortBy="phone" *ngIf="ua.phone.listable">
               <div class="d-flex">
                 <span>Phone</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="billingPhone"  *ngIf="ua.billingPhone.listable">
+            <th scope="col" jhiSortBy="billingPhone" *ngIf="ua.billingPhone.listable">
               <div class="d-flex">
                 <span>Billing Phone</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="email"  *ngIf="ua.email.listable">
+            <th scope="col" jhiSortBy="email" *ngIf="ua.email.listable">
               <div class="d-flex">
                 <span>Email</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="billingEmail"  *ngIf="ua.billingEmail.listable">
+            <th scope="col" jhiSortBy="billingEmail" *ngIf="ua.billingEmail.listable">
               <div class="d-flex">
                 <span>Billing Email</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="bank"  *ngIf="ua.bank.listable">
+            <th scope="col" jhiSortBy="bank" *ngIf="ua.bank.listable">
               <div class="d-flex">
                 <span>Bank</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="iban"  *ngIf="ua.iban.listable">
+            <th scope="col" jhiSortBy="iban" *ngIf="ua.iban.listable">
               <div class="d-flex">
                 <span>Iban</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="rcs"  *ngIf="ua.rcs.listable">
+            <th scope="col" jhiSortBy="rcs" *ngIf="ua.rcs.listable">
               <div class="d-flex">
                 <span>Rcs</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vatId"  *ngIf="ua.vatId.listable">
+            <th scope="col" jhiSortBy="vatId" *ngIf="ua.vatId.listable">
               <div class="d-flex">
                 <span>Vat Id</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vatRate"  *ngIf="ua.vatRate.listable">
+            <th scope="col" jhiSortBy="vatRate" *ngIf="ua.vatRate.listable">
               <div class="d-flex">
                 <span>Vat Rate</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="notes"  *ngIf="ua.notes.listable">
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
               <div class="d-flex">
                 <span>Notes</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created"  *ngIf="ua.created.listable">
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
               <div class="d-flex">
                 <span>Created</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="updated"  *ngIf="ua.updated.listable">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 

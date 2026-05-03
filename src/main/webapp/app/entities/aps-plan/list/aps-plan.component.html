@@ -22,7 +22,7 @@
     <button type="button" class="btn btn-secondary me-2" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
 
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
     </button>
 
     <button class="btn btn-info me-2" (click)="resetSearchForm()" [disabled]="isLoading">
