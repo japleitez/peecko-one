@@ -13,6 +13,12 @@
               <label class="form-label" for="field_id">ID</label>
               <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
             </div>
+            @if (invoice?.apsOrder) {
+              <div>
+                <label class="form-label">Order</label>
+                <input type="number" class="form-control" [value]="invoice!.apsOrder!.id" readonly />
+              </div>
+            }
             @if (customerName) {
               <div class="flex-fill">
                 <label class="form-label">Customer</label>
@@ -215,25 +221,6 @@
             <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_notes">Notes</label>
             <div class="flex-fill">
               <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
-            </div>
-          </div>
-
-          <div class="d-flex align-items-center mb-1" *ngIf="ua.apsOrder.visible">
-            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_apsOrder">Aps Order</label>
-            <div class="flex-fill">
-              <select
-                class="form-control"
-                id="field_apsOrder"
-                data-cy="apsOrder"
-                name="apsOrder"
-                formControlName="apsOrder"
-                [compareWith]="compareApsOrder"
-              >
-                <option [ngValue]="null"></option>
-                @for (apsOrderOption of apsOrdersSharedCollection; track $index) {
-                  <option [ngValue]="apsOrderOption">{{ apsOrderOption.id }}</option>
-                }
-              </select>
             </div>
           </div>
         </div>
