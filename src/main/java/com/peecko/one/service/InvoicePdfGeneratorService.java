@@ -364,10 +364,13 @@ public class InvoicePdfGeneratorService {
 
         Table table = new Table(new float[] { spacerW, labelW, valueW }).useAllAvailableWidth().setBorder(Border.NO_BORDER);
 
-        // Subtotal row
-        table.addCell(emptyCell());
-        table.addCell(summaryLabelCell(labels.get(InvoiceLabel.SUBTOTAL), regular, false));
-        table.addCell(summaryValueCell(val(data, InvoiceField.INVOICE_SUBTOTAL), regular, false));
+        List<Map<String, Object>> items = (List<Map<String, Object>>) data.get(InvoiceField.ITEMS);
+        if (items != null && items.size() > 1) {
+            // Subtotal row, this makes sense only when there are more than one invoice items
+            table.addCell(emptyCell());
+            table.addCell(summaryLabelCell(labels.get(InvoiceLabel.SUBTOTAL), regular, false));
+            table.addCell(summaryValueCell(val(data, InvoiceField.INVOICE_SUBTOTAL), regular, false));
+        }
 
         // Tax rate row
         table.addCell(emptyCell());
