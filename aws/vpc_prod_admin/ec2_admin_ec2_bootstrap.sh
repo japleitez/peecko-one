@@ -16,7 +16,6 @@ cat > /opt/admin-app/.env <<EOF
 NODE_ENV=production
 DB_HOST=$DB_HOST
 DB_PASSWORD=$DB_PASS
-PORT=8080
 EOF
 
 # Install and start the app

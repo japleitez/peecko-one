@@ -39,6 +39,9 @@
             <column name="subtotal" type="double">
                 <constraints nullable="false" />
             </column>
+            <column name="vat_rate" type="double">
+                <constraints nullable="false" />
+            </column>
             <column name="vat" type="double">
                 <constraints nullable="false" />
             </column>
