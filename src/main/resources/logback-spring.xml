@@ -96,7 +96,7 @@
         <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
         <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>logs/dev/pck_admin.log</file>
+            <file>logs/admin.log</file>
             <encoder>
                 <charset>UTF-8</charset>
                 <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -139,7 +139,7 @@
         <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
         <appender name="STAGE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>logs/stage/pck_admin.log</file>
+            <file>/var/log/admin/admin.log</file>
             <encoder>
                 <charset>UTF-8</charset>
                 <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -181,7 +181,7 @@
     <springProfile name="prod">
 
         <appender name="PROD_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>logs/prod/pck_admin.log</file>
+            <file>/var/log/admin/admin.log</file>
             <encoder>
                 <charset>UTF-8</charset>
                 <pattern>${FILE_LOG_PATTERN}</pattern>

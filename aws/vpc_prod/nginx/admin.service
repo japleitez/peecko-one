@@ -1,0 +1,17 @@
+[Unit]
+Description=Admin Application
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+ExecStartPre=/bin/mkdir -p /var/log/admin
+ExecStartPre=/bin/chown ec2-user:ec2-user /var/log/admin
+WorkingDirectory=/opt/admin
+ExecStart=/usr/bin/java -jar /opt/admin/admin.jar --spring.profiles.active=prod
+Restart=always
+RestartSec=10
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

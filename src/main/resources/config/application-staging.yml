@@ -21,7 +21,7 @@ management:
 
 spring:
   application:
-    name: peecko-admin-staging
+    name: admin
   devtools:
     restart:
       enabled: false
