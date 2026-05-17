@@ -15,7 +15,7 @@
     <input id="customer_code" matInput placeholder="code" [(ngModel)]="code" class="form-text me-2" />
 
     <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-      <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
     </button>
 
     <button class="btn btn-info me-2" (click)="resetSearchForm()" [disabled]="isLoading">
