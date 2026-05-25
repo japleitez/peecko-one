@@ -40,6 +40,7 @@
     <include file="/config/liquibase/changelog/2026.126.entity_Language.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026.127.entity_PinCode.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026.128.entity_NotificationViewed.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2026.129.entity_TrialLicense.xml" relativeToChangelogFile="false"/>
 
     <!-- Constraints -->
     <include file="/config/liquibase/changelog/2026.201.constraint_ApsDevice.xml" relativeToChangelogFile="false"/>

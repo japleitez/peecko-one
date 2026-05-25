@@ -1,0 +1,120 @@
+<div>
+  <h2 id="page-heading" data-cy="TrialLicenseHeading">
+    <span>Trial Licenses</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-trial-license"
+        [routerLink]="['/trial-license/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>New Trial License</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (trialLicenses?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Trial Licenses found</span>
+    </div>
+  }
+
+  @if (trialLicenses && trialLicenses.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="license" *ngIf="ua.license.listable">
+              <div class="d-flex">
+                <span>License</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="expirationDate" *ngIf="ua.expirationDate.listable">
+              <div class="d-flex">
+                <span>Expiration Date</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
+              <div class="d-flex">
+                <span>Notes</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (trialLicense of trialLicenses; track trackLicense) {
+            <tr data-cy="entityTable">
+              <td *ngIf="ua.license.listable">
+                <a [routerLink]="['/trial-license', trialLicense.license, 'view']">{{ trialLicense.license }}</a>
+              </td>
+              <td *ngIf="ua.expirationDate.listable">
+                {{ trialLicense.expirationDate | formatMediumDate }}
+              </td>
+              <td *ngIf="ua.expirationDate.listable">
+                {{ trialLicense.notes }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/trial-license', trialLicense.license, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                  </a>
+
+                  <a
+                    [routerLink]="['/trial-license', trialLicense.license, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                  </a>
+
+                  <button type="submit" (click)="delete(trialLicense)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (trialLicenses && trialLicenses.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

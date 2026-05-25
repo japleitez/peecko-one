@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (trialLicense) {
+      <div>
+        <h2 data-cy="trialLicenseDetailsHeading"><span>Trial License</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt *ngIf="ua.license.visible"><span>License</span></dt>
+          <dd *ngIf="ua.license.visible">
+            <span>{{ trialLicense.license }}</span>
+          </dd>
+          <dt *ngIf="ua.expirationDate.visible"><span>Expiration Date</span></dt>
+          <dd *ngIf="ua.expirationDate.visible">
+            <span>{{ trialLicense.expirationDate | formatMediumDate }}</span>
+          </dd>
+          <dt *ngIf="ua.notes.visible"><span>Notes</span></dt>
+          <dd *ngIf="ua.notes.visible">
+            <span>{{ trialLicense.notes }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/trial-license', trialLicense.license, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
