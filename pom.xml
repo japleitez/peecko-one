@@ -5,7 +5,7 @@
 
     <groupId>com.peecko.one</groupId>
     <artifactId>admin</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>Admin</name>
     <description>Description for Admin</description>

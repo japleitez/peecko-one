@@ -103,6 +103,10 @@
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
+    <changeSet id="2024-002-TimeWrapper-sequence" author="jhipster">
+        <createSequence sequenceName="jhi_date_time_wrapper_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
     <changeSet id="2024-002-jhi-date-time-wrapper" author="jhipster" context="test">
         <createTable tableName="jhi_date_time_wrapper">
             <column  name="id" type="BIGINT">
