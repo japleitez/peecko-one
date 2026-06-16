@@ -139,14 +139,14 @@
         <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
         <appender name="STAGE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/var/log/admin/admin.log</file>
+            <file>/var/log/peecko_admin/admin-stage.log</file>
             <encoder>
                 <charset>UTF-8</charset>
                 <pattern>${FILE_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <!-- Roll over daily and when the file reaches 50 MB -->
-                <fileNamePattern>logs/stage/pck_admin.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>/var/log/peecko_admin/archived/admin-stage.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <!-- Keep 14 days / 1 GB total -->
                 <maxHistory>14</maxHistory>
@@ -181,14 +181,14 @@
     <springProfile name="prod">
 
         <appender name="PROD_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/var/log/admin/admin.log</file>
+            <file>/var/log/peecko_admin/admin-prod.log</file>
             <encoder>
                 <charset>UTF-8</charset>
                 <pattern>${FILE_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <!-- Roll over daily and when the file reaches 100 MB -->
-                <fileNamePattern>logs/prod/pck_admin.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                <fileNamePattern>/var/log/peecko_admin/archived/admin-prod.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>100MB</maxFileSize>
                 <!-- Keep 30 days / 5 GB total -->
                 <maxHistory>30</maxHistory>
