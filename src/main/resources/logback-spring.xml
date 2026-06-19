@@ -146,7 +146,7 @@
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <!-- Roll over daily and when the file reaches 50 MB -->
-                <fileNamePattern>/var/log/peecko_admin/archived/admin-stage.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+                <fileNamePattern>/var/log/peecko_admin/archived/admin-stage.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <!-- Keep 14 days / 1 GB total -->
                 <maxHistory>14</maxHistory>

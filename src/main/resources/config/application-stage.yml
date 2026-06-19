@@ -6,12 +6,12 @@ logging:
   level:
     root: INFO
     com.peecko.one: INFO
-    org.springframework.web: WARM
-    org.springframework.security: WARM
-    org.hibernate.SQL: WARM
-    org.hibernate.orm.jdbc.bind: WARM
-    com.zaxxer.hikari: WARM
-    liquibase: WARM
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.orm.jdbc.bind: WARN
+    com.zaxxer.hikari: WARN
+    liquibase: WARN
 
 management:
   prometheus:
@@ -41,7 +41,7 @@ spring:
       schema: pwa
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
-    contexts: prod, init_data
+    contexts: init_data
     enabled: true
     change-log: /config/liquibase/master.xml
     default-schema: pwa

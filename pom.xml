@@ -976,7 +976,7 @@
             </properties>
         </profile>
         <profile>
-            <id>staging</id>
+            <id>stage</id>
             <properties>
                 <!-- default Spring profiles -->
                 <spring.profiles.active>staging${profile.api-docs}${profile.tls}${profile.e2e}</spring.profiles.active>
