@@ -130,9 +130,6 @@ public class NotificationResource {
         Optional<Notification> result = notificationRepository
             .findById(notification.getId())
             .map(existingNotification -> {
-                if (notification.getCompanyId() != null) {
-                    existingNotification.setCompanyId(notification.getCompanyId());
-                }
                 if (notification.getTitle() != null) {
                     existingNotification.setTitle(notification.getTitle());
                 }

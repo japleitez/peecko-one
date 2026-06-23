@@ -1,24 +1,46 @@
 <div>
   <h2 id="page-heading" data-cy="ApsPlanHeading">
-    <span>Aps Plans</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span>Refresh</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-aps-plan"
-        [routerLink]="['/aps-plan/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span>New Aps Plan</span>
-      </button>
-    </div>
+    <span>Subscription Plans</span>
   </h2>
+
+  <div class="d-flex justify-content-end">
+    <input id="customerCode" matInput placeholder="customer code" [(ngModel)]="customerCode" class="form-text me-2" />
+
+    <input id="contract" matInput placeholder="contract" [(ngModel)]="contract" class="form-text me-2" />
+
+    <select id="state" [(ngModel)]="state" class="form-text me-2">
+      <option [ngValue]="null" style="color: #999">State</option>
+      @for (planState of stateValues; track $index) {
+        <option [value]="planState">{{ planState }}</option>
+      }
+    </select>
+
+    <input [(ngModel)]="starts" type="text" matInput placeholder="start" class="form-text me-2" ngbDatepicker #startsDp="ngbDatepicker" />
+    <button type="button" class="btn btn-secondary me-2" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+
+    <input [(ngModel)]="ends" type="text" matInput placeholder="ends" class="form-text me-2" ngbDatepicker #endsDp="ngbDatepicker" />
+    <button type="button" class="btn btn-secondary me-2" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+
+    <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+    </button>
+
+    <button class="btn btn-info me-2" (click)="resetSearchForm()" [disabled]="isLoading">
+      <fa-icon icon="times"></fa-icon>
+    </button>
+
+    <button class="btn btn-info me-2" (click)="previousState()" type="submit"><fa-icon icon="arrow-left"></fa-icon> <span> </span></button>
+
+    <button
+      id="jh-create-entity"
+      data-cy="entityCreateButton"
+      class="btn btn-primary jh-create-entity create-aps-plan me-2"
+      [routerLink]="['/aps-plan/new']"
+    >
+      <fa-icon icon="plus"></fa-icon>
+      <span>New Plan</span>
+    </button>
+  </div>
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -42,16 +64,20 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="contract" *ngIf="ua.contract.listable">
+            <th scope="col" jhiSortBy="customer.id" *ngIf="ua.customer.listable">
               <div class="d-flex">
-                <span>Contract</span>
-
+                <span>Customer</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="pricing" *ngIf="ua.pricing.listable">
+            <th scope="col" jhiSortBy="customer.id" *ngIf="ua.customer.listable">
               <div class="d-flex">
-                <span>Pricing</span>
+                <span>Name</span>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contract" *ngIf="ua.contract.listable">
+              <div class="d-flex">
+                <span>Contract</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -70,6 +96,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="created" *ngIf="ua.created.listable">
+              <div class="d-flex">
+                <span>Created</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="starts" *ngIf="ua.starts.listable">
               <div class="d-flex">
                 <span>Starts</span>
@@ -84,37 +117,31 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="unitPrice"*ngIf="ua.unitPrice.listable">
+            <th scope="col" jhiSortBy="pricing" *ngIf="ua.pricing.listable">
+              <div class="d-flex">
+                <span>Pricing</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="unitPrice" *ngIf="ua.unitPrice.listable">
               <div class="d-flex">
                 <span>Unit Price</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="notes"*ngIf="ua.notes.listable">
+            <th scope="col" jhiSortBy="notes" *ngIf="ua.notes.listable">
               <div class="d-flex">
                 <span>Notes</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="created"*ngIf="ua.created.listable">
-              <div class="d-flex">
-                <span>Created</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="updated"*ngIf="ua.updated.listable">
+            <th scope="col" jhiSortBy="updated" *ngIf="ua.updated.listable">
               <div class="d-flex">
                 <span>Updated</span>
 
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="customer.id"*ngIf="ua.customer.listable">
-              <div class="d-flex">
-                <span>Customer</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -127,25 +154,34 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/aps-plan', apsPlan.id, 'view']">{{ apsPlan.id }}</a>
               </td>
-              <td *ngIf="ua.contract.listable">{{ apsPlan.contract }}</td>
-              <td *ngIf="ua.pricing.listable">{{ apsPlan.pricing }}</td>
-              <td *ngIf="ua.state.listable">{{ apsPlan.state }}</td>
-              <td *ngIf="ua.license.listable">{{ apsPlan.license }}</td>
-              <td *ngIf="ua.starts.listable">{{ apsPlan.starts | formatMediumDate }}</td>
-              <td *ngIf="ua.ends.listable">{{ apsPlan.ends | formatMediumDate }}</td>
-              <td *ngIf="ua.unitPrice.listable">{{ apsPlan.unitPrice }}</td>
-              <td *ngIf="ua.notes.listable">{{ apsPlan.notes }}</td>
-              <td *ngIf="ua.created.listable">{{ apsPlan.created | formatMediumDatetime }}</td>
-              <td *ngIf="ua.updated.listable">{{ apsPlan.updated | formatMediumDatetime }}</td>
+              <td *ngIf="ua.customer.listable">
+                @if (apsPlan.customer) {
+                  {{ apsPlan.customer.code }}
+                }
+              </td>
               <td *ngIf="ua.customer.listable">
                 @if (apsPlan.customer) {
                   <div>
-                    <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.id }}</a>
+                    <a [routerLink]="['/customer', apsPlan.customer.id, 'view']">{{ apsPlan.customer.name }}</a>
                   </div>
                 }
               </td>
+              <td *ngIf="ua.contract.listable">{{ apsPlan.contract }}</td>
+              <td *ngIf="ua.state.listable">{{ apsPlan.state }}</td>
+              <td *ngIf="ua.license.listable">{{ apsPlan.license }}</td>
+              <td *ngIf="ua.created.listable">{{ apsPlan.created | formatMediumDate }}</td>
+              <td *ngIf="ua.starts.listable">{{ apsPlan.starts | formatMediumDate }}</td>
+              <td *ngIf="ua.ends.listable">{{ apsPlan.ends | formatMediumDate }}</td>
+              <td *ngIf="ua.pricing.listable">{{ apsPlan.pricing }}</td>
+              <td *ngIf="ua.unitPrice.listable">{{ apsPlan.unitPrice }}</td>
+              <td *ngIf="ua.notes.listable">{{ apsPlan.notes }}</td>
+              <td *ngIf="ua.updated.listable">{{ apsPlan.updated | formatMediumDatetime }}</td>
               <td class="text-end">
                 <div class="btn-group">
+                  <a class="btn btn-info btn-sm" data-cy="entityContactsButton" (click)="navToApsOrder(apsPlan)" title="contacts">
+                    orders
+                  </a>
+
                   <a [routerLink]="['/aps-plan', apsPlan.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                   </a>

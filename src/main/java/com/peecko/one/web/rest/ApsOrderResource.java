@@ -1,29 +1,34 @@
 package com.peecko.one.web.rest;
 
-import com.peecko.one.domain.ApsOrder;
-import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.domain.*;
+import com.peecko.one.domain.dto.ApsOrderInfo;
+import com.peecko.one.domain.enumeration.ContactType;
+import com.peecko.one.repository.AgencyRepository;
+import com.peecko.one.repository.ContactRepository;
 import com.peecko.one.repository.CustomerRepository;
-import com.peecko.one.security.SecurityUtils;
-import com.peecko.one.service.ApsOrderService;
-import com.peecko.one.service.info.ApsOrderInfo;
-import com.peecko.one.utils.PeriodUtils;
+import com.peecko.one.repository.InvoiceRepository;
+import com.peecko.one.service.*;
+import com.peecko.one.service.request.ApsOrderListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import com.peecko.one.web.rest.errors.ErrorConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.YearMonth;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -35,24 +40,45 @@ import tech.jhipster.web.util.ResponseUtil;
 @Transactional
 public class ApsOrderResource {
 
-    public static final String ERR_VALIDATION = ErrorConstants.ERR_VALIDATION;
     private final Logger log = LoggerFactory.getLogger(ApsOrderResource.class);
-
     private static final String ENTITY_NAME = "apsOrder";
+    private final InvoiceRepository invoiceRepository;
+    private final CustomerRepository customerRepository;
+    private final ContactRepository contactRepository;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ApsOrderRepository apsOrderRepository;
-
+    private final UserService userService;
+    private final InvoiceService invoiceService;
+    private final InvoicePdfService invoicePdfService;
+    private final InvoiceEmailService invoiceEmailService;
     private final ApsOrderService apsOrderService;
+    private final ApsMembershipService apsMembershipService;
+    private final AgencyRepository agencyRepository;
 
-    private final CustomerRepository customerRepository;
-
-    public ApsOrderResource(ApsOrderRepository apsOrderRepository, ApsOrderService apsOrderService, CustomerRepository customerRepository) {
-        this.apsOrderRepository = apsOrderRepository;
+    public ApsOrderResource(
+        UserService userService,
+        InvoiceService invoiceService,
+        InvoicePdfService invoicePdfService,
+        InvoiceEmailService invoiceEmailService,
+        ApsOrderService apsOrderService,
+        ApsMembershipService apsMembershipService,
+        InvoiceRepository invoiceRepository,
+        AgencyRepository agencyRepository,
+        CustomerRepository customerRepository,
+        ContactRepository contactRepository
+    ) {
+        this.userService = userService;
+        this.invoiceService = invoiceService;
+        this.invoicePdfService = invoicePdfService;
+        this.invoiceEmailService = invoiceEmailService;
         this.apsOrderService = apsOrderService;
+        this.apsMembershipService = apsMembershipService;
+        this.invoiceRepository = invoiceRepository;
+        this.agencyRepository = agencyRepository;
         this.customerRepository = customerRepository;
+        this.contactRepository = contactRepository;
     }
 
     /**
@@ -68,7 +94,7 @@ public class ApsOrderResource {
         if (apsOrder.getId() != null) {
             throw new BadRequestAlertException("A new apsOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ApsOrder result = apsOrderRepository.save(apsOrder);
+        ApsOrder result = apsOrderService.create(apsOrder);
         return ResponseEntity
             .created(new URI("/api/aps-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -91,22 +117,12 @@ public class ApsOrderResource {
         @Valid @RequestBody ApsOrder apsOrder
     ) throws URISyntaxException {
         log.debug("REST request to update ApsOrder : {}, {}", id, apsOrder);
-        if (apsOrder.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, apsOrder.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!apsOrderRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        ApsOrder result = apsOrderRepository.save(apsOrder);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString()))
-            .body(result);
+        validateUpdateInput(apsOrder, id);
+        Optional<ApsOrder> result = apsOrderService.partialUpdateApsOrder(apsOrder);
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString())
+        );
     }
 
     /**
@@ -126,58 +142,24 @@ public class ApsOrderResource {
         @NotNull @RequestBody ApsOrder apsOrder
     ) throws URISyntaxException {
         log.debug("REST request to partial update ApsOrder partially : {}, {}", id, apsOrder);
-        if (apsOrder.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, apsOrder.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!apsOrderRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<ApsOrder> result = apsOrderRepository
-            .findById(apsOrder.getId())
-            .map(existingApsOrder -> {
-                if (apsOrder.getPeriod() != null) {
-                    existingApsOrder.setPeriod(apsOrder.getPeriod());
-                }
-                if (apsOrder.getLicense() != null) {
-                    existingApsOrder.setLicense(apsOrder.getLicense());
-                }
-                if (apsOrder.getUnitPrice() != null) {
-                    existingApsOrder.setUnitPrice(apsOrder.getUnitPrice());
-                }
-                if (apsOrder.getVatRate() != null) {
-                    existingApsOrder.setVatRate(apsOrder.getVatRate());
-                }
-                if (apsOrder.getNumberOfUsers() != null) {
-                    existingApsOrder.setNumberOfUsers(apsOrder.getNumberOfUsers());
-                }
-                if (apsOrder.getInvoiceNumber() != null) {
-                    existingApsOrder.setInvoiceNumber(apsOrder.getInvoiceNumber());
-                }
-
-                return existingApsOrder;
-            })
-            .map(apsOrderRepository::save);
-
+        validateUpdateInput(apsOrder, id);
+        Optional<ApsOrder> result = apsOrderService.partialUpdateApsOrder(apsOrder);
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsOrder.getId().toString())
         );
     }
 
-    /**
-     * {@code GET  /aps-orders} : get all the apsOrders.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrders in body.
-     */
-    @GetMapping("")
-    public List<ApsOrder> getAllApsOrders() {
-        log.debug("REST request to get all InvoiceItems");
-        return apsOrderRepository.findAll();
+    private void validateUpdateInput(ApsOrder apsOrder, Long id) {
+        if (apsOrder.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, apsOrder.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+        if (apsOrderService.notFound(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
     }
 
     /**
@@ -186,45 +168,40 @@ public class ApsOrderResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsOrderInfos in body.
      */
     @GetMapping("/info")
-    public List<ApsOrderInfo> getFilteredApsOrders(
-        @RequestParam(required = false) Long customerId,
-        @RequestParam(required = false) String startYearMonth,
-        @RequestParam(required = false) String endYearMonth) {
-        log.debug("REST request to get ApsOrders");
-        Integer startPeriod;
-        Integer endPeriod = null;
-        if (Objects.nonNull(customerId)) {
-            customerRepository.findById(customerId).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "customer.invalid"));
-        }
-        if (!StringUtils.hasText(startYearMonth)) {
-            throw new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "start.period.invalid");
-        } else {
-            startPeriod = PeriodUtils.parseYearMonth(startYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "start.period.invalid"));
-        }
-        if (Objects.nonNull(endYearMonth)) {
-            endPeriod = PeriodUtils.parseYearMonth(endYearMonth).map(PeriodUtils::getPeriod).orElseThrow(() -> new BadRequestAlertException(ERR_VALIDATION, ENTITY_NAME, "end.period.invalid"));
-        }
-        final List<ApsOrder> orders;
-        if (customerId != null && startPeriod != null && endPeriod != null) {
-            orders =  apsOrderRepository.findByCustomerAndBetweenPeriods(customerId, startPeriod, endPeriod);
-        } else if (customerId != null && startPeriod != null ) {
-            orders = apsOrderRepository.findByCustomerAndStartPeriod(customerId, startPeriod);
-        } else if (customerId != null && endPeriod != null ) {
-            orders = apsOrderRepository.findByCustomerAndEndPeriod(customerId, endPeriod);
-        } else {
-            Long agencyId = SecurityUtils.getCurrentAgencyId();
-            orders = apsOrderRepository.findByAgencyAndPeriod(agencyId, startPeriod);
-        }
-        return orders.stream().map(ApsOrder::toApsOrderInfo).toList();
+    public List<ApsOrderInfo> getAllApsOrders(
+        @RequestParam(required = false) String customer,
+        @RequestParam(required = false) String contract,
+        @RequestParam(required = false) Integer period,
+        @RequestParam(required = false) Integer starts,
+        @RequestParam(required = false) Integer ends
+    ) {
+        log.info("REST request to get ApsOrders------------------");
+        ApsOrderListRequest request = new ApsOrderListRequest(customer, contract, period, starts, ends);
+        return apsOrderService.findAll(request).stream().map(ApsOrder::toApsOrderInfo).toList();
     }
 
-    @GetMapping("/batch/generate")
-    public List<ApsOrderInfo> batchGenerate(@RequestParam() String period) {
-        log.debug("REST request to batch generate ApsOrders");
-        YearMonth yearMonth = PeriodUtils.parseYearMonth(period)
-            .orElseThrow(() -> new BadRequestAlertException("Cannot generate orders due to invalid period", ENTITY_NAME, "invalid.period"));
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsOrderService.batchGenerate(agencyId, yearMonth);
+    @GetMapping("/batch/orders")
+    public List<ApsOrderInfo> batchOrders(@RequestParam Integer period, @RequestParam(required = false) String contract) {
+        log.info("REST request to generate ApsOrders in batch");
+        return apsOrderService.batchOrders(period, contract);
+    }
+
+    @GetMapping("/batch/invoices")
+    public List<ApsOrderInfo> batchInvoices(@RequestParam Integer period, @RequestParam(required = false) String contract) {
+        if (StringUtils.hasText(contract)) {
+            log.info("REST request to generate Invoices for contract {} and period: {}", contract, period);
+            return invoiceService.batchInvoiceForContract(contract, period);
+        } else {
+            Long agencyId = userService.getCurrentAgencyId();
+            log.info("REST request to generate Invoices for agencyId {} and period: {}", agencyId, period);
+            return invoiceService.batchInvoiceForAgency(agencyId, period);
+        }
+    }
+
+    @GetMapping("/batch/emails")
+    public List<ApsOrderInfo> batchEmails(@RequestParam Integer period, @RequestParam(required = false) String contract) {
+        log.debug("REST request to generate Emails in batch");
+        return invoiceEmailService.batchInvoiceEmail(contract, period);
     }
 
     /**
@@ -236,8 +213,26 @@ public class ApsOrderResource {
     @GetMapping("/{id}")
     public ResponseEntity<ApsOrder> getApsOrder(@PathVariable("id") Long id) {
         log.debug("REST request to get ApsOrder : {}", id);
-        Optional<ApsOrder> apsOrder = apsOrderRepository.findById(id);
+        Optional<ApsOrder> apsOrder = apsOrderService.findById(id);
         return ResponseUtil.wrapOrNotFound(apsOrder);
+    }
+
+    @GetMapping("/{id}/download/invoice")
+    public ResponseEntity<byte[]> downloadInvoice(@PathVariable("id") Long id) {
+        log.debug("REST request to get download Invoice : {}", id);
+        Invoice invoice = invoiceRepository.findByApsOrderId(id).orElseThrow(() -> new RuntimeException("Invalid invoice id"));
+        Agency agency = agencyRepository.getReferenceById(userService.getCurrentAgencyId());
+        Customer customer = customerRepository.getReferenceById(invoice.getCustomerId());
+        Contact contact = contactRepository.findByCustomerAndType(customer.getId(), ContactType.PRIMARY).orElseThrow(RuntimeException::new);
+        byte[] pdfBytes = invoicePdfService.generatePdfInvoice(agency, customer, contact, invoice);
+        String filename = invoice.getNumber() + ".pdf";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", filename);
+        headers.setContentLength(pdfBytes.length);
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
     /**
@@ -249,10 +244,18 @@ public class ApsOrderResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteApsOrder(@PathVariable("id") Long id) {
         log.debug("REST request to delete ApsOrder : {}", id);
-        apsOrderRepository.deleteById(id);
+        apsOrderService.deleteById(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/import/members")
+    public ResponseEntity<?> createBulkMembership(@RequestParam Long apsOrderId, @RequestParam MultipartFile file) {
+        log.debug("REST request to import ApsMembership file : {}", file.getOriginalFilename());
+        int count = apsMembershipService.importMembers(apsOrderId, file);
+        log.info("batch imported {} apsMemberships for apsOrder {} from file {}", count, apsOrderId, file.getOriginalFilename());
+        return ResponseEntity.ok(Map.of("count", count, "filename", String.valueOf(file.getOriginalFilename())));
     }
 }

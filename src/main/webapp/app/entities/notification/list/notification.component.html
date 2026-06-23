@@ -42,10 +42,9 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="companyId" *ngIf="ua.companyId.listable">
+            <th scope="col" jhiSortBy="customer.id" *ngIf="ua.customer.listable">
               <div class="d-flex">
-                <span>Company Id</span>
-
+                <span>Customer</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -107,7 +106,13 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/notification', notification.id, 'view']">{{ notification.id }}</a>
               </td>
-              <td *ngIf="ua.companyId.listable">{{ notification.companyId }}</td>
+              <td *ngIf="ua.customer.listable">
+                @if (notification.customer) {
+                  <div>
+                    <a [routerLink]="['/customer', notification.customer.id, 'view']">{{ notification.customer.name }}</a>
+                  </div>
+                }
+              </td>
               <td *ngIf="ua.title.listable">{{ notification.title }}</td>
               <td *ngIf="ua.message.listable">{{ notification.message }}</td>
               <td *ngIf="ua.language.listable">{{ notification.language }}</td>

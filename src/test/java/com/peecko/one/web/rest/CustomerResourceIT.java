@@ -6,8 +6,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.peecko.one.IntegrationTest;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.CustomerRepository;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
@@ -38,23 +40,20 @@ class CustomerResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
-    private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
-
-    private static final String DEFAULT_LICENSE = "AAAAAAAAAA";
-    private static final String UPDATED_LICENSE = "BBBBBBBBBB";
+    private static final String DEFAULT_COUNTRY = "LU";
+    private static final String UPDATED_COUNTRY = "FR";
 
     private static final CustomerState DEFAULT_STATE = CustomerState.NEW;
     private static final CustomerState UPDATED_STATE = CustomerState.TRIAL;
-
-    private static final String DEFAULT_CLOSE_REASON = "AAAAAAAAAA";
-    private static final String UPDATED_CLOSE_REASON = "BBBBBBBBBB";
 
     private static final String DEFAULT_EMAIL_DOMAINS = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL_DOMAINS = "BBBBBBBBBB";
 
     private static final String DEFAULT_VAT_ID = "AAAAAAAAAA";
     private static final String UPDATED_VAT_ID = "BBBBBBBBBB";
+
+    private static final Double DEFAULT_VAT_RATE = 1D;
+    private static final Double UPDATED_VAT_RATE = 2D;
 
     private static final String DEFAULT_BANK = "AAAAAAAAAA";
     private static final String UPDATED_BANK = "BBBBBBBBBB";
@@ -96,12 +95,17 @@ class CustomerResourceIT {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
     private MockMvc restCustomerMockMvc;
 
     private Customer customer;
+
+    private Agency agency;
 
     /**
      * Create an entity for this test.
@@ -114,11 +118,10 @@ class CustomerResourceIT {
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
             .country(DEFAULT_COUNTRY)
-            .license(DEFAULT_LICENSE)
             .state(DEFAULT_STATE)
-            .closeReason(DEFAULT_CLOSE_REASON)
-            .emailDomains(DEFAULT_EMAIL_DOMAINS)
+            .billingEmail(DEFAULT_EMAIL_DOMAINS)
             .vatId(DEFAULT_VAT_ID)
+            .vatRate(DEFAULT_VAT_RATE)
             .bank(DEFAULT_BANK)
             .iban(DEFAULT_IBAN)
             .logo(DEFAULT_LOGO)
@@ -143,10 +146,8 @@ class CustomerResourceIT {
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
-            .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
-            .closeReason(UPDATED_CLOSE_REASON)
-            .emailDomains(UPDATED_EMAIL_DOMAINS)
+            .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
             .iban(UPDATED_IBAN)
@@ -163,7 +164,12 @@ class CustomerResourceIT {
 
     @BeforeEach
     public void initTest() {
+        agency = AgencyResourceIT.createEntity(em);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
+
         customer = createEntity(em);
+        customer.setAgency(agency);
     }
 
     @Test
@@ -182,21 +188,14 @@ class CustomerResourceIT {
         assertThat(testCustomer.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testCustomer.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCustomer.getCountry()).isEqualTo(DEFAULT_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(DEFAULT_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(DEFAULT_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
+        assertThat(testCustomer.getBillingEmail()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(DEFAULT_VAT_ID);
+        assertThat(testCustomer.getVatRate()).isEqualTo(DEFAULT_VAT_RATE);
         assertThat(testCustomer.getBank()).isEqualTo(DEFAULT_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(DEFAULT_IBAN);
         assertThat(testCustomer.getLogo()).isEqualTo(DEFAULT_LOGO);
         assertThat(testCustomer.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testCustomer.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testCustomer.getUpdated()).isEqualTo(DEFAULT_UPDATED);
-        assertThat(testCustomer.getTrialed()).isEqualTo(DEFAULT_TRIALED);
-        assertThat(testCustomer.getDeclined()).isEqualTo(DEFAULT_DECLINED);
-        assertThat(testCustomer.getActivated()).isEqualTo(DEFAULT_ACTIVATED);
-        assertThat(testCustomer.getClosed()).isEqualTo(DEFAULT_CLOSED);
     }
 
     @Test
@@ -287,23 +286,37 @@ class CustomerResourceIT {
 
     @Test
     @Transactional
+    void checkVatRateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = customerRepository.findAll().size();
+        // set the field null
+        customer.setVatRate(null);
+
+        // Create the Customer, which fails.
+
+        restCustomerMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(customer)))
+            .andExpect(status().isBadRequest());
+
+        List<Customer> customerList = customerRepository.findAll();
+        assertThat(customerList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllCustomers() throws Exception {
         // Initialize the database
         customerRepository.saveAndFlush(customer);
 
         // Get all the customerList
         restCustomerMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)))
-            .andExpect(jsonPath("$.[*].license").value(hasItem(DEFAULT_LICENSE)))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].closeReason").value(hasItem(DEFAULT_CLOSE_REASON)))
-            .andExpect(jsonPath("$.[*].emailDomains").value(hasItem(DEFAULT_EMAIL_DOMAINS)))
             .andExpect(jsonPath("$.[*].vatId").value(hasItem(DEFAULT_VAT_ID)))
             .andExpect(jsonPath("$.[*].bank").value(hasItem(DEFAULT_BANK)))
             .andExpect(jsonPath("$.[*].iban").value(hasItem(DEFAULT_IBAN)))
@@ -332,10 +345,7 @@ class CustomerResourceIT {
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY))
-            .andExpect(jsonPath("$.license").value(DEFAULT_LICENSE))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
-            .andExpect(jsonPath("$.closeReason").value(DEFAULT_CLOSE_REASON))
-            .andExpect(jsonPath("$.emailDomains").value(DEFAULT_EMAIL_DOMAINS))
             .andExpect(jsonPath("$.vatId").value(DEFAULT_VAT_ID))
             .andExpect(jsonPath("$.bank").value(DEFAULT_BANK))
             .andExpect(jsonPath("$.iban").value(DEFAULT_IBAN))
@@ -371,22 +381,15 @@ class CustomerResourceIT {
         updatedCustomer
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
-            .country(UPDATED_COUNTRY)
-            .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
-            .closeReason(UPDATED_CLOSE_REASON)
-            .emailDomains(UPDATED_EMAIL_DOMAINS)
+            .country(UPDATED_COUNTRY)
+            .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
+            .vatRate(UPDATED_VAT_RATE)
             .bank(UPDATED_BANK)
             .iban(UPDATED_IBAN)
             .logo(UPDATED_LOGO)
-            .notes(UPDATED_NOTES)
-            .created(UPDATED_CREATED)
-            .updated(UPDATED_UPDATED)
-            .trialed(UPDATED_TRIALED)
-            .declined(UPDATED_DECLINED)
-            .activated(UPDATED_ACTIVATED)
-            .closed(UPDATED_CLOSED);
+            .notes(UPDATED_NOTES);
 
         restCustomerMockMvc
             .perform(
@@ -400,24 +403,18 @@ class CustomerResourceIT {
         List<Customer> customerList = customerRepository.findAll();
         assertThat(customerList).hasSize(databaseSizeBeforeUpdate);
         Customer testCustomer = customerList.get(customerList.size() - 1);
+
         assertThat(testCustomer.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCustomer.getCountry()).isEqualTo(UPDATED_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(UPDATED_EMAIL_DOMAINS);
+        assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(UPDATED_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(UPDATED_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(UPDATED_IBAN);
         assertThat(testCustomer.getLogo()).isEqualTo(UPDATED_LOGO);
         assertThat(testCustomer.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testCustomer.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testCustomer.getUpdated()).isEqualTo(UPDATED_UPDATED);
-        assertThat(testCustomer.getTrialed()).isEqualTo(UPDATED_TRIALED);
-        assertThat(testCustomer.getDeclined()).isEqualTo(UPDATED_DECLINED);
-        assertThat(testCustomer.getActivated()).isEqualTo(UPDATED_ACTIVATED);
-        assertThat(testCustomer.getClosed()).isEqualTo(UPDATED_CLOSED);
+
+        assertThat(testCustomer.getCountry()).isEqualTo(agency.getCountry()); // must remain
     }
 
     @Test
@@ -488,15 +485,7 @@ class CustomerResourceIT {
         Customer partialUpdatedCustomer = new Customer();
         partialUpdatedCustomer.setId(customer.getId());
 
-        partialUpdatedCustomer
-            .code(UPDATED_CODE)
-            .name(UPDATED_NAME)
-            .license(UPDATED_LICENSE)
-            .state(UPDATED_STATE)
-            .logo(UPDATED_LOGO)
-            .created(UPDATED_CREATED)
-            .activated(UPDATED_ACTIVATED)
-            .closed(UPDATED_CLOSED);
+        partialUpdatedCustomer.code(UPDATED_CODE).name(UPDATED_NAME).state(UPDATED_STATE).logo(UPDATED_LOGO).country(UPDATED_COUNTRY);
 
         restCustomerMockMvc
             .perform(
@@ -510,24 +499,18 @@ class CustomerResourceIT {
         List<Customer> customerList = customerRepository.findAll();
         assertThat(customerList).hasSize(databaseSizeBeforeUpdate);
         Customer testCustomer = customerList.get(customerList.size() - 1);
+
         assertThat(testCustomer.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCustomer.getCountry()).isEqualTo(DEFAULT_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(DEFAULT_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(DEFAULT_EMAIL_DOMAINS);
+        assertThat(testCustomer.getLogo()).isEqualTo(UPDATED_LOGO);
+
         assertThat(testCustomer.getVatId()).isEqualTo(DEFAULT_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(DEFAULT_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(DEFAULT_IBAN);
-        assertThat(testCustomer.getLogo()).isEqualTo(UPDATED_LOGO);
         assertThat(testCustomer.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testCustomer.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testCustomer.getUpdated()).isEqualTo(DEFAULT_UPDATED);
-        assertThat(testCustomer.getTrialed()).isEqualTo(DEFAULT_TRIALED);
-        assertThat(testCustomer.getDeclined()).isEqualTo(DEFAULT_DECLINED);
-        assertThat(testCustomer.getActivated()).isEqualTo(UPDATED_ACTIVATED);
-        assertThat(testCustomer.getClosed()).isEqualTo(UPDATED_CLOSED);
+
+        assertThat(testCustomer.getCountry()).isEqualTo(agency.getCountry()); // must remain
     }
 
     @Test
@@ -546,10 +529,8 @@ class CustomerResourceIT {
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
             .country(UPDATED_COUNTRY)
-            .license(UPDATED_LICENSE)
             .state(UPDATED_STATE)
-            .closeReason(UPDATED_CLOSE_REASON)
-            .emailDomains(UPDATED_EMAIL_DOMAINS)
+            .billingEmail(UPDATED_EMAIL_DOMAINS)
             .vatId(UPDATED_VAT_ID)
             .bank(UPDATED_BANK)
             .iban(UPDATED_IBAN)
@@ -576,22 +557,15 @@ class CustomerResourceIT {
         Customer testCustomer = customerList.get(customerList.size() - 1);
         assertThat(testCustomer.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testCustomer.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCustomer.getCountry()).isEqualTo(UPDATED_COUNTRY);
-        assertThat(testCustomer.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testCustomer.getState()).isEqualTo(UPDATED_STATE);
-        assertThat(testCustomer.getCloseReason()).isEqualTo(UPDATED_CLOSE_REASON);
-        assertThat(testCustomer.getEmailDomains()).isEqualTo(UPDATED_EMAIL_DOMAINS);
+        assertThat(testCustomer.getBillingEmail()).isEqualTo(UPDATED_EMAIL_DOMAINS);
         assertThat(testCustomer.getVatId()).isEqualTo(UPDATED_VAT_ID);
         assertThat(testCustomer.getBank()).isEqualTo(UPDATED_BANK);
         assertThat(testCustomer.getIban()).isEqualTo(UPDATED_IBAN);
         assertThat(testCustomer.getLogo()).isEqualTo(UPDATED_LOGO);
         assertThat(testCustomer.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testCustomer.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testCustomer.getUpdated()).isEqualTo(UPDATED_UPDATED);
-        assertThat(testCustomer.getTrialed()).isEqualTo(UPDATED_TRIALED);
-        assertThat(testCustomer.getDeclined()).isEqualTo(UPDATED_DECLINED);
-        assertThat(testCustomer.getActivated()).isEqualTo(UPDATED_ACTIVATED);
-        assertThat(testCustomer.getClosed()).isEqualTo(UPDATED_CLOSED);
+
+        assertThat(testCustomer.getCountry()).isEqualTo(agency.getCountry());
     }
 
     @Test

@@ -2,8 +2,8 @@ package com.peecko.one.service.mapper;
 
 import com.peecko.one.domain.Authority;
 import com.peecko.one.domain.User;
-import com.peecko.one.service.dto.AdminUserDTO;
-import com.peecko.one.service.dto.UserDTO;
+import com.peecko.one.domain.dto.AdminUserDTO;
+import com.peecko.one.domain.dto.UserDTO;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.mapstruct.BeanMapping;

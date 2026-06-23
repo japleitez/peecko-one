@@ -131,14 +131,14 @@ public class LabelTranslationResource {
         Optional<LabelTranslation> result = labelTranslationRepository
             .findById(labelTranslation.getId())
             .map(existingLabelTranslation -> {
-                if (labelTranslation.getLabel() != null) {
-                    existingLabelTranslation.setLabel(labelTranslation.getLabel());
+                if (labelTranslation.getCode() != null) {
+                    existingLabelTranslation.setCode(labelTranslation.getCode());
                 }
                 if (labelTranslation.getLang() != null) {
                     existingLabelTranslation.setLang(labelTranslation.getLang());
                 }
-                if (labelTranslation.getTranslation() != null) {
-                    existingLabelTranslation.setTranslation(labelTranslation.getTranslation());
+                if (labelTranslation.getText() != null) {
+                    existingLabelTranslation.setText(labelTranslation.getText());
                 }
 
                 return existingLabelTranslation;

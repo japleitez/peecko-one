@@ -4,7 +4,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IVideoCategory, VIDEO_CATEGORY_ACCESS, VideoCategoryAccess } from '../video-category.model';
-import { VIDEO_ACCESS } from '../../video/video.model';
 import { NgIf } from '@angular/common';
 
 @Component({

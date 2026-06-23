@@ -2,7 +2,6 @@ package com.peecko.one.domain;
 
 import static com.peecko.one.domain.ApsDeviceTestSamples.*;
 import static com.peecko.one.domain.ApsUserTestSamples.*;
-import static com.peecko.one.domain.PlayListTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.peecko.one.web.rest.TestUtil;
@@ -48,25 +47,4 @@ class ApsUserTest {
         assertThat(apsDeviceBack.getApsUser()).isNull();
     }
 
-    @Test
-    void playListTest() throws Exception {
-        ApsUser apsUser = getApsUserRandomSampleGenerator();
-        PlayList playListBack = getPlayListRandomSampleGenerator();
-
-        apsUser.addPlayList(playListBack);
-        assertThat(apsUser.getPlayLists()).containsOnly(playListBack);
-        assertThat(playListBack.getApsUser()).isEqualTo(apsUser);
-
-        apsUser.removePlayList(playListBack);
-        assertThat(apsUser.getPlayLists()).doesNotContain(playListBack);
-        assertThat(playListBack.getApsUser()).isNull();
-
-        apsUser.playLists(new HashSet<>(Set.of(playListBack)));
-        assertThat(apsUser.getPlayLists()).containsOnly(playListBack);
-        assertThat(playListBack.getApsUser()).isEqualTo(apsUser);
-
-        apsUser.setPlayLists(new HashSet<>());
-        assertThat(apsUser.getPlayLists()).doesNotContain(playListBack);
-        assertThat(playListBack.getApsUser()).isNull();
-    }
 }

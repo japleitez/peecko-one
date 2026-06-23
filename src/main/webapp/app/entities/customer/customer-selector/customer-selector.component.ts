@@ -2,13 +2,14 @@ import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICustomer } from '../customer.model';
 import { Observable, tap } from 'rxjs';
-import { CustomerService, EntityArrayResponseType } from '../service/customer.service';
+import { CustomerService, CustomerArrayResponseType } from '../service/customer.service';
 import { map, startWith } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'customer-selector',
   standalone: true,
@@ -17,21 +18,22 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
   templateUrl: './customer-selector.component.html',
   styleUrl: './customer-selector.component.scss'
 })
 export class CustomerSelectorComponent {
   @Input() control: FormControl<ICustomer | string | null> = new FormControl('');
+  @Input() cl: string = 'w-20';
   @Input() set disabled(value: boolean) {
     this.disableControl(value);
-  }
-  @Input() set required(value: boolean) {
+  }  @Input() set required(value: boolean) {
     this._required = value;
   }
 
   _required: boolean = true;
+
   public isLoading: boolean = false;
   customers!: ICustomer[];
   filteredCustomers!: Observable<ICustomer[]>;
@@ -45,7 +47,7 @@ export class CustomerSelectorComponent {
   private _loadOptions(): void {
     this.isLoading = true;
     this.customerService.queryActive().pipe(tap(() => (this.isLoading = false))).subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: CustomerArrayResponseType) => {
         this.customers = res.body ?? [];
         this.filteredCustomers = this.control.valueChanges.pipe(
           startWith(''),

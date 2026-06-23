@@ -1,6 +1,7 @@
 package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.peecko.one.domain.enumeration.CustomerState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -17,14 +18,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "customer")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_gen")
+    @SequenceGenerator(name = "customer_gen", sequenceName = "customer_seq")
     @Column(name = "id")
     private Long id;
 
@@ -48,14 +48,15 @@ public class Customer implements Serializable {
     @Column(name = "state", nullable = false)
     private CustomerState state;
 
-    @Column(name = "close_reason")
-    private String closeReason;
-
-    @Column(name = "email_domains")
-    private String emailDomains;
+    @Column(name = "billing_email")
+    private String billingEmail;
 
     @Column(name = "vat_id")
     private String vatId;
+
+    @NotNull
+    @Column(name = "vat_rate", nullable = false)
+    private Double vatRate;
 
     @Column(name = "bank")
     private String bank;
@@ -97,8 +98,8 @@ public class Customer implements Serializable {
     @JsonIgnoreProperties(value = { "apsOrders", "customer" }, allowSetters = true)
     private Set<ApsPlan> apsPlans = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "staff", "customers", "apsPricings" }, allowSetters = true)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "customers", "apsPricings" }, allowSetters = true)
     private Agency agency;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -162,16 +163,16 @@ public class Customer implements Serializable {
     }
 
     public String getLicense() {
-        return this.license;
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
     }
 
     public Customer license(String license) {
         this.setLicense(license);
         return this;
-    }
-
-    public void setLicense(String license) {
-        this.license = license;
     }
 
     public CustomerState getState() {
@@ -187,30 +188,17 @@ public class Customer implements Serializable {
         this.state = state;
     }
 
-    public String getCloseReason() {
-        return this.closeReason;
+    public String getBillingEmail() {
+        return this.billingEmail;
     }
 
-    public Customer closeReason(String closeReason) {
-        this.setCloseReason(closeReason);
+    public Customer billingEmail(String billingEmail) {
+        this.setBillingEmail(billingEmail);
         return this;
     }
 
-    public void setCloseReason(String closeReason) {
-        this.closeReason = closeReason;
-    }
-
-    public String getEmailDomains() {
-        return this.emailDomains;
-    }
-
-    public Customer emailDomains(String emailDomains) {
-        this.setEmailDomains(emailDomains);
-        return this;
-    }
-
-    public void setEmailDomains(String emailDomains) {
-        this.emailDomains = emailDomains;
+    public void setBillingEmail(String billingEmail) {
+        this.billingEmail = billingEmail;
     }
 
     public String getVatId() {
@@ -224,6 +212,19 @@ public class Customer implements Serializable {
 
     public void setVatId(String vatId) {
         this.vatId = vatId;
+    }
+
+    public Double getVatRate() {
+        return vatRate;
+    }
+
+    public void setVatRate(Double vatRate) {
+        this.vatRate = vatRate;
+    }
+
+    public Customer vatRate(Double vatRate) {
+        this.setVatRate(vatRate);
+        return this;
     }
 
     public String getBank() {
@@ -433,6 +434,18 @@ public class Customer implements Serializable {
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
+    @Transient
+    private boolean hasPrimaryContact;
+
+    @JsonProperty("hasPrimaryContact")
+    public boolean isHasPrimaryContact() {
+        return hasPrimaryContact;
+    }
+
+    public void setHasPrimaryContact(boolean hasPrimaryContact) {
+        this.hasPrimaryContact = hasPrimaryContact;
+    }
+
     public Customer cloneForSelection() {
         Customer clone = new Customer();
         clone.id = this.id;
@@ -467,10 +480,8 @@ public class Customer implements Serializable {
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
             ", country='" + getCountry() + "'" +
-            ", license='" + getLicense() + "'" +
             ", state='" + getState() + "'" +
-            ", closeReason='" + getCloseReason() + "'" +
-            ", emailDomains='" + getEmailDomains() + "'" +
+            ", billingEmail='" + getBillingEmail() + "'" +
             ", vatId='" + getVatId() + "'" +
             ", bank='" + getBank() + "'" +
             ", iban='" + getIban() + "'" +

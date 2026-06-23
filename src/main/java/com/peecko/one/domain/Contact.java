@@ -21,8 +21,8 @@ public class Contact implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_gen")
+    @SequenceGenerator(name = "contact_gen", sequenceName = "contact_seq")
     @Column(name = "id")
     private Long id;
 
@@ -65,7 +65,7 @@ public class Contact implements Serializable {
     @Column(name = "updated")
     private Instant updated;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
     private Customer customer;
 

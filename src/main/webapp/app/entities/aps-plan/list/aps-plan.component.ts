@@ -1,18 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbInputDatepicker, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
-import { APS_PLAN_USER_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
+import { APS_PLAN_ACCESS, ApsPlanAccess, IApsPlan } from '../aps-plan.model';
 import { EntityArrayResponseType, ApsPlanService } from '../service/aps-plan.service';
 import { ApsPlanDeleteDialogComponent } from '../delete/aps-plan-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { PlanState } from '../../enumerations/plan-state.model';
+import dayjs from 'dayjs/esm';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from '../../../config/input.constants';
+import { CustomerData } from '../../customer/service/customer.data';
+import { ApsPlanData } from '../service/aps-plan.data';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   standalone: true,
@@ -27,8 +34,12 @@ import { NgIf } from '@angular/common';
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-    NgIf
-  ]
+    NgIf,
+    MatInputModule,
+    ReactiveFormsModule,
+    NgbInputDatepicker,
+    FaIconComponent,
+  ],
 })
 export class ApsPlanComponent implements OnInit {
   ua: ApsPlanAccess = this.getApsPlanUserAccess();
@@ -38,18 +49,46 @@ export class ApsPlanComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
+  customerCode: string | null | undefined = null;
+  contract: string | null | undefined = null;
+  state: string | null | undefined = null;
+  starts: string | null | undefined = null;
+  ends: string | null | undefined = null;
+  stateValues: string[] = Object.keys(PlanState);
+
   constructor(
     protected apsPlanService: ApsPlanService,
+    protected customerData: CustomerData,
+    protected apsPlanData: ApsPlanData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
-  ) {}
+    protected fb: FormBuilder,
+  ) {
+    this.customerCode = customerData.getCode();
+  }
 
   trackId = (_index: number, item: IApsPlan): number => this.apsPlanService.getApsPlanIdentifier(item);
 
   ngOnInit(): void {
     this.load();
+  }
+
+  resetSearchForm(): void {
+    this.customerCode = null;
+    this.contract = null;
+    this.state = null;
+    this.starts = null;
+    this.ends = null;
+  }
+
+  navToApsOrder(a: IApsPlan) {
+    this.apsPlanData.setContract(a.contract);
+    this.customerData.setCode(a.customer?.code);
+    this.router.navigate(['/aps-order'], {
+      relativeTo: this.activatedRoute.parent,
+    });
   }
 
   delete(apsPlan: IApsPlan): void {
@@ -111,6 +150,21 @@ export class ApsPlanComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.customerCode) {
+      queryObject.customerCode = this.customerCode;
+    }
+    if (this.contract) {
+      queryObject.contract = this.contract;
+    }
+    if (this.state) {
+      queryObject.state = this.state;
+    }
+    if (this.starts) {
+      queryObject.starts = dayjs(this.starts, DATE_FORMAT).format('YYYY-MM-DD');
+    }
+    if (this.ends) {
+      queryObject.ends = dayjs(this.ends, DATE_FORMAT).format('YYYY-MM-DD');
+    }
     return this.apsPlanService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -135,7 +189,10 @@ export class ApsPlanComponent implements OnInit {
   }
 
   protected getApsPlanUserAccess(): ApsPlanAccess {
-    return APS_PLAN_USER_ACCESS;
+    return APS_PLAN_ACCESS;
   }
 
+  previousState(): void {
+    window.history.back();
+  }
 }

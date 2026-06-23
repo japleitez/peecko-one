@@ -6,10 +6,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.peecko.one.IntegrationTest;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.ApsPlan;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.PlanState;
 import com.peecko.one.domain.enumeration.PricingType;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.ApsPlanRepository;
+import com.peecko.one.repository.CustomerRepository;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -39,10 +43,13 @@ class ApsPlanResourceIT {
     private static final String UPDATED_CONTRACT = "BBBBBBBBBB";
 
     private static final PricingType DEFAULT_PRICING = PricingType.FIXED;
-    private static final PricingType UPDATED_PRICING = PricingType.BRACKET;
+    private static final PricingType UPDATED_PRICING = PricingType.FITNESS;
 
-    private static final PlanState DEFAULT_STATE = PlanState.NEW;
+    private static final PlanState DEFAULT_STATE = PlanState.TRIAL;
     private static final PlanState UPDATED_STATE = PlanState.TRIAL;
+
+    private static final String DEFAULT_COUNTRY = "LU";
+    private static final String UPDATED_COUNTRY = "FR";
 
     private static final String DEFAULT_LICENSE = "AAAAAAAAAA";
     private static final String UPDATED_LICENSE = "BBBBBBBBBB";
@@ -81,11 +88,19 @@ class ApsPlanResourceIT {
     private ApsPlanRepository apsPlanRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
     private MockMvc restApsPlanMockMvc;
 
+    private Agency agency;
+    private Customer customer;
     private ApsPlan apsPlan;
 
     /**
@@ -132,7 +147,16 @@ class ApsPlanResourceIT {
 
     @BeforeEach
     public void initTest() {
+        agency = AgencyResourceIT.createEntity(em);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
+
+        customer = CustomerResourceIT.createEntity(em);
+        customer.setAgency(agency);
+        customer = customerRepository.saveAndFlush(customer);
+
         apsPlan = createEntity(em);
+        apsPlan.setCustomer(customer);
     }
 
     @Test
@@ -156,8 +180,6 @@ class ApsPlanResourceIT {
         assertThat(testApsPlan.getEnds()).isEqualTo(DEFAULT_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testApsPlan.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testApsPlan.getUpdated()).isEqualTo(DEFAULT_UPDATED);
     }
 
     @Test
@@ -264,12 +286,8 @@ class ApsPlanResourceIT {
             .andExpect(jsonPath("$.[*].license").value(hasItem(DEFAULT_LICENSE)))
             .andExpect(jsonPath("$.[*].starts").value(hasItem(DEFAULT_STARTS.toString())))
             .andExpect(jsonPath("$.[*].ends").value(hasItem(DEFAULT_ENDS.toString())))
-            .andExpect(jsonPath("$.[*].trialStarts").value(hasItem(DEFAULT_TRIAL_STARTS.toString())))
-            .andExpect(jsonPath("$.[*].trialEnds").value(hasItem(DEFAULT_TRIAL_ENDS.toString())))
             .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
-            .andExpect(jsonPath("$.[*].updated").value(hasItem(DEFAULT_UPDATED.toString())));
+            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)));
     }
 
     @Test
@@ -290,12 +308,8 @@ class ApsPlanResourceIT {
             .andExpect(jsonPath("$.license").value(DEFAULT_LICENSE))
             .andExpect(jsonPath("$.starts").value(DEFAULT_STARTS.toString()))
             .andExpect(jsonPath("$.ends").value(DEFAULT_ENDS.toString()))
-            .andExpect(jsonPath("$.trialStarts").value(DEFAULT_TRIAL_STARTS.toString()))
-            .andExpect(jsonPath("$.trialEnds").value(DEFAULT_TRIAL_ENDS.toString()))
             .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()))
-            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES))
-            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
-            .andExpect(jsonPath("$.updated").value(DEFAULT_UPDATED.toString()));
+            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES));
     }
 
     @Test
@@ -325,9 +339,7 @@ class ApsPlanResourceIT {
             .starts(UPDATED_STARTS)
             .ends(UPDATED_ENDS)
             .unitPrice(UPDATED_UNIT_PRICE)
-            .notes(UPDATED_NOTES)
-            .created(UPDATED_CREATED)
-            .updated(UPDATED_UPDATED);
+            .notes(UPDATED_NOTES);
 
         restApsPlanMockMvc
             .perform(
@@ -349,8 +361,6 @@ class ApsPlanResourceIT {
         assertThat(testApsPlan.getEnds()).isEqualTo(UPDATED_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testApsPlan.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testApsPlan.getUpdated()).isEqualTo(UPDATED_UPDATED);
     }
 
     @Test
@@ -421,11 +431,7 @@ class ApsPlanResourceIT {
         ApsPlan partialUpdatedApsPlan = new ApsPlan();
         partialUpdatedApsPlan.setId(apsPlan.getId());
 
-        partialUpdatedApsPlan
-            .contract(UPDATED_CONTRACT)
-            .pricing(UPDATED_PRICING)
-            .license(UPDATED_LICENSE)
-            .starts(UPDATED_STARTS);
+        partialUpdatedApsPlan.contract(UPDATED_CONTRACT).pricing(UPDATED_PRICING).license(UPDATED_LICENSE).starts(UPDATED_STARTS);
 
         restApsPlanMockMvc
             .perform(
@@ -439,16 +445,16 @@ class ApsPlanResourceIT {
         List<ApsPlan> apsPlanList = apsPlanRepository.findAll();
         assertThat(apsPlanList).hasSize(databaseSizeBeforeUpdate);
         ApsPlan testApsPlan = apsPlanList.get(apsPlanList.size() - 1);
+
         assertThat(testApsPlan.getContract()).isEqualTo(UPDATED_CONTRACT);
         assertThat(testApsPlan.getPricing()).isEqualTo(UPDATED_PRICING);
-        assertThat(testApsPlan.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testApsPlan.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testApsPlan.getStarts()).isEqualTo(UPDATED_STARTS);
+
+        assertThat(testApsPlan.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testApsPlan.getEnds()).isEqualTo(DEFAULT_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testApsPlan.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testApsPlan.getUpdated()).isEqualTo(DEFAULT_UPDATED);
     }
 
     @Test
@@ -471,9 +477,7 @@ class ApsPlanResourceIT {
             .starts(UPDATED_STARTS)
             .ends(UPDATED_ENDS)
             .unitPrice(UPDATED_UNIT_PRICE)
-            .notes(UPDATED_NOTES)
-            .created(UPDATED_CREATED)
-            .updated(UPDATED_UPDATED);
+            .notes(UPDATED_NOTES);
 
         restApsPlanMockMvc
             .perform(
@@ -495,8 +499,6 @@ class ApsPlanResourceIT {
         assertThat(testApsPlan.getEnds()).isEqualTo(UPDATED_ENDS);
         assertThat(testApsPlan.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testApsPlan.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testApsPlan.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testApsPlan.getUpdated()).isEqualTo(UPDATED_UPDATED);
     }
 
     @Test

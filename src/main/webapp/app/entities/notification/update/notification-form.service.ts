@@ -18,7 +18,7 @@ type NotificationFormDefaults = Pick<NewNotification, 'id'>;
 
 type NotificationFormGroupContent = {
   id: FormControl<INotification['id'] | NewNotification['id']>;
-  companyId: FormControl<INotification['companyId']>;
+  customer: FormControl<INotification['customer']>;
   title: FormControl<INotification['title']>;
   message: FormControl<INotification['message']>;
   language: FormControl<INotification['language']>;
@@ -48,8 +48,8 @@ export class NotificationFormService {
           validators: [Validators.required],
         },
       ),
-      companyId: new FormControl(
-        { value: notificationRawValue.companyId, disabled: ua.companyId.disabled },
+      customer: new FormControl(
+        { value: notificationRawValue.customer, disabled: ua.customer.disabled },
         { validators: [Validators.required] },
       ),
       title: new FormControl({ value: notificationRawValue.title, disabled: ua.title.disabled }, { validators: [Validators.required] }),

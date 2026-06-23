@@ -39,6 +39,17 @@
           <dt><span>Modified date</span></dt>
           <dd>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
 
+          <dt><span>Agency</span></dt>
+          <dd>
+            @if (agency) {
+              <span>{{ agency.name }} (ID: {{ agency.id }})</span>
+            } @else if (user.agencyId) {
+              <span>{{ user.agencyId }}</span>
+            } @else {
+              <span>—</span>
+            }
+          </dd>
+
           <dt><span>Profiles</span></dt>
           <dd>
             <ul class="list-unstyled">

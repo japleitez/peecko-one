@@ -1,33 +1,40 @@
 package com.peecko.one.utils;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeParseException;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
 
 public abstract class PeriodUtils {
+
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static Integer getPeriod(YearMonth yearMonth) {
         return Integer.parseInt(yearMonth.toString().replace("-", ""));
     }
 
-    public static YearMonth getYearMonth(Integer period) {
-        return getYearMonth(String.valueOf(period));
+    public static YearMonth parse(Integer period) {
+        return parse(String.valueOf(period));
     }
 
-    public static YearMonth getYearMonth(String period) {
+    public static YearMonth parse(String period) {
         String value = period.replace("-", "");
-        int year = Integer.parseInt(value.substring(0,4));
+        int year = Integer.parseInt(value.substring(0, 4));
         int month = Integer.parseInt(value.substring(4));
         return YearMonth.of(year, month);
     }
 
-    public static Optional<YearMonth> parseYearMonth(String period) {
-        try {
-            YearMonth yearMonth = YearMonth.parse(period);
-            return Optional.of(yearMonth);
-        } catch (DateTimeParseException e) {
-            return Optional.empty();
-        }
+    public static LocalDate parsePeriodDay(Integer period, String dd) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return LocalDate.parse(period + dd, formatter);
     }
 
+    public static String getFirstDateAsString(final YearMonth yearMonth) {
+        final LocalDate firstDate = yearMonth.atDay(1);
+        return firstDate.format(OUTPUT_FORMATTER);
+    }
+
+    public static String getLastDateAsString(final YearMonth yearMonth) {
+        final LocalDate lastDate = yearMonth.atEndOfMonth();
+        return lastDate.format(OUTPUT_FORMATTER);
+    }
 }

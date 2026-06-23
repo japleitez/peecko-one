@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { APS_PLAN_USER_ACCESS, ApsPlanAccess, IApsPlan, NewApsPlan } from '../aps-plan.model';
+import { APS_PLAN_ACCESS, ApsPlanAccess, IApsPlan, NewApsPlan } from '../aps-plan.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -49,7 +49,7 @@ export type ApsPlanFormGroup = FormGroup<ApsPlanFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsPlanFormService {
-  createApsPlanFormGroup(apsPlan: ApsPlanFormGroupInput = { id: null }, ua: ApsPlanAccess =  APS_PLAN_USER_ACCESS): ApsPlanFormGroup {
+  createApsPlanFormGroup(apsPlan: ApsPlanFormGroupInput = { id: null }, ua: ApsPlanAccess =  APS_PLAN_ACCESS): ApsPlanFormGroup {
     const apsPlanRawValue = this.convertApsPlanToApsPlanRawValue({
       ...this.getFormDefaults(),
       ...apsPlan,
@@ -63,24 +63,23 @@ export class ApsPlanFormService {
         },
       ),
       contract: new FormControl({ value: apsPlanRawValue.contract, disabled: ua.contract.disabled },
-        { validators: [Validators.required],
-      }),
+        { validators: [Validators.required], }),
       pricing: new FormControl({ value: apsPlanRawValue.pricing, disabled: ua.pricing.disabled },
-        { validators: [Validators.required],
-      }),
+        { validators: [Validators.required], }),
       state: new FormControl({ value: apsPlanRawValue.state, disabled: ua.state.disabled },
-        { validators: [Validators.required],
-      }),
-      license: new FormControl({ value: apsPlanRawValue.license, disabled: ua.license.disabled }),
-      starts: new FormControl({ value: apsPlanRawValue.starts, disabled: ua.starts.disabled }),
+        { validators: [Validators.required], }),
+      license: new FormControl({ value: apsPlanRawValue.license, disabled: ua.license.disabled },
+        { validators: [Validators.required], }),
+      starts: new FormControl({ value: apsPlanRawValue.starts, disabled: ua.starts.disabled },
+        { validators: [Validators.required], }),
       ends: new FormControl({ value: apsPlanRawValue.ends, disabled: ua.ends.disabled }),
       unitPrice: new FormControl({ value: apsPlanRawValue.unitPrice, disabled: ua.unitPrice.disabled },
-        { validators: [Validators.required],
-      }),
+        { validators: [Validators.required], }),
       notes: new FormControl({ value: apsPlanRawValue.notes, disabled: ua.notes.disabled }),
       created: new FormControl({ value: apsPlanRawValue.created, disabled: ua.created.disabled }),
       updated: new FormControl({ value: apsPlanRawValue.updated, disabled: ua.updated.disabled }),
-      customer: new FormControl({ value: apsPlanRawValue.customer, disabled: ua.customer.disabled }),
+      customer: new FormControl({ value: apsPlanRawValue.customer, disabled: ua.customer.disabled },
+        { validators: [Validators.required], }),
     });
   }
 

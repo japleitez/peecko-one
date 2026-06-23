@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+    <changeSet id="2024-201-Customer-data" author="jhipster" context="init_data">
+        <loadData
+            file="config/liquibase/init_data/customer.csv"
+            separator=";"
+            tableName="customer"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="agency_id" type="numeric"/>
+            <column name="country" type="string"/>
+            <column name="vat_rate" type="numeric"/>
+            <column name="state" type="string"/>
+            <column name="code" type="string"/>
+            <column name="name" type="string"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="2024-201-Contact-data" author="jhipster" context="init_data">
+        <loadData
+            file="config/liquibase/init_data/contact.csv"
+            separator=";"
+            tableName="contact"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="customer_id" type="numeric"/>
+            <column name="type" type="string"/>
+            <column name="name" type="string"/>
+            <column name="line_1" type="string"/>
+            <column name="zip" type="string"/>
+            <column name="city" type="string"/>
+            <column name="country" type="string"/>
+            <column name="email" type="string"/>
+            <column name="phone" type="string"/>
+            <column name="created" type="date"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;index;country;min_quantity;max_quantity;fitness_price;wellness_price
+    -->
+    <changeSet id="2024-201-ApsPricing-data" author="jhipster" context="init_data">
+        <loadData
+            file="config/liquibase/init_data/aps_pricing.csv"
+            separator=";"
+            tableName="aps_pricing"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="index" type="numeric"/>
+            <column name="country" type="string"/>
+            <column name="min_quantity" type="numeric"/>
+            <column name="max_quantity" type="numeric"/>
+            <column name="fitness_price" type="numeric"/>
+            <column name="wellness_price" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;type;name;email;instagram;website;country;speaks;created
+    -->
+    <changeSet id="2024-201-Coach-data" author="jhipster" context="init_data">
+        <loadData
+            file="config/liquibase/init_data/coach.csv"
+            separator=";"
+            tableName="coach"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="type" type="string"/>
+            <column name="name" type="string"/>
+            <column name="email" type="string"/>
+            <column name="instagram" type="string"/>
+            <column name="website" type="string"/>
+            <column name="country" type="string"/>
+            <column name="speaks" type="string"/>
+            <column name="created" type="date"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;code;lang;text
+    -->
+
+    <changeSet id="2024-201-LabelTranslation-data" author="jhipster" context="init_data">
+        <loadData
+            file="config/liquibase/init_data/label_translation.csv"
+            separator=";"
+            tableName="label_translation"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="code" type="string"/>
+            <column name="lang" type="string"/>
+            <column name="text" type="string"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;pos;code;title;created;released
+    -->
+    <changeSet id="2024-201-VideoCategory-data" author="jhipster" context="init_data">
+        <loadData
+            file="config/liquibase/init_data/video_category.csv"
+            separator=";"
+            tableName="video_category"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="pos" type="numeric"/>
+            <column name="code" type="string"/>
+            <column name="title" type="string"/>
+            <column name="created" type="date"/>
+            <column name="released" type="date"/>
+        </loadData>
+    </changeSet>
+
+    <!--
+    id;coach_id;video_category_id;code;title;duration;language;tags;player;audience;intensity;filename;url;thumbnail;description;created;released
+    -->
+    <changeSet id="2024-016-Video-data" author="jhipster" context="init_data">
+        <loadData
+            file="config/liquibase/init_data/video.csv"
+            separator=";"
+            tableName="video"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="coach_id" type="numeric"/>
+            <column name="video_category_id" type="numeric"/>
+            <column name="code" type="string"/>
+            <column name="title" type="string"/>
+            <column name="duration" type="numeric"/>
+            <column name="language" type="string"/>
+            <column name="tags" type="string"/>
+            <column name="player" type="string"/>
+            <column name="audience" type="string"/>
+            <column name="intensity" type="string"/>
+            <column name="filename" type="string"/>
+            <column name="url" type="string"/>
+            <column name="thumbnail" type="string"/>
+            <column name="description" type="string"/>
+            <column name="created" type="date"/>
+            <column name="released" type="date"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

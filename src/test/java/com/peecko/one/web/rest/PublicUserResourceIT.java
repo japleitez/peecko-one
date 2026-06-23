@@ -6,7 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.peecko.one.IntegrationTest;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.User;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.UserRepository;
 import com.peecko.one.security.AuthoritiesConstants;
 import jakarta.persistence.EntityManager;
@@ -34,6 +36,9 @@ class PublicUserResourceIT {
     private UserRepository userRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -44,6 +49,8 @@ class PublicUserResourceIT {
 
     private User user;
 
+    private Agency agency;
+
     @BeforeEach
     public void setup() {
         cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
@@ -52,7 +59,12 @@ class PublicUserResourceIT {
 
     @BeforeEach
     public void initTest() {
+        agency = AgencyResourceIT.createEntity(em);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
+
         user = UserResourceIT.initTestUser(userRepository, em);
+        user.setAgencyId(agency.getId());
     }
 
     @Test

@@ -30,14 +30,14 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class LabelTranslationResourceIT {
 
-    private static final String DEFAULT_LABEL = "AAAAAAAAAA";
-    private static final String UPDATED_LABEL = "BBBBBBBBBB";
+    private static final String DEFAULT_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CODE = "BBBBBBBBBB";
 
     private static final Language DEFAULT_LANG = Language.EN;
     private static final Language UPDATED_LANG = Language.FR;
 
-    private static final String DEFAULT_TRANSLATION = "AAAAAAAAAA";
-    private static final String UPDATED_TRANSLATION = "BBBBBBBBBB";
+    private static final String DEFAULT_TEXT = "AAAAAAAAAA";
+    private static final String UPDATED_TEXT = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/label-translations";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -63,7 +63,7 @@ class LabelTranslationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LabelTranslation createEntity(EntityManager em) {
-        LabelTranslation labelTranslation = new LabelTranslation().label(DEFAULT_LABEL).lang(DEFAULT_LANG).translation(DEFAULT_TRANSLATION);
+        LabelTranslation labelTranslation = new LabelTranslation().code(DEFAULT_CODE).lang(DEFAULT_LANG).text(DEFAULT_TEXT);
         return labelTranslation;
     }
 
@@ -74,7 +74,7 @@ class LabelTranslationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LabelTranslation createUpdatedEntity(EntityManager em) {
-        LabelTranslation labelTranslation = new LabelTranslation().label(UPDATED_LABEL).lang(UPDATED_LANG).translation(UPDATED_TRANSLATION);
+        LabelTranslation labelTranslation = new LabelTranslation().code(UPDATED_CODE).lang(UPDATED_LANG).text(UPDATED_TEXT);
         return labelTranslation;
     }
 
@@ -98,9 +98,9 @@ class LabelTranslationResourceIT {
         List<LabelTranslation> labelTranslationList = labelTranslationRepository.findAll();
         assertThat(labelTranslationList).hasSize(databaseSizeBeforeCreate + 1);
         LabelTranslation testLabelTranslation = labelTranslationList.get(labelTranslationList.size() - 1);
-        assertThat(testLabelTranslation.getLabel()).isEqualTo(DEFAULT_LABEL);
+        assertThat(testLabelTranslation.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testLabelTranslation.getLang()).isEqualTo(DEFAULT_LANG);
-        assertThat(testLabelTranslation.getTranslation()).isEqualTo(DEFAULT_TRANSLATION);
+        assertThat(testLabelTranslation.getText()).isEqualTo(DEFAULT_TEXT);
     }
 
     @Test
@@ -128,7 +128,7 @@ class LabelTranslationResourceIT {
     void checkLabelIsRequired() throws Exception {
         int databaseSizeBeforeTest = labelTranslationRepository.findAll().size();
         // set the field null
-        labelTranslation.setLabel(null);
+        labelTranslation.setCode(null);
 
         // Create the LabelTranslation, which fails.
 
@@ -166,7 +166,7 @@ class LabelTranslationResourceIT {
     void checkTranslationIsRequired() throws Exception {
         int databaseSizeBeforeTest = labelTranslationRepository.findAll().size();
         // set the field null
-        labelTranslation.setTranslation(null);
+        labelTranslation.setText(null);
 
         // Create the LabelTranslation, which fails.
 
@@ -192,9 +192,9 @@ class LabelTranslationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(labelTranslation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].lang").value(hasItem(DEFAULT_LANG.toString())))
-            .andExpect(jsonPath("$.[*].translation").value(hasItem(DEFAULT_TRANSLATION)));
+            .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
     }
 
     @Test
@@ -209,9 +209,9 @@ class LabelTranslationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(labelTranslation.getId().intValue()))
-            .andExpect(jsonPath("$.label").value(DEFAULT_LABEL))
+            .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.lang").value(DEFAULT_LANG.toString()))
-            .andExpect(jsonPath("$.translation").value(DEFAULT_TRANSLATION));
+            .andExpect(jsonPath("$.text").value(DEFAULT_TEXT));
     }
 
     @Test
@@ -233,7 +233,7 @@ class LabelTranslationResourceIT {
         LabelTranslation updatedLabelTranslation = labelTranslationRepository.findById(labelTranslation.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedLabelTranslation are not directly saved in db
         em.detach(updatedLabelTranslation);
-        updatedLabelTranslation.label(UPDATED_LABEL).lang(UPDATED_LANG).translation(UPDATED_TRANSLATION);
+        updatedLabelTranslation.code(UPDATED_CODE).lang(UPDATED_LANG).text(UPDATED_TEXT);
 
         restLabelTranslationMockMvc
             .perform(
@@ -247,9 +247,9 @@ class LabelTranslationResourceIT {
         List<LabelTranslation> labelTranslationList = labelTranslationRepository.findAll();
         assertThat(labelTranslationList).hasSize(databaseSizeBeforeUpdate);
         LabelTranslation testLabelTranslation = labelTranslationList.get(labelTranslationList.size() - 1);
-        assertThat(testLabelTranslation.getLabel()).isEqualTo(UPDATED_LABEL);
+        assertThat(testLabelTranslation.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testLabelTranslation.getLang()).isEqualTo(UPDATED_LANG);
-        assertThat(testLabelTranslation.getTranslation()).isEqualTo(UPDATED_TRANSLATION);
+        assertThat(testLabelTranslation.getText()).isEqualTo(UPDATED_TEXT);
     }
 
     @Test
@@ -322,7 +322,7 @@ class LabelTranslationResourceIT {
         LabelTranslation partialUpdatedLabelTranslation = new LabelTranslation();
         partialUpdatedLabelTranslation.setId(labelTranslation.getId());
 
-        partialUpdatedLabelTranslation.label(UPDATED_LABEL).translation(UPDATED_TRANSLATION);
+        partialUpdatedLabelTranslation.code(UPDATED_CODE).text(UPDATED_TEXT);
 
         restLabelTranslationMockMvc
             .perform(
@@ -336,9 +336,9 @@ class LabelTranslationResourceIT {
         List<LabelTranslation> labelTranslationList = labelTranslationRepository.findAll();
         assertThat(labelTranslationList).hasSize(databaseSizeBeforeUpdate);
         LabelTranslation testLabelTranslation = labelTranslationList.get(labelTranslationList.size() - 1);
-        assertThat(testLabelTranslation.getLabel()).isEqualTo(UPDATED_LABEL);
+        assertThat(testLabelTranslation.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testLabelTranslation.getLang()).isEqualTo(DEFAULT_LANG);
-        assertThat(testLabelTranslation.getTranslation()).isEqualTo(UPDATED_TRANSLATION);
+        assertThat(testLabelTranslation.getText()).isEqualTo(UPDATED_TEXT);
     }
 
     @Test
@@ -353,7 +353,7 @@ class LabelTranslationResourceIT {
         LabelTranslation partialUpdatedLabelTranslation = new LabelTranslation();
         partialUpdatedLabelTranslation.setId(labelTranslation.getId());
 
-        partialUpdatedLabelTranslation.label(UPDATED_LABEL).lang(UPDATED_LANG).translation(UPDATED_TRANSLATION);
+        partialUpdatedLabelTranslation.code(UPDATED_CODE).lang(UPDATED_LANG).text(UPDATED_TEXT);
 
         restLabelTranslationMockMvc
             .perform(
@@ -367,9 +367,9 @@ class LabelTranslationResourceIT {
         List<LabelTranslation> labelTranslationList = labelTranslationRepository.findAll();
         assertThat(labelTranslationList).hasSize(databaseSizeBeforeUpdate);
         LabelTranslation testLabelTranslation = labelTranslationList.get(labelTranslationList.size() - 1);
-        assertThat(testLabelTranslation.getLabel()).isEqualTo(UPDATED_LABEL);
+        assertThat(testLabelTranslation.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testLabelTranslation.getLang()).isEqualTo(UPDATED_LANG);
-        assertThat(testLabelTranslation.getTranslation()).isEqualTo(UPDATED_TRANSLATION);
+        assertThat(testLabelTranslation.getText()).isEqualTo(UPDATED_TEXT);
     }
 
     @Test

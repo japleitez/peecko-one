@@ -1,6 +1,12 @@
 .aps-orders-search-form {
-  min-width: 700px;
-  max-width: 800px;
+  min-width: 800px;
+  max-width: 900px;
+  width: fit-content;
+}
+
+.aps-plans-search-form {
+  min-width: 800px;
+  max-width: 900px;
   width: fit-content;
 }
 
@@ -8,4 +14,13 @@
   display: inline-block;
   padding: 1rem 1rem;
   vertical-align: top;
+}
+
+/* == to highlight cells in tables that can be copy to the clipboard ==*/
+td span {
+  color: olivedrab!important;
+}
+
+td:hover span {
+  color: #dc3545!important;
 }

@@ -50,8 +50,8 @@ class CoachResourceIT {
     private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
-    private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
+    private static final String DEFAULT_COUNTRY = "LU";
+    private static final String UPDATED_COUNTRY = "FR";
 
     private static final String DEFAULT_SPEAKS = "AAAAAAAAAA";
     private static final String UPDATED_SPEAKS = "BBBBBBBBBB";

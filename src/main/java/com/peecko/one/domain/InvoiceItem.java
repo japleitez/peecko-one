@@ -20,8 +20,8 @@ public class InvoiceItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_item_gen")
+    @SequenceGenerator(name = "invoice_item_gen", sequenceName = "invoice_item_seq")
     @Column(name = "id")
     private Long id;
 
@@ -39,36 +39,12 @@ public class InvoiceItem implements Serializable {
     private Integer quantity;
 
     @NotNull
-    @Column(name = "price_unit", nullable = false)
-    private Double priceUnit;
+    @Column(name = "unit_price", nullable = false)
+    private Double unitPrice;
 
     @NotNull
-    @Column(name = "price_extended", nullable = false)
-    private Double priceExtended;
-
-    @NotNull
-    @Column(name = "dis_rate", nullable = false)
-    private Double disRate;
-
-    @NotNull
-    @Column(name = "dis_amount", nullable = false)
-    private Double disAmount;
-
-    @NotNull
-    @Column(name = "final_price", nullable = false)
-    private Double finalPrice;
-
-    @NotNull
-    @Column(name = "vat_rate", nullable = false)
-    private Double vatRate;
-
-    @NotNull
-    @Column(name = "vat_amount", nullable = false)
-    private Double vatAmount;
-
-    @NotNull
-    @Column(name = "total", nullable = false)
-    private Double total;
+    @Column(name = "subtotal", nullable = false)
+    private Double subtotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "invoiceItems", "apsOrder" }, allowSetters = true)
@@ -128,108 +104,30 @@ public class InvoiceItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public Double getPriceUnit() {
-        return this.priceUnit;
+    public Double getUnitPrice() {
+        return this.unitPrice;
     }
 
-    public InvoiceItem priceUnit(Double priceUnit) {
-        this.setPriceUnit(priceUnit);
+    public InvoiceItem unitPrice(Double priceUnit) {
+        this.setUnitPrice(priceUnit);
         return this;
     }
 
-    public void setPriceUnit(Double priceUnit) {
-        this.priceUnit = priceUnit;
+    public void setUnitPrice(Double priceUnit) {
+        this.unitPrice = priceUnit;
     }
 
-    public Double getPriceExtended() {
-        return this.priceExtended;
+    public Double getSubtotal() {
+        return this.subtotal;
     }
 
-    public InvoiceItem priceExtended(Double priceExtended) {
-        this.setPriceExtended(priceExtended);
+    public InvoiceItem subtotal(Double subtotal) {
+        this.setSubtotal(subtotal);
         return this;
     }
 
-    public void setPriceExtended(Double priceExtended) {
-        this.priceExtended = priceExtended;
-    }
-
-    public Double getDisRate() {
-        return this.disRate;
-    }
-
-    public InvoiceItem disRate(Double disRate) {
-        this.setDisRate(disRate);
-        return this;
-    }
-
-    public void setDisRate(Double disRate) {
-        this.disRate = disRate;
-    }
-
-    public Double getDisAmount() {
-        return this.disAmount;
-    }
-
-    public InvoiceItem disAmount(Double disAmount) {
-        this.setDisAmount(disAmount);
-        return this;
-    }
-
-    public void setDisAmount(Double disAmount) {
-        this.disAmount = disAmount;
-    }
-
-    public Double getFinalPrice() {
-        return this.finalPrice;
-    }
-
-    public InvoiceItem finalPrice(Double finalPrice) {
-        this.setFinalPrice(finalPrice);
-        return this;
-    }
-
-    public void setFinalPrice(Double finalPrice) {
-        this.finalPrice = finalPrice;
-    }
-
-    public Double getVatRate() {
-        return this.vatRate;
-    }
-
-    public InvoiceItem vatRate(Double vatRate) {
-        this.setVatRate(vatRate);
-        return this;
-    }
-
-    public void setVatRate(Double vatRate) {
-        this.vatRate = vatRate;
-    }
-
-    public Double getVatAmount() {
-        return this.vatAmount;
-    }
-
-    public InvoiceItem vatAmount(Double vatAmount) {
-        this.setVatAmount(vatAmount);
-        return this;
-    }
-
-    public void setVatAmount(Double vatAmount) {
-        this.vatAmount = vatAmount;
-    }
-
-    public Double getTotal() {
-        return this.total;
-    }
-
-    public InvoiceItem total(Double total) {
-        this.setTotal(total);
-        return this;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setSubtotal(Double priceExtended) {
+        this.subtotal = priceExtended;
     }
 
     public Invoice getInvoice() {
@@ -268,18 +166,13 @@ public class InvoiceItem implements Serializable {
     @Override
     public String toString() {
         return "InvoiceItem{" +
-            "id=" + getId() +
-            ", type='" + getType() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", quantity=" + getQuantity() +
-            ", priceUnit=" + getPriceUnit() +
-            ", priceExtended=" + getPriceExtended() +
-            ", disRate=" + getDisRate() +
-            ", disAmount=" + getDisAmount() +
-            ", finalPrice=" + getFinalPrice() +
-            ", vatRate=" + getVatRate() +
-            ", vatAmount=" + getVatAmount() +
-            ", total=" + getTotal() +
-            "}";
+            "id=" + id +
+            ", type=" + type +
+            ", description='" + description + '\'' +
+            ", quantity=" + quantity +
+            ", priceUnit=" + unitPrice +
+            ", subtotal=" + subtotal +
+            ", invoice=" + invoice +
+            '}';
     }
 }

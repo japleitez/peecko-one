@@ -12,7 +12,7 @@ application {
     nativeLanguage en
   }
   entities * except SecuredRequest, VideoStat, ArticleStat, LikedVideo, LikedArticle, ViewedNotification, ViewedArticle, ViewedArticleSeries
-  paginate * with pagination except Agency, Staff, Contact, ApsPlan, ApsOrder, ApsMembership, VideoCategory, ArticleCategory, Invoice, InvoiceItem
+  paginate * with pagination except Agency, Contact, ApsPlan, ApsOrder, ApsMembership, VideoCategory, ArticleCategory, Invoice, InvoiceItem
 }
 
 /*
@@ -130,15 +130,6 @@ entity Agency {
   updated Instant
 }
 
-/*
-* Staff
-* Agency Staff
-* -------------------------------------------------------
-*/
-entity Staff {
-  userId Long required,
-  role String required
-}
 
 /*
 * The Customer
@@ -172,6 +163,7 @@ entity Customer {
   closeReason String,
   emailDomains String,
   vatId String,
+  vatRate Double,
   bank String,
   iban String,
   logo String,
@@ -250,6 +242,7 @@ entity ApsPlan {
 * contract: ApsPlan.contract
 * period: year + month
 * license: membership number
+* unitPrice: ApsPricing.unit_price resolved by customer_id and min_quantity
 * numberOfUsers: number of users
 * invoiceNumber: generated
 */
@@ -639,7 +632,6 @@ enum Language {
 relationship OneToMany {
 	ApsUser to ApsDevice,
     ApsUser to PlayList,
-	Agency to Staff,
     Agency to Customer,
 	Customer to Contact,
     Customer to ApsPlan,

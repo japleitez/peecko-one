@@ -21,8 +21,8 @@ public class Article implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_gen")
+    @SequenceGenerator(name = "article_gen", sequenceName = "article_seq")
     @Column(name = "id")
     private Long id;
 
@@ -78,11 +78,11 @@ public class Article implements Serializable {
     @Column(name = "archived")
     private Instant archived;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "articles" }, allowSetters = true)
     private ArticleCategory articleCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "videos", "articles" }, allowSetters = true)
     private Coach coach;
 

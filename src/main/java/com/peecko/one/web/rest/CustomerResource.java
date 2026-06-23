@@ -1,10 +1,9 @@
 package com.peecko.one.web.rest;
 
-import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.CustomerState;
-import com.peecko.one.repository.CustomerRepository;
-import com.peecko.one.security.SecurityUtils;
+import com.peecko.one.service.CustomerService;
+import com.peecko.one.service.request.CustomerListRequest;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,10 +42,10 @@ public class CustomerResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
-    public CustomerResource(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CustomerResource(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
     /**
@@ -61,7 +61,7 @@ public class CustomerResource {
         if (customer.getId() != null) {
             throw new BadRequestAlertException("A new customer cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Customer result = customerRepository.save(customer);
+        Customer result = customerService.create(customer);
         return ResponseEntity
             .created(new URI("/api/customers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -83,23 +83,12 @@ public class CustomerResource {
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Customer customer
     ) throws URISyntaxException {
-        log.debug("REST request to update Customer : {}, {}", id, customer);
-        if (customer.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, customer.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!customerRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Customer result = customerRepository.save(customer);
+        validateUpdateInput(customer, id);
+        Customer result = customerService.update(customer);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, customer.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(customer);
     }
 
     /**
@@ -119,79 +108,8 @@ public class CustomerResource {
         @NotNull @RequestBody Customer customer
     ) throws URISyntaxException {
         log.debug("REST request to partial update Customer partially : {}, {}", id, customer);
-        if (customer.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, customer.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!customerRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<Customer> result = customerRepository
-            .findById(customer.getId())
-            .map(existingCustomer -> {
-                if (customer.getCode() != null) {
-                    existingCustomer.setCode(customer.getCode());
-                }
-                if (customer.getName() != null) {
-                    existingCustomer.setName(customer.getName());
-                }
-                if (customer.getCountry() != null) {
-                    existingCustomer.setCountry(customer.getCountry());
-                }
-                if (customer.getLicense() != null) {
-                    existingCustomer.setLicense(customer.getLicense());
-                }
-                if (customer.getState() != null) {
-                    existingCustomer.setState(customer.getState());
-                }
-                if (customer.getCloseReason() != null) {
-                    existingCustomer.setCloseReason(customer.getCloseReason());
-                }
-                if (customer.getEmailDomains() != null) {
-                    existingCustomer.setEmailDomains(customer.getEmailDomains());
-                }
-                if (customer.getVatId() != null) {
-                    existingCustomer.setVatId(customer.getVatId());
-                }
-                if (customer.getBank() != null) {
-                    existingCustomer.setBank(customer.getBank());
-                }
-                if (customer.getIban() != null) {
-                    existingCustomer.setIban(customer.getIban());
-                }
-                if (customer.getLogo() != null) {
-                    existingCustomer.setLogo(customer.getLogo());
-                }
-                if (customer.getNotes() != null) {
-                    existingCustomer.setNotes(customer.getNotes());
-                }
-                if (customer.getCreated() != null) {
-                    existingCustomer.setCreated(customer.getCreated());
-                }
-                if (customer.getUpdated() != null) {
-                    existingCustomer.setUpdated(customer.getUpdated());
-                }
-                if (customer.getTrialed() != null) {
-                    existingCustomer.setTrialed(customer.getTrialed());
-                }
-                if (customer.getDeclined() != null) {
-                    existingCustomer.setDeclined(customer.getDeclined());
-                }
-                if (customer.getActivated() != null) {
-                    existingCustomer.setActivated(customer.getActivated());
-                }
-                if (customer.getClosed() != null) {
-                    existingCustomer.setClosed(customer.getClosed());
-                }
-
-                return existingCustomer;
-            })
-            .map(customerRepository::save);
-
+        validateUpdateInput(customer, id);
+        Optional<Customer> result = customerService.partialUpdateCustomer(customer);
         return ResponseUtil.wrapOrNotFound(
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, customer.getId().toString())
@@ -199,16 +117,21 @@ public class CustomerResource {
     }
 
     /**
-     * {@code GET  /customers} : get all the customers.
+     * {@code GET  /customers} : get the customers matching the criteria
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customers in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<Customer>> getAllCustomers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<Customer>> getAllCustomers(
+        @RequestParam(required = false) String code,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) CustomerState state,
+        @ParameterObject Pageable pageable
+    ) {
         log.debug("REST request to get a page of Customers");
-        Agency agency = SecurityUtils.getCurrentUserAgency();
-        Page<Customer> page = customerRepository.findByAgency(agency, pageable);
+        CustomerListRequest request = new CustomerListRequest(code, name, state);
+        Page<Customer> page = customerService.findAll(request, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -216,11 +139,11 @@ public class CustomerResource {
     @GetMapping("/active")
     public ResponseEntity<List<Customer>> findActiveCustomers() {
         log.debug("REST request to get active Customers");
-        Agency agency = SecurityUtils.getCurrentUserAgency();
-        List<Customer> customers = customerRepository.findByAgencyAndCustomerState(agency, CustomerState.ACTIVE);
+        List<Customer> customers = customerService.findByCustomerAndStates(CustomerState.TRIAL_ACTIVE);
         List<Customer> list = customers.stream().map(Customer::cloneForSelection).toList();
         return ResponseEntity.ok().body(list);
     }
+
     /**
      * {@code GET  /customers/:id} : get the "id" customer.
      *
@@ -230,7 +153,7 @@ public class CustomerResource {
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable("id") Long id) {
         log.debug("REST request to get Customer : {}", id);
-        Optional<Customer> customer = customerRepository.findById(id);
+        Optional<Customer> customer = customerService.findById(id);
         return ResponseUtil.wrapOrNotFound(customer);
     }
 
@@ -243,10 +166,22 @@ public class CustomerResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable("id") Long id) {
         log.debug("REST request to delete Customer : {}", id);
-        customerRepository.deleteById(id);
+        customerService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    private void validateUpdateInput(Customer input, Long id) {
+        if (input.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, input.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+        if (customerService.notFound(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
     }
 }

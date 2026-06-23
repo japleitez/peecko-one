@@ -1,5 +1,4 @@
 import dayjs from 'dayjs/esm';
-import { IStaff } from 'app/entities/staff/staff.model';
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { IApsPricing } from 'app/entities/aps-pricing/aps-pricing.model';
 import { Language } from 'app/entities/enumerations/language.model';
@@ -21,13 +20,16 @@ export interface IAgency {
   billingPhone?: string | null;
   bank?: string | null;
   iban?: string | null;
+  bankBeneficiary?: string | null;
+  bankAddress?: string | null;
+  bankAccount?: string | null;
+  bankSwift?: string | null;
   rcs?: string | null;
   vatId?: string | null;
   vatRate?: number | null;
   notes?: string | null;
   created?: dayjs.Dayjs | null;
   updated?: dayjs.Dayjs | null;
-  staff?: IStaff[] | null;
   customers?: ICustomer[] | null;
   apsPricings?: IApsPricing[] | null;
 }
@@ -50,13 +52,16 @@ export interface AgencyAccess {
   billingPhone: FieldAccess;
   bank: FieldAccess;
   iban: FieldAccess;
+  bankBeneficiary: FieldAccess;
+  bankAddress: FieldAccess;
+  bankAccount: FieldAccess;
+  bankSwift: FieldAccess;
   rcs: FieldAccess;
   vatId: FieldAccess;
   vatRate: FieldAccess;
   notes: FieldAccess;
   created: FieldAccess;
   updated: FieldAccess;
-  staff: FieldAccess;
   customers: FieldAccess;
   apsPricings: FieldAccess;
 }
@@ -66,14 +71,18 @@ export let AGENCY_USER_ACCESS: AgencyAccess;
 AGENCY_USER_ACCESS = {
   apsPricings: { listable: false, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
-  billingEmail: { listable: false, visible: true, disabled: false },
-  billingPhone: { listable: false, visible: true, disabled: false },
+  bankBeneficiary: { listable: false, visible: true, disabled: false },
+  bankAddress: { listable: false, visible: true, disabled: false },
+  bankAccount: { listable: false, visible: true, disabled: false },
+  bankSwift: { listable: false, visible: true, disabled: false },
+  billingEmail: { listable: true, visible: true, disabled: false },
+  billingPhone: { listable: true, visible: true, disabled: false },
   city: { listable: true, visible: true, disabled: false },
   code: { listable: true, visible: true, disabled: false },
   country: { listable: true, visible: true, disabled: false },
   created: { listable: false, visible: true, disabled: true },
   customers: { listable: false, visible: true, disabled: false },
-  email: { listable: false, visible: true, disabled: false },
+  email: { listable: true, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
   id: { listable: false, visible: true, disabled: true },
   language: { listable: false, visible: true, disabled: false },
@@ -83,9 +92,8 @@ AGENCY_USER_ACCESS = {
   notes: { listable: false, visible: true, disabled: false },
   phone: { listable: true, visible: true, disabled: false },
   rcs: { listable: false, visible: true, disabled: false },
-  staff: { listable: false, visible: true, disabled: false },
   updated: { listable: false, visible: true, disabled: true },
   vatId: { listable: false, visible: true, disabled: false },
   vatRate: { listable: false, visible: true, disabled: false },
-  zip: { listable: false, visible: true, disabled: false }
+  zip: { listable: false, visible: true, disabled: false },
 };

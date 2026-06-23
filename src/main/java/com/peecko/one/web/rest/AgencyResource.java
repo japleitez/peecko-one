@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Agency;
 import com.peecko.one.repository.AgencyRepository;
+import com.peecko.one.service.UserService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -34,9 +35,11 @@ public class AgencyResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final UserService userService;
     private final AgencyRepository agencyRepository;
 
-    public AgencyResource(AgencyRepository agencyRepository) {
+    public AgencyResource(UserService userService, AgencyRepository agencyRepository) {
+        this.userService = userService;
         this.agencyRepository = agencyRepository;
     }
 
@@ -234,5 +237,12 @@ public class AgencyResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<Agency> getAgency() {
+        Long agencyId = userService.getCurrentAgencyId();
+        Optional<Agency> agency = agencyRepository.findById(agencyId);
+        return ResponseUtil.wrapOrNotFound(agency);
     }
 }

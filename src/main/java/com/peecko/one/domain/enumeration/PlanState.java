@@ -1,11 +1,13 @@
 package com.peecko.one.domain.enumeration;
 
+import java.util.List;
+
 /**
  * The PlanState enumeration.
  */
 public enum PlanState {
-    NEW,
     TRIAL,
     ACTIVE,
-    CLOSED,
+    CLOSED;
+    public static final List<PlanState> TRIAL_ACTIVE = List.of(TRIAL, ACTIVE);
 }

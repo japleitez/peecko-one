@@ -17,11 +17,6 @@ const routes: Routes = [
     loadChildren: () => import('./agency/agency.routes'),
   },
   {
-    path: 'staff',
-    data: { pageTitle: 'Staff' },
-    loadChildren: () => import('./staff/staff.routes'),
-  },
-  {
     path: 'customer',
     data: { pageTitle: 'Customers' },
     loadChildren: () => import('./customer/customer.routes'),
@@ -92,14 +87,14 @@ const routes: Routes = [
     loadChildren: () => import('./play-list/play-list.routes'),
   },
   {
-    path: 'video-item',
-    data: { pageTitle: 'VideoItems' },
-    loadChildren: () => import('./video-item/video-item.routes'),
-  },
-  {
     path: 'coach',
     data: { pageTitle: 'Coaches' },
     loadChildren: () => import('./coach/coach.routes'),
+  },
+  {
+    path: 'country',
+    data: { pageTitle: 'Countries' },
+    loadChildren: () => import('./country/country.routes'),
   },
   {
     path: 'invoice',
@@ -110,6 +105,11 @@ const routes: Routes = [
     path: 'invoice-item',
     data: { pageTitle: 'InvoiceItems' },
     loadChildren: () => import('./invoice-item/invoice-item.routes'),
+  },
+  {
+    path: 'trial-license',
+    data: { pageTitle: 'TrialLicenses' },
+    loadChildren: () => import('./trial-license/trial-license.routes'),
   },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];

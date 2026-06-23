@@ -23,8 +23,8 @@ public class Video implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "video_gen")
+    @SequenceGenerator(name = "video_gen", sequenceName = "video_seq")
     @Column(name = "id")
     private Long id;
 
@@ -80,11 +80,11 @@ public class Video implements Serializable {
     @Column(name = "archived")
     private Instant archived;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "videos" }, allowSetters = true)
     private VideoCategory videoCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "videos", "articles" }, allowSetters = true)
     private Coach coach;
 

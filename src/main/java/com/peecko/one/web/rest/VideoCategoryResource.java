@@ -131,9 +131,6 @@ public class VideoCategoryResource {
                 if (videoCategory.getTitle() != null) {
                     existingVideoCategory.setTitle(videoCategory.getTitle());
                 }
-                if (videoCategory.getLabel() != null) {
-                    existingVideoCategory.setLabel(videoCategory.getLabel());
-                }
                 if (videoCategory.getCreated() != null) {
                     existingVideoCategory.setCreated(videoCategory.getCreated());
                 }

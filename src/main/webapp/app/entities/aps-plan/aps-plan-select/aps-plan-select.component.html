@@ -1,0 +1,9 @@
+<mat-form-field [class]="this.cl" subscriptSizing="dynamic">
+  <mat-label>Aps Plan</mat-label>
+  <input type="text" matInput placeholder="" aria-label="Aps Plan" [formControl]="control" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
+    @for (plan of filteredPlans | async; track plan) {
+      <mat-option [value]="plan" >{{plan.contract}}</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

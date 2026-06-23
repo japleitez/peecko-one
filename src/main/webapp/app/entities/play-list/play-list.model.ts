@@ -1,5 +1,4 @@
 import dayjs from 'dayjs/esm';
-import { IVideoItem } from 'app/entities/video-item/video-item.model';
 import { IApsUser } from 'app/entities/aps-user/aps-user.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
@@ -9,7 +8,6 @@ export interface IPlayList {
   counter?: number | null;
   created?: dayjs.Dayjs | null;
   updated?: dayjs.Dayjs | null;
-  videoItems?: IVideoItem[] | null;
   apsUser?: IApsUser | null;
 }
 
@@ -21,7 +19,6 @@ export interface PlayListAccess {
   counter: FieldAccess;
   created: FieldAccess;
   updated: FieldAccess;
-  videoItems: FieldAccess;
   apsUser: FieldAccess;
 }
 
@@ -33,6 +30,5 @@ PLAYLIST_ACCESS = {
   counter: { listable: true, visible: true, disabled: false },
   created: { listable: true, visible: true, disabled: true },
   updated: { listable: true, visible: true, disabled: true },
-  videoItems: { listable: false, visible: true, disabled: true },
   apsUser: { listable: true, visible: true, disabled: false },
 };

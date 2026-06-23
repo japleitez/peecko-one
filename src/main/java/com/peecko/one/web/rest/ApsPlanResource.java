@@ -1,25 +1,32 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsPlan;
-import com.peecko.one.repository.ApsPlanRepository;
-import com.peecko.one.security.SecurityUtils;
-import com.peecko.one.service.ApsLicenseService;
+import com.peecko.one.domain.enumeration.PlanState;
+import com.peecko.one.service.ApsPlanService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
-import com.peecko.one.web.rest.payload.request.ActivateTrialPlanRequest;
+import com.peecko.one.service.request.ApsPlanListRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -37,13 +44,10 @@ public class ApsPlanResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ApsPlanRepository apsPlanRepository;
+    private final ApsPlanService apsPlanService;
 
-    private final ApsLicenseService apsLicenseService;
-
-    public ApsPlanResource(ApsPlanRepository apsPlanRepository, ApsLicenseService apsLicenseService) {
-        this.apsPlanRepository = apsPlanRepository;
-        this.apsLicenseService = apsLicenseService;
+    public ApsPlanResource(ApsPlanService apsPlanService) {
+        this.apsPlanService = apsPlanService;
     }
 
     /**
@@ -59,7 +63,10 @@ public class ApsPlanResource {
         if (apsPlan.getId() != null) {
             throw new BadRequestAlertException("A new apsPlan cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ApsPlan result = apsPlanRepository.save(apsPlan);
+        if (apsPlan.getCustomer() == null) {
+            throw new BadRequestAlertException("A new apsPlan requires a Customer ID", ENTITY_NAME, "idexists");
+        }
+        ApsPlan result = apsPlanService.create(apsPlan);
         return ResponseEntity
             .created(new URI("/api/aps-plans/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -78,26 +85,16 @@ public class ApsPlanResource {
      */
     @PutMapping("/{id}")
     public ResponseEntity<ApsPlan> updateApsPlan(
-        @PathVariable(value = "id", required = false) final Long id,
+        @PathVariable(required = false) final Long id,
         @Valid @RequestBody ApsPlan apsPlan
     ) throws URISyntaxException {
         log.debug("REST request to update ApsPlan : {}, {}", id, apsPlan);
-        if (apsPlan.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, apsPlan.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!apsPlanRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        ApsPlan result = apsPlanRepository.save(apsPlan);
-        return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString()))
-            .body(result);
+        validateUpdateInput(apsPlan, id);
+        Optional<ApsPlan> result = apsPlanService.partialUpdateApsPlan(apsPlan);
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString())
+        );
     }
 
     /**
@@ -117,59 +114,24 @@ public class ApsPlanResource {
         @NotNull @RequestBody ApsPlan apsPlan
     ) throws URISyntaxException {
         log.debug("REST request to partial update ApsPlan partially : {}, {}", id, apsPlan);
+        validateUpdateInput(apsPlan, id);
+        Optional<ApsPlan> result = apsPlanService.partialUpdateApsPlan(apsPlan);
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString())
+        );
+    }
+
+    private void validateUpdateInput(ApsPlan apsPlan, Long id) {
         if (apsPlan.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         if (!Objects.equals(id, apsPlan.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-
-        if (!apsPlanRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        if (apsPlanService.notFound(id)) {
+            throw new BadRequestAlertException("Entity Not Found", ENTITY_NAME, "idinvalid");
         }
-
-        Optional<ApsPlan> result = apsPlanRepository
-            .findById(apsPlan.getId())
-            .map(existingApsPlan -> {
-                if (apsPlan.getContract() != null) {
-                    existingApsPlan.setContract(apsPlan.getContract());
-                }
-                if (apsPlan.getPricing() != null) {
-                    existingApsPlan.setPricing(apsPlan.getPricing());
-                }
-                if (apsPlan.getState() != null) {
-                    existingApsPlan.setState(apsPlan.getState());
-                }
-                if (apsPlan.getLicense() != null) {
-                    existingApsPlan.setLicense(apsPlan.getLicense());
-                }
-                if (apsPlan.getStarts() != null) {
-                    existingApsPlan.setStarts(apsPlan.getStarts());
-                }
-                if (apsPlan.getEnds() != null) {
-                    existingApsPlan.setEnds(apsPlan.getEnds());
-                }
-                if (apsPlan.getUnitPrice() != null) {
-                    existingApsPlan.setUnitPrice(apsPlan.getUnitPrice());
-                }
-                if (apsPlan.getNotes() != null) {
-                    existingApsPlan.setNotes(apsPlan.getNotes());
-                }
-                if (apsPlan.getCreated() != null) {
-                    existingApsPlan.setCreated(apsPlan.getCreated());
-                }
-                if (apsPlan.getUpdated() != null) {
-                    existingApsPlan.setUpdated(apsPlan.getUpdated());
-                }
-
-                return existingApsPlan;
-            })
-            .map(apsPlanRepository::save);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, apsPlan.getId().toString())
-        );
     }
 
     /**
@@ -178,10 +140,20 @@ public class ApsPlanResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsPlans in body.
      */
     @GetMapping("")
-    public List<ApsPlan> getAllApsPlans() {
+    public ResponseEntity<List<ApsPlan>> getAllApsPlans(
+        @RequestParam(required = false) String customerCode,
+        @RequestParam(required = false) String contract,
+        @RequestParam(required = false) PlanState state,
+        @RequestParam(required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate starts,
+        @RequestParam(required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate ends,
+        @ParameterObject Pageable pageable) {
         log.debug("REST request to get all ApsPlans");
-        Long agencyId = SecurityUtils.getCurrentAgencyId();
-        return apsPlanRepository.getPlansForAgency(agencyId);
+        ApsPlanListRequest request = new ApsPlanListRequest(customerCode, contract, state, starts, ends);
+        Page<ApsPlan> page = apsPlanService.findAll(request, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -193,7 +165,7 @@ public class ApsPlanResource {
     @GetMapping("/{id}")
     public ResponseEntity<ApsPlan> getApsPlan(@PathVariable("id") Long id) {
         log.debug("REST request to get ApsPlan : {}", id);
-        Optional<ApsPlan> apsPlan = apsPlanRepository.findById(id);
+        Optional<ApsPlan> apsPlan = apsPlanService.loadById(id);
         return ResponseUtil.wrapOrNotFound(apsPlan);
     }
 
@@ -206,24 +178,17 @@ public class ApsPlanResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteApsPlan(@PathVariable("id") Long id) {
         log.debug("REST request to delete ApsPlan : {}", id);
-        apsPlanRepository.deleteById(id);
+        apsPlanService.deleteById(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
 
-    @PostMapping("/activateTrialPlan")
-    public ResponseEntity<ApsPlan> activateTrialPlan(@RequestBody ActivateTrialPlanRequest request) {
-        log.debug("REST request to activate Trial Plan for customer {}", request.getCustomerId());
-        List<ApsPlan> overlapping = apsPlanRepository.overlappingTrialPlans(request.getCustomerId(), request.getStart(), request.getEnds());
-        if (!overlapping.isEmpty()) {
-            throw new BadRequestAlertException("Cannot activate trial plan because it overlaps an existing one", ENTITY_NAME, "overlapping.trial.plan");
-        }
-        Optional<ApsPlan> result = apsLicenseService.activateApsPlanForTrial(request.getCustomerId(), request.getStart(), request.getEnds());
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, "failed.trial.plan.activation")
-        );
+    @GetMapping("/trial-active")
+    public ResponseEntity<List<ApsPlan>> getPlansWithTrialOrActiveStatus() {
+        List<ApsPlan> result =  apsPlanService.getPlansByStates(PlanState.TRIAL_ACTIVE);
+        return ResponseEntity.ok().body(result);
     }
+
 }

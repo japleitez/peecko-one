@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
@@ -48,7 +48,10 @@ export default class RegisterComponent implements AfterViewInit {
     }),
   });
 
-  constructor(private registerService: RegisterService) {}
+  constructor(
+    private registerService: RegisterService,
+    private router: Router,
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.login) {
@@ -69,7 +72,7 @@ export default class RegisterComponent implements AfterViewInit {
       const { login, email } = this.registerForm.getRawValue();
       this.registerService
         .save({ login, email, password, langKey: 'en' })
-        .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
+        .subscribe({ next: () => this.router.navigate(['/admin/user-management']), error: response => this.processError(response) });
     }
   }
 

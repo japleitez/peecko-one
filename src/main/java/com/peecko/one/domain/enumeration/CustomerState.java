@@ -1,5 +1,7 @@
 package com.peecko.one.domain.enumeration;
 
+import java.util.List;
+
 /**
  * The CustomerState enumeration.
  */
@@ -7,5 +9,8 @@ public enum CustomerState {
     NEW,
     TRIAL,
     ACTIVE,
-    CLOSED,
+    CLOSED;
+
+    public static final List<CustomerState> TRIAL_ACTIVE = List.of(TRIAL, ACTIVE);
+
 }

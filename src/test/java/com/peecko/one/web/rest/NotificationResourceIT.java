@@ -32,9 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class NotificationResourceIT {
 
-    private static final Long DEFAULT_COMPANY_ID = 1L;
-    private static final Long UPDATED_COMPANY_ID = 2L;
-
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
@@ -81,7 +78,6 @@ class NotificationResourceIT {
      */
     public static Notification createEntity(EntityManager em) {
         Notification notification = new Notification()
-            .companyId(DEFAULT_COMPANY_ID)
             .title(DEFAULT_TITLE)
             .message(DEFAULT_MESSAGE)
             .language(DEFAULT_LANGUAGE)
@@ -100,7 +96,6 @@ class NotificationResourceIT {
      */
     public static Notification createUpdatedEntity(EntityManager em) {
         Notification notification = new Notification()
-            .companyId(UPDATED_COMPANY_ID)
             .title(UPDATED_TITLE)
             .message(UPDATED_MESSAGE)
             .language(UPDATED_LANGUAGE)
@@ -129,7 +124,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeCreate + 1);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(DEFAULT_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(DEFAULT_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(DEFAULT_LANGUAGE);
@@ -155,23 +149,6 @@ class NotificationResourceIT {
         // Validate the Notification in the database
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkCompanyIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = notificationRepository.findAll().size();
-        // set the field null
-        notification.setCompanyId(null);
-
-        // Create the Notification, which fails.
-
-        restNotificationMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(notification)))
-            .andExpect(status().isBadRequest());
-
-        List<Notification> notificationList = notificationRepository.findAll();
-        assertThat(notificationList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -237,7 +214,6 @@ class NotificationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(notification.getId().intValue())))
-            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID.intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].message").value(hasItem(DEFAULT_MESSAGE)))
             .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE.toString())))
@@ -259,7 +235,6 @@ class NotificationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(notification.getId().intValue()))
-            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID.intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.message").value(DEFAULT_MESSAGE))
             .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE.toString()))
@@ -289,7 +264,6 @@ class NotificationResourceIT {
         // Disconnect from session so that the updates on updatedNotification are not directly saved in db
         em.detach(updatedNotification);
         updatedNotification
-            .companyId(UPDATED_COMPANY_ID)
             .title(UPDATED_TITLE)
             .message(UPDATED_MESSAGE)
             .language(UPDATED_LANGUAGE)
@@ -310,7 +284,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(UPDATED_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
@@ -388,12 +361,7 @@ class NotificationResourceIT {
         Notification partialUpdatedNotification = new Notification();
         partialUpdatedNotification.setId(notification.getId());
 
-        partialUpdatedNotification
-            .companyId(UPDATED_COMPANY_ID)
-            .language(UPDATED_LANGUAGE)
-            .imageUrl(UPDATED_IMAGE_URL)
-            .starts(UPDATED_STARTS)
-            .expires(UPDATED_EXPIRES);
+        partialUpdatedNotification.language(UPDATED_LANGUAGE).imageUrl(UPDATED_IMAGE_URL).starts(UPDATED_STARTS).expires(UPDATED_EXPIRES);
 
         restNotificationMockMvc
             .perform(
@@ -407,7 +375,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(DEFAULT_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
@@ -430,7 +397,6 @@ class NotificationResourceIT {
         partialUpdatedNotification.setId(notification.getId());
 
         partialUpdatedNotification
-            .companyId(UPDATED_COMPANY_ID)
             .title(UPDATED_TITLE)
             .message(UPDATED_MESSAGE)
             .language(UPDATED_LANGUAGE)
@@ -451,7 +417,6 @@ class NotificationResourceIT {
         List<Notification> notificationList = notificationRepository.findAll();
         assertThat(notificationList).hasSize(databaseSizeBeforeUpdate);
         Notification testNotification = notificationList.get(notificationList.size() - 1);
-        assertThat(testNotification.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testNotification.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testNotification.getMessage()).isEqualTo(UPDATED_MESSAGE);
         assertThat(testNotification.getLanguage()).isEqualTo(UPDATED_LANGUAGE);

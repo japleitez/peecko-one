@@ -22,7 +22,7 @@ describe('LabelTranslation Form Service', () => {
             id: expect.any(Object),
             label: expect.any(Object),
             lang: expect.any(Object),
-            translation: expect.any(Object),
+            text: expect.any(Object),
           }),
         );
       });
@@ -35,7 +35,7 @@ describe('LabelTranslation Form Service', () => {
             id: expect.any(Object),
             label: expect.any(Object),
             lang: expect.any(Object),
-            translation: expect.any(Object),
+            text: expect.any(Object),
           }),
         );
       });

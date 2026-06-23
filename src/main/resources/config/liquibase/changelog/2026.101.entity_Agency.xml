@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="2024-001-Agency-sequence" author="jhipster">
+        <createSequence sequenceName="agency_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024-001-Agency-entity" author="jhipster">
+        <createTable tableName="agency">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="varchar(150)">
+                <constraints nullable="false" />
+            </column>
+            <column name="line_1" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="line_2" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="zip" type="varchar(10)">
+                <constraints nullable="true" />
+            </column>
+            <column name="city" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="country" type="varchar(2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="language" type="varchar(2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="email" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="phone" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="billing_email" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="billing_phone" type="varchar(20)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="iban" type="varchar(40)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_beneficiary" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_address" type="varchar(200)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_account" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="bank_swift" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="rcs" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="vat_id" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="vat_rate" type="double">
+                <constraints nullable="true" />
+            </column>
+            <column name="notes" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="created" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="updated" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+        <dropDefaultValue tableName="agency" columnName="created" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="agency" columnName="updated" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <!--
+        Agency Data Setup
+        id;code;name;line_1;zip;city;country;language;email;phone;billing_email;billing_phone;bank;iban;rcs;vat_id;vat_rate;created
+    -->
+    <changeSet id="2024-001-Agency-data" author="jhipster">
+        <loadData
+            file="config/liquibase/init_data/agency.csv"
+            separator=";"
+            tableName="agency"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="code" type="string"/>
+            <column name="name" type="string"/>
+            <column name="line_1" type="string"/>
+            <column name="zip" type="string"/>
+            <column name="city" type="string"/>
+            <column name="country" type="string"/>
+            <column name="language" type="string"/>
+            <column name="email" type="string"/>
+            <column name="phone" type="string"/>
+            <column name="billing_email" type="string"/>
+            <column name="billing_phone" type="string"/>
+            <column name="bank" type="string"/>
+            <column name="iban" type="string"/>
+            <column name="rcs" type="string"/>
+            <column name="vat_id" type="string"/>
+            <column name="vat_rate" type="numeric"/>
+            <column name="created" type="date"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

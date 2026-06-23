@@ -17,14 +17,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "aps_user")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class ApsUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aps_user_gen")
+    @SequenceGenerator(name = "aps_user_gen", sequenceName = "aps_user_seq")
     @Column(name = "id")
     private Long id;
 
@@ -69,14 +68,13 @@ public class ApsUser implements Serializable {
     @Column(name = "updated")
     private Instant updated;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsUser")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "aps_user_id")
     @JsonIgnoreProperties(value = { "apsUser" }, allowSetters = true)
     private Set<ApsDevice> apsDevices = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsUser")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "videoItems", "apsUser" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "apsUser" }, allowSetters = true)
     private Set<PlayList> playLists = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

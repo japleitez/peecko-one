@@ -1,7 +1,7 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.service.UserService;
-import com.peecko.one.service.dto.UserDTO;
+import com.peecko.one.domain.dto.UserDTO;
 import java.util.*;
 import java.util.Collections;
 import org.slf4j.Logger;

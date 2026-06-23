@@ -132,9 +132,6 @@ public class ArticleCategoryResource {
                 if (articleCategory.getTitle() != null) {
                     existingArticleCategory.setTitle(articleCategory.getTitle());
                 }
-                if (articleCategory.getLabel() != null) {
-                    existingArticleCategory.setLabel(articleCategory.getLabel());
-                }
                 if (articleCategory.getCreated() != null) {
                     existingArticleCategory.setCreated(articleCategory.getCreated());
                 }

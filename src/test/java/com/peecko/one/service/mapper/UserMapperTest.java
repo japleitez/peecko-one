@@ -3,8 +3,8 @@ package com.peecko.one.service.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.peecko.one.domain.User;
-import com.peecko.one.service.dto.AdminUserDTO;
-import com.peecko.one.service.dto.UserDTO;
+import com.peecko.one.domain.dto.AdminUserDTO;
+import com.peecko.one.domain.dto.UserDTO;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

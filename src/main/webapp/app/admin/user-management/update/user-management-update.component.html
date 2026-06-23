@@ -97,6 +97,16 @@
       </div>
 
       <div class="mb-3">
+        <label class="form-label">Agency</label>
+        <select class="form-control" name="agencyId" formControlName="agencyId">
+          <option [ngValue]="null">-- Select agency --</option>
+          @for (agency of agencies; track agency.id) {
+            <option [ngValue]="agency.id">{{ agency.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="mb-3">
         <label>Profiles</label>
         <select class="form-control" multiple name="authority" formControlName="authorities">
           @for (authority of authorities; track $index) {

@@ -5,27 +5,31 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { CustomerService } from 'app/entities/customer/service/customer.service';
+import { CountryCode } from 'app/entities/enumerations/country.model';
 import { ContactType } from 'app/entities/enumerations/contact-type.model';
 import { ContactService } from '../service/contact.service';
 import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
 import { ContactFormService, ContactFormGroup } from './contact-form.service';
 import { NgIf } from '@angular/common';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
+import { CountryService } from 'app/entities/country/service/country.service';
 
 @Component({
   standalone: true,
   selector: 'jhi-contact-update',
   templateUrl: './contact-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent],
 })
 export class ContactUpdateComponent implements OnInit {
   ua: ContactAccess = this.getContactUserAccess();
   isSaving = false;
   contact: IContact | null = null;
   contactTypeValues = Object.keys(ContactType);
+  countries: CountryCode[] = [];
 
   customersSharedCollection: ICustomer[] = [];
 
@@ -35,6 +39,7 @@ export class ContactUpdateComponent implements OnInit {
     protected contactService: ContactService,
     protected contactFormService: ContactFormService,
     protected customerService: CustomerService,
+    protected countryService: CountryService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -49,6 +54,10 @@ export class ContactUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+    this.countryService
+      .query({ size: 1000, sort: ['name,asc'] })
+      .pipe(map(res => res.body ?? []))
+      .subscribe(countries => (this.countries = countries));
   }
 
   previousState(): void {
@@ -108,5 +117,9 @@ export class ContactUpdateComponent implements OnInit {
 
   protected getContactUserAccess(): ContactAccess {
     return CONTACT_USER_ACCESS;
+  }
+
+  customerControl() {
+    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
   }
 }

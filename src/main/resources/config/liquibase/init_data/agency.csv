@@ -1,0 +1,2 @@
+id;code;name;line_1;zip;city;country;language;email;phone;billing_email;billing_phone;bank;iban;rcs;vat_id;vat_rate;created
+1;LU;Luxembourg Agency;7 Rue Henri VII;1011;Luxembourg;LU;FR;info@peecko.com;686.205.9884;info@peecko.com;686.205.9884;BGL;LU01 1111 0082 0708 5081;LU-RCS-01;LU_VAT_001;7.0;2024-01-01T00:00:00

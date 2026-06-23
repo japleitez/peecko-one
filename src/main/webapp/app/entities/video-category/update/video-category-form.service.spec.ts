@@ -20,9 +20,9 @@ describe('VideoCategory Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            pos: expect.any(Object),
             code: expect.any(Object),
             title: expect.any(Object),
-            label: expect.any(Object),
             created: expect.any(Object),
             released: expect.any(Object),
             archived: expect.any(Object),
@@ -36,9 +36,9 @@ describe('VideoCategory Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
+            pos: expect.any(Object),
             code: expect.any(Object),
             title: expect.any(Object),
-            label: expect.any(Object),
             created: expect.any(Object),
             released: expect.any(Object),
             archived: expect.any(Object),

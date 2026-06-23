@@ -13,6 +13,18 @@
           </div>
         }
 
+        <div class="mb-3" *ngIf="ua.pos.visible">
+          <label class="form-label" for="field_pos">Pos</label>
+          <input type="text" class="form-control" name="pos" id="field_pos" data-cy="code" formControlName="pos" />
+          @if (editForm.get('pos')!.invalid && (editForm.get('pos')!.dirty || editForm.get('pos')!.touched)) {
+            <div>
+              @if (editForm.get('pos')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.code.visible">
           <label class="form-label" for="field_code">Code</label>
           <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
@@ -31,18 +43,6 @@
           @if (editForm.get('title')!.invalid && (editForm.get('title')!.dirty || editForm.get('title')!.touched)) {
             <div>
               @if (editForm.get('title')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.label.visible">
-          <label class="form-label" for="field_label">Label</label>
-          <input type="text" class="form-control" name="label" id="field_label" data-cy="label" formControlName="label" />
-          @if (editForm.get('label')!.invalid && (editForm.get('label')!.dirty || editForm.get('label')!.touched)) {
-            <div>
-              @if (editForm.get('label')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
             </div>

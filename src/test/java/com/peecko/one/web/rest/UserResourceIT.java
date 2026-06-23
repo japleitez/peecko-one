@@ -6,11 +6,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.peecko.one.IntegrationTest;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.Authority;
 import com.peecko.one.domain.User;
+import com.peecko.one.domain.dto.AdminUserDTO;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.UserRepository;
 import com.peecko.one.security.AuthoritiesConstants;
-import com.peecko.one.service.dto.AdminUserDTO;
 import com.peecko.one.service.mapper.UserMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
@@ -62,6 +64,9 @@ class UserResourceIT {
     private UserRepository userRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -74,6 +79,7 @@ class UserResourceIT {
     private MockMvc restUserMockMvc;
 
     private User user;
+    private Agency agency;
 
     @BeforeEach
     public void setup() {
@@ -113,7 +119,12 @@ class UserResourceIT {
 
     @BeforeEach
     public void initTest() {
+        agency = AgencyResourceIT.createEntity(em);
+        agency.setId(1L);
+        agency = agencyRepository.saveAndFlush(agency);
+
         user = initTestUser(userRepository, em);
+        user.setAgencyId(agency.getId());
     }
 
     @Test
@@ -364,6 +375,7 @@ class UserResourceIT {
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
+        anotherUser.setAgencyId(agency.getId());
         anotherUser.setLogin("jhipster");
         anotherUser.setPassword(RandomStringUtils.randomAlphanumeric(60));
         anotherUser.setActivated(true);
@@ -404,6 +416,7 @@ class UserResourceIT {
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
+        anotherUser.setAgencyId(agency.getId());
         anotherUser.setLogin("jhipster");
         anotherUser.setPassword(RandomStringUtils.randomAlphanumeric(60));
         anotherUser.setActivated(true);

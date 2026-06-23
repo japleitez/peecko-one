@@ -1,0 +1,93 @@
+id;code;lang;text
+1;audience.all;DE;alle
+2;audience.all;EN;all
+3;audience.all;ES;todos
+4;audience.all;FR;tout
+5;fc.cardio;DE;Cardio
+6;fc.cardio;EN;Cardio
+7;fc.cardio;ES;Cardio
+8;fc.cardio;FR;Cardio
+9;fc.cardio.all;DE;Schnell bewegen, besser fühlen! Dieses kurze Cardio-Workout hilft beim Abnehmen und Fettverbrennen und stärkt gleichzeitig den ganzen Körper.
+10;fc.cardio.all;EN;Move Fast, Feel Better! This is a short cardio workout for weight loss and fat burn, it is also designed to help build strength across the whole body.
+11;fc.cardio.all;ES;¡Muévete rápido, siéntete mejor! Este es un entrenamiento cardiovascular corto para perder peso y quemar grasa. También está diseñado para ayudar a desarrollar fuerza en todo el cuerpo.
+12;fc.cardio.all;FR;Bougez vite, sentez-vous mieux ! Un entraînement cardio court pour perdre du poids et brûler des graisses. Il est également conçu pour renforcer l'ensemble du corps.
+13;fc.core.body;DE;Die Körpermitte
+14;fc.core.body;EN;Core Body
+15;fc.core.body;ES;Abdominales
+16;fc.core.body;FR;Ceinture Abdominale
+17;fc.core.body.all;DE;Stärkere Rumpfmuskulatur in wenigen Minuten! Dieses Workout stärkt deine Körpermitte, verbessert deine Rumpfstabilität und aktiviert deine Taille – ganz ohne Geräte. Perfekt als schnelles Finish.
+18;fc.core.body.all;EN;Stronger Core in Minutes! This is a workout designed to strengthen your midsection, improve core stability, and fire up your waist with no equipment, perfect as a quick finisher.
+19;fc.core.body.all;ES;¡Abdominales más fuertes en minutos! Este entrenamiento está diseñado para fortalecer tu zona media, mejorar la estabilidad del abdomen y activar tu cintura sin necesidad de equipo. Perfecto como remate rápido.
+20;fc.core.body.all;FR;Des abdominaux plus forts en quelques minutes ! Un entraînement conçu pour renforcer votre sangle abdominale, améliorer la stabilité de votre tronc et tonifier votre taille sans matériel. Idéal pour terminer votre séance rapidement.
+21;fc.desk.detox;DE;Desk Detox
+22;fc.desk.detox;EN;Desk Detox
+23;fc.desk.detox;ES;Desk Detox
+24;fc.desk.detox;FR;Desk Detox
+25;fc.desk.detox.all;DE;Sitzen Sie den ganzen Tag am Schreibtisch? Diese kurze Detox-Routine für den Schreibtisch wurde entwickelt, um Verspannungen zu lösen, die Haltung zu verbessern und die Beweglichkeit wiederherzustellen. Ideal zur Linderung von Rückenschmerzen, Nackensteife und Hüftverspannungen, die durch langes Sitzen verursacht werden.
+26;fc.desk.detox.all;EN;Sitting all day at your desk? This quick desk detox routine is designed to relieve tension, improve posture, and restore mobility. Perfect for reducing back pain, neck stiffness, and tight hips caused by long hours of sitting.
+27;fc.desk.detox.all;ES;¿Pasas todo el día sentado en tu escritorio? Esta rápida rutina de desintoxicación para el escritorio está diseñada para aliviar la tensión, mejorar la postura y recuperar la movilidad. Ideal para reducir el dolor de espalda, la rigidez del cuello y la tensión en las caderas causadas por pasar largas horas sentado.
+28;fc.desk.detox.all;FR;Vous passez vos journées assis à votre bureau? Cette routine express de détoxification du bureau est conçue pour soulager les tensions, améliorer la posture et retrouver une meilleure mobilité. Idéale pour atténuer les douleurs dorsales, les raideurs de la nuque et les tensions des hanches dues à une position assise prolongée.
+29;fc.full.body;DE;Ganzkörpertraining
+30;fc.full.body;EN;Full Body
+31;fc.full.body;ES;Cuerpo Completo
+32;fc.full.body;FR;Full Body
+33;fc.full.body.all;DE;Vom Sitzen zum Starken! Dieses kurze Workout stärkt Muskeln, Kraft und formt den ganzen Körper.
+34;fc.full.body.all;EN;From Sitting to Strong! This is a short workout for building muscle, strength & shape across the entire body.
+35;fc.full.body.all;ES;¡De sentado a fuerte! Este es un entrenamiento corto para desarrollar músculo, fuerza y tonificar todo el cuerpo.
+36;fc.full.body.all;FR;De la position assise à la force ! Un entraînement court pour développer les muscles, la force et sculpter l'ensemble du corps.
+37;fc.lower.body;DE;Unterkörper
+38;fc.lower.body;EN;Lower Body
+39;fc.lower.body;ES;Tren Inferior
+40;fc.lower.body;FR;Bas du Corps
+41;fc.lower.body.all;DE;Po-Training, nicht sitzen! Dieses kurze Workout trainiert, stärkt, formt und strafft Beine und Po.
+42;fc.lower.body.all;EN;Glutes On, Sit Off! This is a short workout to train, strengthen, shape and tone your legs and glutes.
+43;fc.lower.body.all;ES;¡Glúteos activados, sin sentarse! Este es un entrenamiento corto para entrenar, fortalecer, tonificar y moldear tus piernas y glúteos.
+44;fc.lower.body.all;FR;Des fessiers en action ! Un entraînement court pour entraîner, renforcer, sculpter et tonifier vos jambes et vos fessiers.
+45;fc.stretch;DE;Stretching
+46;fc.stretch;EN;Stretching
+47;fc.stretch;ES;Estiramientos
+48;fc.stretch;FR;Stretching
+49;fc.stretch.all;DE;Schnell besser fühlen! Diese kurze Dehnübung konzentriert sich darauf, verspannte Muskeln zu lockern, die Flexibilität zu erhöhen und die allgemeine Beweglichkeit zu verbessern. Sie können diese Dehnübungen morgens nach dem Aufwachen, nach dem Training oder sogar vor dem Schlafengehen durchführen.
+50;fc.stretch.all;EN;Feel Better Fast! This short stretch routine focuses on releasing tight muscles, increasing flexibility and improving your overall mobility. You can use this stretching routine when you wake up, after your workouts or even before bed.
+51;fc.stretch.all;ES;¡Siéntete mejor rápidamente! Esta breve rutina de estiramientos se centra en liberar la tensión muscular, aumentar la flexibilidad y mejorar la movilidad general. Puedes usarla al despertar, después de entrenar o incluso antes de acostarte.
+52;fc.stretch.all;FR;Sentez-vous mieux rapidement ! Cette courte routine d'étirements vise à détendre les muscles tendus, à améliorer la souplesse et la mobilité générale. Vous pouvez l'intégrer à votre routine au réveil, après votre séance de sport ou même avant de vous coucher.
+53;fc.tag.cardio;DE;cardio
+54;fc.tag.cardio;EN;cardio
+55;fc.tag.cardio;ES;cardio
+56;fc.tag.cardio;FR;cardio
+57;fc.tag.strength;DE;Kraft
+58;fc.tag.strength;EN;Strength
+59;fc.tag.strength;ES;Fuerza
+60;fc.tag.strength;FR;Force
+61;fc.tag.stretch;DE;Dehnen
+62;fc.tag.stretch;EN;Stretch
+63;fc.tag.stretch;ES;Estiramientos
+64;fc.tag.stretch;FR;Étirements
+65;fc.upper.body;DE;Oberkörper
+66;fc.upper.body;EN;Upper Body
+67;fc.upper.body;ES;Tren Superior
+68;fc.upper.body;FR;Haut du corps
+69;fc.upper.body.all;DE;Entfessle deinen Oberkörper! Dieses kurze Workout stärkt, formt und strafft deine Rumpfmuskulatur, Arme, Schultern, Brust und Rücken.
+70;fc.upper.body.all;EN;Unlock Your Upper Body! This is a short workout to strengthen, shape and tone your core, arms, shoulders, chest and back.
+71;fc.upper.body.all;ES;¡Desbloquea la parte superior de tu cuerpo! Este es un entrenamiento corto para fortalecer, tonificar y moldear tu abdomen, brazos, hombros, pecho y espalda.
+72;fc.upper.body.all;FR;Développez le haut de votre corps ! Un entraînement court pour renforcer, sculpter et tonifier vos abdominaux, vos bras, vos épaules, votre poitrine et votre dos.
+73;greeting.library;DE;Man muss nicht alles tun, sondern nur das Richtige tun!
+74;greeting.library;EN;You don't have to do everything just do the right thing!
+75;greeting.library;ES;¡No tienes que hacerlo todo, simplemente haz lo correcto!
+76;greeting.library;FR;Vous n'êtes pas obligé de tout faire, faites simplement ce qu'il faut!
+77;greeting.today;DE;Willkommen zu Ihrer täglichen Dosis Wohlbefinden! Stärke ist die Grundlage, Wohlbefinden die Belohnung, Produktivität das Ergebnis!
+78;greeting.today;EN;Welcome to your daily dose of wellness! Strength is the foundation, Feeling good is the reward, Productivity is the result!
+79;greeting.today;ES;¡Bienvenido a tu dosis diaria de bienestar! La fuerza es la base, sentirse bien es la recompensa, la productividad es el resultado!
+80;greeting.today;FR;Bienvenue dans votre dose quotidienne de bien-être! La force est le fondement, le bien-être est la récompense, la productivité est le résultat!
+81;intensity.ADVANCED;DE;Fortgeschrittene
+82;intensity.ADVANCED;EN;Advanced
+83;intensity.ADVANCED;ES;Avanzado
+84;intensity.ADVANCED;FR;Avancé
+85;intensity.BEGINNER;DE;Anfänger
+86;intensity.BEGINNER;EN;beginner
+87;intensity.BEGINNER;ES;Principiante
+88;intensity.BEGINNER;FR;Débutant
+89;intensity.INTERMEDIATE;DE;Fortgeschritten
+90;intensity.INTERMEDIATE;EN;Intermediate
+91;intensity.INTERMEDIATE;ES;Intermedio
+92;intensity.INTERMEDIATE;FR;Intermédiaire

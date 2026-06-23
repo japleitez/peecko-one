@@ -1,26 +1,34 @@
 package com.peecko.one.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.config.Constants;
+import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.User;
+import com.peecko.one.domain.dto.AdminUserDTO;
+import com.peecko.one.domain.dto.PasswordChangeDTO;
+import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.AuthorityRepository;
 import com.peecko.one.repository.UserRepository;
 import com.peecko.one.security.AuthoritiesConstants;
+import com.peecko.one.service.MailService;
 import com.peecko.one.service.UserService;
-import com.peecko.one.service.dto.AdminUserDTO;
-import com.peecko.one.service.dto.PasswordChangeDTO;
 import com.peecko.one.web.rest.vm.KeyAndPasswordVM;
 import com.peecko.one.web.rest.vm.ManagedUserVM;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -40,16 +48,33 @@ class AccountResourceIT {
     private UserRepository userRepository;
 
     @Autowired
+    private AgencyRepository agencyRepository;
+
+    @Autowired
     private AuthorityRepository authorityRepository;
 
     @Autowired
     private UserService userService;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private MockMvc restAccountMockMvc;
+
+    @MockBean
+    private MailService mailService;
+
+    private Agency agency;
+
+    @BeforeEach
+    public void initTest() {
+        agency = AgencyResourceIT.createEntity(em);
+        agencyRepository.saveAndFlush(agency);
+    }
 
     @Test
     @WithUnauthenticatedMockUser
@@ -122,6 +147,8 @@ class AccountResourceIT {
             .andExpect(status().isCreated());
 
         assertThat(userRepository.findOneByLogin("test-register-valid")).isPresent();
+
+        verify(mailService).sendActivationEmail(any(User.class));
     }
 
     @Test
@@ -375,6 +402,7 @@ class AccountResourceIT {
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(false);
         user.setActivationKey(activationKey);
+        user.setAgencyId(agency.getId());
 
         userRepository.saveAndFlush(user);
 
@@ -399,6 +427,7 @@ class AccountResourceIT {
         user.setEmail("save-account@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -435,6 +464,7 @@ class AccountResourceIT {
         user.setEmail("save-invalid-email@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setAgencyId(agency.getId());
 
         userRepository.saveAndFlush(user);
 
@@ -464,6 +494,7 @@ class AccountResourceIT {
         user.setEmail("save-existing-email@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         User anotherUser = new User();
@@ -471,6 +502,7 @@ class AccountResourceIT {
         anotherUser.setEmail("save-existing-email2@example.com");
         anotherUser.setPassword(RandomStringUtils.randomAlphanumeric(60));
         anotherUser.setActivated(true);
+        anotherUser.setAgencyId(agency.getId());
 
         userRepository.saveAndFlush(anotherUser);
 
@@ -501,6 +533,7 @@ class AccountResourceIT {
         user.setEmail("save-existing-email-and-login@example.com");
         user.setPassword(RandomStringUtils.randomAlphanumeric(60));
         user.setActivated(true);
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         AdminUserDTO userDTO = new AdminUserDTO();
@@ -530,6 +563,7 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-wrong-existing-password");
         user.setEmail("change-password-wrong-existing-password@example.com");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -554,6 +588,7 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password");
         user.setEmail("change-password@example.com");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -577,6 +612,7 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-small");
         user.setEmail("change-password-too-small@example.com");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MIN_LENGTH - 1);
@@ -602,6 +638,7 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-long");
         user.setEmail("change-password-too-long@example.com");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MAX_LENGTH + 1);
@@ -627,6 +664,7 @@ class AccountResourceIT {
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-empty");
         user.setEmail("change-password-empty@example.com");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -650,11 +688,14 @@ class AccountResourceIT {
         user.setLogin("password-reset");
         user.setEmail("password-reset@example.com");
         user.setLangKey("en");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
             .perform(post("/api/account/reset-password/init").content("password-reset@example.com"))
             .andExpect(status().isOk());
+
+        verify(mailService).sendPasswordResetMail(user);
     }
 
     @Test
@@ -666,6 +707,7 @@ class AccountResourceIT {
         user.setLogin("password-reset-upper-case");
         user.setEmail("password-reset-upper-case@example.com");
         user.setLangKey("en");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         restAccountMockMvc
@@ -689,6 +731,7 @@ class AccountResourceIT {
         user.setEmail("finish-password-reset@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
@@ -716,6 +759,7 @@ class AccountResourceIT {
         user.setEmail("finish-password-reset-too-small@example.com");
         user.setResetDate(Instant.now().plusSeconds(60));
         user.setResetKey("reset key too small");
+        user.setAgencyId(agency.getId());
         userRepository.saveAndFlush(user);
 
         KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();

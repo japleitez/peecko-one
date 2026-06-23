@@ -2,11 +2,14 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsMembership;
 import com.peecko.one.repository.ApsMembershipRepository;
+import com.peecko.one.repository.ApsOrderRepository;
+import com.peecko.one.service.ApsMembershipService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,9 +38,17 @@ public class ApsMembershipResource {
     private String applicationName;
 
     private final ApsMembershipRepository apsMembershipRepository;
+    private final ApsOrderRepository apsOrderRepository;
+    private final ApsMembershipService apsMembershipService;
 
-    public ApsMembershipResource(ApsMembershipRepository apsMembershipRepository) {
+    public ApsMembershipResource(
+        ApsMembershipRepository apsMembershipRepository,
+        ApsOrderRepository apsOrderRepository,
+        ApsMembershipService apsMembershipService
+    ) {
         this.apsMembershipRepository = apsMembershipRepository;
+        this.apsOrderRepository = apsOrderRepository;
+        this.apsMembershipService = apsMembershipService;
     }
 
     /**
@@ -54,6 +65,9 @@ public class ApsMembershipResource {
             throw new BadRequestAlertException("A new apsMembership cannot already have an ID", ENTITY_NAME, "idexists");
         }
         ApsMembership result = apsMembershipRepository.save(apsMembership);
+        if (result.getApsOrder() != null) {
+            apsMembershipService.recalculateNumberOfUsers(result.getApsOrder().getId());
+        }
         return ResponseEntity
             .created(new URI("/api/aps-memberships/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -151,9 +165,9 @@ public class ApsMembershipResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apsMemberships in body.
      */
     @GetMapping("")
-    public List<ApsMembership> getAllApsMemberships() {
-        log.debug("REST request to get all ApsMemberships");
-        return apsMembershipRepository.findAll();
+    public List<ApsMembership> getAllApsMemberships(@RequestParam Long apsOrderId) {
+        log.debug("REST request to get ApsMemberships by apsOrderId {}", apsOrderId);
+        return apsOrderRepository.findById(apsOrderId).map(apsMembershipRepository::findByApsOrder).orElse(new ArrayList<>());
     }
 
     /**
@@ -178,7 +192,14 @@ public class ApsMembershipResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteApsMembership(@PathVariable("id") Long id) {
         log.debug("REST request to delete ApsMembership : {}", id);
+        Long apsOrderId = apsMembershipRepository
+            .findById(id)
+            .map(m -> m.getApsOrder() != null ? m.getApsOrder().getId() : null)
+            .orElse(null);
         apsMembershipRepository.deleteById(id);
+        if (apsOrderId != null) {
+            apsMembershipService.recalculateNumberOfUsers(apsOrderId);
+        }
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))

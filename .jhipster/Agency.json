@@ -95,13 +95,6 @@
   "name": "Agency",
   "relationships": [
     {
-      "otherEntityName": "staff",
-      "otherEntityRelationshipName": "agency",
-      "relationshipName": "staff",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
       "otherEntityName": "customer",
       "otherEntityRelationshipName": "agency",
       "relationshipName": "customer",

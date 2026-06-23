@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Upload Members</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Customer</mat-label>
+    <input matInput [(ngModel)]="data.cstName" readonly>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Contract</mat-label>
+    <input matInput [(ngModel)]="data.contract" readonly>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Period</mat-label>
+    <input matInput [(ngModel)]="data.period" readonly>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [value]="fileName" />
+    <input
+      type="file"
+      id="fileInput"
+      (change)="selectFile($event)"
+      name="fileInput"
+    />
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="!currentFile"
+    (click)="upload()"
+  >
+    Upload
+  </button>
+  <button mat-button (click)="onNoClick()">Close</button>
+
+</mat-dialog-actions>

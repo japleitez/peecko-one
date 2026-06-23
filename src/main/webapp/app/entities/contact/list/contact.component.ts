@@ -13,6 +13,10 @@ import { CONTACT_USER_ACCESS, ContactAccess, IContact } from '../contact.model';
 import { EntityArrayResponseType, ContactService } from '../service/contact.service';
 import { ContactDeleteDialogComponent } from '../delete/contact-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { ICustomer } from '../../customer/customer.model';
+import { CustomerData } from '../../customer/service/customer.data';
+import { CustomerService } from '../../customer/service/customer.service';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   standalone: true,
@@ -27,8 +31,9 @@ import { NgIf } from '@angular/common';
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-    NgIf
-  ]
+    NgIf,
+    MatInputModule,
+  ],
 })
 export class ContactComponent implements OnInit {
   ua: ContactAccess = this.getContactUserAccess();
@@ -38,17 +43,25 @@ export class ContactComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
+  customerCode: string | null | undefined = null;
+  customers: ICustomer[] = [];
+
   constructor(
     protected contactService: ContactService,
+    protected customerService: CustomerService,
+    protected customerData: CustomerData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
-  ) {}
+  ) {
+    this.customerCode = customerData.getCode();
+  }
 
   trackId = (_index: number, item: IContact): number => this.contactService.getContactIdentifier(item);
 
   ngOnInit(): void {
+    this.customerService.queryActive().subscribe(res => (this.customers = res.body ?? []));
     this.load();
   }
 
@@ -111,6 +124,9 @@ export class ContactComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.customerCode) {
+      queryObject.customerCode = this.customerCode;
+    }
     return this.contactService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -136,6 +152,5 @@ export class ContactComponent implements OnInit {
 
   protected getContactUserAccess(): ContactAccess {
     return CONTACT_USER_ACCESS;
-}
-
+  }
 }

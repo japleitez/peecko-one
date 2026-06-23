@@ -1,0 +1,15 @@
+code;name;locale;currency;language
+AT;Austria;AT;EUR;de
+BE;Belgium;BE;EUR;fr
+FR;France;FR;EUR;fr
+DE;Germany;DE;EUR;de
+GR;Greece;GR;EUR;el
+IE;Ireland;IE;EUR;en
+IT;Italy;IT;EUR;it
+LU;Luxembourg;LU;EUR;fr
+NL;Netherlands;NL;EUR;nl
+PL;Poland;PL;PLN;pl
+PT;Portugal;PT;EUR;pt
+ES;Spain;ES;EUR;es
+US;United States;US;USD;en
+SV;El Salvador;SV;USD;es

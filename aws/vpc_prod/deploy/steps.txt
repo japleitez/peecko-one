@@ -1,0 +1,45 @@
+# create folder if a safe way, change owner, and check owner
+sudo /bin/mkdir -p /var/log/admin
+sudo /bin/chown ssm-user:ssm-user /var/log/admin
+ls -la /opt/ | grep admin
+
+sudo nano /etc/systemd/system/admin.service
+sudo nano /etc/nginx/conf.d/admin.conf
+
+sudo systemctl start nginx           # start immediately for the current session
+sudo systemctl enable nginx          # start automatically on every boot, but it does not start immediately
+sudo nginx -t                        # test config for errors
+sudo systemctl reload nginx          # apply without downtime
+
+
+# EC2 instance role must have s3:GetObject permission on the bucket.
+aws s3 cp s3://prod-peecko-api-backup-435496007267-eu-central-1-an/admin.jar /opt/admin/admin.jar
+
+# 1. Reload systemd to pick up the new service file
+sudo systemctl daemon-reload
+
+# 2. Start the service
+sudo systemctl start admin
+
+# 3. Enable it to auto-start on reboot
+sudo systemctl enable admin
+
+# 4. Check it's running correctly
+sudo systemctl status admin
+
+# 5. If it failed, check the logs, this shows the last 50 lines of the service logs
+sudo journalctl -u admin -n 50
+
+
+less /var/log/admin/admin.log
+
+tail -f /var/log/admin/admin.log
+
+# Show last 100 lines
+tail -n 100 /var/log/admin/admin.log
+
+# Show last 100 lines and follow
+tail -n 100 -f /var/log/admin/admin.log
+
+# Search for errors in real time
+tail -f /var/log/admin/admin.log | grep ERROR

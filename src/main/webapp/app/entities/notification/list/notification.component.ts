@@ -15,6 +15,7 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { INotification, NOTIFICATION_ACCESS, NotificationAccess } from '../notification.model';
 import { EntityArrayResponseType, NotificationService } from '../service/notification.service';
 import { NotificationDeleteDialogComponent } from '../delete/notification-delete-dialog.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -30,7 +31,8 @@ import { NotificationDeleteDialogComponent } from '../delete/notification-delete
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-  ],
+    NgIf
+  ]
 })
 export class NotificationComponent implements OnInit {
   ua: NotificationAccess = this.getNotificationAccess();

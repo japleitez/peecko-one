@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { ARTICLE_ACCESS, ArticleAccess, IArticle } from '../article.model';
-import { APS_PLAN_USER_ACCESS } from '../../aps-plan/aps-plan.model';
+import { APS_PLAN_ACCESS } from '../../aps-plan/aps-plan.model';
 import { NgIf } from '@angular/common';
 
 @Component({

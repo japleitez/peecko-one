@@ -6,7 +6,6 @@ export interface IArticleCategory {
   id: number;
   code?: string | null;
   title?: string | null;
-  label?: string | null;
   created?: dayjs.Dayjs | null;
   release?: dayjs.Dayjs | null;
   archived?: dayjs.Dayjs | null;
@@ -19,7 +18,6 @@ export interface ArticleCategoryAccess {
   id: FieldAccess;
   code: FieldAccess;
   title: FieldAccess;
-  label: FieldAccess;
   created: FieldAccess;
   release: FieldAccess;
   archived: FieldAccess;
@@ -32,7 +30,6 @@ ARTICLE_CATEGORY_ACCESS = {
   id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   title: { listable: true, visible: true, disabled: false },
-  label: { listable: true, visible: true, disabled: false },
   created: { listable: false, visible: true, disabled: true },
   release: { listable: true, visible: true, disabled: false },
   archived: { listable: true, visible: true, disabled: false },

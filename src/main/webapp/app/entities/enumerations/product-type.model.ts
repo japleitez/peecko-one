@@ -1,3 +1,4 @@
 export enum ProductType {
-  AMS = 'AMS',
+  APP = 'AMS',
+  SRV = 'SRV',
 }

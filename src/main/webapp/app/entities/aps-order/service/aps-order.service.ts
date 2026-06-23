@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IApsOrder, IApsOrderInfo, NewApsOrder } from '../aps-order.model';
+import { IApsOrder, IApsOrderInfo, ICount, NewApsOrder } from '../aps-order.model';
 
 export type PartialUpdateApsOrder = Partial<IApsOrder> & Pick<IApsOrder, 'id'>;
 
 export type EntityResponseType = HttpResponse<IApsOrder>;
 export type EntityArrayResponseType = HttpResponse<IApsOrder[]>;
 export type EntityInfoArrayResponseType = HttpResponse<IApsOrderInfo[]>;
+export type CountResponseType = HttpResponse<ICount>;
 
 @Injectable({ providedIn: 'root' })
 export class ApsOrderService {
@@ -48,9 +49,23 @@ export class ApsOrderService {
     return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/info`, { params: options, observe: 'response' });
   }
 
-  batchGenerate(req?: any): Observable<EntityInfoArrayResponseType> {
+  batchOrders(req?: any): Observable<EntityInfoArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/generate`, { params: options, observe: 'response' });
+    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/orders`, { params: options, observe: 'response' });
+  }
+
+  batchInvoices(req?: any): Observable<EntityInfoArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/invoices`, { params: options, observe: 'response' });
+  }
+
+  batchEmails(req?: any): Observable<EntityInfoArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IApsOrderInfo[]>(`${this.resourceUrl}/batch/emails`, { params: options, observe: 'response' });
+  }
+
+  importMembers(formData: FormData): Observable<CountResponseType> {
+    return this.http.post<ICount>(`${this.resourceUrl}/import/members`, formData, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -84,4 +99,9 @@ export class ApsOrderService {
     }
     return apsOrderCollection;
   }
+
+  downloadInvoice(id: number): Observable<Blob> {
+    return this.http.get(`${this.resourceUrl}/${id}/download/invoice`, { responseType: 'blob' });
+  }
+
 }

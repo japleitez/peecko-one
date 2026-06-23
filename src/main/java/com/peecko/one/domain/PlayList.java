@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -16,14 +14,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "play_list")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class PlayList implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "play_list_gen")
+    @SequenceGenerator(name = "play_list_gen", sequenceName = "play_list_seq")
     @Column(name = "id")
     private Long id;
 
@@ -43,16 +40,9 @@ public class PlayList implements Serializable {
     @Column(name = "updated", nullable = false)
     private Instant updated;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "playList")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "playList" }, allowSetters = true)
-    private Set<VideoItem> videoItems = new HashSet<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "apsDevices", "playLists" }, allowSetters = true)
     private ApsUser apsUser;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
@@ -119,37 +109,6 @@ public class PlayList implements Serializable {
         this.updated = updated;
     }
 
-    public Set<VideoItem> getVideoItems() {
-        return this.videoItems;
-    }
-
-    public void setVideoItems(Set<VideoItem> videoItems) {
-        if (this.videoItems != null) {
-            this.videoItems.forEach(i -> i.setPlayList(null));
-        }
-        if (videoItems != null) {
-            videoItems.forEach(i -> i.setPlayList(this));
-        }
-        this.videoItems = videoItems;
-    }
-
-    public PlayList videoItems(Set<VideoItem> videoItems) {
-        this.setVideoItems(videoItems);
-        return this;
-    }
-
-    public PlayList addVideoItem(VideoItem videoItem) {
-        this.videoItems.add(videoItem);
-        videoItem.setPlayList(this);
-        return this;
-    }
-
-    public PlayList removeVideoItem(VideoItem videoItem) {
-        this.videoItems.remove(videoItem);
-        videoItem.setPlayList(null);
-        return this;
-    }
-
     public ApsUser getApsUser() {
         return this.apsUser;
     }
@@ -162,8 +121,6 @@ public class PlayList implements Serializable {
         this.setApsUser(apsUser);
         return this;
     }
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

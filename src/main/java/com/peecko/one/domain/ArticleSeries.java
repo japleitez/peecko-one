@@ -20,8 +20,8 @@ public class ArticleSeries implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_series_gen")
+    @SequenceGenerator(name = "article_series_gen", sequenceName = "article_series_seq")
     @Column(name = "id")
     private Long id;
 

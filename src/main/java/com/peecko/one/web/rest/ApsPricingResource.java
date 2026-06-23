@@ -130,17 +130,14 @@ public class ApsPricingResource {
         Optional<ApsPricing> result = apsPricingRepository
             .findById(apsPricing.getId())
             .map(existingApsPricing -> {
-                if (apsPricing.getCustomerId() != null) {
-                    existingApsPricing.setCustomerId(apsPricing.getCustomerId());
-                }
                 if (apsPricing.getIndex() != null) {
                     existingApsPricing.setIndex(apsPricing.getIndex());
                 }
                 if (apsPricing.getMinQuantity() != null) {
                     existingApsPricing.setMinQuantity(apsPricing.getMinQuantity());
                 }
-                if (apsPricing.getUnitPrice() != null) {
-                    existingApsPricing.setUnitPrice(apsPricing.getUnitPrice());
+                if (apsPricing.getFitnessPrice() != null) {
+                    existingApsPricing.setFitnessPrice(apsPricing.getFitnessPrice());
                 }
 
                 return existingApsPricing;

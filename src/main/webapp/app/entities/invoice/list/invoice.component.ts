@@ -12,6 +12,9 @@ import { SortService } from 'app/shared/sort/sort.service';
 import { IInvoice, INVOICE_ACCESS, InvoiceAccess } from '../invoice.model';
 import { EntityArrayResponseType, InvoiceService } from '../service/invoice.service';
 import { InvoiceDeleteDialogComponent } from '../delete/invoice-delete-dialog.component';
+import { ICustomer } from 'app/entities/customer/customer.model';
+import { CustomerService } from 'app/entities/customer/service/customer.service';
+import { ApsPlanService } from 'app/entities/aps-plan/service/aps-plan.service';
 
 @Component({
   standalone: true,
@@ -36,8 +39,21 @@ export class InvoiceComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
+  customerMap: Record<number, string> = {};
+  planMap: Record<number, string> = {};
+
+  // search fields
+  customers: ICustomer[] = [];
+  customerId: number | null = null;
+  starts: string = '';
+  ends: string = '';
+  invoiceNumber: string = '';
+  unpaid: boolean = false;
+
   constructor(
     protected invoiceService: InvoiceService,
+    protected customerService: CustomerService,
+    protected apsPlanService: ApsPlanService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -47,13 +63,23 @@ export class InvoiceComponent implements OnInit {
   trackId = (_index: number, item: IInvoice): number => this.invoiceService.getInvoiceIdentifier(item);
 
   ngOnInit(): void {
+    this.customerService.queryActive().subscribe(res => {
+      this.customers = res.body ?? [];
+      const map: Record<number, string> = {};
+      this.customers.forEach(c => (map[c.id] = c.name ?? ''));
+      this.customerMap = map;
+    });
+    this.apsPlanService.queryTrialActive().subscribe(res => {
+      const map: Record<number, string> = {};
+      (res.body ?? []).forEach(p => (map[p.id] = p.contract ?? ''));
+      this.planMap = map;
+    });
     this.load();
   }
 
   delete(invoice: IInvoice): void {
     const modalRef = this.modalService.open(InvoiceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.invoice = invoice;
-    // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
@@ -72,6 +98,29 @@ export class InvoiceComponent implements OnInit {
         this.onResponseSuccess(res);
       },
     });
+  }
+
+  search(): void {
+    this.queryBackend(this.predicate, this.ascending).subscribe({
+      next: (res: EntityArrayResponseType) => {
+        this.onResponseSuccess(res);
+      },
+    });
+  }
+
+  edit(invoice: IInvoice): void {
+    const customerName = invoice.customerId ? this.customerMap[invoice.customerId] ?? '' : '';
+    const planContract = invoice.apsPlanId ? this.planMap[invoice.apsPlanId] ?? '' : '';
+    this.router.navigate(['/invoice', invoice.id, 'edit'], { state: { customerName, planContract } });
+  }
+
+  clearFilter(): void {
+    this.customerId = null;
+    this.starts = '';
+    this.ends = '';
+    this.invoiceNumber = '';
+    this.unpaid = false;
+    this.load();
   }
 
   navigateToWithComponentValues(): void {
@@ -109,7 +158,22 @@ export class InvoiceComponent implements OnInit {
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    return this.invoiceService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    if (this.customerId) {
+      queryObject.customerId = this.customerId;
+    }
+    if (this.starts) {
+      queryObject.starts = this.starts;
+    }
+    if (this.ends) {
+      queryObject.ends = this.ends;
+    }
+    if (this.invoiceNumber) {
+      queryObject.number = this.invoiceNumber;
+    }
+    if (this.unpaid) {
+      queryObject.unpaid = true;
+    }
+    return this.invoiceService.search(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(predicate?: string, ascending?: boolean): void {

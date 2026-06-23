@@ -15,9 +15,9 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ notification.id }}</span>
           </dd>
-          <dt *ngIf="ua.companyId.visible"><span>Company Id</span></dt>
-          <dd *ngIf="ua.companyId.visible">
-            <span>{{ notification.companyId }}</span>
+          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
+          <dd *ngIf="ua.customer.visible">
+            <span>{{ notification.customer?.name }}</span>
           </dd>
           <dt *ngIf="ua.title.visible"><span>Title</span></dt>
           <dd *ngIf="ua.title.visible">

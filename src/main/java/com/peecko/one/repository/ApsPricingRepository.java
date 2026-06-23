@@ -1,7 +1,9 @@
 package com.peecko.one.repository;
 
 import com.peecko.one.domain.ApsPricing;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +11,18 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ApsPricingRepository extends JpaRepository<ApsPricing, Long> {}
+public interface ApsPricingRepository extends JpaRepository<ApsPricing, Long> {
+    @Query(
+        "from ApsPricing p left join fetch p.customer where p.country = :country and p.customer.id = :customerId and p.minQuantity <= :numberOfUsers order by p.minQuantity desc"
+    )
+    List<ApsPricing> findByCountryAndCustomerIdAndNumberOfUsers(
+        @Param("country") String country,
+        @Param("customerId") Long customerId,
+        @Param("numberOfUsers") Integer numberOfUsers
+    );
+
+    @Query(
+        "from ApsPricing p left join fetch p.customer where p.country = :country and p.minQuantity <= :numberOfUsers order by p.minQuantity desc"
+    )
+    List<ApsPricing> findByCountryAndNumberOfUsers(@Param("country") String country, @Param("numberOfUsers") Integer numberOfUsers);
+}

@@ -5,20 +5,20 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IAgency } from 'app/entities/agency/agency.model';
-import { AgencyService } from 'app/entities/agency/service/agency.service';
 import { APS_PRICING_ACCESS, ApsPricingAccess, IApsPricing } from '../aps-pricing.model';
 import { ApsPricingService } from '../service/aps-pricing.service';
 import { ApsPricingFormService, ApsPricingFormGroup } from './aps-pricing-form.service';
 import { NgIf } from '@angular/common';
+import { ICustomer } from '../../customer/customer.model';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-aps-pricing-update',
   templateUrl: './aps-pricing-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent]
 })
 export class ApsPricingUpdateComponent implements OnInit {
   ua: ApsPricingAccess = this.getApsPricingAccess();
@@ -82,6 +82,10 @@ export class ApsPricingUpdateComponent implements OnInit {
 
   protected getApsPricingAccess(): ApsPricingAccess {
     return APS_PRICING_ACCESS;
+  }
+
+  customerControl() {
+    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
   }
 
 }

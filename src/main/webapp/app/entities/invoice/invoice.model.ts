@@ -10,12 +10,16 @@ export interface IInvoice {
   dueDate?: dayjs.Dayjs | null;
   saleDate?: dayjs.Dayjs | null;
   subtotal?: number | null;
+  vatRate?: number | null;
   vat?: number | null;
   total?: number | null;
   paid?: number | null;
   paidDate?: dayjs.Dayjs | null;
   diff?: number | null;
   notes?: string | null;
+  customerId?: number | null;
+  apsPlanId?: number | null;
+  period?: number | null;
   invoiceItems?: IInvoiceItem[] | null;
   apsOrder?: IApsOrder | null;
 }
@@ -29,6 +33,7 @@ export interface InvoiceAccess {
   dueDate: FieldAccess;
   saleDate: FieldAccess;
   subtotal: FieldAccess;
+  vatRate: FieldAccess;
   vat: FieldAccess;
   total: FieldAccess;
   paid: FieldAccess;
@@ -48,6 +53,7 @@ INVOICE_ACCESS = {
   dueDate: { listable: true, visible: true, disabled: false },
   saleDate: { listable: true, visible: true, disabled: false },
   subtotal: { listable: true, visible: true, disabled: false },
+  vatRate: { listable: false, visible: true, disabled: false },
   vat: { listable: true, visible: true, disabled: false },
   total: { listable: true, visible: true, disabled: false },
   paid: { listable: true, visible: true, disabled: false },
@@ -55,5 +61,5 @@ INVOICE_ACCESS = {
   diff: { listable: true, visible: true, disabled: true },
   notes: { listable: false, visible: true, disabled: false },
   invoiceItems: { listable: false, visible: true, disabled: false },
-  apsOrder: { listable: true, visible: true, disabled: false },
+  apsOrder: { listable: true, visible: true, disabled: true },
 };

@@ -1,26 +1,24 @@
 # ===================================================================
 # Spring Boot configuration for the "dev" profile.
-#
 # This configuration overrides the application.yml file.
-#
-# More information on profiles: https://www.jhipster.tech/profiles/
-# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
-# ===================================================================
-
 logging:
   level:
-    ROOT: DEBUG
-    tech.jhipster: DEBUG
-    org.hibernate.SQL: DEBUG
+    root: INFO
     com.peecko.one: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG # useful to debug auth flows
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    com.zaxxer.hikari: DEBUG # SQL connection pool details
+    liquibase: DEBUG
+
+server:
+  port: 8080
 
 spring:
+  application:
+    name: admin
   devtools:
     restart:
       enabled: true
@@ -32,7 +30,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/admin
+    url: jdbc:postgresql://127.0.0.1:5432/admin #home 192.168.178.125 localhost 127.0.0.1
     username: admin
     password:
     hikari:
@@ -40,19 +38,23 @@ spring:
       auto-commit: false
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev, faker
+    contexts: dev, init_data
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: smtp.office365.com
+    port: 587
+    username: info@peecko.com
+    password: InfoPeecko@2022
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
-
-server:
-  port: 8080
 
 # ===================================================================
 # JHipster specific properties

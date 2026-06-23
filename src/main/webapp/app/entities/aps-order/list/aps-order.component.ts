@@ -1,21 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbInputDatepicker, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
 import { SortByDirective, SortDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
-import {
-  AbstractControl,
-  FormBuilder, FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule, ValidationErrors, ValidatorFn,
-  Validators
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { SortService } from 'app/shared/sort/sort.service';
 import { APS_ORDER_USER_ACCESS, ApsOrderAccess, IApsOrder, IApsOrderInfo } from '../aps-order.model';
@@ -24,30 +16,15 @@ import { ApsOrderDeleteDialogComponent } from '../delete/aps-order-delete-dialog
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ICustomer } from '../../customer/customer.model';
-import { CustomerService, EntityArrayResponseType } from '../../customer/service/customer.service';
-import { currentYearMonth, isYearMonth, periodValidator } from '../../../shared/validate/custom-validator.directive';
+import { CustomerService } from '../../customer/service/customer.service';
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
-
-function searchFormValidator(): ValidatorFn {
-  return (c: AbstractControl): ValidationErrors | null => {
-    let start = c.get('start')?.value;
-    if (!start) {
-      return { invalidForm: true };
-    }
-    let end = c.get('end')?.value;
-    if (start && end) {
-      if (end < start) {
-        return { invalidForm: true };
-      }
-    }
-    let customer = c.get('customer')?.value;
-    if (!customer && end) {
-      return { invalidForm: true };
-    }
-    return null;
-  }
-}
+import { ApsPlanData } from '../../aps-plan/service/aps-plan.data';
+import { CustomerData } from '../../customer/service/customer.data';
+import { MatDialog } from '@angular/material/dialog';
+import { ApsOrderMembersComponent } from '../members/aps-order-members.component';
+import { FaIconComponent, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ApsOrderData } from '../aps-order.data';
+import { ICustomer } from '../../customer/customer.model';
 
 @Component({
   standalone: true,
@@ -68,66 +45,76 @@ function searchFormValidator(): ValidatorFn {
     ReactiveFormsModule,
     AsyncPipe,
     CustomerSelectorComponent,
-    NgIf
-  ]
+    NgIf,
+    NgbInputDatepicker,
+    FaIconComponent,
+    FontAwesomeModule,
+  ],
 })
 export class ApsOrderComponent implements OnInit {
   ua: ApsOrderAccess = this.getPlanOrderAccess();
 
-  // search form controls
-  searchForm!: FormGroup;
-
   // list controls
   apsOrders?: IApsOrderInfo[];
-  isLoading = false;
+  isLoading: boolean = false;
 
-  predicate = 'id';
-  ascending = true;
+  predicate: string = 'id';
+  ascending: boolean = true;
 
-  loadAction = '';
-  REFRESH = 'REFRESH';
-  BATCH_GENERATE = 'BATCH_GENERATE';
+  loadAction: string = '';
+  REFRESH: string = 'REFRESH';
+  BATCH_ORDERS: string = 'BATCH_ORDERS';
+  BATCH_INVOICES: string = 'BATCH_INVOICES';
+  BATCH_EMAILS: string = 'BATCH_EMAILS';
+
+  // search fields
+  customer: string | null | undefined = null;
+  contract: string | null | undefined = null;
+  period: string | null | undefined = null;
+  starts: string | null | undefined = null;
+  ends: string | null | undefined = null;
+  currentPeriod: string = '';
 
   constructor(
     protected apsOrderService: ApsOrderService,
     protected customerService: CustomerService,
+    protected apsPlanData: ApsPlanData,
+    protected customerData: CustomerData,
+    protected apsOrderData: ApsOrderData,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
     protected modalService: NgbModal,
-    protected fb: FormBuilder,
-  ) {}
+    public dialog: MatDialog,
+  ) {
+    this.contract = this.apsPlanData.getContract();
+    this.customer = this.customerData.getCode();
+    this.currentPeriod = new Date().toISOString().slice(0, 7).replace('-', '');
+  }
 
   trackId = (_index: number, item: IApsOrder): number => this.apsOrderService.getApsOrderIdentifier(item);
 
   ngOnInit(): void {
     this.isLoading = true;
-    this._initForm();
     this.refresh();
   }
 
-  /*
-  search actions
-   */
-  private _initForm(): void {
-    this.searchForm = this.fb.group({
-      'customer': [''],
-      'start': [currentYearMonth(), Validators.compose([Validators.required, periodValidator()])],
-      'end': [null, periodValidator()],
-    }, { validators: [searchFormValidator()] });
-  }
-
-  fc(name: string) {
-    return this.searchForm.get(name) as FormControl<ICustomer | string | null>;
-  }
-
-  isStartYearMonthValid(): boolean {
-    return this.searchForm.controls['start'].valid;
+  onStartChange(value: any) {
+    if (value) {
+      this.period = '';
+    }
   }
 
   /*
   list actions
    */
+  navToMembership(o: IApsOrderInfo): void {
+    this.apsOrderData.setId(o.id);
+    this.router.navigate(['/aps-membership'], {
+      relativeTo: this.activatedRoute.parent,
+    });
+  }
+
   delete(apsOrder: IApsOrder): void {
     const modalRef = this.modalService.open(ApsOrderDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.apsOrder = apsOrder;
@@ -149,8 +136,26 @@ export class ApsOrderComponent implements OnInit {
     this._executeLoad();
   }
 
-  batchGenerate(): void {
-    this.loadAction = this.BATCH_GENERATE;
+  cleanSearchForm(): void {
+    this.customer = null;
+    this.contract = null;
+    this.period = null;
+    this.starts = null;
+    this.ends = null;
+  }
+
+  batchOrders(): void {
+    this.loadAction = this.BATCH_ORDERS;
+    this._executeLoad();
+  }
+
+  batchInvoice(): void {
+    this.loadAction = this.BATCH_INVOICES;
+    this._executeLoad();
+  }
+
+  batchEmails(): void {
+    this.loadAction = this.BATCH_EMAILS;
     this._executeLoad();
   }
 
@@ -194,28 +199,34 @@ export class ApsOrderComponent implements OnInit {
 
   protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityInfoArrayResponseType> {
     this.isLoading = true;
-    const executeBatch = (this.loadAction === this.BATCH_GENERATE);
+    const batchOrders: boolean = this.loadAction === this.BATCH_ORDERS;
+    const batchInvoices: boolean = this.loadAction === this.BATCH_INVOICES;
+    const batchEmails: boolean = this.loadAction === this.BATCH_EMAILS;
     const queryObject: any = {
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    if (executeBatch) {
-      queryObject.period = this.searchForm.controls['start'].value;
-    } else {
-      let customer = this.searchForm.controls['customer'].value;
-      let customerId = typeof customer === 'string' ? null : customer?.id;
-      if (customerId) {
-        queryObject.customerId = customerId;
-      }
-      if (this.searchForm.controls['start'].value) {
-        queryObject.startYearMonth = this.searchForm.controls['start'].value;
-      }
-      if (this.searchForm.controls['end'].value) {
-        queryObject.endYearMonth = this.searchForm.controls['end'].value;
-      }
+    if (this.customer) {
+      queryObject.customer = this.customer;
     }
-    this.loadAction = this.REFRESH; // reset load action
-    if (executeBatch) {
-      return this.apsOrderService.batchGenerate(queryObject).pipe(tap(() => (this.isLoading = false)));
+    if (this.contract) {
+      queryObject.contract = this.contract;
+    }
+    if (this.period) {
+      queryObject.period = this.period;
+    }
+    if (this.starts) {
+      queryObject.starts = this.starts;
+    }
+    if (this.ends) {
+      queryObject.ends = this.ends;
+    }
+    this.loadAction = this.REFRESH; // reset action
+    if (batchOrders) {
+      return this.apsOrderService.batchOrders(queryObject).pipe(tap(() => (this.isLoading = false)));
+    } else if (batchInvoices) {
+      return this.apsOrderService.batchInvoices(queryObject).pipe(tap(() => (this.isLoading = false)));
+    } else if (batchEmails) {
+      return this.apsOrderService.batchEmails(queryObject).pipe(tap(() => (this.isLoading = false)));
     } else {
       return this.apsOrderService.queryInfo(queryObject).pipe(tap(() => (this.isLoading = false)));
     }
@@ -245,4 +256,43 @@ export class ApsOrderComponent implements OnInit {
     return APS_ORDER_USER_ACCESS;
   }
 
+  protected uploadMembers(o: IApsOrderInfo): void {
+    const dialogRef = this.dialog.open(ApsOrderMembersComponent, {
+      data: o,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.count) {
+        o.numberOfUsers = result.count;
+      }
+      if (result?.filename) {
+        o.filename = result.filename;
+      }
+    });
+  }
+
+  downloadInvoice(apsOrder: IApsOrderInfo): void {
+    this.apsOrderService.downloadInvoice(apsOrder.id).subscribe(
+      blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = apsOrder.invoiceNumber + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error => {
+        console.error('Error downloading file:', error);
+      },
+    );
+  }
+
+  protected disabledGenerate(): boolean {
+    return this.isLoading || this.period?.length != 6;
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
 }

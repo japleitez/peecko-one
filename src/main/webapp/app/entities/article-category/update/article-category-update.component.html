@@ -37,18 +37,6 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.label.visible">
-          <label class="form-label" for="field_label">Label</label>
-          <input type="text" class="form-control" name="label" id="field_label" data-cy="label" formControlName="label" />
-          @if (editForm.get('label')!.invalid && (editForm.get('label')!.dirty || editForm.get('label')!.touched)) {
-            <div>
-              @if (editForm.get('label')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
         <div class="mb-3" *ngIf="ua.created.visible">
           <label class="form-label" for="field_created">Created</label>
           <div class="d-flex">

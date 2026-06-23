@@ -22,10 +22,14 @@ public class VideoCategory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "video_category_gen")
+    @SequenceGenerator(name = "video_category_gen", sequenceName = "video_category_seq")
     @Column(name = "id")
     private Long id;
+
+    @NotNull
+    @Column(name = "pos", nullable = false)
+    private Integer pos;
 
     @NotNull
     @Column(name = "code", nullable = false)
@@ -34,10 +38,6 @@ public class VideoCategory implements Serializable {
     @NotNull
     @Column(name = "title", nullable = false)
     private String title;
-
-    @NotNull
-    @Column(name = "label", nullable = false)
-    private String label;
 
     @Column(name = "created")
     private Instant created;
@@ -68,6 +68,19 @@ public class VideoCategory implements Serializable {
         this.id = id;
     }
 
+    public Integer getPos() {
+        return this.pos;
+    }
+
+    public VideoCategory pos(Integer pos) {
+        this.setPos(pos);
+        return this;
+    }
+
+    public void setPos(Integer pos) {
+        this.pos = pos;
+    }
+
     public String getCode() {
         return this.code;
     }
@@ -92,19 +105,6 @@ public class VideoCategory implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getLabel() {
-        return this.label;
-    }
-
-    public VideoCategory label(String label) {
-        this.setLabel(label);
-        return this;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public Instant getCreated() {
@@ -203,10 +203,6 @@ public class VideoCategory implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", title='" + getTitle() + "'" +
-            ", label='" + getLabel() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", released='" + getReleased() + "'" +
-            ", archived='" + getArchived() + "'" +
             "}";
     }
 }

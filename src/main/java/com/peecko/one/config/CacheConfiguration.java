@@ -1,6 +1,7 @@
 package com.peecko.one.config;
 
 import java.time.Duration;
+
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
 import org.hibernate.cache.jcache.ConfigSettings;
@@ -53,10 +54,8 @@ public class CacheConfiguration {
             createCache(cm, com.peecko.one.domain.ApsUser.class.getName() + ".playLists");
             createCache(cm, com.peecko.one.domain.ApsDevice.class.getName());
             createCache(cm, com.peecko.one.domain.Agency.class.getName());
-            createCache(cm, com.peecko.one.domain.Agency.class.getName() + ".staff");
             createCache(cm, com.peecko.one.domain.Agency.class.getName() + ".customers");
             createCache(cm, com.peecko.one.domain.Agency.class.getName() + ".apsPricings");
-            createCache(cm, com.peecko.one.domain.Staff.class.getName());
             createCache(cm, com.peecko.one.domain.Customer.class.getName());
             createCache(cm, com.peecko.one.domain.Customer.class.getName() + ".contacts");
             createCache(cm, com.peecko.one.domain.Customer.class.getName() + ".apsPlans");
@@ -78,8 +77,6 @@ public class CacheConfiguration {
             createCache(cm, com.peecko.one.domain.Notification.class.getName());
             createCache(cm, com.peecko.one.domain.LabelTranslation.class.getName());
             createCache(cm, com.peecko.one.domain.PlayList.class.getName());
-            createCache(cm, com.peecko.one.domain.PlayList.class.getName() + ".videoItems");
-            createCache(cm, com.peecko.one.domain.VideoItem.class.getName());
             createCache(cm, com.peecko.one.domain.Coach.class.getName());
             createCache(cm, com.peecko.one.domain.Coach.class.getName() + ".videos");
             createCache(cm, com.peecko.one.domain.Coach.class.getName() + ".articles");

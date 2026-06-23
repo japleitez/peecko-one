@@ -19,17 +19,13 @@ public class ApsPricing implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aps_pricing_gen")
+    @SequenceGenerator(name = "aps_pricing_gen", sequenceName = "aps_pricing_seq")
     @Column(name = "id")
     private Long id;
 
     @Column(name = "country", nullable = false)
     private String country;
-
-    @NotNull
-    @Column(name = "customer_id", nullable = false)
-    private Long customerId;
 
     @NotNull
     @Column(name = "index", nullable = false)
@@ -40,8 +36,20 @@ public class ApsPricing implements Serializable {
     private Integer minQuantity;
 
     @NotNull
-    @Column(name = "unit_price", nullable = false)
-    private Double unitPrice;
+    @Column(name = "max_quantity", nullable = false)
+    private Integer maxQuantity;
+
+    @NotNull
+    @Column(name = "fitness_price", nullable = false)
+    private Double fitnessPrice;
+
+    @NotNull
+    @Column(name = "wellness_price", nullable = false)
+    private Double wellnessPrice;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
+    private Customer customer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -66,17 +74,9 @@ public class ApsPricing implements Serializable {
         this.country = country;
     }
 
-    public Long getCustomerId() {
-        return this.customerId;
-    }
-
-    public ApsPricing customerId(Long customerId) {
-        this.setCustomerId(customerId);
+    public ApsPricing country(String country) {
+        this.setCountry(country);
         return this;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
     }
 
     public Integer getIndex() {
@@ -105,17 +105,56 @@ public class ApsPricing implements Serializable {
         this.minQuantity = minQuantity;
     }
 
-    public Double getUnitPrice() {
-        return this.unitPrice;
+    public Integer getMaxQuantity() {
+        return this.maxQuantity;
     }
 
-    public ApsPricing unitPrice(Double unitPrice) {
-        this.setUnitPrice(unitPrice);
+    public ApsPricing maxQuantity(Integer maxQuantity) {
+        this.setMaxQuantity(maxQuantity);
         return this;
     }
 
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setMaxQuantity(Integer maxQuantity) {
+        this.maxQuantity = maxQuantity;
+    }
+
+    public Double getFitnessPrice() {
+        return this.fitnessPrice;
+    }
+
+    public ApsPricing fitnessPrice(Double fitnessPrice) {
+        this.setFitnessPrice(fitnessPrice);
+        return this;
+    }
+
+    public void setFitnessPrice(Double fitnessPrice) {
+        this.fitnessPrice = fitnessPrice;
+    }
+
+    public Double getWellnessPrice() {
+        return this.wellnessPrice;
+    }
+
+    public ApsPricing wellnessPrice(Double wellnessPrice) {
+        this.setWellnessPrice(wellnessPrice);
+        return this;
+    }
+
+    public void setWellnessPrice(Double premiumPrice) {
+        this.wellnessPrice = premiumPrice;
+    }
+
+    public Customer getCustomer() {
+        return this.customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public ApsPricing customer(Customer customer) {
+        this.setCustomer(customer);
+        return this;
     }
 
     @Override
@@ -140,10 +179,11 @@ public class ApsPricing implements Serializable {
     public String toString() {
         return "ApsPricing{" +
             "id=" + getId() +
-            ", customerId=" + getCustomerId() +
             ", index=" + getIndex() +
             ", minQuantity=" + getMinQuantity() +
-            ", unitPrice=" + getUnitPrice() +
+            ", maxQuantity=" + getMaxQuantity() +
+            ", fitnessPrice=" + getFitnessPrice() +
+            ", wellnessPrice=" + getWellnessPrice() +
             "}";
     }
 }

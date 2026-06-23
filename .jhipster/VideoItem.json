@@ -3,7 +3,7 @@
     "changelogDate": "20231220183156"
   },
   "applications": ["admin"],
-  "entityTableName": "video_item",
+  "entityTableName": "play_list_item",
   "fields": [
     {
       "fieldName": "previous",

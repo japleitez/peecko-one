@@ -1,0 +1,90 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-trial-license-heading" data-cy="TrialLicenseCreateUpdateHeading">Trial License</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="ua.license.visible">
+          <label class="form-label" for="field_license">License</label>
+          <input
+            type="text"
+            class="form-control"
+            name="license"
+            id="field_license"
+            data-cy="license"
+            formControlName="license"
+            maxlength="20"
+          />
+          @if (editForm.get('license')!.invalid && (editForm.get('license')!.dirty || editForm.get('license')!.touched)) {
+            <div>
+              @if (editForm.get('license')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+              @if (editForm.get('license')?.errors?.maxlength) {
+                <small class="form-text text-danger">This field cannot be longer than 20 characters.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3" *ngIf="ua.expirationDate.visible">
+          <label class="form-label" for="field_expirationDate">Expiration Date</label>
+          <div class="input-group">
+            <input
+              id="field_expirationDate"
+              data-cy="expirationDate"
+              type="text"
+              class="form-control"
+              name="expirationDate"
+              ngbDatepicker
+              #expirationDateDp="ngbDatepicker"
+              formControlName="expirationDate"
+            />
+            <button type="button" class="btn btn-secondary" (click)="expirationDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+          @if (
+            editForm.get('expirationDate')!.invalid && (editForm.get('expirationDate')!.dirty || editForm.get('expirationDate')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('expirationDate')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="mb-3" *ngIf="ua.notes.visible">
+        <label class="form-label" for="field_notes">Notes</label>
+        <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
+        @if (editForm.get('notes')!.invalid && (editForm.get('notes')!.dirty || editForm.get('notes')!.touched)) {
+          <div>
+            @if (editForm.get('notes')?.errors?.required) {
+              <small class="form-text text-danger">This field is required.</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

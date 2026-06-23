@@ -7,8 +7,8 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh list</span>
       </button>
-      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
-        <fa-icon icon="plus"></fa-icon> <span>Create a new user</span>
+      <button class="btn btn-primary jh-create-entity" [routerLink]="['/account/register']">
+        <fa-icon icon="plus"></fa-icon> <span>Register a new user</span>
       </button>
     </div>
   </h2>
@@ -30,6 +30,7 @@
             <th scope="col" jhiSortBy="createdDate"><span>Created date</span> <fa-icon icon="sort"></fa-icon></th>
             <th scope="col" jhiSortBy="lastModifiedBy"><span>Modified by</span> <fa-icon icon="sort"></fa-icon></th>
             <th scope="col" jhiSortBy="lastModifiedDate"><span>Modified date</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"><span>Agency</span></th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -65,6 +66,7 @@
                 <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
                 <td>{{ user.lastModifiedBy }}</td>
                 <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+                <td>{{ getAgencyName(user.agencyId) }}</td>
                 <td class="text-end">
                   <div class="btn-group">
                     <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">

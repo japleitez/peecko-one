@@ -42,6 +42,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="pos" *ngIf="ua.pos.listable">
+              <div class="d-flex">
+                <span>Pos</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
               <div class="d-flex">
                 <span>Code</span>
@@ -52,13 +59,6 @@
             <th scope="col" jhiSortBy="title" *ngIf="ua.title.listable">
               <div class="d-flex">
                 <span>Title</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="label" *ngIf="ua.label.listable">
-              <div class="d-flex">
-                <span>Label</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -93,9 +93,9 @@
               <td *ngIf="ua.id.listable">
                 <a [routerLink]="['/video-category', videoCategory.id, 'view']">{{ videoCategory.id }}</a>
               </td>
+              <td *ngIf="ua.pos.listable">{{ videoCategory.pos }}</td>
               <td *ngIf="ua.code.listable">{{ videoCategory.code }}</td>
               <td *ngIf="ua.title.listable">{{ videoCategory.title }}</td>
-              <td *ngIf="ua.label.listable">{{ videoCategory.label }}</td>
               <td *ngIf="ua.created.listable">{{ videoCategory.created | formatMediumDatetime }}</td>
               <td *ngIf="ua.released.listable">{{ videoCategory.released | formatMediumDatetime }}</td>
               <td *ngIf="ua.archived.listable">{{ videoCategory.archived | formatMediumDatetime }}</td>

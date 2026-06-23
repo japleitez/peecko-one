@@ -19,14 +19,14 @@ public class LabelTranslation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "label_translation_gen")
+    @SequenceGenerator(name = "label_translation_gen", sequenceName = "label_translation_seq")
     @Column(name = "id")
     private Long id;
 
     @NotNull
-    @Column(name = "label", nullable = false)
-    private String label;
+    @Column(name = "code", nullable = false)
+    private String code;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -34,8 +34,8 @@ public class LabelTranslation implements Serializable {
     private Language lang;
 
     @NotNull
-    @Column(name = "translation", nullable = false)
-    private String translation;
+    @Column(name = "text", nullable = false)
+    private String text;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -52,17 +52,17 @@ public class LabelTranslation implements Serializable {
         this.id = id;
     }
 
-    public String getLabel() {
-        return this.label;
+    public String getCode() {
+        return this.code;
     }
 
-    public LabelTranslation label(String label) {
-        this.setLabel(label);
+    public LabelTranslation code(String code) {
+        this.setCode(code);
         return this;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Language getLang() {
@@ -78,17 +78,17 @@ public class LabelTranslation implements Serializable {
         this.lang = lang;
     }
 
-    public String getTranslation() {
-        return this.translation;
+    public String getText() {
+        return this.text;
     }
 
-    public LabelTranslation translation(String translation) {
-        this.setTranslation(translation);
+    public LabelTranslation text(String text) {
+        this.setText(text);
         return this;
     }
 
-    public void setTranslation(String translation) {
-        this.translation = translation;
+    public void setText(String text) {
+        this.text = text;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -115,9 +115,9 @@ public class LabelTranslation implements Serializable {
     public String toString() {
         return "LabelTranslation{" +
             "id=" + getId() +
-            ", label='" + getLabel() + "'" +
+            ", code='" + getCode() + "'" +
             ", lang='" + getLang() + "'" +
-            ", translation='" + getTranslation() + "'" +
+            ", text='" + getText() + "'" +
             "}";
     }
 }

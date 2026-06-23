@@ -54,7 +54,7 @@ APS_USER_ACCESS = {
   active: { listable: true, visible: true, disabled: false },
   password: { listable: false, visible: true, disabled: true },
   created: { listable: true, visible: true, disabled: true },
-  updated: { listable: true, visible: true, disabled: true },
-  apsDevices: { listable: true, visible: true, disabled: true },
-  playLists: { listable: true, visible: true, disabled: true }
+  updated: { listable: false, visible: true, disabled: true },
+  apsDevices: { listable: false, visible: true, disabled: true },
+  playLists: { listable: false, visible: true, disabled: true }
 }

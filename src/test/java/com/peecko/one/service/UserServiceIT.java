@@ -28,6 +28,8 @@ import tech.jhipster.security.RandomUtil;
 @Transactional
 class UserServiceIT {
 
+    private static final Long DEFAULT_AGENCY_ID = 1L;
+
     private static final String DEFAULT_LOGIN = "johndoe";
 
     private static final String DEFAULT_EMAIL = "johndoe@localhost";
@@ -65,6 +67,7 @@ class UserServiceIT {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        user.setAgencyId(DEFAULT_AGENCY_ID);
 
         when(dateTimeProvider.getNow()).thenReturn(Optional.of(LocalDateTime.now()));
         auditingHandler.setDateTimeProvider(dateTimeProvider);

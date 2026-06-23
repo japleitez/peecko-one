@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IAgency } from 'app/entities/agency/agency.model';
 import { AgencyService } from 'app/entities/agency/service/agency.service';
@@ -13,18 +13,24 @@ import { CustomerState } from 'app/entities/enumerations/customer-state.model';
 import { CustomerService } from '../service/customer.service';
 import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
 import { CustomerFormService, CustomerFormGroup } from './customer-form.service';
+import { AgencySelectComponent } from '../../agency/agency-select/agency-select.component';
+import { NgIf } from '@angular/common';
+import { CustomerSelectorComponent } from '../customer-selector/customer-selector.component';
+import { CountryService } from 'app/entities/country/service/country.service';
+import { ICountry } from '../../country/country.model';
 
 @Component({
   standalone: true,
   selector: 'jhi-customer-update',
   templateUrl: './customer-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, AgencySelectComponent, NgIf, CustomerSelectorComponent],
 })
 export class CustomerUpdateComponent implements OnInit {
   ua: CustomerAccess = this.getCustomerUserAccess();
   isSaving = false;
   customer: ICustomer | null = null;
   customerStateValues = Object.keys(CustomerState);
+  countries: ICountry[] = [];
 
   agenciesSharedCollection: IAgency[] = [];
 
@@ -34,6 +40,7 @@ export class CustomerUpdateComponent implements OnInit {
     protected customerService: CustomerService,
     protected customerFormService: CustomerFormService,
     protected agencyService: AgencyService,
+    protected countryService: CountryService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -44,10 +51,23 @@ export class CustomerUpdateComponent implements OnInit {
       this.customer = customer;
       if (customer) {
         this.updateForm(customer);
+      } else {
+        this.agencyService.current().subscribe(response => {
+          const agency = response.body;
+          this.editForm.get('agency')?.setValue(agency);
+          const vatRate = response.body?.vatRate;
+          this.editForm.get('vatRate')?.setValue(vatRate);
+          this.editForm.get('country')?.setValue('LU');
+          this.editForm.get('state')?.setValue(CustomerState.NEW);
+        });
       }
 
       this.loadRelationshipsOptions();
     });
+    this.countryService
+      .query({ size: 1000, sort: ['name,asc'] })
+      .pipe(map(res => res.body ?? []))
+      .subscribe(countries => (this.countries = countries));
   }
 
   previousState(): void {
@@ -102,7 +122,10 @@ export class CustomerUpdateComponent implements OnInit {
   }
 
   protected getCustomerUserAccess(): CustomerAccess {
-    return CUSTOMER_USER_ACCESS
+    return CUSTOMER_USER_ACCESS;
   }
 
+  agencyControl() {
+    return this.editForm.get('agency') as FormControl<IAgency | string | null>;
+  }
 }

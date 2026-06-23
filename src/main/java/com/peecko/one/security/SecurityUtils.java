@@ -3,8 +3,6 @@ package com.peecko.one.security;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import com.peecko.one.domain.Agency;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,13 +21,6 @@ public final class SecurityUtils {
     public static final String AUTHORITIES_KEY = "auth";
 
     private SecurityUtils() {}
-
-    public static Long getCurrentAgencyId() {
-        return 1L;
-    }
-    public static Agency getCurrentUserAgency() {
-        return Agency.of(getCurrentAgencyId());
-    }
 
     /**
      * Get the login of the current user.

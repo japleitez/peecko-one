@@ -23,8 +23,8 @@ public class Invoice implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_gen")
+    @SequenceGenerator(name = "invoice_gen", sequenceName = "invoice_seq")
     @Column(name = "id")
     private Long id;
 
@@ -48,6 +48,9 @@ public class Invoice implements Serializable {
     @Column(name = "subtotal", nullable = false)
     private Double subtotal;
 
+    @Column(name = "vat_rate")
+    private Double vatRate;
+
     @NotNull
     @Column(name = "vat", nullable = false)
     private Double vat;
@@ -68,14 +71,36 @@ public class Invoice implements Serializable {
     @Column(name = "notes")
     private String notes;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.PERSIST)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "invoice" }, allowSetters = true)
     private Set<InvoiceItem> invoiceItems = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "apsMemberships", "invoices", "apsPlan" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(name = "aps_order_id", nullable = false)
+    @JsonIgnoreProperties(value = { "apsMemberships", "invoice", "apsPlan" }, allowSetters = true)
     private ApsOrder apsOrder;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @Column(name = "customer_vat_id")
+    private String customerVatId;
+
+    @Column(name = "aps_plan_id")
+    private Long apsPlanId;
+
+    @Column(name = "agency_id")
+    private Long agencyId;
+
+    @Column(name = "period")
+    private Integer period;
+
+    @Column(name = "filename")
+    private String filename;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -155,6 +180,19 @@ public class Invoice implements Serializable {
 
     public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Double getVatRate() {
+        return vatRate;
+    }
+
+    public Invoice vatRate(Double vatRate) {
+        this.setVatRate(vatRate);
+        return this;
+    }
+
+    public void setVatRate(Double vatRate) {
+        this.vatRate = vatRate;
     }
 
     public Double getVat() {
@@ -279,6 +317,97 @@ public class Invoice implements Serializable {
         return this;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Invoice country(String country) {
+        this.setCountry(country);
+        return this;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Invoice customerId(Long customerId) {
+        this.setCustomerId(customerId);
+        return this;
+    }
+
+    public String getCustomerVatId() {
+        return customerVatId;
+    }
+
+    public void setCustomerVatId(String customerVatId) {
+        this.customerVatId = customerVatId;
+    }
+
+    public Invoice customerVatId(String customerVatId) {
+        this.setCustomerVatId(customerVatId);
+        return this;
+    }
+
+    public Long getApsPlanId() {
+        return apsPlanId;
+    }
+
+    public void setApsPlanId(Long apsPlanId) {
+        this.apsPlanId = apsPlanId;
+    }
+
+    public Invoice apsPlanId(Long apsPlanId) {
+        this.setApsPlanId(apsPlanId);
+        return this;
+    }
+
+    public Long getAgencyId() {
+        return agencyId;
+    }
+
+    public void setAgencyId(Long agencyId) {
+        this.agencyId = agencyId;
+    }
+
+    public Invoice agencyId(Long agencyId) {
+        this.setAgencyId(agencyId);
+        return this;
+    }
+
+    public Integer getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Integer period) {
+        this.period = period;
+    }
+
+    public Invoice period(Integer period) {
+        this.setPeriod(period);
+        return this;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public Invoice filename(String filename) {
+        this.setFilename(filename);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -308,6 +437,7 @@ public class Invoice implements Serializable {
             ", dueDate='" + getDueDate() + "'" +
             ", saleDate='" + getSaleDate() + "'" +
             ", subtotal=" + getSubtotal() +
+            ", vatRate=" + getVatRate() +
             ", vat=" + getVat() +
             ", total=" + getTotal() +
             ", paid=" + getPaid() +

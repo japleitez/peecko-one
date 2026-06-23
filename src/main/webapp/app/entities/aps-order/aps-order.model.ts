@@ -3,6 +3,11 @@ import { IInvoice } from 'app/entities/invoice/invoice.model';
 import { IApsPlan } from 'app/entities/aps-plan/aps-plan.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
+export interface ICount {
+  count: number;
+  filename?: string | null;
+}
+
 export interface IApsOrder {
   id: number;
   period?: number | null;
@@ -11,25 +16,28 @@ export interface IApsOrder {
   vatRate?: number | null;
   numberOfUsers?: number | null;
   invoiceNumber?: string | null;
+  invoiceSent?: boolean | null;
   apsMemberships?: IApsMembership[] | null;
   invoices?: IInvoice[] | null;
   apsPlan?: IApsPlan | null;
 }
 
-export type NewApsOrder = Omit<IApsOrder, 'id'> & { id: null };
+export type NewApsOrder = Omit<IApsOrder, 'id'> & { id: null; invoiceSent: false };
 
 export interface IApsOrderInfo {
   id: number;
-  period?: number | null;
-  license?: string | null;
+  period: number | null;
+  license: string | null;
   unitPrice?: number | null;
   vatRate?: number | null;
   numberOfUsers?: number | null;
+  filename?: string | null;
   invoiceNumber?: string | null;
-  cstName?: string | null;
-  cstState?: string | null;
+  invoiceSent: boolean;
+  cstName: string | null;
+  cstState: string | null;
   plnId: number;
-  plnState?: string | null;
+  plnState: string | null;
   pricing?: string | null;
   contract?: string | null;
 }
@@ -49,11 +57,11 @@ export let APS_ORDER_USER_ACCESS: ApsOrderAccess;
 
 APS_ORDER_USER_ACCESS = {
   id: { listable: false, visible: true, disabled: true },
-  period: { listable: true, visible: true, disabled: false },
-  license: { listable: true, visible: true, disabled: false },
+  period: { listable: true, visible: true, disabled: true },
+  license: { listable: true, visible: true, disabled: true },
   unitPrice: { listable: true, visible: true, disabled: false },
   vatRate: { listable: true, visible: true, disabled: false },
   numberOfUsers: { listable: true, visible: true, disabled: true },
-  invoiceNumber: { listable: true, visible: true, disabled: false },
+  invoiceNumber: { listable: true, visible: true, disabled: true },
   plan: { listable: true, visible: true, disabled: false },
-}
+};

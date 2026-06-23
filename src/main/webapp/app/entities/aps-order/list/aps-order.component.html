@@ -1,44 +1,54 @@
 <div>
   <h2 id="page-heading" data-cy="ApsOrderHeading">
-    <span>Aps Orders</span>
+    <span>Monthly Orders</span>
   </h2>
+  <small>Enter Contract (optional) and period (mandatory) to enable batch options</small>
+  <div>
+    <small>Incoming customer code: {{ customer }}, contract: {{ contract }}, and current period: {{ currentPeriod }}</small>
+  </div>
+  <div style="height: 1px; background: #ddd; margin: 10px 0"></div>
 
   <div class="d-flex justify-content-end">
-    <form class="aps-orders-search-form" [formGroup]="searchForm">
+    <input type="text" matInput class="form-text w-15 me-2" maxlength="30" [(ngModel)]="contract" placeholder="contract" />
+    <input type="text" matInput class="form-text w-10 me-2" maxlength="7" [(ngModel)]="period" placeholder="period (YYYYMM)" />
 
-      <customer-selector [control]="fc('customer')" [required]="false"></customer-selector>
-
-      <mat-form-field class="w-20" subscriptSizing="dynamic">
-        <mat-label>From</mat-label>
-        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" formControlName="start" required="true">
-      </mat-form-field>
-      <mat-form-field class="w-20" subscriptSizing="dynamic">
-        <mat-label>To</mat-label>
-        <input type="text" matInput placeholder="YYYY-MM" maxlength="7" formControlName="end" >
-      </mat-form-field>
-    </form>
-
-    <button class="btn btn-info me-2" (click)="batchGenerate()" [disabled]="isLoading || !isStartYearMonthValid()">
-      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-      <span>Generate (From)</span>
+    <button class="btn btn-primary jh-create-entity create-aps-order me-2" (click)="batchOrders()" [disabled]="disabledGenerate()">
+      <span>Batch Orders</span>
     </button>
 
-    <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading || !searchForm.valid">
-      <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-      <span>Refresh</span>
+    <button class="btn btn-primary jh-create-entity create-aps-order me-2" (click)="batchInvoice()" [disabled]="disabledGenerate()">
+      <span>Batch Invoices</span>
     </button>
 
-    <button
-      id="jh-create-entity"
-      data-cy="entityCreateButton"
-      class="btn btn-primary jh-create-entity create-aps-order"
-      [routerLink]="['/aps-order/new']"
-    >
-      <fa-icon icon="plus"></fa-icon>
-      <span>New Aps Order</span>
+    <button class="btn btn-primary jh-create-entity create-aps-order" (click)="batchEmails()" [disabled]="disabledGenerate()">
+      <span>Batch Emails</span>
     </button>
+
+    <span> &NonBreakingSpace; </span>
+
+    <input type="text" matInput class="form-text w-15 me-2" maxlength="30" [(ngModel)]="customer" placeholder="customer code" />
+    <input
+      type="text"
+      matInput
+      class="form-text w-10 me-2"
+      maxlength="7"
+      [(ngModel)]="starts"
+      placeholder="start"
+      (ngModelChange)="onStartChange($event)"
+    />
+    <input type="text" matInput class="form-text w-10 me-2" maxlength="7" [(ngModel)]="ends" placeholder="end" />
+
+    <button class="btn btn-info me-2" (click)="refresh()" [disabled]="isLoading">
+      <fa-icon icon="refresh" [spin]="isLoading"></fa-icon>
+      <span> </span>
+    </button>
+
+    <button class="btn btn-info me-2" (click)="cleanSearchForm()" [disabled]="isLoading">
+      <fa-icon icon="times"></fa-icon>
+    </button>
+
+    <button class="btn btn-info me-2" (click)="previousState()" type="submit"><fa-icon icon="arrow-left"></fa-icon> <span> </span></button>
   </div>
-
 
   <jhi-alert-error></jhi-alert-error>
 
@@ -70,22 +80,22 @@
             </th>
             <th scope="col">
               <div class="d-flex">
-                <span class="badge bg-info">C-State</span>
+                <span class="badge bg-info">C.State</span>
               </div>
             </th>
             <th scope="col">
               <div class="d-flex">
-                <span class="badge bg-info">P-State</span>
+                <span class="badge bg-info">P.Contract</span>
               </div>
             </th>
             <th scope="col">
               <div class="d-flex">
-                <span class="badge bg-info">P-Pricing</span>
+                <span class="badge bg-info">P.State</span>
               </div>
             </th>
             <th scope="col">
               <div class="d-flex">
-                <span class="badge bg-info">P-Contract</span>
+                <span class="badge bg-info">P.Pricing</span>
               </div>
             </th>
             <!-- order info -->
@@ -105,14 +115,14 @@
             </th>
             <th scope="col" jhiSortBy="unitPrice" *ngIf="ua.unitPrice.listable">
               <div class="d-flex">
-                <span>Unit Price</span>
+                <span>Price</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="vatRate"  *ngIf="ua.vatRate.listable">
+            <th scope="col" jhiSortBy="vatRate" *ngIf="ua.vatRate.listable">
               <div class="d-flex">
-                <span>VAT Rate</span>
+                <span>Vat Rate</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -122,6 +132,11 @@
                 <span>Users</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="d-flex">
+                <span>Filename</span>
               </div>
             </th>
             <th scope="col" jhiSortBy="invoiceNumber" *ngIf="ua.invoiceNumber.listable">
@@ -143,8 +158,6 @@
               <!-- reference info -->
               <td>{{ apsOrder.cstName }}</td>
               <td>{{ apsOrder.cstState }}</td>
-              <td>{{ apsOrder.plnState }}</td>
-              <td>{{ apsOrder.pricing }}</td>
               <td>
                 @if (apsOrder.plnId) {
                   <div>
@@ -152,15 +165,41 @@
                   </div>
                 }
               </td>
+              <td>{{ apsOrder.plnState }}</td>
+              <td>{{ apsOrder.pricing }}</td>
               <!-- order info -->
               <td *ngIf="ua.period.listable">{{ apsOrder.period }}</td>
               <td *ngIf="ua.license.listable">{{ apsOrder.license }}</td>
               <td *ngIf="ua.unitPrice.listable">{{ apsOrder.unitPrice }}</td>
               <td *ngIf="ua.vatRate.listable">{{ apsOrder.vatRate }}</td>
               <td *ngIf="ua.numberOfUsers.listable">{{ apsOrder.numberOfUsers }}</td>
-              <td *ngIf="ua.invoiceNumber.listable">{{ apsOrder.invoiceNumber }}</td>
+              <td>{{ apsOrder.filename }}</td>
+              <td *ngIf="ua.invoiceNumber.listable">
+                <a [routerLink]="" (click)="downloadInvoice(apsOrder)">{{ apsOrder.invoiceNumber }}</a>
+                <div *ngIf="apsOrder.invoiceSent">S</div>
+              </td>
               <td class="text-end">
                 <div class="btn-group">
+                  <a
+                    (click)="apsOrder.numberOfUsers && navToMembership(apsOrder)"
+                    class="btn btn-info btn-sm"
+                    [class.disabled]="!apsOrder.numberOfUsers"
+                    data-cy="entityApsPlansButton"
+                    title="membership"
+                  >
+                    members
+                  </a>
+
+                  <button
+                    type="submit"
+                    (click)="uploadMembers(apsOrder)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                    title="upload member file"
+                  >
+                    upload
+                  </button>
+
                   <a [routerLink]="['/aps-order', apsOrder.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                   </a>
@@ -169,7 +208,13 @@
                     <fa-icon icon="pencil-alt"></fa-icon>
                   </a>
 
-                  <button type="submit" (click)="delete(apsOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <button
+                    type="submit"
+                    (click)="delete(apsOrder)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                    [class.disabled]="apsOrder.invoiceNumber"
+                  >
                     <fa-icon icon="times"></fa-icon>
                   </button>
                 </div>

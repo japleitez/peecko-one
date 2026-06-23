@@ -24,8 +24,8 @@ export type NewRestCoach = RestOf<NewCoach>;
 
 export type PartialUpdateRestCoach = RestOf<PartialUpdateCoach>;
 
-export type EntityResponseType = HttpResponse<ICoach>;
-export type EntityArrayResponseType = HttpResponse<ICoach[]>;
+export type CoachResponseType = HttpResponse<ICoach>;
+export type CoachArrayResponseType = HttpResponse<ICoach[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CoachService {
@@ -36,32 +36,32 @@ export class CoachService {
     protected applicationConfigService: ApplicationConfigService,
   ) {}
 
-  create(coach: NewCoach): Observable<EntityResponseType> {
+  create(coach: NewCoach): Observable<CoachResponseType> {
     const copy = this.convertDateFromClient(coach);
     return this.http.post<RestCoach>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(coach: ICoach): Observable<EntityResponseType> {
+  update(coach: ICoach): Observable<CoachResponseType> {
     const copy = this.convertDateFromClient(coach);
     return this.http
       .put<RestCoach>(`${this.resourceUrl}/${this.getCoachIdentifier(coach)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  partialUpdate(coach: PartialUpdateCoach): Observable<EntityResponseType> {
+  partialUpdate(coach: PartialUpdateCoach): Observable<CoachResponseType> {
     const copy = this.convertDateFromClient(coach);
     return this.http
       .patch<RestCoach>(`${this.resourceUrl}/${this.getCoachIdentifier(coach)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
+  find(id: number): Observable<CoachResponseType> {
     return this.http
       .get<RestCoach>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<CoachArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestCoach[]>(this.resourceUrl, { params: options, observe: 'response' })

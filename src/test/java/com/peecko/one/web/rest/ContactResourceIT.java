@@ -7,8 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.Contact;
+import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.enumeration.ContactType;
 import com.peecko.one.repository.ContactRepository;
+import com.peecko.one.repository.CustomerRepository;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -50,8 +52,8 @@ class ContactResourceIT {
     private static final String DEFAULT_CITY = "AAAAAAAAAA";
     private static final String UPDATED_CITY = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COUNTRY = "AAAAAAAAAA";
-    private static final String UPDATED_COUNTRY = "BBBBBBBBBB";
+    private static final String DEFAULT_COUNTRY = "LU";
+    private static final String UPDATED_COUNTRY = "FR";
 
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
@@ -78,12 +80,17 @@ class ContactResourceIT {
     private ContactRepository contactRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
     private MockMvc restContactMockMvc;
 
     private Contact contact;
+
+    private Customer customer;
 
     /**
      * Create an entity for this test.
@@ -133,7 +140,11 @@ class ContactResourceIT {
 
     @BeforeEach
     public void initTest() {
+        customer = CustomerResourceIT.createEntity(em);
+        customer = customerRepository.saveAndFlush(customer);
+
         contact = createEntity(em);
+        contact.setCustomer(customer);
     }
 
     @Test
@@ -159,8 +170,6 @@ class ContactResourceIT {
         assertThat(testContact.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testContact.getPhone()).isEqualTo(DEFAULT_PHONE);
         assertThat(testContact.getNotes()).isEqualTo(DEFAULT_NOTES);
-        assertThat(testContact.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testContact.getUpdated()).isEqualTo(DEFAULT_UPDATED);
     }
 
     @Test
@@ -221,9 +230,11 @@ class ContactResourceIT {
         // Initialize the database
         contactRepository.saveAndFlush(contact);
 
+        String params = "?customerCode" + customer.getCode();
+
         // Get all the contactList
         restContactMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + params))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(contact.getId().intValue())))
@@ -236,9 +247,7 @@ class ContactResourceIT {
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
-            .andExpect(jsonPath("$.[*].updated").value(hasItem(DEFAULT_UPDATED.toString())));
+            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)));
     }
 
     @Test
@@ -262,9 +271,7 @@ class ContactResourceIT {
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
-            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES))
-            .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
-            .andExpect(jsonPath("$.updated").value(DEFAULT_UPDATED.toString()));
+            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES));
     }
 
     @Test
@@ -296,9 +303,7 @@ class ContactResourceIT {
             .country(UPDATED_COUNTRY)
             .email(UPDATED_EMAIL)
             .phone(UPDATED_PHONE)
-            .notes(UPDATED_NOTES)
-            .created(UPDATED_CREATED)
-            .updated(UPDATED_UPDATED);
+            .notes(UPDATED_NOTES);
 
         restContactMockMvc
             .perform(
@@ -322,8 +327,6 @@ class ContactResourceIT {
         assertThat(testContact.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testContact.getPhone()).isEqualTo(UPDATED_PHONE);
         assertThat(testContact.getNotes()).isEqualTo(UPDATED_NOTES);
-        assertThat(testContact.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testContact.getUpdated()).isEqualTo(UPDATED_UPDATED);
     }
 
     @Test

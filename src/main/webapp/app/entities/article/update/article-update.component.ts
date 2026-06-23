@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IArticleCategory } from 'app/entities/article-category/article-category.model';
 import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
@@ -16,12 +16,17 @@ import { ArticleService } from '../service/article.service';
 import { ARTICLE_ACCESS, ArticleAccess, IArticle } from '../article.model';
 import { ArticleFormService, ArticleFormGroup } from './article-form.service';
 import { NgIf } from '@angular/common';
+import { AgencySelectComponent } from '../../agency/agency-select/agency-select.component';
+import {
+  ArticleCategorySelectComponent
+} from '../../article-category/article-category-select/article-category-select.component';
+import { CoachSelectComponent } from '../../coach/coach-select/coach-select.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-article-update',
   templateUrl: './article-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, AgencySelectComponent, ArticleCategorySelectComponent, CoachSelectComponent]
 })
 export class ArticleUpdateComponent implements OnInit {
   ua: ArticleAccess = this.getArticleAccess();
@@ -125,6 +130,14 @@ export class ArticleUpdateComponent implements OnInit {
 
   protected getArticleAccess(): ArticleAccess {
     return ARTICLE_ACCESS;
+  }
+
+  categoryControl() {
+    return this.editForm.get('articleCategory') as FormControl<IArticleCategory | string | null>;
+  }
+
+  coachControl() {
+    return this.editForm.get('coach') as FormControl<ICoach | string | null>;
   }
 
 }

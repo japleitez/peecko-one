@@ -8,14 +8,19 @@ import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { ItemCountComponent } from 'app/shared/pagination';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { CUSTOMER_USER_ACCESS, CustomerAccess, ICustomer } from '../customer.model';
-import { EntityArrayResponseType, CustomerService } from '../service/customer.service';
+import { CustomerArrayResponseType, CustomerService } from '../service/customer.service';
 import { CustomerDeleteDialogComponent } from '../delete/customer-delete-dialog.component';
 import { NgIf } from '@angular/common';
+import { CustomerData } from '../service/customer.data';
+import { ClipboardService } from '../../../shared/common/clipboard.service';
+import { MatInputModule } from '@angular/material/input';
+import { CustomerState } from '../../enumerations/customer-state.model';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 
 @Component({
@@ -32,7 +37,10 @@ import { NgIf } from '@angular/common';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-    NgIf
+    NgIf,
+    MatInputModule,
+    ReactiveFormsModule,
+    FaIconComponent
   ]
 })
 export class CustomerComponent implements OnInit {
@@ -47,8 +55,16 @@ export class CustomerComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
+  code: string | null | undefined = null;
+  name: string | null | undefined = null;
+  state: string | null | undefined = null;
+  customerStateValues = Object.keys(CustomerState);
+
+
   constructor(
     protected customerService: CustomerService,
+    protected customerData: CustomerData,
+    protected clipboardService: ClipboardService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
@@ -58,6 +74,33 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  resetSearchForm() {
+    this.code = null;
+    this.name = null;
+    this.state = null;
+  }
+
+  navToContacts(c: ICustomer): void {
+    this.customerData.setCode(c.code);
+    this.router.navigate(['/contact'], {
+      relativeTo: this.activatedRoute.parent,
+    });
+  }
+
+  navToApsPlans(c: ICustomer): void {
+    this.customerData.setCode(c.code);
+    this.router.navigate(['/aps-plan'], {
+      relativeTo: this.activatedRoute.parent,
+    });
+  }
+
+  navToApsOrders(c: ICustomer): void {
+    this.customerData.setCode(c.code);
+    this.router.navigate(['/aps-order'], {
+      relativeTo: this.activatedRoute.parent,
+    });
   }
 
   delete(customer: ICustomer): void {
@@ -70,7 +113,7 @@ export class CustomerComponent implements OnInit {
         switchMap(() => this.loadFromBackendWithRouteInformations()),
       )
       .subscribe({
-        next: (res: EntityArrayResponseType) => {
+        next: (res: CustomerArrayResponseType) => {
           this.onResponseSuccess(res);
         },
       });
@@ -78,7 +121,7 @@ export class CustomerComponent implements OnInit {
 
   load(): void {
     this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: CustomerArrayResponseType) => {
         this.onResponseSuccess(res);
       },
     });
@@ -92,7 +135,7 @@ export class CustomerComponent implements OnInit {
     this.handleNavigation(page, this.predicate, this.ascending);
   }
 
-  protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
+  protected loadFromBackendWithRouteInformations(): Observable<CustomerArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
       switchMap(() => this.queryBackend(this.page, this.predicate, this.ascending)),
@@ -107,7 +150,7 @@ export class CustomerComponent implements OnInit {
     this.ascending = sort[1] === ASC;
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
+  protected onResponseSuccess(response: CustomerArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.customers = dataFromBody;
@@ -121,7 +164,7 @@ export class CustomerComponent implements OnInit {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
-  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
+  protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<CustomerArrayResponseType> {
     this.isLoading = true;
     const pageToLoad: number = page ?? 1;
     const queryObject: any = {
@@ -129,6 +172,15 @@ export class CustomerComponent implements OnInit {
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.code) {
+      queryObject.code = this.code;
+    }
+    if (this.name) {
+      queryObject.name = this.name;
+    }
+    if (this.state) {
+      queryObject.state = this.state;
+    }
     return this.customerService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -157,4 +209,15 @@ export class CustomerComponent implements OnInit {
   protected getCustomerUserAccess(): CustomerAccess {
     return CUSTOMER_USER_ACCESS;
   }
+
+  protected copy(elemId: string | null | undefined) {
+    if (elemId) {
+      this.clipboardService.copy('#' + elemId);
+    }
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
+
 }

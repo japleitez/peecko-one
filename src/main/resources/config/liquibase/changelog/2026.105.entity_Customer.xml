@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="2024-005-Customer-sequence" author="jhipster">
+        <createSequence sequenceName="customer_seq" startValue="1000" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024-005-Customer-entity" author="jhipster">
+        <createTable tableName="customer">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country" type="varchar(2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="code" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="varchar(150)">
+                <constraints nullable="false" />
+            </column>
+            <column name="state" type="varchar(12)">
+                <constraints nullable="false" />
+            </column>
+            <column name="license" type="varchar(20)">
+                <constraints nullable="true" />
+            </column>
+            <column name="billing_email" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="vat_id" type="varchar(30)">
+                <constraints nullable="true" />
+            </column>
+            <column name="vat_rate" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="bank" type="varchar(150)">
+                <constraints nullable="true" />
+            </column>
+            <column name="iban" type="varchar(40)">
+                <constraints nullable="true" />
+            </column>
+            <column name="logo" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="notes" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="created" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="updated" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="trialed" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="declined" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="activated" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="closed" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="agency_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="customer" columnName="created" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="customer" columnName="updated" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="customer" columnName="trialed" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="customer" columnName="declined" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="customer" columnName="activated" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="customer" columnName="closed" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+</databaseChangeLog>

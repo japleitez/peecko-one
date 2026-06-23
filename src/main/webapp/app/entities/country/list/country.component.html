@@ -1,0 +1,121 @@
+<div>
+  <h2 id="page-heading" data-cy="CountryHeading">
+    <span>Countries</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-country"
+        [routerLink]="['/country/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>New Country</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (countries?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Countries found</span>
+    </div>
+  }
+
+  @if (countries && countries.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
+              <div class="d-flex">
+                <span>Code</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
+              <div class="d-flex">
+                <span>Name</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="locale" *ngIf="ua.locale.listable">
+              <div class="d-flex">
+                <span>Locale</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="currency" *ngIf="ua.currency.listable">
+              <div class="d-flex">
+                <span>Currency</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="language" *ngIf="ua.language.listable">
+              <div class="d-flex">
+                <span>Language</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (country of countries; track trackCode) {
+            <tr data-cy="entityTable">
+              <td *ngIf="ua.code.listable">
+                <a [routerLink]="['/country', country.code, 'view']">{{ country.code }}</a>
+              </td>
+              <td *ngIf="ua.name.listable">{{ country.name }}</td>
+              <td *ngIf="ua.locale.listable">{{ country.locale }}</td>
+              <td *ngIf="ua.currency.listable">{{ country.currency }}</td>
+              <td *ngIf="ua.language.listable">{{ country.language }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/country', country.code, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                  </a>
+
+                  <a [routerLink]="['/country', country.code, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                  </a>
+
+                  <button type="submit" (click)="delete(country)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (countries && countries.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

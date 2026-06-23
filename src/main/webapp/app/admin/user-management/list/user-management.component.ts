@@ -14,6 +14,8 @@ import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 import UserManagementDeleteDialogComponent from '../delete/user-management-delete-dialog.component';
+import { AgencyService } from 'app/entities/agency/service/agency.service';
+import { IAgency } from 'app/entities/agency/agency.model';
 
 @Component({
   standalone: true,
@@ -24,6 +26,7 @@ import UserManagementDeleteDialogComponent from '../delete/user-management-delet
 export default class UserManagementComponent implements OnInit {
   currentAccount: Account | null = null;
   users: User[] | null = null;
+  agencies: IAgency[] = [];
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -33,6 +36,7 @@ export default class UserManagementComponent implements OnInit {
 
   constructor(
     private userService: UserManagementService,
+    private agencyService: AgencyService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -41,7 +45,13 @@ export default class UserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
+    this.agencyService.query().subscribe(res => (this.agencies = res.body ?? []));
     this.handleNavigation();
+  }
+
+  getAgencyName(agencyId?: number | null): string {
+    if (agencyId == null) return '';
+    return this.agencies.find(a => a.id === agencyId)?.name ?? String(agencyId);
   }
 
   setActive(user: User, isActivated: boolean): void {

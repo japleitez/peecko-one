@@ -20,8 +20,8 @@ public class ApsDevice implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aps_device_gen")
+    @SequenceGenerator(name = "aps_device_gen", sequenceName = "aps_device_seq")
     @Column(name = "id")
     private Long id;
 
@@ -43,6 +43,7 @@ public class ApsDevice implements Serializable {
     private Instant installedOn;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aps_user_id")
     @JsonIgnoreProperties(value = { "apsDevices", "playLists" }, allowSetters = true)
     private ApsUser apsUser;
 

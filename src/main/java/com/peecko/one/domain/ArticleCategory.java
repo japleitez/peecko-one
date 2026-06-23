@@ -22,8 +22,8 @@ public class ArticleCategory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_category_gen")
+    @SequenceGenerator(name = "article_category_gen", sequenceName = "article_category_seq")
     @Column(name = "id")
     private Long id;
 
@@ -34,10 +34,6 @@ public class ArticleCategory implements Serializable {
     @NotNull
     @Column(name = "title", nullable = false)
     private String title;
-
-    @NotNull
-    @Column(name = "label", nullable = false)
-    private String label;
 
     @Column(name = "created")
     private Instant created;
@@ -92,19 +88,6 @@ public class ArticleCategory implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getLabel() {
-        return this.label;
-    }
-
-    public ArticleCategory label(String label) {
-        this.setLabel(label);
-        return this;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public Instant getCreated() {
@@ -203,10 +186,6 @@ public class ArticleCategory implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", title='" + getTitle() + "'" +
-            ", label='" + getLabel() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", release='" + getRelease() + "'" +
-            ", archived='" + getArchived() + "'" +
             "}";
     }
 }

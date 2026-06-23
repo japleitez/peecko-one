@@ -37,9 +37,6 @@ class ArticleCategoryResourceIT {
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_LABEL = "AAAAAAAAAA";
-    private static final String UPDATED_LABEL = "BBBBBBBBBB";
-
     private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -76,7 +73,6 @@ class ArticleCategoryResourceIT {
         ArticleCategory articleCategory = new ArticleCategory()
             .code(DEFAULT_CODE)
             .title(DEFAULT_TITLE)
-            .label(DEFAULT_LABEL)
             .created(DEFAULT_CREATED)
             .release(DEFAULT_RELEASE)
             .archived(DEFAULT_ARCHIVED);
@@ -93,7 +89,6 @@ class ArticleCategoryResourceIT {
         ArticleCategory articleCategory = new ArticleCategory()
             .code(UPDATED_CODE)
             .title(UPDATED_TITLE)
-            .label(UPDATED_LABEL)
             .created(UPDATED_CREATED)
             .release(UPDATED_RELEASE)
             .archived(UPDATED_ARCHIVED);
@@ -122,7 +117,6 @@ class ArticleCategoryResourceIT {
         ArticleCategory testArticleCategory = articleCategoryList.get(articleCategoryList.size() - 1);
         assertThat(testArticleCategory.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testArticleCategory.getTitle()).isEqualTo(DEFAULT_TITLE);
-        assertThat(testArticleCategory.getLabel()).isEqualTo(DEFAULT_LABEL);
         assertThat(testArticleCategory.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testArticleCategory.getRelease()).isEqualTo(DEFAULT_RELEASE);
         assertThat(testArticleCategory.getArchived()).isEqualTo(DEFAULT_ARCHIVED);
@@ -188,25 +182,6 @@ class ArticleCategoryResourceIT {
 
     @Test
     @Transactional
-    void checkLabelIsRequired() throws Exception {
-        int databaseSizeBeforeTest = articleCategoryRepository.findAll().size();
-        // set the field null
-        articleCategory.setLabel(null);
-
-        // Create the ArticleCategory, which fails.
-
-        restArticleCategoryMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(articleCategory))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<ArticleCategory> articleCategoryList = articleCategoryRepository.findAll();
-        assertThat(articleCategoryList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllArticleCategories() throws Exception {
         // Initialize the database
         articleCategoryRepository.saveAndFlush(articleCategory);
@@ -219,7 +194,6 @@ class ArticleCategoryResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(articleCategory.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].label").value(hasItem(DEFAULT_LABEL)))
             .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED.toString())))
             .andExpect(jsonPath("$.[*].release").value(hasItem(DEFAULT_RELEASE.toString())))
             .andExpect(jsonPath("$.[*].archived").value(hasItem(DEFAULT_ARCHIVED.toString())));
@@ -239,7 +213,6 @@ class ArticleCategoryResourceIT {
             .andExpect(jsonPath("$.id").value(articleCategory.getId().intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
-            .andExpect(jsonPath("$.label").value(DEFAULT_LABEL))
             .andExpect(jsonPath("$.created").value(DEFAULT_CREATED.toString()))
             .andExpect(jsonPath("$.release").value(DEFAULT_RELEASE.toString()))
             .andExpect(jsonPath("$.archived").value(DEFAULT_ARCHIVED.toString()));
@@ -267,7 +240,6 @@ class ArticleCategoryResourceIT {
         updatedArticleCategory
             .code(UPDATED_CODE)
             .title(UPDATED_TITLE)
-            .label(UPDATED_LABEL)
             .created(UPDATED_CREATED)
             .release(UPDATED_RELEASE)
             .archived(UPDATED_ARCHIVED);
@@ -286,7 +258,6 @@ class ArticleCategoryResourceIT {
         ArticleCategory testArticleCategory = articleCategoryList.get(articleCategoryList.size() - 1);
         assertThat(testArticleCategory.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testArticleCategory.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testArticleCategory.getLabel()).isEqualTo(UPDATED_LABEL);
         assertThat(testArticleCategory.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testArticleCategory.getRelease()).isEqualTo(UPDATED_RELEASE);
         assertThat(testArticleCategory.getArchived()).isEqualTo(UPDATED_ARCHIVED);
@@ -378,7 +349,6 @@ class ArticleCategoryResourceIT {
         ArticleCategory testArticleCategory = articleCategoryList.get(articleCategoryList.size() - 1);
         assertThat(testArticleCategory.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testArticleCategory.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testArticleCategory.getLabel()).isEqualTo(DEFAULT_LABEL);
         assertThat(testArticleCategory.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testArticleCategory.getRelease()).isEqualTo(DEFAULT_RELEASE);
         assertThat(testArticleCategory.getArchived()).isEqualTo(DEFAULT_ARCHIVED);
@@ -399,7 +369,6 @@ class ArticleCategoryResourceIT {
         partialUpdatedArticleCategory
             .code(UPDATED_CODE)
             .title(UPDATED_TITLE)
-            .label(UPDATED_LABEL)
             .created(UPDATED_CREATED)
             .release(UPDATED_RELEASE)
             .archived(UPDATED_ARCHIVED);
@@ -418,7 +387,6 @@ class ArticleCategoryResourceIT {
         ArticleCategory testArticleCategory = articleCategoryList.get(articleCategoryList.size() - 1);
         assertThat(testArticleCategory.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testArticleCategory.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testArticleCategory.getLabel()).isEqualTo(UPDATED_LABEL);
         assertThat(testArticleCategory.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testArticleCategory.getRelease()).isEqualTo(UPDATED_RELEASE);
         assertThat(testArticleCategory.getArchived()).isEqualTo(UPDATED_ARCHIVED);

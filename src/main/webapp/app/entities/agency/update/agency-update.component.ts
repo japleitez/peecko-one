@@ -2,15 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Language } from 'app/entities/enumerations/language.model';
 import { AGENCY_USER_ACCESS, AgencyAccess, IAgency } from '../agency.model';
 import { AgencyService } from '../service/agency.service';
 import { AgencyFormService, AgencyFormGroup } from './agency-form.service';
+import { ICustomer } from '../../customer/customer.model';
+import { CountryService } from 'app/entities/country/service/country.service';
+import { ICountry } from 'app/entities/country/country.model';
 
 @Component({
   standalone: true,
@@ -23,12 +26,14 @@ export class AgencyUpdateComponent implements OnInit {
   isSaving = false;
   agency: IAgency | null = null;
   languageValues = Object.keys(Language);
+  countries: ICountry[] = [];
 
   editForm: AgencyFormGroup = this.agencyFormService.createAgencyFormGroup(undefined, this.getAgencyUserAccess());
 
   constructor(
     protected agencyService: AgencyService,
     protected agencyFormService: AgencyFormService,
+    protected countryService: CountryService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -39,6 +44,10 @@ export class AgencyUpdateComponent implements OnInit {
         this.updateForm(agency);
       }
     });
+    this.countryService
+      .query({ size: 1000, sort: ['name,asc'] })
+      .pipe(map(res => res.body ?? []))
+      .subscribe(countries => (this.countries = countries));
   }
 
   previousState(): void {
@@ -80,7 +89,6 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   protected getAgencyUserAccess(): AgencyAccess {
-    return AGENCY_USER_ACCESS
+    return AGENCY_USER_ACCESS;
   }
-
 }

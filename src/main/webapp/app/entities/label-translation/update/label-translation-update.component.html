@@ -13,10 +13,10 @@
           </div>
         }
 
-        <div class="mb-3" *ngIf="ua.label.visible">
-          <label class="form-label" for="field_label">Label</label>
-          <input type="text" class="form-control" name="label" id="field_label" data-cy="label" formControlName="label" />
-          @if (editForm.get('label')!.invalid && (editForm.get('label')!.dirty || editForm.get('label')!.touched)) {
+        <div class="mb-3" *ngIf="ua.code.visible">
+          <label class="form-label" for="field_code">Code</label>
+          <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
+          @if (editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)) {
             <div>
               @if (editForm.get('label')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
@@ -42,19 +42,12 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.translation.visible">
-          <label class="form-label" for="field_translation">Translation</label>
-          <input
-            type="text"
-            class="form-control"
-            name="translation"
-            id="field_translation"
-            data-cy="translation"
-            formControlName="translation"
-          />
-          @if (editForm.get('translation')!.invalid && (editForm.get('translation')!.dirty || editForm.get('translation')!.touched)) {
+        <div class="mb-3" *ngIf="ua.text.visible">
+          <label class="form-label" for="field_text">Text</label>
+          <input type="text" class="form-control" name="text" id="field_text" data-cy="text" formControlName="text" />
+          @if (editForm.get('text')!.invalid && (editForm.get('text')!.dirty || editForm.get('text')!.touched)) {
             <div>
-              @if (editForm.get('translation')?.errors?.required) {
+              @if (editForm.get('text')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
             </div>

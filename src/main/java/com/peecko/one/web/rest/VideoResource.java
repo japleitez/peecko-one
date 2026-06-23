@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -58,6 +59,7 @@ public class VideoResource {
         if (video.getId() != null) {
             throw new BadRequestAlertException("A new video cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        video.setCreated(Instant.now());
         Video result = videoRepository.save(video);
         return ResponseEntity
             .created(new URI("/api/videos/" + result.getId()))
@@ -89,7 +91,6 @@ public class VideoResource {
         if (!videoRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
         Video result = videoRepository.save(video);
         return ResponseEntity
             .ok()
@@ -191,9 +192,14 @@ public class VideoResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of videos in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<Video>> getAllVideos(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<Video>> getAllVideos(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false) Long videoCategoryId
+    ) {
         log.debug("REST request to get a page of Videos");
-        Page<Video> page = videoRepository.findAll(pageable);
+        Page<Video> page = videoCategoryId != null
+            ? videoRepository.findByVideoCategory_Id(videoCategoryId, pageable)
+            : videoRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

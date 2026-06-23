@@ -14,10 +14,6 @@ export const EntityNavbarItems: NavbarItem[] = [
     route: '/agency',
   },
   {
-    name: 'Staff',
-    route: '/staff',
-  },
-  {
     name: 'Customer',
     route: '/customer',
   },
@@ -72,10 +68,6 @@ export const EntityNavbarItems: NavbarItem[] = [
   {
     name: 'PlayList',
     route: '/play-list',
-  },
-  {
-    name: 'VideoItem',
-    route: '/video-item',
   },
   {
     name: 'Coach',

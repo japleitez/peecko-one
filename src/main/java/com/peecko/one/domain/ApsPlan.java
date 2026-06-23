@@ -25,8 +25,8 @@ public class ApsPlan implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "aps_plan_gen")
+    @SequenceGenerator(name = "aps_plan_gen", sequenceName = "aps_plan_seq")
     @Column(name = "id")
     private Long id;
 
@@ -44,9 +44,11 @@ public class ApsPlan implements Serializable {
     @Column(name = "state", nullable = false)
     private PlanState state;
 
+    @NotNull
     @Column(name = "license")
     private String license;
 
+    @NotNull
     @Column(name = "starts")
     private LocalDate starts;
 
@@ -60,18 +62,25 @@ public class ApsPlan implements Serializable {
     @Column(name = "notes")
     private String notes;
 
+    @NotNull
     @Column(name = "created")
     private Instant created;
 
     @Column(name = "updated")
     private Instant updated;
 
+    @Column(name = "agency_id")
+    private Long agencyId;
+
+    @Column(name = "country")
+    private String country;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "apsPlan")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "apsMemberships", "invoices", "apsPlan" }, allowSetters = true)
     private Set<ApsOrder> apsOrders = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "contacts", "apsPlans", "agency" }, allowSetters = true)
     private Customer customer;
 
@@ -220,6 +229,32 @@ public class ApsPlan implements Serializable {
         this.updated = updated;
     }
 
+    public Long getAgencyId() {
+        return agencyId;
+    }
+
+    public ApsPlan agencyId(Long agencyId) {
+        this.setAgencyId(agencyId);
+        return this;
+    }
+
+    public void setAgencyId(Long agencyId) {
+        this.agencyId = agencyId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public ApsPlan country(String country) {
+        this.setCountry(country);
+        return this;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public Set<ApsOrder> getApsOrders() {
         return this.apsOrders;
     }
@@ -290,20 +325,18 @@ public class ApsPlan implements Serializable {
     }
 
     // prettier-ignore
+
     @Override
     public String toString() {
         return "ApsPlan{" +
-            "id=" + getId() +
-            ", contract='" + getContract() + "'" +
-            ", pricing='" + getPricing() + "'" +
-            ", state='" + getState() + "'" +
-            ", license='" + getLicense() + "'" +
-            ", starts='" + getStarts() + "'" +
-            ", ends='" + getEnds() + "'" +
-            ", unitPrice=" + getUnitPrice() +
-            ", notes='" + getNotes() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", updated='" + getUpdated() + "'" +
-            "}";
+            "id=" + id +
+            ", contract='" + contract + '\'' +
+            ", pricing=" + pricing +
+            ", state=" + state +
+            ", license='" + license + '\'' +
+            ", starts=" + starts +
+            ", ends=" + ends +
+            ", unitPrice=" + unitPrice +
+            '}';
     }
 }

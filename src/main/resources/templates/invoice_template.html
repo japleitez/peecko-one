@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice ${invoiceNumber}</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+      }
+
+      body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 12px;
+        color: #1a1a2e;
+        background: #fff;
+        padding: 18mm 15mm;
+
+        /* flex column so footer is pushed to the bottom */
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* main content grows to fill space above footer */
+      .page-content {
+        flex: 1;
+      }
+
+      @page {
+        size: A4;
+        margin: 0; /* padding handled by body */
+      }
+
+      @media print {
+        html,
+        body {
+          width: 210mm;
+          height: 297mm;
+        }
+
+        /* Force Chrome to print background colors and images */
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 28px;
+      }
+
+      .header-left .invoice-label {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        color: #1a1a2e;
+      }
+
+      .header-left .invoice-number {
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 3px;
+      }
+
+      .header-right {
+        text-align: right;
+      }
+
+      .badge {
+        display: inline-block;
+        background: #f0f4ff;
+        color: #3b5bdb;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        padding: 3px 9px;
+        border-radius: 20px;
+        margin-bottom: 8px;
+      }
+
+      .date-grid {
+        display: flex;
+        gap: 24px;
+        justify-content: flex-end;
+      }
+
+      .date-item label {
+        display: block;
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #9ca3af;
+        margin-bottom: 2px;
+      }
+
+      .date-item span {
+        font-size: 12px;
+        color: #1a1a2e;
+        font-weight: 500;
+      }
+
+      .parties {
+        display: flex;
+        gap: 0 3mm;
+        margin-bottom: 8mm;
+      }
+
+      .party {
+        flex: 1;
+      }
+
+      .party-role {
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #9ca3af;
+        margin-bottom: 6px;
+      }
+
+      .party-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin-bottom: 5px;
+      }
+
+      .party address {
+        font-style: normal;
+        line-height: 1.65;
+        color: #4b5563;
+        font-size: 12px;
+      }
+
+      .party .meta {
+        margin-top: 7px;
+        line-height: 1.65;
+        color: #6b7280;
+        font-size: 11px;
+      }
+
+      .party .meta span {
+        display: block;
+      }
+
+      .period-bar {
+        background: #f8f9ff;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 10px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+      }
+
+      .period-bar .period-label {
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #9ca3af;
+      }
+
+      .period-bar .period-value {
+        font-size: 12px;
+        font-weight: 600;
+        color: #1a1a2e;
+      }
+
+      .period-bar .customer-code {
+        font-size: 11px;
+        color: #6b7280;
+      }
+      .period-bar .customer-code strong {
+        color: #1a1a2e;
+      }
+
+      .divider {
+        border: none;
+        border-top: 1.5px solid #e5e7eb;
+        margin: 18px 0;
+      }
+
+      .divider.dark {
+        border-top: 2px solid #1a1a2e;
+      }
+
+      :root {
+        --col-qty: 56px;
+        --col-unitprice: 88px;
+        --col-amount: 88px;
+      }
+
+      table.items-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table.items-table col.c-desc {
+        width: auto;
+      }
+      table.items-table col.c-qty {
+        width: var(--col-qty);
+      }
+      table.items-table col.c-unitprice {
+        width: var(--col-unitprice);
+      }
+      table.items-table col.c-amount {
+        width: var(--col-amount);
+      }
+
+      .items-table thead tr {
+        background: #1a1a2e;
+        color: #fff;
+      }
+
+      .items-table thead th {
+        padding: 9px 10px;
+        text-align: left;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+      }
+
+      .items-table thead th:not(:first-child) {
+        text-align: right;
+      }
+
+      .items-table tbody tr {
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .items-table tbody tr:last-child {
+        border-bottom: none;
+      }
+      .items-table tbody tr:nth-child(even) {
+        background: #fafafa;
+      }
+
+      .items-table tbody td {
+        padding: 9px 10px;
+        color: #374151;
+        font-size: 12px;
+        vertical-align: top;
+      }
+
+      .items-table tbody td:not(:first-child) {
+        text-align: right;
+      }
+
+      table.summary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0;
+      }
+
+      table.summary-table col.s-spacer {
+        width: auto;
+      }
+      table.summary-table col.s-label {
+        width: var(--col-unitprice);
+      }
+      table.summary-table col.s-value {
+        width: var(--col-amount);
+      }
+
+      .summary-table td {
+        padding: 6px 10px;
+        font-size: 12px;
+        vertical-align: middle;
+      }
+
+      .summary-table .s-spacer-cell {
+        /* invisible column */
+      }
+
+      .summary-table .s-label-cell {
+        text-align: right;
+        color: #6b7280;
+        white-space: nowrap;
+      }
+
+      .summary-table .s-value-cell {
+        text-align: right;
+        color: #1a1a2e;
+        font-weight: 500;
+      }
+
+      .summary-table tr.total-row td {
+        padding: 8px 10px;
+      }
+
+      .summary-table tr.total-row .s-label-cell {
+        background: #1a1a2e;
+        color: #a5b4fc;
+        font-weight: 700;
+        border-radius: 6px 0 0 6px;
+      }
+
+      .summary-table tr.total-row .s-value-cell {
+        background: #1a1a2e;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        border-radius: 0 6px 6px 0;
+      }
+
+      .footer {
+        flex-shrink: 0; /* never shrinks */
+        padding-top: 10px;
+        border-top: 1px solid #d1d5db;
+        text-align: center;
+        font-size: 10.5px;
+        color: #9ca3af;
+        line-height: 1.7;
+      }
+
+      .footer p {
+        margin: 1px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-content">
+      <div class="header">
+        <div class="header-left">
+          <div class="invoice-label">Invoice</div>
+          <div class="invoice-number">#<span th:text="${invoiceNumber}"></span></div>
+        </div>
+        <div class="header-right">
+          <div class="badge">Due <span th:text="${invoiceDue}"></span></div>
+          <div class="date-grid">
+            <div class="date-item">
+              <label>Issue Date</label>
+              <span><span th:text="${invoiceIssue}"></span></span>
+            </div>
+            <div class="date-item">
+              <label>Due Date</label>
+              <span><span th:text="${invoiceDue}"></span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="parties">
+        <div class="party">
+          <div class="party-role">From</div>
+          <div class="party-name"><span th:text="${agencyName}"></span></div>
+          <address>
+            <span th:text="${agencyAddressStreet}"></span><br />
+            <span th:text="${agencyAddressCity}"></span><br />
+            <span th:text="${agencyAddressCountry}"></span>
+          </address>
+          <div class="meta">
+            <span>VAT: <span th:text="${agencyVatNumber}"></span></span>
+            <span>IBAN: <span th:text="${agencyBankIban}"></span></span>
+            <span>SWIFT: <span th:text="${agencyBankSwift}"></span></span>
+          </div>
+        </div>
+
+        <div class="party" style="text-align: right">
+          <div class="party-role">Bill To</div>
+          <div class="party-name"><span th:text="${clientName}"></span></div>
+          <address>
+            <span th:text="${clientAddressStreet}"></span><br />
+            <span th:text="${clientAddressCity}"></span><br />
+            <span th:text="${clientAddressCountry}"></span>
+          </address>
+          <div class="meta">
+            <span>VAT: <span th:text="${clientVatNumber}"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="period-bar">
+        <div>
+          <div class="period-label">Invoice Period</div>
+          <div class="period-value"><span th:text="${dateFrom}"></span> - <span th:text="${dateTo}"></span></div>
+        </div>
+        <div class="customer-code">
+          Customer Account: <strong><span th:text="${clientCode}"></span></strong>
+        </div>
+      </div>
+
+      <hr class="divider dark" />
+
+      <table class="items-table">
+        <colgroup>
+          <col class="c-desc" />
+          <col class="c-qty" />
+          <col class="c-unitprice" />
+          <col class="c-amount" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span th:text="${itemDescription}"></span></td>
+            <td><span th:text="${itemQuantity}"></span></td>
+            <td><span th:text="${itemUnitPrice}"></span></td>
+            <td><span th:text="${itemSubtotal}"></span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="summary-table">
+        <colgroup>
+          <col class="s-spacer" />
+          <col class="s-label" />
+          <col class="s-value" />
+        </colgroup>
+        <tbody>
+          <tr>
+            <td class="s-spacer-cell"></td>
+            <td class="s-label-cell">Tax Rate (<span th:text="${invoiceVatRate}"></span>)</td>
+            <td class="s-value-cell"><span th:text="${invoiceVat}"></span></td>
+          </tr>
+          <tr class="total-row">
+            <td class="s-spacer-cell"></td>
+            <td class="s-label-cell">Total Due</td>
+            <td class="s-value-cell"><span th:text="${invoiceTotal}"></span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr class="divider" style="margin-top: 22px" />
+    </div>
+
+    <footer class="footer">
+      <p><span th:text="${agencyFooterLine1}"></span></p>
+    </footer>
+  </body>
+</html>

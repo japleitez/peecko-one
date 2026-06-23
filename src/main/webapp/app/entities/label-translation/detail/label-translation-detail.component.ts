@@ -4,7 +4,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { ILabelTranslation, LABEL_ACCESS, LabelAccess } from '../label-translation.model';
-import { ARTICLE_ACCESS } from '../../article/article.model';
 
 @Component({
   standalone: true,

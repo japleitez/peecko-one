@@ -10,11 +10,11 @@ export interface ICustomer {
   code?: string | null;
   name?: string | null;
   country?: string | null;
-  license?: string | null;
   state?: keyof typeof CustomerState | null;
-  closeReason?: string | null;
-  emailDomains?: string | null;
+  license?: string | null;
+  billingEmail?: string | null;
   vatId?: string | null;
+  vatRate?: number | null;
   bank?: string | null;
   iban?: string | null;
   logo?: string | null;
@@ -22,12 +22,12 @@ export interface ICustomer {
   created?: dayjs.Dayjs | null;
   updated?: dayjs.Dayjs | null;
   trialed?: dayjs.Dayjs | null;
-  declined?: dayjs.Dayjs | null;
   activated?: dayjs.Dayjs | null;
   closed?: dayjs.Dayjs | null;
   contacts?: IContact[] | null;
   apsPlans?: IApsPlan[] | null;
   agency?: IAgency | null;
+  hasPrimaryContact?: boolean | false | null;
 }
 
 export type NewCustomer = Omit<ICustomer, 'id'> & { id: null };
@@ -37,11 +37,11 @@ export interface CustomerAccess {
   code: FieldAccess;
   name: FieldAccess;
   country: FieldAccess;
-  license: FieldAccess;
   state: FieldAccess;
-  closeReason: FieldAccess;
-  emailDomains: FieldAccess;
+  license: FieldAccess;
+  billingEmail: FieldAccess;
   vatId: FieldAccess;
+  vatRate: FieldAccess;
   bank: FieldAccess;
   iban: FieldAccess;
   logo: FieldAccess;
@@ -49,7 +49,6 @@ export interface CustomerAccess {
   created: FieldAccess;
   updated: FieldAccess;
   trialed: FieldAccess;
-  declined: FieldAccess;
   activated: FieldAccess;
   closed: FieldAccess;
   contacts: FieldAccess;
@@ -64,22 +63,21 @@ CUSTOMER_USER_ACCESS = {
   code: { listable: true, visible: true, disabled: false },
   name: { listable: true, visible: true, disabled: false },
   country: { listable: true, visible: true, disabled: false },
-  license: { listable: true, visible: true, disabled: false },
   state: { listable: true, visible: true, disabled: false },
-  closeReason: { listable: false, visible: true, disabled: false },
-  emailDomains: { listable: false, visible: true, disabled: false },
+  license: { listable: true, visible: true, disabled: false },
+  billingEmail: { listable: false, visible: true, disabled: false },
   vatId: { listable: false, visible: true, disabled: false },
+  vatRate: { listable: true, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
   iban: { listable: false, visible: true, disabled: false },
   logo: { listable: false, visible: true, disabled: false },
   notes: { listable: false, visible: true, disabled: false },
-  created: { listable: true, visible: true, disabled: true },
+  created: { listable: false, visible: true, disabled: true },
   trialed: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
-  declined: { listable: false, visible: true, disabled: true },
   activated: { listable: true, visible: true, disabled: true },
-  closed: { listable: true, visible: true, disabled: true },
+  closed: { listable: false, visible: true, disabled: true },
   contacts: { listable: false, visible: true, disabled: false },
   apsPlans: { listable: false, visible: true, disabled: false },
-  agency: { listable: false, visible: true, disabled: true }
+  agency: { listable: false, visible: true, disabled: false },
 };

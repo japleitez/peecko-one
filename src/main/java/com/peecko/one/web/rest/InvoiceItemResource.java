@@ -134,31 +134,12 @@ public class InvoiceItemResource {
                 if (invoiceItem.getQuantity() != null) {
                     existingInvoiceItem.setQuantity(invoiceItem.getQuantity());
                 }
-                if (invoiceItem.getPriceUnit() != null) {
-                    existingInvoiceItem.setPriceUnit(invoiceItem.getPriceUnit());
+                if (invoiceItem.getUnitPrice() != null) {
+                    existingInvoiceItem.setUnitPrice(invoiceItem.getUnitPrice());
                 }
-                if (invoiceItem.getPriceExtended() != null) {
-                    existingInvoiceItem.setPriceExtended(invoiceItem.getPriceExtended());
+                if (invoiceItem.getSubtotal() != null) {
+                    existingInvoiceItem.setSubtotal(invoiceItem.getSubtotal());
                 }
-                if (invoiceItem.getDisRate() != null) {
-                    existingInvoiceItem.setDisRate(invoiceItem.getDisRate());
-                }
-                if (invoiceItem.getDisAmount() != null) {
-                    existingInvoiceItem.setDisAmount(invoiceItem.getDisAmount());
-                }
-                if (invoiceItem.getFinalPrice() != null) {
-                    existingInvoiceItem.setFinalPrice(invoiceItem.getFinalPrice());
-                }
-                if (invoiceItem.getVatRate() != null) {
-                    existingInvoiceItem.setVatRate(invoiceItem.getVatRate());
-                }
-                if (invoiceItem.getVatAmount() != null) {
-                    existingInvoiceItem.setVatAmount(invoiceItem.getVatAmount());
-                }
-                if (invoiceItem.getTotal() != null) {
-                    existingInvoiceItem.setTotal(invoiceItem.getTotal());
-                }
-
                 return existingInvoiceItem;
             })
             .map(invoiceItemRepository::save);
@@ -167,17 +148,6 @@ public class InvoiceItemResource {
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, invoiceItem.getId().toString())
         );
-    }
-
-    /**
-     * {@code GET  /invoice-items} : get all the invoiceItems.
-     *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of invoiceItems in body.
-     */
-    @GetMapping("")
-    public List<InvoiceItem> getAllInvoiceItems() {
-        log.debug("REST request to get all InvoiceItems");
-        return invoiceItemRepository.findAll();
     }
 
     /**
@@ -191,6 +161,16 @@ public class InvoiceItemResource {
         log.debug("REST request to get InvoiceItem : {}", id);
         Optional<InvoiceItem> invoiceItem = invoiceItemRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(invoiceItem);
+    }
+
+    @GetMapping("")
+    public List<InvoiceItem> getAll(@RequestParam(value = "invoiceId", required = false) Long invoiceId) {
+        if (invoiceId != null) {
+            log.debug("REST request to get InvoiceItems for Invoice : {}", invoiceId);
+            return invoiceItemRepository.findByInvoiceId(invoiceId);
+        }
+        log.debug("REST request to get all InvoiceItems");
+        return invoiceItemRepository.findAll();
     }
 
     /**

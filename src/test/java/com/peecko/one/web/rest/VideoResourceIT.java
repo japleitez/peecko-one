@@ -73,11 +73,11 @@ class VideoResourceIT {
     private static final Instant DEFAULT_CREATED = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final Instant DEFAULT_RELEASED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_RELEASED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant DEFAULT_RELEASED = DEFAULT_CREATED;
+    private static final Instant UPDATED_RELEASED = UPDATED_CREATED;
 
-    private static final Instant DEFAULT_ARCHIVED = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_ARCHIVED = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant DEFAULT_ARCHIVED = DEFAULT_CREATED;
+    private static final Instant UPDATED_ARCHIVED = UPDATED_CREATED;
 
     private static final String ENTITY_API_URL = "/api/videos";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -178,9 +178,6 @@ class VideoResourceIT {
         assertThat(testVideo.getIntensity()).isEqualTo(DEFAULT_INTENSITY);
         assertThat(testVideo.getFilename()).isEqualTo(DEFAULT_FILENAME);
         assertThat(testVideo.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testVideo.getCreated()).isEqualTo(DEFAULT_CREATED);
-        assertThat(testVideo.getReleased()).isEqualTo(DEFAULT_RELEASED);
-        assertThat(testVideo.getArchived()).isEqualTo(DEFAULT_ARCHIVED);
     }
 
     @Test

@@ -28,9 +28,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jhi_user_gen")
+    @SequenceGenerator(name = "jhi_user_gen", sequenceName = "jhi_user_seq")
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "agency_id")
+    private Long agencyId;
 
     @NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
@@ -99,6 +103,14 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getAgencyId() {
+        return agencyId;
+    }
+
+    public void setAgencyId(Long agencyId) {
+        this.agencyId = agencyId;
     }
 
     public String getLogin() {

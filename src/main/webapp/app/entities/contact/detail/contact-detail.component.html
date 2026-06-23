@@ -15,6 +15,14 @@
           <dd *ngIf="ua.id.visible">
             <span>{{ contact.id }}</span>
           </dd>
+          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
+          <dd *ngIf="ua.customer.visible">
+            @if (contact.customer) {
+              <div>
+                <a [routerLink]="['/customer', contact.customer.id, 'view']">{{ contact.customer.name }}</a>
+              </div>
+            }
+          </dd>
           <dt *ngIf="ua.type.visible"><span>Type</span></dt>
           <dd *ngIf="ua.type.visible">
             <span>{{ contact.type }}</span>
@@ -62,14 +70,6 @@
           <dt *ngIf="ua.updated.visible"><span>Updated</span></dt>
           <dd *ngIf="ua.updated.visible">
             <span>{{ contact.updated | formatMediumDatetime }}</span>
-          </dd>
-          <dt *ngIf="ua.customer.visible"><span>Customer</span></dt>
-          <dd *ngIf="ua.customer.visible">
-            @if (contact.customer) {
-              <div>
-                <a [routerLink]="['/customer', contact.customer.id, 'view']">{{ contact.customer.id }}</a>
-              </div>
-            }
           </dd>
         </dl>
 

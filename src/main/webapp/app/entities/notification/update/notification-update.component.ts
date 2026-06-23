@@ -5,18 +5,21 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Language } from 'app/entities/enumerations/language.model';
 import { INotification, NOTIFICATION_ACCESS, NotificationAccess } from '../notification.model';
 import { NotificationService } from '../service/notification.service';
 import { NotificationFormService, NotificationFormGroup } from './notification-form.service';
+import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
+import { NgIf } from '@angular/common';
+import { ICustomer } from '../../customer/customer.model';
 
 @Component({
   standalone: true,
   selector: 'jhi-notification-update',
   templateUrl: './notification-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, CustomerSelectorComponent, NgIf]
 })
 export class NotificationUpdateComponent implements OnInit {
   ua: NotificationAccess = this.getNotificationAccess();
@@ -82,4 +85,9 @@ export class NotificationUpdateComponent implements OnInit {
   protected getNotificationAccess(): NotificationAccess {
     return NOTIFICATION_ACCESS;
   }
+
+  customerControl() {
+    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
+  }
+
 }

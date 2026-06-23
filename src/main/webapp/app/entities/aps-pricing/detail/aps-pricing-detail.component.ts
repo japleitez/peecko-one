@@ -4,8 +4,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { APS_PRICING_ACCESS, ApsPricingAccess, IApsPricing } from '../aps-pricing.model';
-import { APS_PLAN_USER_ACCESS } from '../../aps-plan/aps-plan.model';
 import { NgIf } from '@angular/common';
+import { APS_PLAN_ACCESS } from '../../aps-plan/aps-plan.model';
 
 @Component({
   standalone: true,

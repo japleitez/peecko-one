@@ -4,7 +4,6 @@ import { INotification, NewNotification } from './notification.model';
 
 export const sampleWithRequiredData: INotification = {
   id: 5860,
-  companyId: 26572,
   title: 'at',
   message: 'duh mushy',
   language: 'DE',
@@ -12,7 +11,6 @@ export const sampleWithRequiredData: INotification = {
 
 export const sampleWithPartialData: INotification = {
   id: 28856,
-  companyId: 16808,
   title: 'repeatedly',
   message: 'incidentally',
   language: 'DE',
@@ -23,7 +21,6 @@ export const sampleWithPartialData: INotification = {
 
 export const sampleWithFullData: INotification = {
   id: 7618,
-  companyId: 19625,
   title: 'injure boohoo',
   message: 'feature shakily foam',
   language: 'ES',
@@ -34,7 +31,6 @@ export const sampleWithFullData: INotification = {
 };
 
 export const sampleWithNewData: NewNotification = {
-  companyId: 29540,
   title: 'between noisily',
   message: 'spur as elastic',
   language: 'ES',

@@ -1,208 +1,351 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-invoice-heading" data-cy="InvoiceCreateUpdateHeading">Invoice</h2>
+      <jhi-alert-error></jhi-alert-error>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
-
+      <div style="width: 70%">
+        <!-- Top container: ID, Customer, Contract -->
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3" *ngIf="ua.id.visible">
-            <label class="form-label" for="field_id">ID</label>
-            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          <div class="d-flex gap-3 mb-3" *ngIf="ua.id.visible">
+            <div>
+              <label class="form-label" for="field_id">Invoice ID</label>
+              <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            </div>
+            @if (invoice?.apsOrder) {
+              <div>
+                <label class="form-label">Order</label>
+                <input type="number" class="form-control" [value]="invoice!.apsOrder!.id" readonly />
+              </div>
+            }
+            @if (customerName) {
+              <div class="flex-fill">
+                <label class="form-label">Customer</label>
+                <input type="text" class="form-control" [value]="customerName" readonly />
+              </div>
+            }
+            @if (planContract) {
+              <div class="flex-fill">
+                <label class="form-label">Contract</label>
+                <input type="text" class="form-control" [value]="planContract" readonly />
+              </div>
+            }
           </div>
         }
 
-        <div class="mb-3" *ngIf="ua.number.visible">
-          <label class="form-label" for="field_number">Number</label>
-          <input type="text" class="form-control" name="number" id="field_number" data-cy="number" formControlName="number" />
-          @if (editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)) {
-            <div>
-              @if (editForm.get('number')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
+        <!-- Middle container: remaining fields, label on the left -->
+        <div class="mb-3">
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.issued.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_issued">Issued</label>
+            <div class="flex-fill">
+              <input
+                id="field_issued"
+                data-cy="issued"
+                type="datetime-local"
+                class="form-control"
+                name="issued"
+                formControlName="issued"
+                placeholder="YYYY-MM-DD HH:mm"
+              />
+              @if (editForm.get('issued')!.invalid && (editForm.get('issued')!.dirty || editForm.get('issued')!.touched)) {
+                <div>
+                  @if (editForm.get('issued')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('issued')?.errors?.datetimelocal"
+                    >This field should be a date and time.</small
+                  >
+                </div>
               }
             </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.issued.visible">
-          <label class="form-label" for="field_issued">Issued</label>
-          <div class="d-flex">
-            <input
-              id="field_issued"
-              data-cy="issued"
-              type="datetime-local"
-              class="form-control"
-              name="issued"
-              formControlName="issued"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
           </div>
-          @if (editForm.get('issued')!.invalid && (editForm.get('issued')!.dirty || editForm.get('issued')!.touched)) {
-            <div>
-              @if (editForm.get('issued')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('issued')?.errors?.datetimelocal"
-                >This field should be a date and time.</small
-              >
-            </div>
-          }
-        </div>
 
-        <div class="mb-3" *ngIf="ua.dueDate.visible">
-          <label class="form-label" for="field_dueDate">Due Date</label>
-          <div class="input-group">
-            <input
-              id="field_dueDate"
-              data-cy="dueDate"
-              type="text"
-              class="form-control"
-              name="dueDate"
-              ngbDatepicker
-              #dueDateDp="ngbDatepicker"
-              formControlName="dueDate"
-            />
-            <button type="button" class="btn btn-secondary" (click)="dueDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.number.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_number">Number</label>
+            <div class="flex-fill">
+              <input type="text" class="form-control" name="number" id="field_number" data-cy="number" formControlName="number" />
+              @if (editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)) {
+                <div>
+                  @if (editForm.get('number')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
+              }
+            </div>
           </div>
-          @if (editForm.get('dueDate')!.invalid && (editForm.get('dueDate')!.dirty || editForm.get('dueDate')!.touched)) {
-            <div>
-              @if (editForm.get('dueDate')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
+
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.dueDate.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_dueDate">Due Date</label>
+            <div class="flex-fill">
+              <div class="input-group">
+                <input
+                  id="field_dueDate"
+                  data-cy="dueDate"
+                  type="text"
+                  class="form-control"
+                  name="dueDate"
+                  ngbDatepicker
+                  #dueDateDp="ngbDatepicker"
+                  formControlName="dueDate"
+                />
+                <button type="button" class="btn btn-secondary" (click)="dueDateDp.toggle()">
+                  <fa-icon icon="calendar-alt"></fa-icon>
+                </button>
+              </div>
+              @if (editForm.get('dueDate')!.invalid && (editForm.get('dueDate')!.dirty || editForm.get('dueDate')!.touched)) {
+                <div>
+                  @if (editForm.get('dueDate')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
               }
             </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.saleDate.visible">
-          <label class="form-label" for="field_saleDate">Sale Date</label>
-          <div class="input-group">
-            <input
-              id="field_saleDate"
-              data-cy="saleDate"
-              type="text"
-              class="form-control"
-              name="saleDate"
-              ngbDatepicker
-              #saleDateDp="ngbDatepicker"
-              formControlName="saleDate"
-            />
-            <button type="button" class="btn btn-secondary" (click)="saleDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
           </div>
-          @if (editForm.get('saleDate')!.invalid && (editForm.get('saleDate')!.dirty || editForm.get('saleDate')!.touched)) {
-            <div>
-              @if (editForm.get('saleDate')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
+
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.saleDate.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_saleDate">Sale Date</label>
+            <div class="flex-fill">
+              <div class="input-group">
+                <input
+                  id="field_saleDate"
+                  data-cy="saleDate"
+                  type="text"
+                  class="form-control"
+                  name="saleDate"
+                  ngbDatepicker
+                  #saleDateDp="ngbDatepicker"
+                  formControlName="saleDate"
+                />
+                <button type="button" class="btn btn-secondary" (click)="saleDateDp.toggle()">
+                  <fa-icon icon="calendar-alt"></fa-icon>
+                </button>
+              </div>
+              @if (editForm.get('saleDate')!.invalid && (editForm.get('saleDate')!.dirty || editForm.get('saleDate')!.touched)) {
+                <div>
+                  @if (editForm.get('saleDate')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                </div>
               }
             </div>
-          }
-        </div>
+          </div>
 
-        <div class="mb-3" *ngIf="ua.subtotal.visible">
-          <label class="form-label" for="field_subtotal">Subtotal</label>
-          <input type="number" class="form-control" name="subtotal" id="field_subtotal" data-cy="subtotal" formControlName="subtotal" />
-          @if (editForm.get('subtotal')!.invalid && (editForm.get('subtotal')!.dirty || editForm.get('subtotal')!.touched)) {
-            <div>
-              @if (editForm.get('subtotal')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.subtotal.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_subtotal">Subtotal</label>
+            <div class="flex-fill">
+              <input type="number" class="form-control" name="subtotal" id="field_subtotal" data-cy="subtotal" formControlName="subtotal" />
+              @if (editForm.get('subtotal')!.invalid && (editForm.get('subtotal')!.dirty || editForm.get('subtotal')!.touched)) {
+                <div>
+                  @if (editForm.get('subtotal')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('subtotal')?.errors?.number"
+                    >This field should be a number.</small
+                  >
+                </div>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('subtotal')?.errors?.number"
-                >This field should be a number.</small
-              >
             </div>
-          }
-        </div>
+          </div>
 
-        <div class="mb-3" *ngIf="ua.vat.visible">
-          <label class="form-label" for="field_vat">Vat</label>
-          <input type="number" class="form-control" name="vat" id="field_vat" data-cy="vat" formControlName="vat" />
-          @if (editForm.get('vat')!.invalid && (editForm.get('vat')!.dirty || editForm.get('vat')!.touched)) {
-            <div>
-              @if (editForm.get('vat')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.vatRate.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_vatRate">VAT %</label>
+            <div class="flex-fill">
+              <input type="number" class="form-control" name="vatRate" id="field_vatRate" data-cy="vatRate" formControlName="vatRate" />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.vat.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_vat">Vat</label>
+            <div class="flex-fill">
+              <input type="number" class="form-control" name="vat" id="field_vat" data-cy="vat" formControlName="vat" />
+              @if (editForm.get('vat')!.invalid && (editForm.get('vat')!.dirty || editForm.get('vat')!.touched)) {
+                <div>
+                  @if (editForm.get('vat')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('vat')?.errors?.number"
+                    >This field should be a number.</small
+                  >
+                </div>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('vat')?.errors?.number">This field should be a number.</small>
             </div>
-          }
-        </div>
+          </div>
 
-        <div class="mb-3" *ngIf="ua.total.visible">
-          <label class="form-label" for="field_total">Total</label>
-          <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
-          @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
-            <div>
-              @if (editForm.get('total')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.total.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_total">Total</label>
+            <div class="flex-fill">
+              <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
+              @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
+                <div>
+                  @if (editForm.get('total')?.errors?.required) {
+                    <small class="form-text text-danger">This field is required.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('total')?.errors?.number"
+                    >This field should be a number.</small
+                  >
+                </div>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('total')?.errors?.number">This field should be a number.</small>
             </div>
-          }
-        </div>
+          </div>
 
-        <div class="mb-3" *ngIf="ua.paid.visible">
-          <label class="form-label" for="field_paid">Paid</label>
-          <input type="number" class="form-control" name="paid" id="field_paid" data-cy="paid" formControlName="paid" />
-        </div>
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.paid.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_paid">Paid</label>
+            <div class="flex-fill">
+              <input type="number" class="form-control" name="paid" id="field_paid" data-cy="paid" formControlName="paid" />
+            </div>
+          </div>
 
-        <div class="mb-3" *ngIf="ua.paidDate.visible">
-          <label class="form-label" for="field_paidDate">Paid Date</label>
-          <div class="input-group">
-            <input
-              id="field_paidDate"
-              data-cy="paidDate"
-              type="text"
-              class="form-control"
-              name="paidDate"
-              ngbDatepicker
-              #paidDateDp="ngbDatepicker"
-              formControlName="paidDate"
-            />
-            <button type="button" class="btn btn-secondary" (click)="paidDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.paidDate.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_paidDate">Paid Date</label>
+            <div class="flex-fill">
+              <div class="input-group">
+                <input
+                  id="field_paidDate"
+                  data-cy="paidDate"
+                  type="text"
+                  class="form-control"
+                  name="paidDate"
+                  ngbDatepicker
+                  #paidDateDp="ngbDatepicker"
+                  formControlName="paidDate"
+                />
+                <button type="button" class="btn btn-secondary" (click)="paidDateDp.toggle()">
+                  <fa-icon icon="calendar-alt"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.diff.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_diff">Diff</label>
+            <div class="flex-fill">
+              <input type="number" class="form-control" name="diff" id="field_diff" data-cy="diff" formControlName="diff" />
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-1" *ngIf="ua.notes.visible">
+            <label class="form-label mb-0" style="width: 80px; min-width: 80px" for="field_notes">Notes</label>
+            <div class="flex-fill">
+              <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
+            </div>
           </div>
         </div>
 
-        <div class="mb-3" *ngIf="ua.diff.visible">
-          <label class="form-label" for="field_diff">Diff</label>
-          <input type="number" class="form-control" name="diff" id="field_diff" data-cy="diff" formControlName="diff" />
-        </div>
+        <!-- Invoice Items -->
+        @if (invoice?.id && ua.invoiceItems.visible) {
+          <div class="mb-3">
+            <div class="d-flex align-items-center mb-2">
+              <strong>Items</strong>
+              <button type="button" class="btn btn-sm btn-outline-primary ms-2" (click)="isAddingItem = !isAddingItem">
+                <fa-icon icon="plus"></fa-icon>&nbsp;Add Item
+              </button>
+            </div>
 
-        <div class="mb-3" *ngIf="ua.notes.visible">
-          <label class="form-label" for="field_notes">Notes</label>
-          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
-        </div>
-
-        <div class="mb-3" *ngIf="ua.apsOrder.visible">
-          <label class="form-label" for="field_apsOrder">Aps Order</label>
-          <select
-            class="form-control"
-            id="field_apsOrder"
-            data-cy="apsOrder"
-            name="apsOrder"
-            formControlName="apsOrder"
-            [compareWith]="compareApsOrder"
-          >
-            <option [ngValue]="null"></option>
-            @for (apsOrderOption of apsOrdersSharedCollection; track $index) {
-              <option [ngValue]="apsOrderOption">{{ apsOrderOption.id }}</option>
+            @if (invoiceItems.length > 0) {
+              <table class="table table-sm table-bordered mb-2">
+                <thead class="table-light">
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th class="text-end">Qty</th>
+                    <th class="text-end">Unit Price</th>
+                    <th class="text-end">Subtotal</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of invoiceItems; track item.id) {
+                    <tr>
+                      <td>{{ item.type }}</td>
+                      <td>{{ item.description }}</td>
+                      <td class="text-end">{{ item.quantity }}</td>
+                      <td class="text-end">{{ item.unitPrice }}</td>
+                      <td class="text-end">{{ item.subtotal }}</td>
+                      <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteItem(item)">
+                          <fa-icon icon="trash"></fa-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
             }
-          </select>
+
+            @if (isAddingItem) {
+              <div class="border rounded p-2 bg-light">
+                <div class="d-flex gap-2 align-items-end flex-wrap">
+                  <div>
+                    <label class="form-label form-label-sm mb-0">Type</label>
+                    <select class="form-select form-select-sm" [(ngModel)]="newItem.type" [ngModelOptions]="{ standalone: true }">
+                      @for (pt of productTypes; track pt) {
+                        <option [value]="pt">{{ pt }}</option>
+                      }
+                    </select>
+                  </div>
+                  <div class="flex-fill">
+                    <label class="form-label form-label-sm mb-0">Description</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm"
+                      [(ngModel)]="newItem.description"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div style="width: 70px">
+                    <label class="form-label form-label-sm mb-0">Qty</label>
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      [(ngModel)]="newItem.quantity"
+                      [ngModelOptions]="{ standalone: true }"
+                      min="1"
+                    />
+                  </div>
+                  <div style="width: 100px">
+                    <label class="form-label form-label-sm mb-0">Unit Price</label>
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      [(ngModel)]="newItem.unitPrice"
+                      [ngModelOptions]="{ standalone: true }"
+                      min="0"
+                      step="0.01"
+                    />
+                  </div>
+                  <div style="width: 90px">
+                    <label class="form-label form-label-sm mb-0">Subtotal</label>
+                    <input type="number" class="form-control form-control-sm" [value]="itemSubtotal" readonly />
+                  </div>
+                  <div class="d-flex gap-1">
+                    <button type="button" class="btn btn-sm btn-success" (click)="addItem()" [disabled]="!newItem.description">
+                      <fa-icon icon="check"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" (click)="isAddingItem = false">
+                      <fa-icon icon="ban"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Bottom container: action buttons -->
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+          </button>
+
+          <button
+            type="submit"
+            id="save-entity"
+            data-cy="entityCreateSaveButton"
+            [disabled]="editForm.invalid || isSaving"
+            class="btn btn-primary"
+          >
+            <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+          </button>
         </div>
-      </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
-        </button>
       </div>
     </form>
   </div>

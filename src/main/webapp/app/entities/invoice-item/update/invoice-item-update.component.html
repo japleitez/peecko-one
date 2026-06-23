@@ -64,134 +64,32 @@
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.priceUnit.visible">
-          <label class="form-label" for="field_priceUnit">Price Unit</label>
-          <input type="number" class="form-control" name="priceUnit" id="field_priceUnit" data-cy="priceUnit" formControlName="priceUnit" />
-          @if (editForm.get('priceUnit')!.invalid && (editForm.get('priceUnit')!.dirty || editForm.get('priceUnit')!.touched)) {
+        <div class="mb-3" *ngIf="ua.unitPrice.visible">
+          <label class="form-label" for="field_unitPrice">Unit Price</label>
+          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
+          @if (editForm.get('unitPrice')!.invalid && (editForm.get('unitPrice')!.dirty || editForm.get('unitPrice')!.touched)) {
             <div>
-              @if (editForm.get('priceUnit')?.errors?.required) {
+              @if (editForm.get('unitPrice')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('priceUnit')?.errors?.number"
+              <small class="form-text text-danger" [hidden]="!editForm.get('unitPrice')?.errors?.number"
                 >This field should be a number.</small
               >
             </div>
           }
         </div>
 
-        <div class="mb-3" *ngIf="ua.priceExtended.visible">
-          <label class="form-label" for="field_priceExtended">Price Extended</label>
-          <input
-            type="number"
-            class="form-control"
-            name="priceExtended"
-            id="field_priceExtended"
-            data-cy="priceExtended"
-            formControlName="priceExtended"
-          />
-          @if (editForm.get('priceExtended')!.invalid && (editForm.get('priceExtended')!.dirty || editForm.get('priceExtended')!.touched)) {
+        <div class="mb-3" *ngIf="ua.subtotal.visible">
+          <label class="form-label" for="field_subtotal">Subtotal</label>
+          <input type="number" class="form-control" name="subtotal" id="field_subtotal" data-cy="subtotal" formControlName="subtotal" />
+          @if (editForm.get('subtotal')!.invalid && (editForm.get('subtotal')!.dirty || editForm.get('subtotal')!.touched)) {
             <div>
-              @if (editForm.get('priceExtended')?.errors?.required) {
+              @if (editForm.get('subtotal')?.errors?.required) {
                 <small class="form-text text-danger">This field is required.</small>
               }
-              <small class="form-text text-danger" [hidden]="!editForm.get('priceExtended')?.errors?.number"
+              <small class="form-text text-danger" [hidden]="!editForm.get('subtotal')?.errors?.number"
                 >This field should be a number.</small
               >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.disRate.visible">
-          <label class="form-label" for="field_disRate">Dis Rate</label>
-          <input type="number" class="form-control" name="disRate" id="field_disRate" data-cy="disRate" formControlName="disRate" />
-          @if (editForm.get('disRate')!.invalid && (editForm.get('disRate')!.dirty || editForm.get('disRate')!.touched)) {
-            <div>
-              @if (editForm.get('disRate')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('disRate')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.disAmount.visible">
-          <label class="form-label" for="field_disAmount">Dis Amount</label>
-          <input type="number" class="form-control" name="disAmount" id="field_disAmount" data-cy="disAmount" formControlName="disAmount" />
-          @if (editForm.get('disAmount')!.invalid && (editForm.get('disAmount')!.dirty || editForm.get('disAmount')!.touched)) {
-            <div>
-              @if (editForm.get('disAmount')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('disAmount')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.finalPrice.visible">
-          <label class="form-label" for="field_finalPrice">Final Price</label>
-          <input
-            type="number"
-            class="form-control"
-            name="finalPrice"
-            id="field_finalPrice"
-            data-cy="finalPrice"
-            formControlName="finalPrice"
-          />
-          @if (editForm.get('finalPrice')!.invalid && (editForm.get('finalPrice')!.dirty || editForm.get('finalPrice')!.touched)) {
-            <div>
-              @if (editForm.get('finalPrice')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('finalPrice')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.vatRate.visible">
-          <label class="form-label" for="field_vatRate">Vat Rate</label>
-          <input type="number" class="form-control" name="vatRate" id="field_vatRate" data-cy="vatRate" formControlName="vatRate" />
-          @if (editForm.get('vatRate')!.invalid && (editForm.get('vatRate')!.dirty || editForm.get('vatRate')!.touched)) {
-            <div>
-              @if (editForm.get('vatRate')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('vatRate')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.vatAmount.visible">
-          <label class="form-label" for="field_vatAmount">Vat Amount</label>
-          <input type="number" class="form-control" name="vatAmount" id="field_vatAmount" data-cy="vatAmount" formControlName="vatAmount" />
-          @if (editForm.get('vatAmount')!.invalid && (editForm.get('vatAmount')!.dirty || editForm.get('vatAmount')!.touched)) {
-            <div>
-              @if (editForm.get('vatAmount')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('vatAmount')?.errors?.number"
-                >This field should be a number.</small
-              >
-            </div>
-          }
-        </div>
-
-        <div class="mb-3" *ngIf="ua.total.visible">
-          <label class="form-label" for="field_total">Total</label>
-          <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
-          @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
-            <div>
-              @if (editForm.get('total')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-              <small class="form-text text-danger" [hidden]="!editForm.get('total')?.errors?.number">This field should be a number.</small>
             </div>
           }
         </div>

@@ -13,11 +13,10 @@ import { ICustomer, NewCustomer } from '../customer.model';
 
 export type PartialUpdateCustomer = Partial<ICustomer> & Pick<ICustomer, 'id'>;
 
-type RestOf<T extends ICustomer | NewCustomer> = Omit<T, 'created' | 'updated' | 'trialed' | 'declined' | 'activated' | 'closed'> & {
+type RestOf<T extends ICustomer | NewCustomer> = Omit<T, 'created' | 'updated' | 'trialed' | 'activated' | 'closed'> & {
   created?: string | null;
   updated?: string | null;
   trialed?: string | null;
-  declined?: string | null;
   activated?: string | null;
   closed?: string | null;
 };
@@ -28,8 +27,8 @@ export type NewRestCustomer = RestOf<NewCustomer>;
 
 export type PartialUpdateRestCustomer = RestOf<PartialUpdateCustomer>;
 
-export type EntityResponseType = HttpResponse<ICustomer>;
-export type EntityArrayResponseType = HttpResponse<ICustomer[]>;
+export type CustomerResponseType = HttpResponse<ICustomer>;
+export type CustomerArrayResponseType = HttpResponse<ICustomer[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
@@ -40,46 +39,45 @@ export class CustomerService {
     protected applicationConfigService: ApplicationConfigService,
   ) {}
 
-  create(customer: NewCustomer): Observable<EntityResponseType> {
+  create(customer: NewCustomer): Observable<CustomerResponseType> {
     const copy = this.convertDateFromClient(customer);
     return this.http
       .post<RestCustomer>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  update(customer: ICustomer): Observable<EntityResponseType> {
+  update(customer: ICustomer): Observable<CustomerResponseType> {
     const copy = this.convertDateFromClient(customer);
     return this.http
       .put<RestCustomer>(`${this.resourceUrl}/${this.getCustomerIdentifier(customer)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  partialUpdate(customer: PartialUpdateCustomer): Observable<EntityResponseType> {
+  partialUpdate(customer: PartialUpdateCustomer): Observable<CustomerResponseType> {
     const copy = this.convertDateFromClient(customer);
     return this.http
       .patch<RestCustomer>(`${this.resourceUrl}/${this.getCustomerIdentifier(customer)}`, copy, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  find(id: number): Observable<EntityResponseType> {
+  find(id: number): Observable<CustomerResponseType> {
     return this.http
       .get<RestCustomer>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<CustomerArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
       .get<RestCustomer[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
-  queryActive(): Observable<EntityArrayResponseType> {
+  queryActive(): Observable<CustomerArrayResponseType> {
     return this.http
       .get<RestCustomer[]>(`${this.resourceUrl}/active`, { observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
-
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
@@ -119,7 +117,6 @@ export class CustomerService {
       created: customer.created?.toJSON() ?? null,
       updated: customer.updated?.toJSON() ?? null,
       trialed: customer.trialed?.toJSON() ?? null,
-      declined: customer.declined?.toJSON() ?? null,
       activated: customer.activated?.toJSON() ?? null,
       closed: customer.closed?.toJSON() ?? null,
     };
@@ -131,7 +128,6 @@ export class CustomerService {
       created: restCustomer.created ? dayjs(restCustomer.created) : undefined,
       updated: restCustomer.updated ? dayjs(restCustomer.updated) : undefined,
       trialed: restCustomer.trialed ? dayjs(restCustomer.trialed) : undefined,
-      declined: restCustomer.declined ? dayjs(restCustomer.declined) : undefined,
       activated: restCustomer.activated ? dayjs(restCustomer.activated) : undefined,
       closed: restCustomer.closed ? dayjs(restCustomer.closed) : undefined,
     };
