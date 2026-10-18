@@ -4,6 +4,11 @@ import { ICoach } from 'app/entities/coach/coach.model';
 import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
+/**
+ * Maximum length of the article body, kept in sync with HtmlSanitizer.MAX_HTML_LENGTH on the server.
+ */
+export const ARTICLE_CONTENT_MAX_LENGTH = 65535;
+
 export interface IArticle {
   id: number;
   code?: string | null;
@@ -15,6 +20,7 @@ export interface IArticle {
   duration?: number | null;
   thumbnail?: string | null;
   audioUrl?: string | null;
+  /** Article body as HTML. Sanitized by the server on save; render it with [innerHTML], never with bypassSecurityTrustHtml. */
   content?: string | null;
   seriesId?: number | null;
   chapter?: number | null;
@@ -47,12 +53,10 @@ export interface ArticleAccess {
   released: FieldAccess;
   archived: FieldAccess;
   articleCategory: FieldAccess;
-  coach: FieldAccess
+  coach: FieldAccess;
 }
 
-export let ARTICLE_ACCESS: ArticleAccess;
-
-ARTICLE_ACCESS = {
+export const ARTICLE_ACCESS: ArticleAccess = {
   id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   title: { listable: true, visible: true, disabled: false },
@@ -71,5 +75,5 @@ ARTICLE_ACCESS = {
   released: { listable: true, visible: true, disabled: false },
   archived: { listable: true, visible: true, disabled: false },
   articleCategory: { listable: true, visible: true, disabled: false },
-  coach: { listable: false, visible: true, disabled: false }
-}
+  coach: { listable: false, visible: true, disabled: false },
+};

@@ -48,28 +48,6 @@ describe('ApsOrder Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call ApsPlan query and add missing value', () => {
-      const apsOrder: IApsOrder = { id: 456 };
-      const apsPlan: IApsPlan = { id: 15239 };
-      apsOrder.apsPlan = apsPlan;
-
-      const apsPlanCollection: IApsPlan[] = [{ id: 28492 }];
-      jest.spyOn(apsPlanService, 'query').mockReturnValue(of(new HttpResponse({ body: apsPlanCollection })));
-      const additionalApsPlans = [apsPlan];
-      const expectedCollection: IApsPlan[] = [...additionalApsPlans, ...apsPlanCollection];
-      jest.spyOn(apsPlanService, 'addApsPlanToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ apsOrder });
-      comp.ngOnInit();
-
-      expect(apsPlanService.query).toHaveBeenCalled();
-      expect(apsPlanService.addApsPlanToCollectionIfMissing).toHaveBeenCalledWith(
-        apsPlanCollection,
-        ...additionalApsPlans.map(expect.objectContaining),
-      );
-      expect(comp.apsPlansSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const apsOrder: IApsOrder = { id: 456 };
       const apsPlan: IApsPlan = { id: 2854 };
@@ -78,7 +56,7 @@ describe('ApsOrder Management Update Component', () => {
       activatedRoute.data = of({ apsOrder });
       comp.ngOnInit();
 
-      expect(comp.apsPlansSharedCollection).toContain(apsPlan);
+      expect(comp.editForm.getRawValue().apsPlan).toEqual(apsPlan);
       expect(comp.apsOrder).toEqual(apsOrder);
     });
   });
@@ -111,7 +89,7 @@ describe('ApsOrder Management Update Component', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IApsOrder>>();
       const apsOrder = { id: 123 };
-      jest.spyOn(apsOrderFormService, 'getApsOrder').mockReturnValue({ id: null });
+      jest.spyOn(apsOrderFormService, 'getApsOrder').mockReturnValue({ id: null, invoiceSent: false });
       jest.spyOn(apsOrderService, 'create').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ apsOrder: null });

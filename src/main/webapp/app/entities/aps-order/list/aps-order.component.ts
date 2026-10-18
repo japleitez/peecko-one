@@ -99,7 +99,7 @@ export class ApsOrderComponent implements OnInit {
     this.refresh();
   }
 
-  onStartChange(value: any) {
+  onStartChange(value: any): void {
     if (value) {
       this.period = '';
     }
@@ -159,16 +159,30 @@ export class ApsOrderComponent implements OnInit {
     this._executeLoad();
   }
 
-  private _executeLoad(): void {
-    this.loadFromBackendWithRouteInformations().subscribe({
-      next: (res: EntityInfoArrayResponseType) => {
-        this.onResponseSuccess(res);
-      },
-    });
-  }
-
   navigateToWithComponentValues(): void {
     this.handleNavigation(this.predicate, this.ascending);
+  }
+
+  downloadInvoice(apsOrder: IApsOrderInfo): void {
+    this.apsOrderService.downloadInvoice(apsOrder.id).subscribe(
+      blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = apsOrder.invoiceNumber + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error => {
+        console.error('Error downloading file:', error);
+      },
+    );
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityInfoArrayResponseType> {
@@ -270,29 +284,15 @@ export class ApsOrderComponent implements OnInit {
     });
   }
 
-  downloadInvoice(apsOrder: IApsOrderInfo): void {
-    this.apsOrderService.downloadInvoice(apsOrder.id).subscribe(
-      blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = apsOrder.invoiceNumber + '.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      error => {
-        console.error('Error downloading file:', error);
-      },
-    );
-  }
-
   protected disabledGenerate(): boolean {
-    return this.isLoading || this.period?.length != 6;
+    return this.isLoading || this.period?.length !== 6;
   }
 
-  previousState(): void {
-    window.history.back();
+  private _executeLoad(): void {
+    this.loadFromBackendWithRouteInformations().subscribe({
+      next: (res: EntityInfoArrayResponseType) => {
+        this.onResponseSuccess(res);
+      },
+    });
   }
 }

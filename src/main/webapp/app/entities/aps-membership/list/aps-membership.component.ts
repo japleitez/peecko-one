@@ -128,6 +128,10 @@ export class ApsMembershipComponent implements OnInit {
     this.handleNavigation(this.predicate, this.ascending);
   }
 
+  previousState(): void {
+    window.history.back();
+  }
+
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
@@ -187,9 +191,5 @@ export class ApsMembershipComponent implements OnInit {
 
   protected getApsMembershipAccess(): ApsMembershipAccess {
     return APS_MEMBERSHIP_USER_ACCESS;
-  }
-
-  previousState(): void {
-    window.history.back();
   }
 }

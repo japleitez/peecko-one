@@ -12,7 +12,7 @@ export class ApsOrderData {
     this.id.set(update);
   }
 
-  getId() {
+  getId(): number | undefined | null {
     return this.id();
   }
 
@@ -20,7 +20,7 @@ export class ApsOrderData {
     this.period.set(update);
   }
 
-  getPeriod() {
+  getPeriod(): number | undefined | null {
     return this.period();
   }
 
@@ -28,7 +28,7 @@ export class ApsOrderData {
     this.license.set(update);
   }
 
-  getLicense() {
+  getLicense(): string | undefined | null {
     return this.license();
   }
 }

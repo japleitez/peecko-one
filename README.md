@@ -271,6 +271,34 @@ podman compose -f podman.yml up -d
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
+## Technical Annex
+
+### Article HTML content
+
+`Article.content` accepts, stores, and renders HTML. Everything written by a client is sanitized server-side before it is persisted.
+
+#### Backend
+
+- `com.peecko.one.utils.HtmlSanitizer` — jsoup `Safelist.relaxed()` plus `hr`, `figure`, `figcaption`, `s`, `del`, `ins`, `mark`, `abbr`, `time`, the `class` attribute on all tags, and table span/scope attributes. Link and image URLs are restricted to `http`/`https` (`mailto` for links as well), so `javascript:` and `data:` URLs are dropped; anchors get an enforced `rel="noopener noreferrer"`. Scripts, styles, iframes, objects, `on*` handlers and inline `style` are stripped while their text content is kept. Pretty-printing is disabled so author whitespace survives a save/edit round-trip.
+- `ArticleResource` sanitizes on POST, PUT and PATCH, so no unsanitized HTML can reach the database from any write path.
+- `Article.content` is mapped with `columnDefinition = "text"` and `@Size(max = 65535)`; over-long bodies get a 400 on create/update. Liquibase changeset `2026.130.update_Article_content.xml` widens the column from `varchar(255)` to `clob`.
+- `pom.xml` adds jsoup 1.17.2.
+- `.jhipster/Article.json` and `peecko-23.jdl` record the new maxlength so regeneration stays in sync.
+
+#### Frontend
+
+- Edit form: the single-line input became a 12-row textarea with a maxlength matching the server, a note about which tags survive, a max-length error message, and a live preview bound with `[innerHTML]`.
+- Detail view: content renders through `[innerHTML]` instead of `{{ }}`. That path runs Angular's `DomSanitizer`, a second and independent strip of anything dangerous. Both templates carry a comment warning against swapping in `bypassSecurityTrustHtml`.
+- `global.scss` defines `.article-content` (bordered box, images capped to the container width).
+
+#### Tests
+
+- 12 unit tests for the sanitizer (`HtmlSanitizerTest`).
+- 5 new `ArticleResourceIT` tests: sanitization on POST/PUT/PATCH, a long-HTML round-trip, and a 400 on over-long content.
+- 5 frontend tests: real-template rendering proving HTML renders and that a `<script>`/`onerror` payload is stripped, plus preview and max-length checks.
+
+Note that frontend tests run through `npx ng test --test-path-pattern=<pattern>`; invoking `npx jest <path>` directly bypasses the Angular builder's ts-jest configuration and fails to parse the specs.
+
 [JHipster Homepage and latest documentation]: https://www.jhipster.tech
 [JHipster 8.1.0 archive]: https://www.jhipster.tech/documentation-archive/v8.1.0
 [Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v8.1.0/development/

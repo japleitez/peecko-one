@@ -46,8 +46,11 @@
       "fieldType": "String"
     },
     {
+      "documentation": "sanitized HTML body, see HtmlSanitizer",
       "fieldName": "content",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "65535"
     },
     {
       "fieldName": "seriesId",

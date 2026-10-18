@@ -21,7 +21,7 @@ describe('ApsPricing Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             country: expect.any(Object),
-            customerId: expect.any(Object),
+            customer: expect.any(Object),
             index: expect.any(Object),
             minQuantity: expect.any(Object),
             maxQuantity: expect.any(Object),
@@ -38,7 +38,7 @@ describe('ApsPricing Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             country: expect.any(Object),
-            customerId: expect.any(Object),
+            customer: expect.any(Object),
             index: expect.any(Object),
             minQuantity: expect.any(Object),
             maxQuantity: expect.any(Object),

@@ -1,18 +1,21 @@
 <jhi-alert-error></jhi-alert-error>
 
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-
   <div class="d-flex justify-content-center">
-
-  <!-- left form -->
-  <div class="col-3 child-inline">
+    <!-- left form -->
+    <div class="col-3 child-inline">
       <div>
         <div class="mb-3" *ngIf="ua.customer.visible">
           @if (apsPlan?.customer) {
-            <label class="form-label" >Customer</label>
-            <input type="text" class="form-control-read" value="{{apsPlan?.customer?.name}}" [readonly]="true" />
+            <label class="form-label">Customer</label>
+            <input type="text" class="form-control-read" value="{{ apsPlan?.customer?.name }}" [readonly]="true" />
           } @else {
-            <customer-selector [control]="customerControl()" [cl]="'w-100'" [required]="false" id="field_customer"></customer-selector>
+            <jhi-customer-selector
+              [control]="customerControl()"
+              [cl]="'w-100'"
+              [required]="false"
+              id="field_customer"
+            ></jhi-customer-selector>
           }
         </div>
 
@@ -50,77 +53,73 @@
           <label class="form-label" for="field_unitPrice">Unit Price</label>
           <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
         </div>
-
-      </div>
-
-  </div>
-
-  <!-- right form -->
-  <div class="col-3 child-inline">
-    <div class="mb-3" *ngIf="ua.starts.visible">
-      <label class="form-label" for="field_starts">Starts</label>
-      <div class="input-group">
-        <input
-          id="field_starts"
-          data-cy="starts"
-          type="text"
-          class="form-control"
-          name="starts"
-          ngbDatepicker
-          #startsDp="ngbDatepicker"
-          formControlName="starts"
-        />
-        <button type="button" class="btn btn-secondary" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
       </div>
     </div>
 
-    <div class="mb-3" *ngIf="ua.ends.visible">
-      <label class="form-label" for="field_ends">Ends</label>
-      <div class="input-group">
-        <input
-          id="field_ends"
-          data-cy="ends"
-          type="text"
-          class="form-control"
-          name="ends"
-          ngbDatepicker
-          #endsDp="ngbDatepicker"
-          formControlName="ends"
-        />
-        <button type="button" class="btn btn-secondary" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+    <!-- right form -->
+    <div class="col-3 child-inline">
+      <div class="mb-3" *ngIf="ua.starts.visible">
+        <label class="form-label" for="field_starts">Starts</label>
+        <div class="input-group">
+          <input
+            id="field_starts"
+            data-cy="starts"
+            type="text"
+            class="form-control"
+            name="starts"
+            ngbDatepicker
+            #startsDp="ngbDatepicker"
+            formControlName="starts"
+          />
+          <button type="button" class="btn btn-secondary" (click)="startsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+        </div>
+      </div>
+
+      <div class="mb-3" *ngIf="ua.ends.visible">
+        <label class="form-label" for="field_ends">Ends</label>
+        <div class="input-group">
+          <input
+            id="field_ends"
+            data-cy="ends"
+            type="text"
+            class="form-control"
+            name="ends"
+            ngbDatepicker
+            #endsDp="ngbDatepicker"
+            formControlName="ends"
+          />
+          <button type="button" class="btn btn-secondary" (click)="endsDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+        </div>
+      </div>
+
+      <div class="mb-3" *ngIf="ua.notes.visible">
+        <label class="form-label" for="field_notes">Notes</label>
+        <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" cols="40" rows="4"></textarea>
       </div>
     </div>
 
-    <div class="mb-3" *ngIf="ua.notes.visible">
-      <label class="form-label" for="field_notes">Notes</label>
-      <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" cols="40" rows="4"></textarea>
+    <!-- 3rd panel -->
+    <div class="col-2 child-inline">
+      <div class="mb-3" *ngIf="ua.id.visible">
+        <label class="form-label" for="field_id">Plan ID</label>
+        <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
     </div>
   </div>
-
-  <!-- 3rd panel -->
-  <div class="col-2 child-inline">
-    <div class="mb-3" *ngIf="ua.id.visible">
-      <label class="form-label" for="field_id">Plan ID</label>
-      <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-    </div>
-
-    <div>
-      <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-        <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
-      </button>
-
-      <button
-        type="submit"
-        id="save-entity"
-        data-cy="entityCreateSaveButton"
-        [disabled]="editForm.invalid || isSaving"
-        class="btn btn-primary"
-      >
-        <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
-      </button>
-    </div>
-
-  </div>
-
-</div>
 </form>

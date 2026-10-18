@@ -24,9 +24,7 @@ export interface ArticleCategoryAccess {
   articles: FieldAccess;
 }
 
-export let ARTICLE_CATEGORY_ACCESS: ArticleCategoryAccess;
-
-ARTICLE_CATEGORY_ACCESS = {
+export const ARTICLE_CATEGORY_ACCESS: ArticleCategoryAccess = {
   id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   title: { listable: true, visible: true, disabled: false },
@@ -34,4 +32,4 @@ ARTICLE_CATEGORY_ACCESS = {
   release: { listable: true, visible: true, disabled: false },
   archived: { listable: true, visible: true, disabled: false },
   articles: { listable: false, visible: true, disabled: false },
-}
+};

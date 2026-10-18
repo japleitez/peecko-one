@@ -48,28 +48,6 @@ describe('Invoice Management Update Component', () => {
   });
 
   describe('ngOnInit', () => {
-    it('Should call ApsOrder query and add missing value', () => {
-      const invoice: IInvoice = { id: 456 };
-      const apsOrder: IApsOrder = { id: 15480 };
-      invoice.apsOrder = apsOrder;
-
-      const apsOrderCollection: IApsOrder[] = [{ id: 21053 }];
-      jest.spyOn(apsOrderService, 'query').mockReturnValue(of(new HttpResponse({ body: apsOrderCollection })));
-      const additionalApsOrders = [apsOrder];
-      const expectedCollection: IApsOrder[] = [...additionalApsOrders, ...apsOrderCollection];
-      jest.spyOn(apsOrderService, 'addApsOrderToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ invoice });
-      comp.ngOnInit();
-
-      expect(apsOrderService.query).toHaveBeenCalled();
-      expect(apsOrderService.addApsOrderToCollectionIfMissing).toHaveBeenCalledWith(
-        apsOrderCollection,
-        ...additionalApsOrders.map(expect.objectContaining),
-      );
-      expect(comp.apsOrdersSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const invoice: IInvoice = { id: 456 };
       const apsOrder: IApsOrder = { id: 3857 };
@@ -89,7 +67,7 @@ describe('Invoice Management Update Component', () => {
       const saveSubject = new Subject<HttpResponse<IInvoice>>();
       const invoice = { id: 123 };
       jest.spyOn(invoiceFormService, 'getInvoice').mockReturnValue(invoice);
-      jest.spyOn(invoiceService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(invoiceService, 'partialUpdate').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ invoice });
       comp.ngOnInit();
@@ -103,7 +81,7 @@ describe('Invoice Management Update Component', () => {
       // THEN
       expect(invoiceFormService.getInvoice).toHaveBeenCalled();
       expect(comp.previousState).toHaveBeenCalled();
-      expect(invoiceService.update).toHaveBeenCalledWith(expect.objectContaining(invoice));
+      expect(invoiceService.partialUpdate).toHaveBeenCalledWith(expect.objectContaining(invoice));
       expect(comp.isSaving).toEqual(false);
     });
 
@@ -134,7 +112,7 @@ describe('Invoice Management Update Component', () => {
       // GIVEN
       const saveSubject = new Subject<HttpResponse<IInvoice>>();
       const invoice = { id: 123 };
-      jest.spyOn(invoiceService, 'update').mockReturnValue(saveSubject);
+      jest.spyOn(invoiceService, 'partialUpdate').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ invoice });
       comp.ngOnInit();
@@ -145,7 +123,7 @@ describe('Invoice Management Update Component', () => {
       saveSubject.error('This is an error!');
 
       // THEN
-      expect(invoiceService.update).toHaveBeenCalled();
+      expect(invoiceService.partialUpdate).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
     });

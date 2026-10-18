@@ -13,26 +13,33 @@ import { ICoach } from 'app/entities/coach/coach.model';
 import { CoachService } from 'app/entities/coach/service/coach.service';
 import { Language } from 'app/entities/enumerations/language.model';
 import { ArticleService } from '../service/article.service';
-import { ARTICLE_ACCESS, ArticleAccess, IArticle } from '../article.model';
+import { ARTICLE_ACCESS, ARTICLE_CONTENT_MAX_LENGTH, ArticleAccess, IArticle } from '../article.model';
 import { ArticleFormService, ArticleFormGroup } from './article-form.service';
 import { NgIf } from '@angular/common';
 import { AgencySelectComponent } from '../../agency/agency-select/agency-select.component';
-import {
-  ArticleCategorySelectComponent
-} from '../../article-category/article-category-select/article-category-select.component';
+import { ArticleCategorySelectComponent } from '../../article-category/article-category-select/article-category-select.component';
 import { CoachSelectComponent } from '../../coach/coach-select/coach-select.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-article-update',
   templateUrl: './article-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, AgencySelectComponent, ArticleCategorySelectComponent, CoachSelectComponent]
+  imports: [
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    AgencySelectComponent,
+    ArticleCategorySelectComponent,
+    CoachSelectComponent,
+  ],
 })
 export class ArticleUpdateComponent implements OnInit {
   ua: ArticleAccess = this.getArticleAccess();
   isSaving = false;
   article: IArticle | null = null;
   languageValues = Object.keys(Language);
+  contentMaxLength = ARTICLE_CONTENT_MAX_LENGTH;
 
   articleCategoriesSharedCollection: IArticleCategory[] = [];
   coachesSharedCollection: ICoach[] = [];
@@ -67,6 +74,14 @@ export class ArticleUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  /**
+   * HTML typed in the editor, rendered through [innerHTML] so Angular's DomSanitizer strips
+   * anything the server side sanitizer would drop on save.
+   */
+  contentPreview(): string {
+    return this.editForm.get('content')?.value ?? '';
+  }
+
   save(): void {
     this.isSaving = true;
     const article = this.articleFormService.getArticle(this.editForm);
@@ -75,6 +90,14 @@ export class ArticleUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.articleService.create(article));
     }
+  }
+
+  categoryControl(): FormControl<IArticleCategory | string | null> {
+    return this.editForm.get('articleCategory') as FormControl<IArticleCategory | string | null>;
+  }
+
+  coachControl(): FormControl<ICoach | string | null> {
+    return this.editForm.get('coach') as FormControl<ICoach | string | null>;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IArticle>>): void {
@@ -131,13 +154,4 @@ export class ArticleUpdateComponent implements OnInit {
   protected getArticleAccess(): ArticleAccess {
     return ARTICLE_ACCESS;
   }
-
-  categoryControl() {
-    return this.editForm.get('articleCategory') as FormControl<IArticleCategory | string | null>;
-  }
-
-  coachControl() {
-    return this.editForm.get('coach') as FormControl<ICoach | string | null>;
-  }
-
 }

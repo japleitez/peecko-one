@@ -89,7 +89,9 @@ export class InvoiceUpdateComponent implements OnInit {
   }
 
   addItem(): void {
-    if (!this.invoice?.id) return;
+    if (!this.invoice?.id) {
+      return;
+    }
     const item: NewInvoiceItem = {
       id: null,
       type: this.newItem.type,

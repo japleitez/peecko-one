@@ -132,8 +132,7 @@ export class InvoiceItemComponent implements OnInit {
     }
   }
 
-  protected getInvoiceItemAccess() {
+  protected getInvoiceItemAccess(): InvoiceItemAccess {
     return INVOICE_ITEM_ACCESS;
   }
-
 }

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync, inject, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
@@ -37,10 +38,11 @@ describe('RegisterComponent', () => {
     expect(comp.doNotMatch).toBe(true);
   });
 
-  it('should update success to true after creating an account', inject(
-    [RegisterService],
-    fakeAsync((service: RegisterService) => {
+  it('should navigate to user management after creating an account', inject(
+    [RegisterService, Router],
+    fakeAsync((service: RegisterService, router: Router) => {
       jest.spyOn(service, 'save').mockReturnValue(of({}));
+      jest.spyOn(router, 'navigate').mockResolvedValue(true);
       comp.registerForm.patchValue({
         password: 'password',
         confirmPassword: 'password',
@@ -55,7 +57,7 @@ describe('RegisterComponent', () => {
         login: '',
         langKey: 'en',
       });
-      expect(comp.success).toBe(true);
+      expect(router.navigate).toHaveBeenCalledWith(['/admin/user-management']);
       expect(comp.errorUserExists).toBe(false);
       expect(comp.errorEmailExists).toBe(false);
       expect(comp.error).toBe(false);

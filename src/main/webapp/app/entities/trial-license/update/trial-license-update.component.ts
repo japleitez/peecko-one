@@ -47,9 +47,9 @@ export class TrialLicenseUpdateComponent implements OnInit {
     this.isSaving = true;
     const trialLicense = this.trialLicenseFormService.getTrialLicense(this.editForm);
     if (this.trialLicense) {
-      this.subscribeToSaveResponse(this.trialLicenseService.update(trialLicense as ITrialLicense));
+      this.subscribeToSaveResponse(this.trialLicenseService.update(trialLicense));
     } else {
-      this.subscribeToSaveResponse(this.trialLicenseService.create(trialLicense as ITrialLicense));
+      this.subscribeToSaveResponse(this.trialLicenseService.create(trialLicense));
     }
   }
 

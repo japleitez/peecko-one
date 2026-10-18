@@ -2,6 +2,7 @@ package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.peecko.one.domain.enumeration.Language;
+import com.peecko.one.utils.HtmlSanitizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -57,7 +58,12 @@ public class Article implements Serializable {
     @Column(name = "audio_url")
     private String audioUrl;
 
-    @Column(name = "content")
+    /**
+     * Article body as HTML. Always sanitized with {@link com.peecko.one.utils.HtmlSanitizer}
+     * before it is persisted, see {@link com.peecko.one.web.rest.ArticleResource}.
+     */
+    @Size(max = HtmlSanitizer.MAX_HTML_LENGTH)
+    @Column(name = "content", columnDefinition = "text")
     private String content;
 
     @Column(name = "series_id")

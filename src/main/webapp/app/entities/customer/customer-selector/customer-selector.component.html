@@ -1,10 +1,20 @@
 <mat-form-field [class]="this.cl" subscriptSizing="dynamic">
   <mat-label>Customer name</mat-label>
-  <input type="text" matInput placeholder="" aria-label="Customer name" [formControl]="control" [matAutocomplete]="auto">
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName">
+  <input
+    type="text"
+    matInput
+    placeholder=""
+    aria-label="Customer name"
+    [formControl]="control"
+    [matAutocomplete]="auto"
+    (blur)="onBlur()"
+  />
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayName" (closed)="resolveTypedText()">
     @for (cst of filteredCustomers | async; track cst) {
-      <mat-option [value]="cst" >{{cst.name}}</mat-option>
+      <mat-option [value]="cst">{{ cst.name }}</mat-option>
     }
   </mat-autocomplete>
+  @if (control.hasError('selectionRequired')) {
+    <mat-error>Select a customer from the list</mat-error>
+  }
 </mat-form-field>
-

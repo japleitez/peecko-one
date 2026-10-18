@@ -39,9 +39,7 @@ export interface ContactAccess {
   customer: FieldAccess;
 }
 
-export let CONTACT_USER_ACCESS: ContactAccess;
-
-CONTACT_USER_ACCESS = {
+export const CONTACT_USER_ACCESS: ContactAccess = {
   id: { listable: false, visible: true, disabled: true },
   type: { listable: true, visible: true, disabled: false },
   name: { listable: true, visible: true, disabled: false },

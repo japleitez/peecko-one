@@ -3,18 +3,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { IApsPlan } from '../aps-plan.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApsPlanData {
-
   private contract = signal<string | undefined | null>('');
 
-  setContract(update: string | null | undefined) {
+  setContract(update: string | null | undefined): void {
     this.contract.set(update);
   }
 
-  getContract() {
-      return this.contract();
+  getContract(): string | undefined | null {
+    return this.contract();
   }
-
 }

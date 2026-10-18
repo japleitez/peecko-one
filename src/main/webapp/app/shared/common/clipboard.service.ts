@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 export class ClipboardService {
   constructor() {}
 
-  public copy(selector: any) {
-    let element = document.querySelector(selector);
+  public copy(selector: any): void {
+    const element = document.querySelector(selector);
     let textToCopy = '';
 
     // Check if it's an input field
@@ -16,7 +16,6 @@ export class ClipboardService {
       textToCopy = element.value;
     } else {
       textToCopy = element.innerText;
-      console.log('textToCopy: ' + textToCopy);
       // For non-input elements
       const textArea = document.createElement('textarea');
       textArea.value = textToCopy;
@@ -25,9 +24,6 @@ export class ClipboardService {
       document.body.removeChild(textArea);
     }
 
-    navigator.clipboard
-      .writeText(textToCopy)
-      .then(() => console.log('Text copied! ' + textToCopy))
-      .catch(err => console.error('Error copying text: ', err));
+    navigator.clipboard.writeText(textToCopy).catch(err => console.error('Error copying text: ', err));
   }
 }

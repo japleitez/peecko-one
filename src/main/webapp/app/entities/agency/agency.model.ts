@@ -66,9 +66,7 @@ export interface AgencyAccess {
   apsPricings: FieldAccess;
 }
 
-export let AGENCY_USER_ACCESS: AgencyAccess;
-
-AGENCY_USER_ACCESS = {
+export const AGENCY_USER_ACCESS: AgencyAccess = {
   apsPricings: { listable: false, visible: true, disabled: false },
   bank: { listable: false, visible: true, disabled: false },
   bankBeneficiary: { listable: false, visible: true, disabled: false },

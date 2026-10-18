@@ -24,9 +24,7 @@ export interface InvoiceItemAccess {
   invoice: FieldAccess;
 }
 
-export let INVOICE_ITEM_ACCESS: InvoiceItemAccess;
-
-INVOICE_ITEM_ACCESS = {
+export const INVOICE_ITEM_ACCESS: InvoiceItemAccess = {
   id: { listable: false, visible: true, disabled: true },
   type: { listable: true, visible: true, disabled: false },
   description: { listable: true, visible: true, disabled: false },

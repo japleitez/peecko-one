@@ -44,9 +44,7 @@ export interface InvoiceAccess {
   apsOrder: FieldAccess;
 }
 
-export let INVOICE_ACCESS: InvoiceAccess;
-
-INVOICE_ACCESS = {
+export const INVOICE_ACCESS: InvoiceAccess = {
   id: { listable: false, visible: true, disabled: true },
   number: { listable: true, visible: true, disabled: false },
   issued: { listable: false, visible: true, disabled: true },

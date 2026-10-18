@@ -335,7 +335,8 @@ entity Article {
   duration Integer,
   thumbnail String,
   audioUrl String,
-  content String,
+  /** sanitized HTML body, see HtmlSanitizer */
+  content String maxlength(65535),
   seriesId Long,
   chapter Integer,
   created Instant,

@@ -83,7 +83,7 @@ export class ApsPlanComponent implements OnInit {
     this.ends = null;
   }
 
-  navToApsOrder(a: IApsPlan) {
+  navToApsOrder(a: IApsPlan): void {
     this.apsPlanData.setContract(a.contract);
     this.customerData.setCode(a.customer?.code);
     this.router.navigate(['/aps-order'], {
@@ -117,6 +117,10 @@ export class ApsPlanComponent implements OnInit {
 
   navigateToWithComponentValues(): void {
     this.handleNavigation(this.predicate, this.ascending);
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
@@ -190,9 +194,5 @@ export class ApsPlanComponent implements OnInit {
 
   protected getApsPlanUserAccess(): ApsPlanAccess {
     return APS_PLAN_ACCESS;
-  }
-
-  previousState(): void {
-    window.history.back();
   }
 }

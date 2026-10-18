@@ -48,7 +48,7 @@ describe('Invoice Management Component', () => {
     service = TestBed.inject(InvoiceService);
 
     const headers = new HttpHeaders();
-    jest.spyOn(service, 'query').mockReturnValue(
+    jest.spyOn(service, 'search').mockReturnValue(
       of(
         new HttpResponse({
           body: [{ id: 123 }],
@@ -63,7 +63,7 @@ describe('Invoice Management Component', () => {
     comp.ngOnInit();
 
     // THEN
-    expect(service.query).toHaveBeenCalled();
+    expect(service.search).toHaveBeenCalled();
     expect(comp.invoices?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 

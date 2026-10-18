@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-import { ARTICLE_ACCESS, ArticleAccess, IArticle, NewArticle } from '../article.model';
+import { ARTICLE_ACCESS, ARTICLE_CONTENT_MAX_LENGTH, ArticleAccess, IArticle, NewArticle } from '../article.model';
 
 /**
  * A partial Type with required key is used as form input.
@@ -71,22 +71,19 @@ export class ArticleFormService {
           validators: [Validators.required],
         },
       ),
-      code: new FormControl({ value: articleRawValue.code, disabled: ua.code.disabled },
-        { validators: [Validators.required],
-      }),
-      title: new FormControl({ value: articleRawValue.title, disabled: ua.title.disabled },
-        { validators: [Validators.required],
-      }),
+      code: new FormControl({ value: articleRawValue.code, disabled: ua.code.disabled }, { validators: [Validators.required] }),
+      title: new FormControl({ value: articleRawValue.title, disabled: ua.title.disabled }, { validators: [Validators.required] }),
       subtitle: new FormControl({ value: articleRawValue.subtitle, disabled: ua.subtitle.disabled }),
       summary: new FormControl({ value: articleRawValue.summary, disabled: ua.summary.disabled }),
-      language: new FormControl({ value: articleRawValue.language, disabled: ua.language.disabled },
-        { validators: [Validators.required],
-      }),
+      language: new FormControl({ value: articleRawValue.language, disabled: ua.language.disabled }, { validators: [Validators.required] }),
       tags: new FormControl({ value: articleRawValue.tags, disabled: ua.tags.disabled }),
       duration: new FormControl({ value: articleRawValue.duration, disabled: ua.duration.disabled }),
       thumbnail: new FormControl({ value: articleRawValue.thumbnail, disabled: ua.thumbnail.disabled }),
       audioUrl: new FormControl({ value: articleRawValue.audioUrl, disabled: ua.audioUrl.disabled }),
-      content: new FormControl({ value: articleRawValue.content, disabled: ua.content.disabled }),
+      content: new FormControl(
+        { value: articleRawValue.content, disabled: ua.content.disabled },
+        { validators: [Validators.maxLength(ARTICLE_CONTENT_MAX_LENGTH)] },
+      ),
       seriesId: new FormControl({ value: articleRawValue.seriesId, disabled: ua.seriesId.disabled }),
       chapter: new FormControl({ value: articleRawValue.chapter, disabled: ua.chapter.disabled }),
       created: new FormControl({ value: articleRawValue.created, disabled: ua.created.disabled }),

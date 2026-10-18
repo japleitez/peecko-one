@@ -180,6 +180,26 @@ describe('Article Management Update Component', () => {
     });
   });
 
+  describe('HTML content', () => {
+    it('Should expose the edited HTML for the preview', () => {
+      const article: IArticle = { id: 123, content: '<p>Breathe <strong>slowly</strong></p>' };
+      activatedRoute.data = of({ article });
+      comp.ngOnInit();
+
+      expect(comp.contentPreview()).toEqual('<p>Breathe <strong>slowly</strong></p>');
+    });
+
+    it('Should return an empty preview when there is no content', () => {
+      expect(comp.contentPreview()).toEqual('');
+    });
+
+    it('Should reject content longer than the server side limit', () => {
+      comp.editForm.get('content')!.setValue('x'.repeat(comp.contentMaxLength + 1));
+
+      expect(comp.editForm.get('content')!.errors?.maxlength).toBeTruthy();
+    });
+  });
+
   describe('Compare relationships', () => {
     describe('compareArticleCategory', () => {
       it('Should forward to articleCategoryService', () => {

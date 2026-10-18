@@ -20,7 +20,7 @@ describe('LabelTranslation Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            label: expect.any(Object),
+            code: expect.any(Object),
             lang: expect.any(Object),
             text: expect.any(Object),
           }),
@@ -33,7 +33,7 @@ describe('LabelTranslation Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            label: expect.any(Object),
+            code: expect.any(Object),
             lang: expect.any(Object),
             text: expect.any(Object),
           }),

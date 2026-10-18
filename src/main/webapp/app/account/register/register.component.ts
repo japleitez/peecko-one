@@ -70,9 +70,12 @@ export default class RegisterComponent implements AfterViewInit {
       this.doNotMatch = true;
     } else {
       const { login, email } = this.registerForm.getRawValue();
-      this.registerService
-        .save({ login, email, password, langKey: 'en' })
-        .subscribe({ next: () => this.router.navigate(['/admin/user-management']), error: response => this.processError(response) });
+      this.registerService.save({ login, email, password, langKey: 'en' }).subscribe({
+        next: () => {
+          this.router.navigate(['/admin/user-management']);
+        },
+        error: response => this.processError(response),
+      });
     }
   }
 

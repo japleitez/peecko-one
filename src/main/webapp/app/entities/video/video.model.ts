@@ -50,9 +50,7 @@ export interface VideoAccess {
   coach: FieldAccess;
 }
 
-export let VIDEO_ACCESS: VideoAccess;
-
-VIDEO_ACCESS = {
+export const VIDEO_ACCESS: VideoAccess = {
   id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   title: { listable: true, visible: true, disabled: false },
@@ -70,5 +68,5 @@ VIDEO_ACCESS = {
   released: { listable: true, visible: true, disabled: false },
   archived: { listable: true, visible: true, disabled: false },
   videoCategory: { listable: true, visible: true, disabled: false },
-  coach: { listable: false, visible: true, disabled: false }
-}
+  coach: { listable: false, visible: true, disabled: false },
+};

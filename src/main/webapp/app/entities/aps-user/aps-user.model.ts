@@ -40,9 +40,7 @@ export interface ApsUserAccess {
   playLists: FieldAccess;
 }
 
-export let APS_USER_ACCESS: ApsUserAccess;
-
-APS_USER_ACCESS = {
+export const APS_USER_ACCESS: ApsUserAccess = {
   id: { listable: false, visible: true, disabled: true },
   name: { listable: true, visible: true, disabled: false },
   username: { listable: true, visible: true, disabled: false },
@@ -56,5 +54,5 @@ APS_USER_ACCESS = {
   created: { listable: true, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
   apsDevices: { listable: false, visible: true, disabled: true },
-  playLists: { listable: false, visible: true, disabled: true }
-}
+  playLists: { listable: false, visible: true, disabled: true },
+};

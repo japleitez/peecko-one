@@ -18,7 +18,7 @@ import { CustomerSelectorComponent } from '../../customer/customer-selector/cust
   standalone: true,
   selector: 'jhi-aps-pricing-update',
   templateUrl: './aps-pricing-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent],
 })
 export class ApsPricingUpdateComponent implements OnInit {
   ua: ApsPricingAccess = this.getApsPricingAccess();
@@ -56,6 +56,10 @@ export class ApsPricingUpdateComponent implements OnInit {
     }
   }
 
+  customerControl(): FormControl<ICustomer | string | null> {
+    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IApsPricing>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -83,9 +87,4 @@ export class ApsPricingUpdateComponent implements OnInit {
   protected getApsPricingAccess(): ApsPricingAccess {
     return APS_PRICING_ACCESS;
   }
-
-  customerControl() {
-    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
-  }
-
 }
