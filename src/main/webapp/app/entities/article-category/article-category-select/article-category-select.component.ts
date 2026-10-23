@@ -16,6 +16,9 @@ import { IArticleCategory } from '../article-category.model';
   imports: [AsyncPipe, ReactiveFormsModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule],
   templateUrl: './article-category-select.component.html',
   styleUrl: './article-category-select.component.scss',
+  // the global preserveWhitespaces option would keep the whitespace around <mat-error> inside @if as extra nodes,
+  // which stops mat-form-field from projecting the error into its error slot (NG8011)
+  preserveWhitespaces: false,
 })
 export class ArticleCategorySelectComponent implements OnInit {
   @Input() control: FormControl<IArticleCategory | string | null> = new FormControl('');

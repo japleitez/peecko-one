@@ -16,6 +16,9 @@ import { VideoCategoryArrayResponseType, VideoCategoryService } from '../service
   imports: [AsyncPipe, ReactiveFormsModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule],
   templateUrl: './video-category-select.component.html',
   styleUrl: './video-category-select.component.scss',
+  // the global preserveWhitespaces option would keep the whitespace around <mat-error> inside @if as extra nodes,
+  // which stops mat-form-field from projecting the error into its error slot (NG8011)
+  preserveWhitespaces: false,
 })
 export class VideoCategorySelectComponent implements OnInit {
   @Input() control: FormControl<IVideoCategory | string | null> = new FormControl('');

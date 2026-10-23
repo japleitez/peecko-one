@@ -16,6 +16,9 @@ import { MatInputModule } from '@angular/material/input';
   imports: [AsyncPipe, ReactiveFormsModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule],
   templateUrl: './agency-select.component.html',
   styleUrl: './agency-select.component.scss',
+  // the global preserveWhitespaces option would keep the whitespace around <mat-error> inside @if as extra nodes,
+  // which stops mat-form-field from projecting the error into its error slot (NG8011)
+  preserveWhitespaces: false,
 })
 export class AgencySelectComponent implements OnInit {
   @Input() control: FormControl<IAgency | string | null> = new FormControl('');

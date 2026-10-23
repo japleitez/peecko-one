@@ -18,6 +18,9 @@ import { MatOptionModule } from '@angular/material/core';
   imports: [AsyncPipe, MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatOptionModule, ReactiveFormsModule],
   templateUrl: './aps-plan-select.component.html',
   styleUrl: './aps-plan-select.component.scss',
+  // the global preserveWhitespaces option would keep the whitespace around <mat-error> inside @if as extra nodes,
+  // which stops mat-form-field from projecting the error into its error slot (NG8011)
+  preserveWhitespaces: false,
 })
 export class ApsPlanSelectComponent implements OnInit {
   @Input() control: FormControl<IApsPlan | string | null> = new FormControl('');
