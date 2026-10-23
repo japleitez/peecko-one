@@ -204,6 +204,21 @@ class ArticleResourceIT {
 
     @Test
     @Transactional
+    void saveThroughRepositorySanitizesContent() {
+        // writes that bypass the REST layer must be sanitized too
+        article.setContent("<p>Kept</p><script>alert('xss')</script>");
+        articleRepository.saveAndFlush(article);
+        assertThat(articleRepository.findById(article.getId()).orElseThrow().getContent()).isEqualTo("<p>Kept</p>");
+
+        Article managed = articleRepository.findById(article.getId()).orElseThrow();
+        managed.setContent("<p onclick=\"steal()\">Updated</p>");
+        articleRepository.flush();
+        em.clear();
+        assertThat(articleRepository.findById(article.getId()).orElseThrow().getContent()).isEqualTo("<p>Updated</p>");
+    }
+
+    @Test
+    @Transactional
     void createArticleAcceptsLongHtmlContent() throws Exception {
         String longContent = "<p>" + "long body ".repeat(500) + "</p>";
         article.setContent(longContent);

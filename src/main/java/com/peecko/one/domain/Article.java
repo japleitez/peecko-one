@@ -60,7 +60,7 @@ public class Article implements Serializable {
 
     /**
      * Article body as HTML. Always sanitized with {@link com.peecko.one.utils.HtmlSanitizer}
-     * before it is persisted, see {@link com.peecko.one.web.rest.ArticleResource}.
+     * before it is persisted, see {@link #sanitizeContent()}.
      */
     @Size(max = HtmlSanitizer.MAX_HTML_LENGTH)
     @Column(name = "content", columnDefinition = "text")
@@ -222,6 +222,18 @@ public class Article implements Serializable {
 
     public void setAudioUrl(String audioUrl) {
         this.audioUrl = audioUrl;
+    }
+
+    /**
+     * Strips unsafe markup from {@link #content} right before the entity is inserted or updated.
+     * Running as a JPA lifecycle callback means every write path (REST endpoints, services,
+     * imports, ...) is covered, not only the ones that remember to call the sanitizer.
+     * Sanitizing is idempotent, so already clean HTML is left unchanged.
+     */
+    @PrePersist
+    @PreUpdate
+    private void sanitizeContent() {
+        this.content = HtmlSanitizer.sanitize(this.content);
     }
 
     public String getContent() {

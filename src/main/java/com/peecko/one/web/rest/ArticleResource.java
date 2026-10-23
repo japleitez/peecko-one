@@ -2,7 +2,6 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Article;
 import com.peecko.one.repository.ArticleRepository;
-import com.peecko.one.utils.HtmlSanitizer;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -47,16 +46,6 @@ public class ArticleResource {
     }
 
     /**
-     * Strips any unsafe markup from the HTML body supplied by the client. Applied on every write
-     * endpoint so that no unsanitized HTML can ever reach the database.
-     *
-     * @param article the article whose content is about to be persisted.
-     */
-    private void sanitizeContent(Article article) {
-        article.setContent(HtmlSanitizer.sanitize(article.getContent()));
-    }
-
-    /**
      * {@code POST  /articles} : Create a new article.
      *
      * @param article the article to create.
@@ -69,7 +58,6 @@ public class ArticleResource {
         if (article.getId() != null) {
             throw new BadRequestAlertException("A new article cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        sanitizeContent(article);
         Article result = articleRepository.save(article);
         return ResponseEntity
             .created(new URI("/api/articles/" + result.getId()))
@@ -104,7 +92,6 @@ public class ArticleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        sanitizeContent(article);
         Article result = articleRepository.save(article);
         return ResponseEntity
             .ok()
@@ -140,7 +127,6 @@ public class ArticleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        sanitizeContent(article);
         Optional<Article> result = articleRepository
             .findById(article.getId())
             .map(existingArticle -> {
