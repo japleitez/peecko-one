@@ -190,15 +190,21 @@ public class ArticleResource {
     }
 
     /**
-     * {@code GET  /articles} : get all the articles.
+     * {@code GET  /articles} : get all the articles, optionally filtered by category.
      *
+     * @param articleCategoryId optional id of the article category to filter by.
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of articles in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<Article>> getAllArticles(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Articles");
-        Page<Article> page = articleRepository.findAll(pageable);
+    public ResponseEntity<List<Article>> getAllArticles(
+        @RequestParam(required = false) Long articleCategoryId,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get a page of Articles, articleCategoryId: {}", articleCategoryId);
+        Page<Article> page = articleCategoryId == null
+            ? articleRepository.findAll(pageable)
+            : articleRepository.findByArticleCategoryId(articleCategoryId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

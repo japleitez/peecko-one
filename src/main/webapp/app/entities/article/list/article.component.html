@@ -3,6 +3,25 @@
     <span>Articles</span>
 
     <div class="d-flex justify-content-end">
+      <select
+        id="field_articleCategoryFilter"
+        data-cy="articleCategoryFilter"
+        name="articleCategoryFilter"
+        class="form-select form-select-sm w-auto me-2"
+        aria-label="Filter by category"
+        [(ngModel)]="articleCategoryId"
+        (ngModelChange)="onArticleCategoryChange()"
+      >
+        <option [ngValue]="null">All categories</option>
+        @for (category of articleCategories; track category.id) {
+          <option [ngValue]="category.id">{{ category.title }}</option>
+        }
+      </select>
+
+      <button class="btn btn-info me-2" (click)="resetSearchForm()" [disabled]="isLoading || !articleCategoryId" title="Clear filter">
+        <fa-icon icon="times"></fa-icon>
+      </button>
+
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh</span>
@@ -209,7 +228,7 @@
                 <div class="btn-group">
                   <a [routerLink]="['/article', article.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
-                 </a>
+                  </a>
 
                   <a [routerLink]="['/article', article.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                     <fa-icon icon="pencil-alt"></fa-icon>
