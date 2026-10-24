@@ -14,11 +14,30 @@
         }
 
         <div class="mb-3" *ngIf="ua.videoCategory.visible">
-          <jhi-video-category-select [control]="categoryControl()" [required]="false" id="field_video_category"></jhi-video-category-select>
+          <label class="form-label" for="field_videoCategory">Video Category</label>
+          <select
+            class="form-control"
+            id="field_videoCategory"
+            data-cy="videoCategory"
+            name="videoCategory"
+            formControlName="videoCategory"
+            [compareWith]="compareVideoCategory"
+          >
+            <option [ngValue]="null"></option>
+            @for (videoCategoryOption of videoCategoriesSharedCollection; track $index) {
+              <option [ngValue]="videoCategoryOption">{{ videoCategoryOption.title }}</option>
+            }
+          </select>
         </div>
 
         <div class="mb-3" *ngIf="ua.coach.visible">
-          <jhi-coach-select [control]="coachControl()" [required]="false" id="field_coach"></jhi-coach-select>
+          <label class="form-label" for="field_coach">Coach</label>
+          <select class="form-control" id="field_coach" data-cy="coach" name="coach" formControlName="coach" [compareWith]="compareCoach">
+            <option [ngValue]="null"></option>
+            @for (coachOption of coachesSharedCollection; track $index) {
+              <option [ngValue]="coachOption">{{ coachOption.name }}</option>
+            }
+          </select>
         </div>
 
         <div class="mb-3" *ngIf="ua.code.visible">

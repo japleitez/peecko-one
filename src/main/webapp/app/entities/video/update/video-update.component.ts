@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IVideoCategory } from 'app/entities/video-category/video-category.model';
 import { VideoCategoryService } from 'app/entities/video-category/service/video-category.service';
@@ -19,22 +19,12 @@ import { IVideo, VIDEO_ACCESS, VideoAccess } from '../video.model';
 import { VideoFormService, VideoFormGroup } from './video-form.service';
 import { NgIf } from '@angular/common';
 import { CustomerSelectorComponent } from '../../customer/customer-selector/customer-selector.component';
-import { VideoCategorySelectComponent } from '../../video-category/video-category-select/video-category-select.component';
-import { CoachSelectComponent } from '../../coach/coach-select/coach-select.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-video-update',
   templateUrl: './video-update.component.html',
-  imports: [
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgIf,
-    CustomerSelectorComponent,
-    VideoCategorySelectComponent,
-    CoachSelectComponent,
-  ],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf, CustomerSelectorComponent],
 })
 export class VideoUpdateComponent implements OnInit {
   ua: VideoAccess = this.getVideoAccess();
@@ -85,14 +75,6 @@ export class VideoUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.videoService.create(video));
     }
-  }
-
-  categoryControl(): FormControl<IVideoCategory | string | null> {
-    return this.editForm.get('videoCategory') as FormControl<IVideoCategory | string | null>;
-  }
-
-  coachControl(): FormControl<ICoach | string | null> {
-    return this.editForm.get('coach') as FormControl<ICoach | string | null>;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IVideo>>): void {
