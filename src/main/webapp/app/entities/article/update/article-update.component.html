@@ -14,21 +14,15 @@
         }
 
         <div class="mb-3" *ngIf="ua.articleCategory.visible">
-          @if (article?.articleCategory) {
-            <label class="form-label">Category</label>
-            <input type="text" class="form-control-read" value="{{article?.articleCategory?.title}}" [readonly]="true" />
-          } @else {
-            <article-category-select [control]="categoryControl()" [required]="false" id="field_article_category"></article-category-select>
-          }
+          <jhi-article-category-select
+            [control]="categoryControl()"
+            [required]="false"
+            id="field_article_category"
+          ></jhi-article-category-select>
         </div>
 
         <div class="mb-3" *ngIf="ua.coach.visible">
-          @if (article?.coach) {
-            <label class="form-label">Coach</label>
-            <input type="text" class="form-control-read" value="{{article?.coach?.name}}" [readonly]="true" />
-          } @else {
-            <coach-select [control]="coachControl()" [required]="false" id="field_coach"></coach-select>
-          }
+          <jhi-coach-select [control]="coachControl()" [required]="false" id="field_coach"></jhi-coach-select>
         </div>
 
         <div class="mb-3" *ngIf="ua.code.visible">
@@ -103,8 +97,33 @@
         </div>
 
         <div class="mb-3" *ngIf="ua.content.visible">
-          <label class="form-label" for="field_content">Content</label>
-          <input type="text" class="form-control" name="content" id="field_content" data-cy="content" formControlName="content" />
+          <label class="form-label" for="field_content">Content (HTML)</label>
+          <textarea
+            class="form-control"
+            name="content"
+            id="field_content"
+            data-cy="content"
+            formControlName="content"
+            rows="12"
+            [attr.maxlength]="contentMaxLength"
+          ></textarea>
+          <small class="form-text text-muted">
+            Formatting tags such as &lt;p&gt;, &lt;h1&gt;-&lt;h6&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;a&gt;,
+            &lt;img&gt; and &lt;table&gt; are kept. Scripts, styles, iframes and event handlers are removed when the article is saved.
+          </small>
+          @if (editForm.get('content')!.invalid && (editForm.get('content')!.dirty || editForm.get('content')!.touched)) {
+            <div>
+              @if (editForm.get('content')?.errors?.maxlength) {
+                <small class="form-text text-danger">This field cannot be longer than {{ contentMaxLength }} characters.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3" *ngIf="ua.content.visible">
+          <label class="form-label">Content preview</label>
+          <!-- [innerHTML] is sanitized by Angular's DomSanitizer, so the preview cannot execute injected markup -->
+          <div class="article-content" data-cy="contentPreview" [innerHTML]="contentPreview()"></div>
         </div>
 
         <div class="mb-3" *ngIf="ua.seriesId.visible">
@@ -176,7 +195,6 @@
             />
           </div>
         </div>
-
       </div>
 
       <div>

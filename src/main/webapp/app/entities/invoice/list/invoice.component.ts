@@ -39,8 +39,8 @@ export class InvoiceComponent implements OnInit {
   predicate = 'id';
   ascending = true;
 
-  customerMap: Record<number, string> = {};
-  planMap: Record<number, string> = {};
+  customerMap: Partial<Record<number, string>> = {};
+  planMap: Partial<Record<number, string>> = {};
 
   // search fields
   customers: ICustomer[] = [];

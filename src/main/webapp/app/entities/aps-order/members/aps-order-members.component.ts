@@ -26,8 +26,8 @@ export class ApsOrderMembersComponent {
     @Inject(MAT_DIALOG_DATA) public data: IApsOrderInfo,
   ) {}
 
-  selectFile(event: any) {
-    if (event.target.files && event.target.files[0]) {
+  selectFile(event: any): void {
+    if (event.target.files?.[0]) {
       const file: File = event.target.files[0];
       this.currentFile = file;
       this.fileName = this.currentFile.name;

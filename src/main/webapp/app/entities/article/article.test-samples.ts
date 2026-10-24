@@ -32,7 +32,7 @@ export const sampleWithFullData: IArticle = {
   duration: 18567,
   thumbnail: 'range beyond advice',
   audioUrl: 'satisfied midst',
-  content: 'sedately valley vastly',
+  content: '<h2>sedately valley</h2><p>vastly <strong>calm</strong></p>',
   seriesId: 32566,
   chapter: 19143,
   created: dayjs('2023-12-20T04:53'),

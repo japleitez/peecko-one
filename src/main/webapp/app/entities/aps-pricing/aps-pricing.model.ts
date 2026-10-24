@@ -26,9 +26,7 @@ export interface ApsPricingAccess {
   customer: FieldAccess;
 }
 
-export let APS_PRICING_ACCESS: ApsPricingAccess;
-
-APS_PRICING_ACCESS = {
+export const APS_PRICING_ACCESS: ApsPricingAccess = {
   id: { listable: false, visible: true, disabled: true },
   country: { listable: true, visible: true, disabled: false },
   index: { listable: true, visible: true, disabled: false },
@@ -37,4 +35,4 @@ APS_PRICING_ACCESS = {
   fitnessPrice: { listable: true, visible: true, disabled: false },
   wellnessPrice: { listable: true, visible: true, disabled: false },
   customer: { listable: true, visible: true, disabled: false },
-}
+};

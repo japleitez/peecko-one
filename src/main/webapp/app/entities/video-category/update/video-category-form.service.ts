@@ -33,6 +33,7 @@ type VideoCategoryFormDefaults = Pick<NewVideoCategory, 'id' | 'created' | 'rele
 
 type VideoCategoryFormGroupContent = {
   id: FormControl<VideoCategoryFormRawValue['id'] | NewVideoCategory['id']>;
+  pos: FormControl<VideoCategoryFormRawValue['pos'] | null>;
   code: FormControl<VideoCategoryFormRawValue['code']>;
   title: FormControl<VideoCategoryFormRawValue['title']>;
   created: FormControl<VideoCategoryFormRawValue['created']>;
@@ -44,7 +45,10 @@ export type VideoCategoryFormGroup = FormGroup<VideoCategoryFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class VideoCategoryFormService {
-  createVideoCategoryFormGroup(videoCategory: VideoCategoryFormGroupInput = { id: null }, ua: VideoCategoryAccess = VIDEO_CATEGORY_ACCESS): VideoCategoryFormGroup {
+  createVideoCategoryFormGroup(
+    videoCategory: VideoCategoryFormGroupInput = { id: null },
+    ua: VideoCategoryAccess = VIDEO_CATEGORY_ACCESS,
+  ): VideoCategoryFormGroup {
     const videoCategoryRawValue = this.convertVideoCategoryToVideoCategoryRawValue({
       ...this.getFormDefaults(),
       ...videoCategory,
@@ -57,12 +61,9 @@ export class VideoCategoryFormService {
           validators: [Validators.required],
         },
       ),
-      code: new FormControl({ value: videoCategoryRawValue.code, disabled: ua.code.disabled },
-        { validators: [Validators.required],
-      }),
-      title: new FormControl({ value: videoCategoryRawValue.title, disabled: ua.title.disabled },
-        { validators: [Validators.required],
-      }),
+      pos: new FormControl({ value: videoCategoryRawValue.pos, disabled: ua.pos.disabled }),
+      code: new FormControl({ value: videoCategoryRawValue.code, disabled: ua.code.disabled }, { validators: [Validators.required] }),
+      title: new FormControl({ value: videoCategoryRawValue.title, disabled: ua.title.disabled }, { validators: [Validators.required] }),
       created: new FormControl({ value: videoCategoryRawValue.created, disabled: ua.created.disabled }),
       released: new FormControl({ value: videoCategoryRawValue.released, disabled: ua.released.disabled }),
       archived: new FormControl({ value: videoCategoryRawValue.archived, disabled: ua.archived.disabled }),

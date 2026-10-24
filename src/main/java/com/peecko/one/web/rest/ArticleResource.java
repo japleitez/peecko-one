@@ -1,6 +1,7 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Article;
+import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.ArticleRepository;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -190,15 +191,30 @@ public class ArticleResource {
     }
 
     /**
-     * {@code GET  /articles} : get all the articles.
+     * {@code GET  /articles} : get all the articles, optionally filtered by category and language.
      *
+     * @param articleCategoryId optional id of the article category to filter by.
+     * @param language optional language to filter by.
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of articles in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<Article>> getAllArticles(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Articles");
-        Page<Article> page = articleRepository.findAll(pageable);
+    public ResponseEntity<List<Article>> getAllArticles(
+        @RequestParam(required = false) Long articleCategoryId,
+        @RequestParam(required = false) Language language,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get a page of Articles, articleCategoryId: {}, language: {}", articleCategoryId, language);
+        Page<Article> page;
+        if (articleCategoryId != null && language != null) {
+            page = articleRepository.findByArticleCategoryIdAndLanguage(articleCategoryId, language, pageable);
+        } else if (articleCategoryId != null) {
+            page = articleRepository.findByArticleCategoryId(articleCategoryId, pageable);
+        } else if (language != null) {
+            page = articleRepository.findByLanguage(language, pageable);
+        } else {
+            page = articleRepository.findAll(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

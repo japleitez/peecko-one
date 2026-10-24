@@ -16,9 +16,14 @@
         <div class="mb-3" *ngIf="ua.customer.visible">
           @if (notification?.customer) {
             <label class="form-label">Customer</label>
-            <input type="text" class="form-control-read" value="{{notification?.customer?.name}}" [readonly]="true" />
+            <input type="text" class="form-control-read" value="{{ notification?.customer?.name }}" [readonly]="true" />
           } @else {
-            <customer-selector [control]="customerControl()" [required]="false" [cl]="'w-100'" id="field_customer"></customer-selector>
+            <jhi-customer-selector
+              [control]="customerControl()"
+              [required]="false"
+              [cl]="'w-100'"
+              id="field_customer"
+            ></jhi-customer-selector>
           }
         </div>
 

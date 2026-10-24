@@ -3,6 +3,30 @@
     <span>Videos</span>
 
     <div class="d-flex justify-content-end">
+      <select
+        id="field_videoCategoryFilter"
+        data-cy="videoCategoryFilter"
+        name="videoCategoryFilter"
+        class="form-select form-select-sm w-auto me-2"
+        aria-label="Filter by category"
+        [(ngModel)]="filterCategoryId"
+        (ngModelChange)="onCategoryFilterChange()"
+      >
+        <option [ngValue]="null">All categories</option>
+        @for (category of videoCategories; track category.id) {
+          <option [ngValue]="category.id">{{ category.title }}</option>
+        }
+      </select>
+
+      <button
+        class="btn btn-info me-2"
+        (click)="clearCategoryFilter()"
+        [disabled]="isLoading || filterCategoryId == null"
+        title="Clear filter"
+      >
+        <fa-icon icon="times"></fa-icon>
+      </button>
+
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh</span>
@@ -23,19 +47,6 @@
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
-
-  <div class="d-flex align-items-center mb-3 gap-2">
-    <label class="form-label mb-0 me-1" for="filterCategory">Category</label>
-    <select id="filterCategory" class="form-select w-auto" [(ngModel)]="filterCategoryId" (change)="onCategoryFilterChange()">
-      <option [ngValue]="null">— All —</option>
-      @for (cat of videoCategories; track cat.id) {
-        <option [ngValue]="cat.id">{{ cat.title }}</option>
-      }
-    </select>
-    @if (filterCategoryId != null) {
-      <button class="btn btn-outline-secondary btn-sm" (click)="clearCategoryFilter()">Clear</button>
-    }
-  </div>
 
   @if (videos?.length === 0) {
     <div class="alert alert-warning" id="no-result">

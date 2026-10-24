@@ -36,9 +36,7 @@ export interface ArticleSeriesAccess {
   archived: FieldAccess;
 }
 
-export let ARTICLE_SERIES_ACCESS: ArticleSeriesAccess;
-
-ARTICLE_SERIES_ACCESS = {
+export const ARTICLE_SERIES_ACCESS: ArticleSeriesAccess = {
   id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   title: { listable: true, visible: true, disabled: false },
@@ -51,5 +49,5 @@ ARTICLE_SERIES_ACCESS = {
   created: { listable: false, visible: true, disabled: true },
   updated: { listable: false, visible: true, disabled: true },
   released: { listable: true, visible: true, disabled: false },
-  archived: { listable: true, visible: true, disabled: false }
-}
+  archived: { listable: true, visible: true, disabled: false },
+};

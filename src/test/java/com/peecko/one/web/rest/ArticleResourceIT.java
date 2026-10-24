@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -9,6 +10,7 @@ import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.Article;
 import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.ArticleRepository;
+import com.peecko.one.utils.HtmlSanitizer;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -59,8 +61,8 @@ class ArticleResourceIT {
     private static final String DEFAULT_AUDIO_URL = "AAAAAAAAAA";
     private static final String UPDATED_AUDIO_URL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CONTENT = "AAAAAAAAAA";
-    private static final String UPDATED_CONTENT = "BBBBBBBBBB";
+    private static final String DEFAULT_CONTENT = "<h2>AAAAAAAAAA</h2><p>Body with <strong>markup</strong>.</p>";
+    private static final String UPDATED_CONTENT = "<h2>BBBBBBBBBB</h2><ul><li>one</li><li>two</li></ul>";
 
     private static final Long DEFAULT_SERIES_ID = 1L;
     private static final Long UPDATED_SERIES_ID = 2L;
@@ -189,6 +191,64 @@ class ArticleResourceIT {
 
     @Test
     @Transactional
+    void createArticleSanitizesContent() throws Exception {
+        article.setContent("<p onclick=\"steal()\">Safe <strong>body</strong></p><script>alert('xss')</script>");
+
+        restArticleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(article)))
+            .andExpect(status().isCreated());
+
+        List<Article> articleList = articleRepository.findAll();
+        Article testArticle = articleList.get(articleList.size() - 1);
+        assertThat(testArticle.getContent()).isEqualTo("<p>Safe <strong>body</strong></p>");
+    }
+
+    @Test
+    @Transactional
+    void saveThroughRepositorySanitizesContent() {
+        // writes that bypass the REST layer must be sanitized too
+        article.setContent("<p>Kept</p><script>alert('xss')</script>");
+        articleRepository.saveAndFlush(article);
+        assertThat(articleRepository.findById(article.getId()).orElseThrow().getContent()).isEqualTo("<p>Kept</p>");
+
+        Article managed = articleRepository.findById(article.getId()).orElseThrow();
+        managed.setContent("<p onclick=\"steal()\">Updated</p>");
+        articleRepository.flush();
+        em.clear();
+        assertThat(articleRepository.findById(article.getId()).orElseThrow().getContent()).isEqualTo("<p>Updated</p>");
+    }
+
+    @Test
+    @Transactional
+    void createArticleAcceptsLongHtmlContent() throws Exception {
+        String longContent = "<p>" + "long body ".repeat(500) + "</p>";
+        article.setContent(longContent);
+
+        restArticleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(article)))
+            .andExpect(status().isCreated());
+
+        List<Article> articleList = articleRepository.findAll();
+        Article testArticle = articleList.get(articleList.size() - 1);
+        assertThat(testArticle.getContent()).isEqualTo(longContent);
+    }
+
+    @Test
+    @Transactional
+    void createArticleWithTooLongContent() throws Exception {
+        int databaseSizeBeforeCreate = articleRepository.findAll().size();
+        article.setContent("x".repeat(HtmlSanitizer.MAX_HTML_LENGTH + 1));
+
+        restArticleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(article)))
+            .andExpect(status().isBadRequest());
+
+        List<Article> articleList = articleRepository.findAll();
+        assertThat(articleList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
     void createArticleWithExistingId() throws Exception {
         // Create the Article with an existing ID
         article.setId(1L);
@@ -288,6 +348,25 @@ class ArticleResourceIT {
 
     @Test
     @Transactional
+    void getAllArticlesFilteredByLanguage() throws Exception {
+        // Initialize the database
+        articleRepository.saveAndFlush(article);
+
+        // Matching language: the article is returned
+        restArticleMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&language=" + DEFAULT_LANGUAGE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(hasItem(article.getId().intValue())));
+
+        // Other language: the article is filtered out
+        restArticleMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&language=" + UPDATED_LANGUAGE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(not(hasItem(article.getId().intValue()))));
+    }
+
+    @Test
+    @Transactional
     void getArticle() throws Exception {
         // Initialize the database
         articleRepository.saveAndFlush(article);
@@ -381,6 +460,29 @@ class ArticleResourceIT {
         assertThat(testArticle.getUpdated()).isEqualTo(UPDATED_UPDATED);
         assertThat(testArticle.getReleased()).isEqualTo(UPDATED_RELEASED);
         assertThat(testArticle.getArchived()).isEqualTo(UPDATED_ARCHIVED);
+    }
+
+    @Test
+    @Transactional
+    void putArticleSanitizesContent() throws Exception {
+        // Initialize the database
+        articleRepository.saveAndFlush(article);
+
+        Article updatedArticle = articleRepository.findById(article.getId()).orElseThrow();
+        em.detach(updatedArticle);
+        updatedArticle.content("<p>Kept</p><iframe src=\"https://evil.com\"></iframe>");
+
+        restArticleMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedArticle.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedArticle))
+            )
+            .andExpect(status().isOk());
+
+        List<Article> articleList = articleRepository.findAll();
+        Article testArticle = articleList.get(articleList.size() - 1);
+        assertThat(testArticle.getContent()).isEqualTo("<p>Kept</p>");
     }
 
     @Test
@@ -491,6 +593,29 @@ class ArticleResourceIT {
         assertThat(testArticle.getUpdated()).isEqualTo(UPDATED_UPDATED);
         assertThat(testArticle.getReleased()).isEqualTo(DEFAULT_RELEASED);
         assertThat(testArticle.getArchived()).isEqualTo(UPDATED_ARCHIVED);
+    }
+
+    @Test
+    @Transactional
+    void patchArticleSanitizesContent() throws Exception {
+        // Initialize the database
+        articleRepository.saveAndFlush(article);
+
+        Article partialUpdatedArticle = new Article();
+        partialUpdatedArticle.setId(article.getId());
+        partialUpdatedArticle.content("<p>Kept</p><script>alert('xss')</script>");
+
+        restArticleMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedArticle.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedArticle))
+            )
+            .andExpect(status().isOk());
+
+        List<Article> articleList = articleRepository.findAll();
+        Article testArticle = articleList.get(articleList.size() - 1);
+        assertThat(testArticle.getContent()).isEqualTo("<p>Kept</p>");
     }
 
     @Test

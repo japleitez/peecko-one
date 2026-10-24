@@ -5,7 +5,7 @@
 
     <groupId>com.peecko.one</groupId>
     <artifactId>admin</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
     <name>Admin</name>
     <description>Description for Admin</description>
@@ -43,6 +43,7 @@
         <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
         <jib-maven-plugin.image>eclipse-temurin:17-jre-focal</jib-maven-plugin.image>
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
+        <jsoup.version>1.17.2</jsoup.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <liquibase-plugin.password/>
         <liquibase-plugin.url/>
@@ -264,6 +265,12 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+        </dependency>
+        <!-- HTML parsing and sanitizing of user supplied rich text (see HtmlSanitizer) -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

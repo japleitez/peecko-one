@@ -42,9 +42,7 @@ export interface CoachAccess {
   articles: FieldAccess;
 }
 
-export let COACH_ACCESS: CoachAccess;
-
-COACH_ACCESS = {
+export const COACH_ACCESS: CoachAccess = {
   id: { listable: false, visible: true, disabled: true },
   type: { listable: true, visible: true, disabled: false },
   name: { listable: true, visible: true, disabled: false },

@@ -19,7 +19,7 @@ import { ICustomer } from '../../customer/customer.model';
   standalone: true,
   selector: 'jhi-notification-update',
   templateUrl: './notification-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, CustomerSelectorComponent, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, CustomerSelectorComponent, NgIf],
 })
 export class NotificationUpdateComponent implements OnInit {
   ua: NotificationAccess = this.getNotificationAccess();
@@ -58,6 +58,10 @@ export class NotificationUpdateComponent implements OnInit {
     }
   }
 
+  customerControl(): FormControl<ICustomer | string | null> {
+    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<INotification>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -85,9 +89,4 @@ export class NotificationUpdateComponent implements OnInit {
   protected getNotificationAccess(): NotificationAccess {
     return NOTIFICATION_ACCESS;
   }
-
-  customerControl() {
-    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
-  }
-
 }

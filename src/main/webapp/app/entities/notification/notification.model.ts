@@ -29,9 +29,7 @@ export interface NotificationAccess {
   customer: FieldAccess;
 }
 
-export let NOTIFICATION_ACCESS: NotificationAccess;
-
-NOTIFICATION_ACCESS = {
+export const NOTIFICATION_ACCESS: NotificationAccess = {
   id: { listable: false, visible: true, disabled: true },
   title: { listable: true, visible: true, disabled: false },
   message: { listable: false, visible: true, disabled: false },
@@ -40,5 +38,5 @@ NOTIFICATION_ACCESS = {
   videoUrl: { listable: false, visible: true, disabled: false },
   starts: { listable: true, visible: true, disabled: false },
   expires: { listable: true, visible: true, disabled: false },
-  customer: { listable: true, visible: true, disabled: false }
+  customer: { listable: true, visible: true, disabled: false },
 };

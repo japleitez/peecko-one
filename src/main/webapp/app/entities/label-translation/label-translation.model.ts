@@ -17,9 +17,7 @@ export interface LabelAccess {
   text: FieldAccess;
 }
 
-export let LABEL_ACCESS: LabelAccess;
-
-LABEL_ACCESS = {
+export const LABEL_ACCESS: LabelAccess = {
   id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   lang: { listable: true, visible: true, disabled: false },

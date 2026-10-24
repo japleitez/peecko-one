@@ -22,7 +22,6 @@ import { MatInputModule } from '@angular/material/input';
 import { CustomerState } from '../../enumerations/customer-state.model';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
-
 @Component({
   standalone: true,
   selector: 'jhi-customer',
@@ -40,8 +39,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
     NgIf,
     MatInputModule,
     ReactiveFormsModule,
-    FaIconComponent
-  ]
+    FaIconComponent,
+  ],
 })
 export class CustomerComponent implements OnInit {
   ua: CustomerAccess = this.getCustomerUserAccess();
@@ -60,7 +59,6 @@ export class CustomerComponent implements OnInit {
   state: string | null | undefined = null;
   customerStateValues = Object.keys(CustomerState);
 
-
   constructor(
     protected customerService: CustomerService,
     protected customerData: CustomerData,
@@ -76,7 +74,7 @@ export class CustomerComponent implements OnInit {
     this.load();
   }
 
-  resetSearchForm() {
+  resetSearchForm(): void {
     this.code = null;
     this.name = null;
     this.state = null;
@@ -133,6 +131,10 @@ export class CustomerComponent implements OnInit {
 
   navigateToPage(page = this.page): void {
     this.handleNavigation(page, this.predicate, this.ascending);
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 
   protected loadFromBackendWithRouteInformations(): Observable<CustomerArrayResponseType> {
@@ -210,14 +212,9 @@ export class CustomerComponent implements OnInit {
     return CUSTOMER_USER_ACCESS;
   }
 
-  protected copy(elemId: string | null | undefined) {
+  protected copy(elemId: string | null | undefined): void {
     if (elemId) {
       this.clipboardService.copy('#' + elemId);
     }
   }
-
-  previousState(): void {
-    window.history.back();
-  }
-
 }

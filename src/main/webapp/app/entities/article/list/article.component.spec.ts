@@ -113,4 +113,75 @@ describe('Article Management Component', () => {
       }),
     );
   });
+  it('should send the selected category to the backend', () => {
+    // GIVEN
+    comp.articleCategoryId = 42;
+
+    // WHEN
+    comp['queryBackend'](1, 'id', true).subscribe();
+
+    // THEN
+    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ articleCategoryId: 42 }));
+  });
+
+  it('should go back to the first page and keep the category in the URL when the category changes', () => {
+    // GIVEN
+    comp.page = 3;
+    comp.articleCategoryId = 7;
+
+    // WHEN
+    comp.onArticleCategoryChange();
+
+    // THEN
+    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        queryParams: expect.objectContaining({ page: 1, articleCategoryId: 7 }),
+      }),
+    );
+  });
+
+  it('should remove the category and language from the URL when the filters are reset', () => {
+    // GIVEN
+    comp.articleCategoryId = 7;
+    comp.language = 'FR';
+
+    // WHEN
+    comp.resetSearchForm();
+
+    // THEN
+    expect(comp.articleCategoryId).toBeNull();
+    expect(comp.language).toBeNull();
+    const navigationExtras = routerNavigateSpy.mock.lastCall![1];
+    expect(navigationExtras?.queryParams).not.toHaveProperty('articleCategoryId');
+    expect(navigationExtras?.queryParams).not.toHaveProperty('language');
+  });
+
+  it('should send the selected language to the backend', () => {
+    // GIVEN
+    comp.language = 'EN';
+
+    // WHEN
+    comp['queryBackend'](1, 'id', true).subscribe();
+
+    // THEN
+    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ language: 'EN' }));
+  });
+
+  it('should go back to the first page and keep the language in the URL when the language changes', () => {
+    // GIVEN
+    comp.page = 3;
+    comp.language = 'DE';
+
+    // WHEN
+    comp.onLanguageChange();
+
+    // THEN
+    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        queryParams: expect.objectContaining({ page: 1, language: 'DE' }),
+      }),
+    );
+  });
 });

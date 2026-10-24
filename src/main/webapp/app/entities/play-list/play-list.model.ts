@@ -22,9 +22,7 @@ export interface PlayListAccess {
   apsUser: FieldAccess;
 }
 
-export let PLAYLIST_ACCESS: PlayListAccess;
-
-PLAYLIST_ACCESS = {
+export const PLAYLIST_ACCESS: PlayListAccess = {
   id: { listable: false, visible: true, disabled: true },
   name: { listable: true, visible: true, disabled: false },
   counter: { listable: true, visible: true, disabled: false },

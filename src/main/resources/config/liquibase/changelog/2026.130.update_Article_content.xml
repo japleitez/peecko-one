@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Article.content now holds sanitized HTML instead of plain text, which no longer fits in
+        varchar(255). Content is cleaned by com.peecko.one.utils.HtmlSanitizer before being saved.
+    -->
+    <changeSet id="2026-130-Article-content-html" author="peecko">
+        <modifyDataType tableName="article" columnName="content" newDataType="clob"/>
+    </changeSet>
+
+</databaseChangeLog>

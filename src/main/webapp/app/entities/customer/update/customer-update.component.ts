@@ -84,6 +84,10 @@ export class CustomerUpdateComponent implements OnInit {
     }
   }
 
+  agencyControl(): FormControl<IAgency | string | null> {
+    return this.editForm.get('agency') as FormControl<IAgency | string | null>;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ICustomer>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -123,9 +127,5 @@ export class CustomerUpdateComponent implements OnInit {
 
   protected getCustomerUserAccess(): CustomerAccess {
     return CUSTOMER_USER_ACCESS;
-  }
-
-  agencyControl() {
-    return this.editForm.get('agency') as FormControl<IAgency | string | null>;
   }
 }

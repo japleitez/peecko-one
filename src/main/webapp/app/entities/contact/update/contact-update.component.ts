@@ -74,6 +74,10 @@ export class ContactUpdateComponent implements OnInit {
     }
   }
 
+  customerControl(): FormControl<ICustomer | string | null> {
+    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IContact>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -117,9 +121,5 @@ export class ContactUpdateComponent implements OnInit {
 
   protected getContactUserAccess(): ContactAccess {
     return CONTACT_USER_ACCESS;
-  }
-
-  customerControl() {
-    return this.editForm.get('customer') as FormControl<ICustomer | string | null>;
   }
 }

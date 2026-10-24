@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ApsPlanSelectComponent } from './aps-plan-select.component';
 
@@ -8,10 +10,9 @@ describe('ApsPlanSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ApsPlanSelectComponent]
-    })
-    .compileComponents();
-    
+      imports: [HttpClientTestingModule, NoopAnimationsModule, ApsPlanSelectComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ApsPlanSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

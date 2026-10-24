@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
+import { IApsOrderInfo } from '../aps-order.model';
 import { ApsOrderService } from '../service/aps-order.service';
 
 import { ApsOrderComponent } from './aps-order.component';
@@ -48,10 +49,10 @@ describe('ApsOrder Management Component', () => {
     service = TestBed.inject(ApsOrderService);
 
     const headers = new HttpHeaders();
-    jest.spyOn(service, 'query').mockReturnValue(
+    jest.spyOn(service, 'queryInfo').mockReturnValue(
       of(
         new HttpResponse({
-          body: [{ id: 123 }],
+          body: [{ id: 123 } as IApsOrderInfo],
           headers,
         }),
       ),
@@ -63,7 +64,7 @@ describe('ApsOrder Management Component', () => {
     comp.ngOnInit();
 
     // THEN
-    expect(service.query).toHaveBeenCalled();
+    expect(service.queryInfo).toHaveBeenCalled();
     expect(comp.apsOrders?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 

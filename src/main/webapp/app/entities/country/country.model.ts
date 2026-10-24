@@ -18,9 +18,7 @@ export interface CountryAccess {
   language: FieldAccess;
 }
 
-export let COUNTRY_ACCESS: CountryAccess;
-
-COUNTRY_ACCESS = {
+export const COUNTRY_ACCESS: CountryAccess = {
   code: { listable: true, visible: true, disabled: false },
   name: { listable: true, visible: true, disabled: false },
   locale: { listable: true, visible: true, disabled: false },

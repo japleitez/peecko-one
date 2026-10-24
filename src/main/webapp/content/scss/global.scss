@@ -1,8 +1,8 @@
 @import 'bootstrap-variables';
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
-@import "peecko";
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import 'peecko';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -136,6 +136,29 @@ Generic styles
 .readonly {
   background-color: #eee;
   opacity: 1;
+}
+
+/* Rendered article body (sanitized HTML bound with [innerHTML]) */
+.article-content {
+  display: block;
+  width: 100%;
+  padding: $input-padding-y $input-padding-x;
+  background-color: #fff;
+  border: $input-border-width solid $input-border-color;
+  overflow-wrap: break-word;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  table {
+    max-width: 100%;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
 }
 
 .footer {

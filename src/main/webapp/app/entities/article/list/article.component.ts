@@ -15,7 +15,13 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { ARTICLE_ACCESS, ArticleAccess, IArticle } from '../article.model';
 import { EntityArrayResponseType, ArticleService } from '../service/article.service';
 import { ArticleDeleteDialogComponent } from '../delete/article-delete-dialog.component';
+import { IArticleCategory } from 'app/entities/article-category/article-category.model';
+import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
+import { Language } from 'app/entities/enumerations/language.model';
 import { NgIf } from '@angular/common';
+
+const ARTICLE_CATEGORY_ID_PARAM = 'articleCategoryId';
+const LANGUAGE_PARAM = 'language';
 
 @Component({
   standalone: true,
@@ -31,8 +37,8 @@ import { NgIf } from '@angular/common';
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
-    NgIf
-  ]
+    NgIf,
+  ],
 })
 export class ArticleComponent implements OnInit {
   ua: ArticleAccess = this.getArticleAccess();
@@ -46,17 +52,40 @@ export class ArticleComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
+  articleCategories: IArticleCategory[] = [];
+  articleCategoryId: number | null = null;
+  languageValues = Object.keys(Language);
+  language: keyof typeof Language | null = null;
+
   constructor(
     protected articleService: ArticleService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
+    protected articleCategoryService: ArticleCategoryService,
   ) {}
 
   trackId = (_index: number, item: IArticle): number => this.articleService.getArticleIdentifier(item);
 
   ngOnInit(): void {
+    this.loadArticleCategories();
     this.load();
+  }
+
+  onArticleCategoryChange(): void {
+    // a new filter starts again from the first page
+    this.handleNavigation(1, this.predicate, this.ascending);
+  }
+
+  onLanguageChange(): void {
+    // a new filter starts again from the first page
+    this.handleNavigation(1, this.predicate, this.ascending);
+  }
+
+  resetSearchForm(): void {
+    this.articleCategoryId = null;
+    this.language = null;
+    this.handleNavigation(1, this.predicate, this.ascending);
   }
 
   delete(article: IArticle): void {
@@ -104,6 +133,10 @@ export class ArticleComponent implements OnInit {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
+    const articleCategoryId = params.get(ARTICLE_CATEGORY_ID_PARAM);
+    this.articleCategoryId = articleCategoryId ? +articleCategoryId : null;
+    const language = params.get(LANGUAGE_PARAM);
+    this.language = language && language in Language ? (language as keyof typeof Language) : null;
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -128,15 +161,27 @@ export class ArticleComponent implements OnInit {
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.articleCategoryId) {
+      queryObject.articleCategoryId = this.articleCategoryId;
+    }
+    if (this.language) {
+      queryObject.language = this.language;
+    }
     return this.articleService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean): void {
-    const queryParamsObj = {
+    const queryParamsObj: any = {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.articleCategoryId) {
+      queryParamsObj[ARTICLE_CATEGORY_ID_PARAM] = this.articleCategoryId;
+    }
+    if (this.language) {
+      queryParamsObj[LANGUAGE_PARAM] = this.language;
+    }
 
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute,
@@ -153,8 +198,13 @@ export class ArticleComponent implements OnInit {
     }
   }
 
+  protected loadArticleCategories(): void {
+    this.articleCategoryService.query().subscribe(res => {
+      this.articleCategories = (res.body ?? []).sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
+    });
+  }
+
   protected getArticleAccess(): ArticleAccess {
     return ARTICLE_ACCESS;
   }
-
 }

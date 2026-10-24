@@ -53,9 +53,7 @@ export interface ApsOrderAccess {
   plan: FieldAccess;
 }
 
-export let APS_ORDER_USER_ACCESS: ApsOrderAccess;
-
-APS_ORDER_USER_ACCESS = {
+export const APS_ORDER_USER_ACCESS: ApsOrderAccess = {
   id: { listable: false, visible: true, disabled: true },
   period: { listable: true, visible: true, disabled: true },
   license: { listable: true, visible: true, disabled: true },

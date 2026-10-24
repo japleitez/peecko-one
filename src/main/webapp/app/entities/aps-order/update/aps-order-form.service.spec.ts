@@ -54,8 +54,10 @@ describe('ApsOrder Form Service', () => {
         const formGroup = service.createApsOrderFormGroup(sampleWithNewData);
 
         const apsOrder = service.getApsOrder(formGroup) as any;
+        // invoiceSent is not an editable form field, so it is not part of the form value
+        const { invoiceSent, ...expected } = sampleWithNewData;
 
-        expect(apsOrder).toMatchObject(sampleWithNewData);
+        expect(apsOrder).toMatchObject(expected);
       });
 
       it('should return NewApsOrder for empty ApsOrder initial value', () => {

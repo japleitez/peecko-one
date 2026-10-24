@@ -1,78 +1,89 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IAgency } from '../agency.model';
 import { Observable, tap } from 'rxjs';
 import { AgencyService, AgencyArrayResponseType } from '../service/agency.service';
 import { map, startWith } from 'rxjs/operators';
+import { resolveTypedSelection, selectionRequiredValidator } from 'app/shared/autocomplete/autocomplete-selection';
 import { AsyncPipe } from '@angular/common';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'agency-select',
+  selector: 'jhi-agency-select',
   standalone: true,
-  imports: [
-    AsyncPipe,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
+  imports: [AsyncPipe, ReactiveFormsModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule],
   templateUrl: './agency-select.component.html',
-  styleUrl: './agency-select.component.scss'
+  styleUrl: './agency-select.component.scss',
+  // the global preserveWhitespaces option would keep the whitespace around <mat-error> inside @if as extra nodes,
+  // which stops mat-form-field from projecting the error into its error slot (NG8011)
+  preserveWhitespaces: false,
 })
-export class AgencySelectComponent {
+export class AgencySelectComponent implements OnInit {
   @Input() control: FormControl<IAgency | string | null> = new FormControl('');
   @Input() cl: string = 'w-20';
   @Input() set disabled(value: boolean) {
     this.disableControl(value);
   }
   public isLoading: boolean = false;
-  agencies!: IAgency[];
+  agencies: IAgency[] = [];
   filteredAgencies!: Observable<IAgency[]>;
+  @ViewChild(MatAutocompleteTrigger) autocompleteTrigger?: MatAutocompleteTrigger;
   @Input() required!: boolean;
-
 
   constructor(protected agencyService: AgencyService) {}
 
+  displayName(agency: IAgency | null): string {
+    return agency?.name ?? '';
+  }
+
+  onBlur(): void {
+    // while the panel is open the user may be clicking an option; the (closed) handler resolves the text instead
+    if (!this.autocompleteTrigger?.panelOpen) {
+      this.resolveTypedText();
+    }
+  }
+
+  resolveTypedText(): void {
+    resolveTypedSelection(this.control, this.agencies, agency => agency.name);
+  }
+
   ngOnInit(): void {
+    this.control.addValidators(selectionRequiredValidator);
+    this.control.updateValueAndValidity({ emitEvent: false });
     this._loadOptions();
   }
 
   private _loadOptions(): void {
     this.isLoading = true;
-    this.agencyService.query().pipe(tap(() => (this.isLoading = false))).subscribe({
-      next: (res: AgencyArrayResponseType) => {
-        this.agencies = res.body ?? [];
-        this.filteredAgencies = this.control.valueChanges.pipe(
-          startWith(''),
-          map(value => {
-            const name = typeof value === 'string' ? value : value?.name;
-            return name ? this._filter(name as string) : this.agencies.slice();
-          }),
-        );
-      },
-    });
+    this.agencyService
+      .query()
+      .pipe(tap(() => (this.isLoading = false)))
+      .subscribe({
+        next: (res: AgencyArrayResponseType) => {
+          this.agencies = res.body ?? [];
+          this.filteredAgencies = this.control.valueChanges.pipe(
+            startWith(''),
+            map(value => {
+              const name = typeof value === 'string' ? value : value?.name;
+              return name ? this._filter(name) : this.agencies.slice();
+            }),
+          );
+        },
+      });
   }
 
-  private disableControl(value: boolean) {
+  private disableControl(value: boolean): void {
     if (value) {
-      this.control.disable({ emitEvent: false});
+      this.control.disable({ emitEvent: false });
     } else {
       this.control.enable({ emitEvent: false });
     }
   }
 
-  displayName(agency: IAgency): string {
-    return agency && agency.name? agency.name : '';
-  }
-
   private _filter(name: string): IAgency[] {
     const value = name.toLowerCase();
-    return this.agencies.filter(agency => {
-      return agency.name?.toLowerCase().includes(value);
-    });
+    return this.agencies.filter(agency => agency.name?.toLowerCase().includes(value));
   }
-
 }

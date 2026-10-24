@@ -113,4 +113,69 @@ describe('LabelTranslation Management Component', () => {
       }),
     );
   });
+
+  it('should send the filters to the backend', () => {
+    // GIVEN
+    comp.filterCode = ' menu ';
+    comp.filterLang = 'FR';
+    comp.filterText = 'accueil';
+
+    // WHEN
+    comp['queryBackend'](1, 'id', true).subscribe();
+
+    // THEN
+    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ code: 'menu', lang: 'FR', text: 'accueil' }));
+  });
+
+  it('should not send empty filters to the backend', () => {
+    // GIVEN
+    comp.filterCode = '  ';
+    comp.filterLang = null;
+    comp.filterText = '';
+
+    // WHEN
+    comp['queryBackend'](1, 'id', true).subscribe();
+
+    // THEN
+    const queryObject = (service.query as jest.Mock).mock.lastCall![0];
+    expect(queryObject).not.toHaveProperty('code');
+    expect(queryObject).not.toHaveProperty('lang');
+    expect(queryObject).not.toHaveProperty('text');
+  });
+
+  it('should go back to the first page and keep the filters in the URL when a filter changes', () => {
+    // GIVEN
+    comp.page = 3;
+    comp.filterCode = 'menu';
+    comp.filterLang = 'DE';
+    comp.filterText = 'start';
+
+    // WHEN
+    comp.onFilterChange();
+
+    // THEN
+    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        queryParams: expect.objectContaining({ page: 1, code: 'menu', lang: 'DE', text: 'start' }),
+      }),
+    );
+  });
+
+  it('should remove the filters from the URL when they are cleared', () => {
+    // GIVEN
+    comp.filterCode = 'menu';
+    comp.filterLang = 'EN';
+    comp.filterText = 'home';
+
+    // WHEN
+    comp.clearFilters();
+
+    // THEN
+    expect(comp.hasFilters()).toBe(false);
+    const navigationExtras = routerNavigateSpy.mock.lastCall![1];
+    expect(navigationExtras?.queryParams).not.toHaveProperty('code');
+    expect(navigationExtras?.queryParams).not.toHaveProperty('lang');
+    expect(navigationExtras?.queryParams).not.toHaveProperty('text');
+  });
 });

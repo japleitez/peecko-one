@@ -27,7 +27,7 @@ export interface ICustomer {
   contacts?: IContact[] | null;
   apsPlans?: IApsPlan[] | null;
   agency?: IAgency | null;
-  hasPrimaryContact?: boolean | false | null;
+  hasPrimaryContact?: boolean | null;
 }
 
 export type NewCustomer = Omit<ICustomer, 'id'> & { id: null };
@@ -56,9 +56,7 @@ export interface CustomerAccess {
   agency: FieldAccess;
 }
 
-export let CUSTOMER_USER_ACCESS: CustomerAccess;
-
-CUSTOMER_USER_ACCESS = {
+export const CUSTOMER_USER_ACCESS: CustomerAccess = {
   id: { listable: false, visible: true, disabled: true },
   code: { listable: true, visible: true, disabled: false },
   name: { listable: true, visible: true, disabled: false },

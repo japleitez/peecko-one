@@ -15,9 +15,7 @@ export interface TrialLicenseAccess {
   notes: FieldAccess;
 }
 
-export let TRIAL_LICENSE_ACCESS: TrialLicenseAccess;
-
-TRIAL_LICENSE_ACCESS = {
+export const TRIAL_LICENSE_ACCESS: TrialLicenseAccess = {
   license: { listable: true, visible: true, disabled: false },
   expirationDate: { listable: true, visible: true, disabled: false },
   notes: { listable: true, visible: true, disabled: false },

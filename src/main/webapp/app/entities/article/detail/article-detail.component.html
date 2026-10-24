@@ -69,7 +69,11 @@
           </dd>
           <dt *ngIf="ua.content.visible"><span>Content</span></dt>
           <dd *ngIf="ua.content.visible">
-            <span>{{ article.content }}</span>
+            <!--
+              The body is sanitized HTML. [innerHTML] runs it through Angular's DomSanitizer, which
+              strips scripts and event handlers; never replace this with bypassSecurityTrustHtml.
+            -->
+            <div class="article-content" data-cy="articleContent" [innerHTML]="article.content"></div>
           </dd>
           <dt *ngIf="ua.seriesId.visible"><span>Series Id</span></dt>
           <dd *ngIf="ua.seriesId.visible">

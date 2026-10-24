@@ -24,9 +24,7 @@ export interface ApsDeviceAccess {
   apsUser: FieldAccess;
 }
 
-export let APS_DEVICE_ACCESS: ApsDeviceAccess;
-
-APS_DEVICE_ACCESS = {
+export const APS_DEVICE_ACCESS: ApsDeviceAccess = {
   id: { listable: false, visible: true, disabled: true },
   username: { listable: true, visible: true, disabled: true },
   deviceId: { listable: true, visible: true, disabled: true },
@@ -34,4 +32,4 @@ APS_DEVICE_ACCESS = {
   osVersion: { listable: true, visible: true, disabled: true },
   installedOn: { listable: true, visible: true, disabled: true },
   apsUser: { listable: false, visible: true, disabled: true },
-}
+};

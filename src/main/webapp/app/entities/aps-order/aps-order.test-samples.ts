@@ -34,6 +34,7 @@ export const sampleWithNewData: NewApsOrder = {
   unitPrice: 3301.32,
   vatRate: 27461.86,
   numberOfUsers: 31368,
+  invoiceSent: false,
   id: null,
 };
 

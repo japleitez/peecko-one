@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -13,7 +14,7 @@ describe('User Management Detail Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [UserManagementDetailComponent],
+      imports: [HttpClientTestingModule, UserManagementDetailComponent],
       providers: [
         {
           provide: ActivatedRoute,

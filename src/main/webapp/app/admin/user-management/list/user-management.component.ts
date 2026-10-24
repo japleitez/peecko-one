@@ -50,7 +50,9 @@ export default class UserManagementComponent implements OnInit {
   }
 
   getAgencyName(agencyId?: number | null): string {
-    if (agencyId == null) return '';
+    if (agencyId == null) {
+      return '';
+    }
     return this.agencies.find(a => a.id === agencyId)?.name ?? String(agencyId);
   }
 

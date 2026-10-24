@@ -1,7 +1,9 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.LabelTranslation;
+import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.LabelTranslationRepository;
+import com.peecko.one.service.specs.LabelTranslationSpecs;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -152,17 +154,23 @@ public class LabelTranslationResource {
     }
 
     /**
-     * {@code GET  /label-translations} : get all the labelTranslations.
+     * {@code GET  /label-translations} : get all the labelTranslations, optionally filtered.
      *
+     * @param code optional text the code must contain (case-insensitive).
+     * @param lang optional language to filter by.
+     * @param text optional text the translation must contain (case-insensitive).
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of labelTranslations in body.
      */
     @GetMapping("")
     public ResponseEntity<List<LabelTranslation>> getAllLabelTranslations(
+        @RequestParam(required = false) String code,
+        @RequestParam(required = false) Language lang,
+        @RequestParam(required = false) String text,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of LabelTranslations");
-        Page<LabelTranslation> page = labelTranslationRepository.findAll(pageable);
+        log.debug("REST request to get a page of LabelTranslations, code: {}, lang: {}, text: {}", code, lang, text);
+        Page<LabelTranslation> page = labelTranslationRepository.findAll(LabelTranslationSpecs.filter(code, lang, text), pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
