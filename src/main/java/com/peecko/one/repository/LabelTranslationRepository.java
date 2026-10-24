@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface LabelTranslationRepository extends JpaRepository<LabelTranslation, Long> {}
+public interface LabelTranslationRepository extends JpaRepository<LabelTranslation, Long>, JpaSpecificationExecutor<LabelTranslation> {}

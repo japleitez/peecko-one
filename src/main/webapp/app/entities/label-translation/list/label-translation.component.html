@@ -3,6 +3,49 @@
     <span>Label Translations</span>
 
     <div class="d-flex justify-content-end">
+      <input
+        type="text"
+        id="field_codeFilter"
+        data-cy="codeFilter"
+        name="codeFilter"
+        class="form-control form-control-sm w-auto me-2"
+        placeholder="Code contains"
+        aria-label="Filter by code"
+        [(ngModel)]="filterCode"
+        (change)="onFilterChange()"
+      />
+
+      <select
+        id="field_langFilter"
+        data-cy="langFilter"
+        name="langFilter"
+        class="form-select form-select-sm w-auto me-2"
+        aria-label="Filter by language"
+        [(ngModel)]="filterLang"
+        (ngModelChange)="onFilterChange()"
+      >
+        <option [ngValue]="null">All languages</option>
+        @for (languageOption of languageValues; track languageOption) {
+          <option [ngValue]="languageOption">{{ languageOption }}</option>
+        }
+      </select>
+
+      <input
+        type="text"
+        id="field_textFilter"
+        data-cy="textFilter"
+        name="textFilter"
+        class="form-control form-control-sm w-auto me-2"
+        placeholder="Text contains"
+        aria-label="Filter by text"
+        [(ngModel)]="filterText"
+        (change)="onFilterChange()"
+      />
+
+      <button class="btn btn-info me-2" (click)="clearFilters()" [disabled]="isLoading || !hasFilters()" title="Clear filters">
+        <fa-icon icon="times"></fa-icon>
+      </button>
+
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span>Refresh</span>

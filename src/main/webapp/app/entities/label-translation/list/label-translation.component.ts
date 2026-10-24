@@ -15,6 +15,11 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { ILabelTranslation, LABEL_ACCESS, LabelAccess } from '../label-translation.model';
 import { EntityArrayResponseType, LabelTranslationService } from '../service/label-translation.service';
 import { LabelTranslationDeleteDialogComponent } from '../delete/label-translation-delete-dialog.component';
+import { Language } from 'app/entities/enumerations/language.model';
+
+const CODE_PARAM = 'code';
+const LANG_PARAM = 'lang';
+const TEXT_PARAM = 'text';
 
 @Component({
   standalone: true,
@@ -44,6 +49,11 @@ export class LabelTranslationComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
+  languageValues = Object.keys(Language);
+  filterCode = '';
+  filterLang: keyof typeof Language | null = null;
+  filterText = '';
+
   constructor(
     protected labelTranslationService: LabelTranslationService,
     protected activatedRoute: ActivatedRoute,
@@ -55,6 +65,22 @@ export class LabelTranslationComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  onFilterChange(): void {
+    // a new filter starts again from the first page
+    this.navigateToPage(1);
+  }
+
+  clearFilters(): void {
+    this.filterCode = '';
+    this.filterLang = null;
+    this.filterText = '';
+    this.navigateToPage(1);
+  }
+
+  hasFilters(): boolean {
+    return this.filterCode.trim() !== '' || this.filterLang != null || this.filterText.trim() !== '';
   }
 
   delete(labelTranslation: ILabelTranslation): void {
@@ -102,6 +128,10 @@ export class LabelTranslationComponent implements OnInit {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
+    this.filterCode = params.get(CODE_PARAM) ?? '';
+    const lang = params.get(LANG_PARAM);
+    this.filterLang = lang && lang in Language ? (lang as keyof typeof Language) : null;
+    this.filterText = params.get(TEXT_PARAM) ?? '';
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -125,6 +155,7 @@ export class LabelTranslationComponent implements OnInit {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
+      ...this.getFilterParams(),
     };
     return this.labelTranslationService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
@@ -134,6 +165,7 @@ export class LabelTranslationComponent implements OnInit {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
+      ...this.getFilterParams(),
     };
 
     this.router.navigate(['./'], {
@@ -149,6 +181,22 @@ export class LabelTranslationComponent implements OnInit {
     } else {
       return [predicate + ',' + ascendingQueryParam];
     }
+  }
+
+  protected getFilterParams(): Record<string, string> {
+    const params: Record<string, string> = {};
+    const code = this.filterCode.trim();
+    const text = this.filterText.trim();
+    if (code) {
+      params[CODE_PARAM] = code;
+    }
+    if (this.filterLang) {
+      params[LANG_PARAM] = this.filterLang;
+    }
+    if (text) {
+      params[TEXT_PARAM] = text;
+    }
+    return params;
   }
 
   protected getLabelAccess(): LabelAccess {

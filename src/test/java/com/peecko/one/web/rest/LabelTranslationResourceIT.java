@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -195,6 +196,38 @@ class LabelTranslationResourceIT {
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].lang").value(hasItem(DEFAULT_LANG.toString())))
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
+    }
+
+    @Test
+    @Transactional
+    void getAllLabelTranslationsWithFilters() throws Exception {
+        // Initialize the database
+        labelTranslationRepository.saveAndFlush(labelTranslation);
+        Integer id = labelTranslation.getId().intValue();
+
+        // Matching filters (partial, case-insensitive code and text): the label is returned
+        restLabelTranslationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&code=aaa&lang=" + DEFAULT_LANG + "&text=AAA"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(hasItem(id)));
+
+        // Non-matching code: the label is filtered out
+        restLabelTranslationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&code=" + UPDATED_CODE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(not(hasItem(id))));
+
+        // Non-matching language: the label is filtered out
+        restLabelTranslationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&lang=" + UPDATED_LANG))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(not(hasItem(id))));
+
+        // Non-matching text: the label is filtered out
+        restLabelTranslationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&text=" + UPDATED_TEXT))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(not(hasItem(id))));
     }
 
     @Test
