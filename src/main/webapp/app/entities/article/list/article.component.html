@@ -18,7 +18,27 @@
         }
       </select>
 
-      <button class="btn btn-info me-2" (click)="resetSearchForm()" [disabled]="isLoading || !articleCategoryId" title="Clear filter">
+      <select
+        id="field_languageFilter"
+        data-cy="languageFilter"
+        name="languageFilter"
+        class="form-select form-select-sm w-auto me-2"
+        aria-label="Filter by language"
+        [(ngModel)]="language"
+        (ngModelChange)="onLanguageChange()"
+      >
+        <option [ngValue]="null">All languages</option>
+        @for (languageOption of languageValues; track languageOption) {
+          <option [ngValue]="languageOption">{{ languageOption }}</option>
+        }
+      </select>
+
+      <button
+        class="btn btn-info me-2"
+        (click)="resetSearchForm()"
+        [disabled]="isLoading || (!articleCategoryId && !language)"
+        title="Clear filters"
+      >
         <fa-icon icon="times"></fa-icon>
       </button>
 

@@ -17,9 +17,11 @@ import { EntityArrayResponseType, ArticleService } from '../service/article.serv
 import { ArticleDeleteDialogComponent } from '../delete/article-delete-dialog.component';
 import { IArticleCategory } from 'app/entities/article-category/article-category.model';
 import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
+import { Language } from 'app/entities/enumerations/language.model';
 import { NgIf } from '@angular/common';
 
 const ARTICLE_CATEGORY_ID_PARAM = 'articleCategoryId';
+const LANGUAGE_PARAM = 'language';
 
 @Component({
   standalone: true,
@@ -52,6 +54,8 @@ export class ArticleComponent implements OnInit {
 
   articleCategories: IArticleCategory[] = [];
   articleCategoryId: number | null = null;
+  languageValues = Object.keys(Language);
+  language: keyof typeof Language | null = null;
 
   constructor(
     protected articleService: ArticleService,
@@ -73,8 +77,14 @@ export class ArticleComponent implements OnInit {
     this.handleNavigation(1, this.predicate, this.ascending);
   }
 
+  onLanguageChange(): void {
+    // a new filter starts again from the first page
+    this.handleNavigation(1, this.predicate, this.ascending);
+  }
+
   resetSearchForm(): void {
     this.articleCategoryId = null;
+    this.language = null;
     this.handleNavigation(1, this.predicate, this.ascending);
   }
 
@@ -125,6 +135,8 @@ export class ArticleComponent implements OnInit {
     this.ascending = sort[1] === ASC;
     const articleCategoryId = params.get(ARTICLE_CATEGORY_ID_PARAM);
     this.articleCategoryId = articleCategoryId ? +articleCategoryId : null;
+    const language = params.get(LANGUAGE_PARAM);
+    this.language = language && language in Language ? (language as keyof typeof Language) : null;
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -152,6 +164,9 @@ export class ArticleComponent implements OnInit {
     if (this.articleCategoryId) {
       queryObject.articleCategoryId = this.articleCategoryId;
     }
+    if (this.language) {
+      queryObject.language = this.language;
+    }
     return this.articleService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
@@ -163,6 +178,9 @@ export class ArticleComponent implements OnInit {
     };
     if (this.articleCategoryId) {
       queryParamsObj[ARTICLE_CATEGORY_ID_PARAM] = this.articleCategoryId;
+    }
+    if (this.language) {
+      queryParamsObj[LANGUAGE_PARAM] = this.language;
     }
 
     this.router.navigate(['./'], {

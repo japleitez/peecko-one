@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -343,6 +344,25 @@ class ArticleResourceIT {
             .andExpect(jsonPath("$.[*].updated").value(hasItem(DEFAULT_UPDATED.toString())))
             .andExpect(jsonPath("$.[*].released").value(hasItem(DEFAULT_RELEASED.toString())))
             .andExpect(jsonPath("$.[*].archived").value(hasItem(DEFAULT_ARCHIVED.toString())));
+    }
+
+    @Test
+    @Transactional
+    void getAllArticlesFilteredByLanguage() throws Exception {
+        // Initialize the database
+        articleRepository.saveAndFlush(article);
+
+        // Matching language: the article is returned
+        restArticleMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&language=" + DEFAULT_LANGUAGE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(hasItem(article.getId().intValue())));
+
+        // Other language: the article is filtered out
+        restArticleMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&language=" + UPDATED_LANGUAGE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.[*].id").value(not(hasItem(article.getId().intValue()))));
     }
 
     @Test
