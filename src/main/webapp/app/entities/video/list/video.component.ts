@@ -20,6 +20,8 @@ import { NgIf } from '@angular/common';
 import { VideoCategoryService } from 'app/entities/video-category/service/video-category.service';
 import { IVideoCategory } from 'app/entities/video-category/video-category.model';
 
+const VIDEO_CATEGORY_ID_PARAM = 'videoCategoryId';
+
 @Component({
   standalone: true,
   selector: 'jhi-video',
@@ -122,6 +124,8 @@ export class VideoComponent implements OnInit {
     const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
     this.predicate = sort[0];
     this.ascending = sort[1] === ASC;
+    const videoCategoryId = params.get(VIDEO_CATEGORY_ID_PARAM);
+    this.filterCategoryId = videoCategoryId ? +videoCategoryId : null;
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -153,11 +157,14 @@ export class VideoComponent implements OnInit {
   }
 
   protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean): void {
-    const queryParamsObj = {
+    const queryParamsObj: any = {
       page,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.filterCategoryId != null) {
+      queryParamsObj[VIDEO_CATEGORY_ID_PARAM] = this.filterCategoryId;
+    }
 
     this.router.navigate(['./'], {
       relativeTo: this.activatedRoute,
