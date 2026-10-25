@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -40,6 +41,31 @@ export class LanguageService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ILanguage[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  /**
+   * Loads the codes of the active languages (EN, FR, ...), ordered by language id.
+   * When the languages cannot be loaded, the failure is logged (the HTTP error is also reported by the error alert)
+   * and an empty list is returned, so the callers always get a usable list.
+   */
+  queryActiveCodes(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.resourceUrl}/codes`).pipe(
+      catchError((error: unknown) => {
+        console.error('Failed to load the language codes', error);
+        return of([]);
+      }),
+    );
+  }
+
+  /**
+   * Adds the current value of a record to the language codes if it is missing (e.g. an inactive language),
+   * so that editing the record does not lose its language.
+   */
+  addLanguageCodeIfMissing(codes: string[], current?: string | null): string[] {
+    if (current && !codes.includes(current)) {
+      return [...codes, current];
+    }
+    return codes;
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

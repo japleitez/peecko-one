@@ -7,7 +7,7 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { AGENCY_USER_ACCESS, AgencyAccess, IAgency } from '../agency.model';
 import { AgencyService } from '../service/agency.service';
 import { AgencyFormService, AgencyFormGroup } from './agency-form.service';
@@ -25,7 +25,7 @@ export class AgencyUpdateComponent implements OnInit {
   ua: AgencyAccess = this.getAgencyUserAccess();
   isSaving = false;
   agency: IAgency | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
   countries: ICountry[] = [];
 
   editForm: AgencyFormGroup = this.agencyFormService.createAgencyFormGroup(undefined, this.getAgencyUserAccess());
@@ -34,6 +34,7 @@ export class AgencyUpdateComponent implements OnInit {
     protected agencyService: AgencyService,
     protected agencyFormService: AgencyFormService,
     protected countryService: CountryService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -43,6 +44,8 @@ export class AgencyUpdateComponent implements OnInit {
       if (agency) {
         this.updateForm(agency);
       }
+
+      this.loadLanguageCodes();
     });
     this.countryService
       .query({ size: 1000, sort: ['name,asc'] })
@@ -86,6 +89,12 @@ export class AgencyUpdateComponent implements OnInit {
   protected updateForm(agency: IAgency): void {
     this.agency = agency;
     this.agencyFormService.resetForm(this.editForm, agency);
+  }
+
+  protected loadLanguageCodes(): void {
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.agency?.language)));
   }
 
   protected getAgencyUserAccess(): AgencyAccess {

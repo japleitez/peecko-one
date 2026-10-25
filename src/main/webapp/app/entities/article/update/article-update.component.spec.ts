@@ -99,18 +99,14 @@ describe('Article Management Update Component', () => {
       expect(comp.coachesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should load language codes from the backend sorted by id and keep the current article language', () => {
+    it('Should load the language codes from the backend and keep the current article language', () => {
       const article: IArticle = { id: 456, language: 'IT' };
-      const languages = [
-        { id: 1, code: 'en', name: 'English', active: true },
-        { id: 2, code: 'fr', name: 'French', active: true },
-      ];
-      jest.spyOn(languageService, 'query').mockReturnValue(of(new HttpResponse({ body: languages })));
+      jest.spyOn(languageService, 'queryActiveCodes').mockReturnValue(of(['EN', 'FR']));
 
       activatedRoute.data = of({ article });
       comp.ngOnInit();
 
-      expect(languageService.query).toHaveBeenCalledWith(expect.objectContaining({ sort: ['id,asc'] }));
+      expect(languageService.queryActiveCodes).toHaveBeenCalled();
       expect(comp.languageValues).toEqual(['EN', 'FR', 'IT']);
     });
 

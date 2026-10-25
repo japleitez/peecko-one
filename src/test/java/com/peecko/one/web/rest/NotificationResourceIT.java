@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.Notification;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.NotificationRepository;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
@@ -38,8 +37,8 @@ class NotificationResourceIT {
     private static final String DEFAULT_MESSAGE = "AAAAAAAAAA";
     private static final String UPDATED_MESSAGE = "BBBBBBBBBB";
 
-    private static final Language DEFAULT_LANGUAGE = Language.EN;
-    private static final Language UPDATED_LANGUAGE = Language.FR;
+    private static final String DEFAULT_LANGUAGE = "EN";
+    private static final String UPDATED_LANGUAGE = "FR";
 
     private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
     private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";

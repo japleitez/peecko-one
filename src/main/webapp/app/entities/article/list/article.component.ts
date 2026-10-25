@@ -17,13 +17,11 @@ import { EntityArrayResponseType, ArticleService } from '../service/article.serv
 import { ArticleDeleteDialogComponent } from '../delete/article-delete-dialog.component';
 import { IArticleCategory } from 'app/entities/article-category/article-category.model';
 import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
-import { ILanguage } from 'app/entities/language/language.model';
 import { LanguageService } from 'app/entities/language/service/language.service';
 import { NgIf } from '@angular/common';
 
 const ARTICLE_CATEGORY_ID_PARAM = 'articleCategoryId';
 const LANGUAGE_PARAM = 'language';
-const LANGUAGES_PAGE_SIZE = 100;
 
 @Component({
   standalone: true,
@@ -56,7 +54,7 @@ export class ArticleComponent implements OnInit {
 
   articleCategories: IArticleCategory[] = [];
   articleCategoryId: number | null = null;
-  languages: ILanguage[] = [];
+  languages: string[] = [];
   language: string | null = null;
 
   constructor(
@@ -209,16 +207,10 @@ export class ArticleComponent implements OnInit {
   }
 
   protected loadLanguages(): void {
-    this.languageService.query({ page: 0, size: LANGUAGES_PAGE_SIZE, sort: ['id,' + ASC] }).subscribe(res => {
-      this.languages = res.body ?? [];
-    });
-  }
-
-  /**
-   * Article.language is stored as an upper-case enum value (EN, FR, ...), so the filter sends the code in upper case.
-   */
-  languageFilterValue(language: ILanguage): string {
-    return (language.code ?? '').toUpperCase();
+    // keep a language selected from the URL in the list, so the filter shows it
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languages = this.languageService.addLanguageCodeIfMissing(codes, this.language)));
   }
 
   protected getArticleAccess(): ArticleAccess {

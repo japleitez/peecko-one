@@ -1,6 +1,5 @@
 package com.peecko.one.domain;
 
-import com.peecko.one.domain.enumeration.Language;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -16,9 +15,8 @@ public class HelpItem implements Serializable {
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "language", nullable = false)
-    private Language lang;
+    private String lang;
 
     @NotNull
     @Column(name = "question")
@@ -30,7 +28,7 @@ public class HelpItem implements Serializable {
 
     public HelpItem() {}
 
-    public HelpItem(Language lang, String question, String answer) {
+    public HelpItem(String lang, String question, String answer) {
         this.lang = lang;
         this.question = question;
         this.answer = answer;
@@ -44,11 +42,11 @@ public class HelpItem implements Serializable {
         this.id = id;
     }
 
-    public Language getLang() {
+    public String getLang() {
         return lang;
     }
 
-    public void setLang(Language lang) {
+    public void setLang(String lang) {
         this.lang = lang;
     }
 

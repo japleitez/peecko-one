@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.ApsUser;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.ApsUserRepository;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
@@ -47,8 +46,8 @@ class ApsUserResourceIT {
     private static final Boolean DEFAULT_PRIVATE_VERIFIED = false;
     private static final Boolean UPDATED_PRIVATE_VERIFIED = true;
 
-    private static final Language DEFAULT_LANGUAGE = Language.EN;
-    private static final Language UPDATED_LANGUAGE = Language.FR;
+    private static final String DEFAULT_LANGUAGE = "EN";
+    private static final String UPDATED_LANGUAGE = "FR";
 
     private static final String DEFAULT_LICENSE = "AAAAAAAAAA";
     private static final String UPDATED_LICENSE = "BBBBBBBBBB";

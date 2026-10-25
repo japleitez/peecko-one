@@ -1,7 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { IApsDevice } from 'app/entities/aps-device/aps-device.model';
 import { IPlayList } from 'app/entities/play-list/play-list.model';
-import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface IApsUser {
@@ -11,7 +10,7 @@ export interface IApsUser {
   usernameVerified?: boolean | null;
   privateEmail?: string | null;
   privateVerified?: boolean | null;
-  language?: keyof typeof Language | null;
+  language?: string | null;
   license?: string | null;
   active?: boolean | null;
   password?: string | null;

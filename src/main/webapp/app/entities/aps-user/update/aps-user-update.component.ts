@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { APS_USER_ACCESS, ApsUserAccess, IApsUser } from '../aps-user.model';
 import { ApsUserService } from '../service/aps-user.service';
 import { ApsUserFormService, ApsUserFormGroup } from './aps-user-form.service';
@@ -22,13 +22,14 @@ export class ApsUserUpdateComponent implements OnInit {
   ua: ApsUserAccess = this.getApsUserAccess();
   isSaving = false;
   apsUser: IApsUser | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
 
   editForm: ApsUserFormGroup = this.apsUserFormService.createApsUserFormGroup(undefined, this.getApsUserAccess());
 
   constructor(
     protected apsUserService: ApsUserService,
     protected apsUserFormService: ApsUserFormService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -38,6 +39,8 @@ export class ApsUserUpdateComponent implements OnInit {
       if (apsUser) {
         this.updateForm(apsUser);
       }
+
+      this.loadLanguageCodes();
     });
   }
 
@@ -79,8 +82,13 @@ export class ApsUserUpdateComponent implements OnInit {
     this.apsUserFormService.resetForm(this.editForm, apsUser);
   }
 
+  protected loadLanguageCodes(): void {
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.apsUser?.language)));
+  }
+
   protected getApsUserAccess(): ApsUserAccess {
     return APS_USER_ACCESS;
   }
-
 }

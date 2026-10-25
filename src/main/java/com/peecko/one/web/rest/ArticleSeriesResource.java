@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ArticleSeries;
 import com.peecko.one.repository.ArticleSeriesRepository;
+import com.peecko.one.service.LanguageService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +42,10 @@ public class ArticleSeriesResource {
 
     private final ArticleSeriesRepository articleSeriesRepository;
 
-    public ArticleSeriesResource(ArticleSeriesRepository articleSeriesRepository) {
+    private final LanguageService languageService;
+
+    public ArticleSeriesResource(ArticleSeriesRepository articleSeriesRepository, LanguageService languageService) {
+        this.languageService = languageService;
         this.articleSeriesRepository = articleSeriesRepository;
     }
 
@@ -58,6 +62,7 @@ public class ArticleSeriesResource {
         if (articleSeries.getId() != null) {
             throw new BadRequestAlertException("A new articleSeries cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        articleSeries.setLanguage(languageService.validateCode(articleSeries.getLanguage(), ENTITY_NAME));
         ArticleSeries result = articleSeriesRepository.save(articleSeries);
         return ResponseEntity
             .created(new URI("/api/article-series/" + result.getId()))
@@ -92,6 +97,7 @@ public class ArticleSeriesResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        articleSeries.setLanguage(languageService.validateCode(articleSeries.getLanguage(), ENTITY_NAME));
         ArticleSeries result = articleSeriesRepository.save(articleSeries);
         return ResponseEntity
             .ok()
@@ -143,7 +149,7 @@ public class ArticleSeriesResource {
                     existingArticleSeries.setSummary(articleSeries.getSummary());
                 }
                 if (articleSeries.getLanguage() != null) {
-                    existingArticleSeries.setLanguage(articleSeries.getLanguage());
+                    existingArticleSeries.setLanguage(languageService.validateCode(articleSeries.getLanguage(), ENTITY_NAME));
                 }
                 if (articleSeries.getTags() != null) {
                     existingArticleSeries.setTags(articleSeries.getTags());

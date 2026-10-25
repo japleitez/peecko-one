@@ -1,5 +1,4 @@
 import dayjs from 'dayjs/esm';
-import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 import { ICustomer } from '../customer/customer.model';
 
@@ -7,7 +6,7 @@ export interface INotification {
   id: number;
   title?: string | null;
   message?: string | null;
-  language?: keyof typeof Language | null;
+  language?: string | null;
   imageUrl?: string | null;
   videoUrl?: string | null;
   starts?: dayjs.Dayjs | null;

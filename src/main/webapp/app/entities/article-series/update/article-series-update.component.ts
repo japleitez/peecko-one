@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { ARTICLE_SERIES_ACCESS, ArticleSeriesAccess, IArticleSeries } from '../article-series.model';
 import { ArticleSeriesService } from '../service/article-series.service';
 import { ArticleSeriesFormService, ArticleSeriesFormGroup } from './article-series-form.service';
@@ -17,19 +17,20 @@ import { NgIf } from '@angular/common';
   standalone: true,
   selector: 'jhi-article-series-update',
   templateUrl: './article-series-update.component.html',
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf]
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, NgIf],
 })
 export class ArticleSeriesUpdateComponent implements OnInit {
-  ua: ArticleSeriesAccess = this.getArticleSeriesAccess()
+  ua: ArticleSeriesAccess = this.getArticleSeriesAccess();
   isSaving = false;
   articleSeries: IArticleSeries | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
 
   editForm: ArticleSeriesFormGroup = this.articleSeriesFormService.createArticleSeriesFormGroup();
 
   constructor(
     protected articleSeriesService: ArticleSeriesService,
     protected articleSeriesFormService: ArticleSeriesFormService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -39,6 +40,8 @@ export class ArticleSeriesUpdateComponent implements OnInit {
       if (articleSeries) {
         this.updateForm(articleSeries);
       }
+
+      this.loadLanguageCodes();
     });
   }
 
@@ -80,8 +83,13 @@ export class ArticleSeriesUpdateComponent implements OnInit {
     this.articleSeriesFormService.resetForm(this.editForm, articleSeries);
   }
 
+  protected loadLanguageCodes(): void {
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.articleSeries?.language)));
+  }
+
   protected getArticleSeriesAccess(): ArticleSeriesAccess {
     return ARTICLE_SERIES_ACCESS;
   }
-
 }

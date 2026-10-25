@@ -1,7 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { IArticleCategory } from 'app/entities/article-category/article-category.model';
 import { ICoach } from 'app/entities/coach/coach.model';
-import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
 /**
@@ -15,7 +14,7 @@ export interface IArticle {
   title?: string | null;
   subtitle?: string | null;
   summary?: string | null;
-  language?: keyof typeof Language | null;
+  language?: string | null;
   tags?: string | null;
   duration?: number | null;
   thumbnail?: string | null;

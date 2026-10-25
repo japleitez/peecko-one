@@ -11,7 +11,7 @@ import { IVideoCategory } from 'app/entities/video-category/video-category.model
 import { VideoCategoryService } from 'app/entities/video-category/service/video-category.service';
 import { ICoach } from 'app/entities/coach/coach.model';
 import { CoachService } from 'app/entities/coach/service/coach.service';
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { Player } from 'app/entities/enumerations/player.model';
 import { Intensity } from 'app/entities/enumerations/intensity.model';
 import { VideoService } from '../service/video.service';
@@ -30,7 +30,7 @@ export class VideoUpdateComponent implements OnInit {
   ua: VideoAccess = this.getVideoAccess();
   isSaving = false;
   video: IVideo | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
   playerValues = Object.keys(Player);
   intensityValues = Object.keys(Intensity);
 
@@ -44,6 +44,7 @@ export class VideoUpdateComponent implements OnInit {
     protected videoFormService: VideoFormService,
     protected videoCategoryService: VideoCategoryService,
     protected coachService: CoachService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -58,6 +59,8 @@ export class VideoUpdateComponent implements OnInit {
       if (video) {
         this.updateForm(video);
       }
+
+      this.loadLanguageCodes();
 
       this.loadRelationshipsOptions();
     });
@@ -123,6 +126,12 @@ export class VideoUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICoach[]>) => res.body ?? []))
       .pipe(map((coaches: ICoach[]) => this.coachService.addCoachToCollectionIfMissing<ICoach>(coaches, this.video?.coach)))
       .subscribe((coaches: ICoach[]) => (this.coachesSharedCollection = coaches));
+  }
+
+  protected loadLanguageCodes(): void {
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.video?.language)));
   }
 
   protected getVideoAccess(): VideoAccess {

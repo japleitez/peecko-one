@@ -1,5 +1,4 @@
 import dayjs from 'dayjs/esm';
-import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface IArticleSeries {
@@ -8,7 +7,7 @@ export interface IArticleSeries {
   title?: string | null;
   subtitle?: string | null;
   summary?: string | null;
-  language?: keyof typeof Language | null;
+  language?: string | null;
   tags?: string | null;
   thumbnail?: string | null;
   counter?: number | null;

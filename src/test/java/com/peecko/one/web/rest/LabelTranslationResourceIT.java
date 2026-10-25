@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.LabelTranslation;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.LabelTranslationRepository;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -34,8 +33,8 @@ class LabelTranslationResourceIT {
     private static final String DEFAULT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CODE = "BBBBBBBBBB";
 
-    private static final Language DEFAULT_LANG = Language.EN;
-    private static final Language UPDATED_LANG = Language.FR;
+    private static final String DEFAULT_LANG = "EN";
+    private static final String UPDATED_LANG = "FR";
 
     private static final String DEFAULT_TEXT = "AAAAAAAAAA";
     private static final String UPDATED_TEXT = "BBBBBBBBBB";

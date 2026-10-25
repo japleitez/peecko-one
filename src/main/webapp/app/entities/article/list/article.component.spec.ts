@@ -188,20 +188,26 @@ describe('Article Management Component', () => {
     );
   });
 
-  it('should load the language filter options from the backend sorted by id', () => {
+  it('should load the language filter options from the backend language codes', () => {
     // GIVEN
-    const languages = [
-      { id: 1, code: 'en', name: 'English', active: true },
-      { id: 2, code: 'fr', name: 'French', active: true },
-    ];
-    jest.spyOn(languageService, 'query').mockReturnValue(of(new HttpResponse({ body: languages })));
+    jest.spyOn(languageService, 'queryActiveCodes').mockReturnValue(of(['EN', 'FR']));
 
     // WHEN
     comp.ngOnInit();
 
     // THEN
-    expect(languageService.query).toHaveBeenCalledWith(expect.objectContaining({ sort: ['id,asc'] }));
-    expect(comp.languages).toEqual(languages);
-    expect(comp.languageFilterValue(languages[1])).toBe('FR');
+    expect(languageService.queryActiveCodes).toHaveBeenCalled();
+    expect(comp.languages).toEqual(['EN', 'FR']);
+  });
+
+  it('should have no language filter options when no language is available', () => {
+    // GIVEN
+    jest.spyOn(languageService, 'queryActiveCodes').mockReturnValue(of([]));
+
+    // WHEN
+    comp.ngOnInit();
+
+    // THEN
+    expect(comp.languages).toEqual([]);
   });
 });

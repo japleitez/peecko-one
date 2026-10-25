@@ -1,8 +1,8 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Article;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.ArticleRepository;
+import com.peecko.one.service.LanguageService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +42,10 @@ public class ArticleResource {
 
     private final ArticleRepository articleRepository;
 
-    public ArticleResource(ArticleRepository articleRepository) {
+    private final LanguageService languageService;
+
+    public ArticleResource(ArticleRepository articleRepository, LanguageService languageService) {
+        this.languageService = languageService;
         this.articleRepository = articleRepository;
     }
 
@@ -59,6 +62,7 @@ public class ArticleResource {
         if (article.getId() != null) {
             throw new BadRequestAlertException("A new article cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        article.setLanguage(languageService.validateCode(article.getLanguage(), ENTITY_NAME));
         Article result = articleRepository.save(article);
         return ResponseEntity
             .created(new URI("/api/articles/" + result.getId()))
@@ -93,6 +97,7 @@ public class ArticleResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        article.setLanguage(languageService.validateCode(article.getLanguage(), ENTITY_NAME));
         Article result = articleRepository.save(article);
         return ResponseEntity
             .ok()
@@ -144,7 +149,7 @@ public class ArticleResource {
                     existingArticle.setSummary(article.getSummary());
                 }
                 if (article.getLanguage() != null) {
-                    existingArticle.setLanguage(article.getLanguage());
+                    existingArticle.setLanguage(languageService.validateCode(article.getLanguage(), ENTITY_NAME));
                 }
                 if (article.getTags() != null) {
                     existingArticle.setTags(article.getTags());
@@ -201,10 +206,11 @@ public class ArticleResource {
     @GetMapping("")
     public ResponseEntity<List<Article>> getAllArticles(
         @RequestParam(required = false) Long articleCategoryId,
-        @RequestParam(required = false) Language language,
+        @RequestParam(required = false) String language,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get a page of Articles, articleCategoryId: {}, language: {}", articleCategoryId, language);
+        language = LanguageService.normalize(language);
         Page<Article> page;
         if (articleCategoryId != null && language != null) {
             page = articleRepository.findByArticleCategoryIdAndLanguage(articleCategoryId, language, pageable);

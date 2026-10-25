@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Notification;
 import com.peecko.one.repository.NotificationRepository;
+import com.peecko.one.service.LanguageService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +42,10 @@ public class NotificationResource {
 
     private final NotificationRepository notificationRepository;
 
-    public NotificationResource(NotificationRepository notificationRepository) {
+    private final LanguageService languageService;
+
+    public NotificationResource(NotificationRepository notificationRepository, LanguageService languageService) {
+        this.languageService = languageService;
         this.notificationRepository = notificationRepository;
     }
 
@@ -58,6 +62,7 @@ public class NotificationResource {
         if (notification.getId() != null) {
             throw new BadRequestAlertException("A new notification cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        notification.setLanguage(languageService.validateCode(notification.getLanguage(), ENTITY_NAME));
         Notification result = notificationRepository.save(notification);
         return ResponseEntity
             .created(new URI("/api/notifications/" + result.getId()))
@@ -92,6 +97,7 @@ public class NotificationResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        notification.setLanguage(languageService.validateCode(notification.getLanguage(), ENTITY_NAME));
         Notification result = notificationRepository.save(notification);
         return ResponseEntity
             .ok()
@@ -137,7 +143,7 @@ public class NotificationResource {
                     existingNotification.setMessage(notification.getMessage());
                 }
                 if (notification.getLanguage() != null) {
-                    existingNotification.setLanguage(notification.getLanguage());
+                    existingNotification.setLanguage(languageService.validateCode(notification.getLanguage(), ENTITY_NAME));
                 }
                 if (notification.getImageUrl() != null) {
                     existingNotification.setImageUrl(notification.getImageUrl());

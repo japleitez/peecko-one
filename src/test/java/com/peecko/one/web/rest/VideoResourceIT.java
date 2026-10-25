@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.Video;
 import com.peecko.one.domain.enumeration.Intensity;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.domain.enumeration.Player;
 import com.peecko.one.repository.VideoRepository;
 import jakarta.persistence.EntityManager;
@@ -43,8 +42,8 @@ class VideoResourceIT {
     private static final Integer DEFAULT_DURATION = 1;
     private static final Integer UPDATED_DURATION = 2;
 
-    private static final Language DEFAULT_LANGUAGE = Language.EN;
-    private static final Language UPDATED_LANGUAGE = Language.FR;
+    private static final String DEFAULT_LANGUAGE = "EN";
+    private static final String UPDATED_LANGUAGE = "FR";
 
     private static final String DEFAULT_TAGS = "AAAAAAAAAA";
     private static final String UPDATED_TAGS = "BBBBBBBBBB";

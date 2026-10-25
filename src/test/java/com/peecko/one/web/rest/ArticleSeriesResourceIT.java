@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.ArticleSeries;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.ArticleSeriesRepository;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
@@ -44,8 +43,8 @@ class ArticleSeriesResourceIT {
     private static final String DEFAULT_SUMMARY = "AAAAAAAAAA";
     private static final String UPDATED_SUMMARY = "BBBBBBBBBB";
 
-    private static final Language DEFAULT_LANGUAGE = Language.EN;
-    private static final Language UPDATED_LANGUAGE = Language.FR;
+    private static final String DEFAULT_LANGUAGE = "EN";
+    private static final String UPDATED_LANGUAGE = "FR";
 
     private static final String DEFAULT_TAGS = "AAAAAAAAAA";
     private static final String UPDATED_TAGS = "BBBBBBBBBB";

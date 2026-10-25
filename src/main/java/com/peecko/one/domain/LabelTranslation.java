@@ -1,6 +1,5 @@
 package com.peecko.one.domain;
 
-import com.peecko.one.domain.enumeration.Language;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -29,9 +28,8 @@ public class LabelTranslation implements Serializable {
     private String code;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "lang", nullable = false)
-    private Language lang;
+    private String lang;
 
     @NotNull
     @Column(name = "text", nullable = false)
@@ -65,16 +63,16 @@ public class LabelTranslation implements Serializable {
         this.code = code;
     }
 
-    public Language getLang() {
+    public String getLang() {
         return this.lang;
     }
 
-    public LabelTranslation lang(Language lang) {
+    public LabelTranslation lang(String lang) {
         this.setLang(lang);
         return this;
     }
 
-    public void setLang(Language lang) {
+    public void setLang(String lang) {
         this.lang = lang;
     }
 

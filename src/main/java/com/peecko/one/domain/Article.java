@@ -1,7 +1,6 @@
 package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.utils.HtmlSanitizer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -42,9 +41,8 @@ public class Article implements Serializable {
     private String summary;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "language", nullable = false)
-    private Language language;
+    private String language;
 
     @Column(name = "tags")
     private String tags;
@@ -159,16 +157,16 @@ public class Article implements Serializable {
         this.summary = summary;
     }
 
-    public Language getLanguage() {
+    public String getLanguage() {
         return this.language;
     }
 
-    public Article language(Language language) {
+    public Article language(String language) {
         this.setLanguage(language);
         return this;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 

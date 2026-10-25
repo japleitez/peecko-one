@@ -4,25 +4,25 @@ import com.peecko.one.domain.Agency;
 import com.peecko.one.domain.ApsOrder;
 import com.peecko.one.domain.Customer;
 import com.peecko.one.domain.Invoice;
+import com.peecko.one.domain.dto.ApsOrderInfo;
 import com.peecko.one.repository.AgencyRepository;
 import com.peecko.one.repository.ApsOrderRepository;
 import com.peecko.one.repository.CustomerRepository;
-import com.peecko.one.domain.dto.ApsOrderInfo;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Service
 public class InvoiceEmailService {
+
     private final UserService userService;
     private final EmailService emailService;
     private final AgencyRepository agencyRepository;
@@ -31,7 +31,15 @@ public class InvoiceEmailService {
     private final TemplateEngine templateEngine;
     private final MessageSource messageSource;
 
-    public InvoiceEmailService(UserService userService, EmailService emailService, AgencyRepository agencyRepository, ApsOrderRepository apsOrderRepository, CustomerRepository customerRepository, TemplateEngine templateEngine, MessageSource messageSource) {
+    public InvoiceEmailService(
+        UserService userService,
+        EmailService emailService,
+        AgencyRepository agencyRepository,
+        ApsOrderRepository apsOrderRepository,
+        CustomerRepository customerRepository,
+        TemplateEngine templateEngine,
+        MessageSource messageSource
+    ) {
         this.userService = userService;
         this.emailService = emailService;
         this.agencyRepository = agencyRepository;
@@ -43,7 +51,7 @@ public class InvoiceEmailService {
 
     public List<ApsOrderInfo> batchInvoiceEmail(String contract, Integer period) {
         List<ApsOrder> orders;
-        Long agencyId = userService.getCurrentAgencyId();;
+        Long agencyId = userService.getCurrentAgencyId();
         Agency agency = agencyRepository.getReferenceById(agencyId);
         if (StringUtils.hasText(contract)) {
             orders = apsOrderRepository.getByContactAndPeriod(contract, period);
@@ -70,8 +78,8 @@ public class InvoiceEmailService {
     }
 
     private String resolveSubject(Agency agency, ApsOrder order) {
-        Locale locale = new Locale(agency.getLanguage().name());
-        Object[] args = new Object[] {agency.getName(), order.getPeriod(), order.getInvoiceNumber()};
+        Locale locale = new Locale(agency.getLanguage());
+        Object[] args = new Object[] { agency.getName(), order.getPeriod(), order.getInvoiceNumber() };
         // messageSource.getMessage("invoice.email.subject", args, locale);
         return agency.getName() + " your invoice " + order.getPeriod() + " - " + order.getInvoiceNumber();
     }
@@ -94,5 +102,4 @@ public class InvoiceEmailService {
         data.put("supportEmail", agency.getBillingEmail());
         return data;
     }
-
 }

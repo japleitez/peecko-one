@@ -1,10 +1,9 @@
-import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface ILabelTranslation {
   id: number;
   code?: string | null;
-  lang?: keyof typeof Language | null;
+  lang?: string | null;
   text?: string | null;
 }
 

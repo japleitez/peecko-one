@@ -39,9 +39,9 @@
     },
     {
       "fieldName": "language",
-      "fieldType": "Language",
-      "fieldValidateRules": ["required"],
-      "fieldValues": "EN,FR,DE,ES"
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "2"
     },
     {
       "fieldName": "email",

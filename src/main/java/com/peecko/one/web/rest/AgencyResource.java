@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Agency;
 import com.peecko.one.repository.AgencyRepository;
+import com.peecko.one.service.LanguageService;
 import com.peecko.one.service.UserService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -38,7 +39,10 @@ public class AgencyResource {
     private final UserService userService;
     private final AgencyRepository agencyRepository;
 
-    public AgencyResource(UserService userService, AgencyRepository agencyRepository) {
+    private final LanguageService languageService;
+
+    public AgencyResource(UserService userService, AgencyRepository agencyRepository, LanguageService languageService) {
+        this.languageService = languageService;
         this.userService = userService;
         this.agencyRepository = agencyRepository;
     }
@@ -56,6 +60,7 @@ public class AgencyResource {
         if (agency.getId() != null) {
             throw new BadRequestAlertException("A new agency cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        agency.setLanguage(languageService.validateCode(agency.getLanguage(), ENTITY_NAME));
         Agency result = agencyRepository.save(agency);
         return ResponseEntity
             .created(new URI("/api/agencies/" + result.getId()))
@@ -90,6 +95,7 @@ public class AgencyResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        agency.setLanguage(languageService.validateCode(agency.getLanguage(), ENTITY_NAME));
         Agency result = agencyRepository.save(agency);
         return ResponseEntity
             .ok()
@@ -150,7 +156,7 @@ public class AgencyResource {
                     existingAgency.setCountry(agency.getCountry());
                 }
                 if (agency.getLanguage() != null) {
-                    existingAgency.setLanguage(agency.getLanguage());
+                    existingAgency.setLanguage(languageService.validateCode(agency.getLanguage(), ENTITY_NAME));
                 }
                 if (agency.getEmail() != null) {
                     existingAgency.setEmail(agency.getEmail());
