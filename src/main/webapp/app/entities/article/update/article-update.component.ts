@@ -11,7 +11,8 @@ import { IArticleCategory } from 'app/entities/article-category/article-category
 import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
 import { ICoach } from 'app/entities/coach/coach.model';
 import { CoachService } from 'app/entities/coach/service/coach.service';
-import { Language } from 'app/entities/enumerations/language.model';
+import { ILanguage } from 'app/entities/language/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { ArticleService } from '../service/article.service';
 import { ARTICLE_ACCESS, ARTICLE_CONTENT_MAX_LENGTH, ArticleAccess, IArticle } from '../article.model';
 import { ArticleFormService, ArticleFormGroup } from './article-form.service';
@@ -19,6 +20,8 @@ import { NgIf } from '@angular/common';
 import { AgencySelectComponent } from '../../agency/agency-select/agency-select.component';
 import { ArticleCategorySelectComponent } from '../../article-category/article-category-select/article-category-select.component';
 import { CoachSelectComponent } from '../../coach/coach-select/coach-select.component';
+
+const LANGUAGES_PAGE_SIZE = 100;
 
 @Component({
   standalone: true,
@@ -38,7 +41,7 @@ export class ArticleUpdateComponent implements OnInit {
   ua: ArticleAccess = this.getArticleAccess();
   isSaving = false;
   article: IArticle | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
   contentMaxLength = ARTICLE_CONTENT_MAX_LENGTH;
 
   articleCategoriesSharedCollection: IArticleCategory[] = [];
@@ -51,6 +54,7 @@ export class ArticleUpdateComponent implements OnInit {
     protected articleFormService: ArticleFormService,
     protected articleCategoryService: ArticleCategoryService,
     protected coachService: CoachService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -149,6 +153,24 @@ export class ArticleUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICoach[]>) => res.body ?? []))
       .pipe(map((coaches: ICoach[]) => this.coachService.addCoachToCollectionIfMissing<ICoach>(coaches, this.article?.coach)))
       .subscribe((coaches: ICoach[]) => (this.coachesSharedCollection = coaches));
+
+    this.languageService
+      .query({ page: 0, size: LANGUAGES_PAGE_SIZE, sort: ['id,asc'] })
+      .pipe(map((res: HttpResponse<ILanguage[]>) => res.body ?? []))
+      .subscribe((languages: ILanguage[]) => (this.languageValues = this.toLanguageValues(languages, this.article?.language)));
+  }
+
+  /**
+   * Article.language is stored as an upper-case enum value (EN, FR, ...), so the options use the language code in upper case.
+   * The current article language is kept even if it is not returned by the backend, so editing does not lose it.
+   */
+  protected toLanguageValues(languages: ILanguage[], current?: string | null): string[] {
+    const values = languages.map(language => (language.code ?? '').toUpperCase()).filter(code => code !== '');
+    const unique = values.filter((code, index) => values.indexOf(code) === index);
+    if (current && !unique.includes(current)) {
+      unique.push(current);
+    }
+    return unique;
   }
 
   protected getArticleAccess(): ArticleAccess {

@@ -37,6 +37,23 @@
           }
         </div>
 
+        <div class="mb-3" *ngIf="ua.language.visible">
+          <label class="form-label" for="field_language">Language</label>
+          <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
+            <option [ngValue]="null"></option>
+            @for (language of languageValues; track language) {
+              <option [ngValue]="language">{{ language }}</option>
+            }
+          </select>
+          @if (editForm.get('language')!.invalid && (editForm.get('language')!.dirty || editForm.get('language')!.touched)) {
+            <div>
+              @if (editForm.get('language')?.errors?.required) {
+                <small class="form-text text-danger">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
         <div class="mb-3" *ngIf="ua.title.visible">
           <label class="form-label" for="field_title">Title</label>
           <input type="text" class="form-control" name="title" id="field_title" data-cy="title" formControlName="title" />
@@ -57,23 +74,6 @@
         <div class="mb-3" *ngIf="ua.summary.visible">
           <label class="form-label" for="field_summary">Summary</label>
           <input type="text" class="form-control" name="summary" id="field_summary" data-cy="summary" formControlName="summary" />
-        </div>
-
-        <div class="mb-3" *ngIf="ua.language.visible">
-          <label class="form-label" for="field_language">Language</label>
-          <select class="form-control" name="language" formControlName="language" id="field_language" data-cy="language">
-            <option [ngValue]="null"></option>
-            @for (language of languageValues; track $index) {
-              <option [value]="language">{{ language }}</option>
-            }
-          </select>
-          @if (editForm.get('language')!.invalid && (editForm.get('language')!.dirty || editForm.get('language')!.touched)) {
-            <div>
-              @if (editForm.get('language')?.errors?.required) {
-                <small class="form-text text-danger">This field is required.</small>
-              }
-            </div>
-          }
         </div>
 
         <div class="mb-3" *ngIf="ua.tags.visible">
