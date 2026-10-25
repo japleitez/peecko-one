@@ -29,7 +29,7 @@
       >
         <option [ngValue]="null">All languages</option>
         @for (languageOption of languages; track languageOption.id) {
-          <option [ngValue]="languageFilterValue(languageOption)">{{ languageOption.name }}</option>
+          <option [ngValue]="languageFilterValue(languageOption)">{{ languageOption.code }}</option>
         }
       </select>
 
