@@ -28,8 +28,8 @@
         (ngModelChange)="onLanguageChange()"
       >
         <option [ngValue]="null">All languages</option>
-        @for (languageOption of languageValues; track languageOption) {
-          <option [ngValue]="languageOption">{{ languageOption }}</option>
+        @for (languageOption of languages; track languageOption.id) {
+          <option [ngValue]="languageFilterValue(languageOption)">{{ languageOption.name }}</option>
         }
       </select>
 
