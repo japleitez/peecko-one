@@ -1,0 +1,114 @@
+<div>
+  <h2 id="page-heading" data-cy="LanguageHeading">
+    <span>Languages</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-language"
+        [routerLink]="['/language/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>New Language</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (languages?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Languages found</span>
+    </div>
+  }
+
+  @if (languages && languages.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id" *ngIf="ua.id.listable">
+              <div class="d-flex">
+                <span>ID</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="code" *ngIf="ua.code.listable">
+              <div class="d-flex">
+                <span>Code</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name" *ngIf="ua.name.listable">
+              <div class="d-flex">
+                <span>Name</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="active" *ngIf="ua.active.listable">
+              <div class="d-flex">
+                <span>Active</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (language of languages; track trackId) {
+            <tr data-cy="entityTable">
+              <td *ngIf="ua.id.listable">
+                <a [routerLink]="['/language', language.id, 'view']">{{ language.id }}</a>
+              </td>
+              <td *ngIf="ua.code.listable">{{ language.code }}</td>
+              <td *ngIf="ua.name.listable">{{ language.name }}</td>
+              <td *ngIf="ua.active.listable">{{ language.active }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/language', language.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                  </a>
+
+                  <a [routerLink]="['/language', language.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                  </a>
+
+                  <button type="submit" (click)="delete(language)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (languages && languages.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>
