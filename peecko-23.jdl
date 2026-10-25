@@ -37,7 +37,7 @@ entity ApsUser {
   usernameVerified Boolean required,
   privateEmail String required,
   privateVerified Boolean required,
-  language Language required,
+  language String required maxlength(2),
   license String,
   active Boolean required,
   password String,
@@ -115,7 +115,7 @@ entity Agency {
   zip String,
   city String required,
   country String required,
-  language Language required,
+  language String required maxlength(2),
   email String,
   phone String,
   billingEmail String,
@@ -295,7 +295,7 @@ entity Video {
   code String required,
   title String required,
   duration Integer,
-  language Language required,
+  language String required maxlength(2),
   tags String,
   player Player required,
   thumbnail String,
@@ -330,7 +330,7 @@ entity Article {
   title String required,
   subtitle String,
   summary String,
-  language Language required,
+  language String required maxlength(2),
   tags String,
   duration Integer,
   thumbnail String,
@@ -354,7 +354,7 @@ entity ArticleSeries {
   title String required,
   subtitle String,
   summary String,
-  language Language required,
+  language String required maxlength(2),
   tags String,
   thumbnail String,
   counter Integer required,
@@ -390,7 +390,7 @@ entity Notification {
   companyId Long required,
   title String required,
   message String required,
-  language Language required,
+  language String required maxlength(2),
   imageUrl String,
   videoUrl String,
   starts LocalDate,
@@ -407,7 +407,7 @@ entity Notification {
  */
 entity LabelTranslation {
   label String required,
-  lang Language required,
+  lang String required maxlength(2),
   translation String required
 }
 
@@ -623,12 +623,6 @@ enum PricingType {
   BRACKET
 }
 
-enum Language {
-  EN,
-  FR,
-  DE,
-  ES
-}
 
 relationship OneToMany {
 	ApsUser to ApsDevice,

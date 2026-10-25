@@ -11,7 +11,7 @@ import { IArticleCategory } from 'app/entities/article-category/article-category
 import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
 import { ICoach } from 'app/entities/coach/coach.model';
 import { CoachService } from 'app/entities/coach/service/coach.service';
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { ArticleService } from '../service/article.service';
 import { ARTICLE_ACCESS, ARTICLE_CONTENT_MAX_LENGTH, ArticleAccess, IArticle } from '../article.model';
 import { ArticleFormService, ArticleFormGroup } from './article-form.service';
@@ -38,7 +38,7 @@ export class ArticleUpdateComponent implements OnInit {
   ua: ArticleAccess = this.getArticleAccess();
   isSaving = false;
   article: IArticle | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
   contentMaxLength = ARTICLE_CONTENT_MAX_LENGTH;
 
   articleCategoriesSharedCollection: IArticleCategory[] = [];
@@ -51,6 +51,7 @@ export class ArticleUpdateComponent implements OnInit {
     protected articleFormService: ArticleFormService,
     protected articleCategoryService: ArticleCategoryService,
     protected coachService: CoachService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -149,6 +150,10 @@ export class ArticleUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ICoach[]>) => res.body ?? []))
       .pipe(map((coaches: ICoach[]) => this.coachService.addCoachToCollectionIfMissing<ICoach>(coaches, this.article?.coach)))
       .subscribe((coaches: ICoach[]) => (this.coachesSharedCollection = coaches));
+
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.article?.language)));
   }
 
   protected getArticleAccess(): ArticleAccess {

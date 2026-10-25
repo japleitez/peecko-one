@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { ILabelTranslation, LABEL_ACCESS, LabelAccess } from '../label-translation.model';
 import { LabelTranslationService } from '../service/label-translation.service';
 import { LabelTranslationFormService, LabelTranslationFormGroup } from './label-translation-form.service';
@@ -22,13 +22,14 @@ export class LabelTranslationUpdateComponent implements OnInit {
   ua: LabelAccess = this.getLabelAccess();
   isSaving = false;
   labelTranslation: ILabelTranslation | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
 
   editForm: LabelTranslationFormGroup = this.labelTranslationFormService.createLabelTranslationFormGroup(undefined, this.getLabelAccess());
 
   constructor(
     protected labelTranslationService: LabelTranslationService,
     protected labelTranslationFormService: LabelTranslationFormService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -38,6 +39,8 @@ export class LabelTranslationUpdateComponent implements OnInit {
       if (labelTranslation) {
         this.updateForm(labelTranslation);
       }
+
+      this.loadLanguageCodes();
     });
   }
 
@@ -77,6 +80,12 @@ export class LabelTranslationUpdateComponent implements OnInit {
   protected updateForm(labelTranslation: ILabelTranslation): void {
     this.labelTranslation = labelTranslation;
     this.labelTranslationFormService.resetForm(this.editForm, labelTranslation);
+  }
+
+  protected loadLanguageCodes(): void {
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.labelTranslation?.lang)));
   }
 
   protected getLabelAccess(): LabelAccess {

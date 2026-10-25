@@ -1,8 +1,8 @@
 package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.LabelTranslation;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.LabelTranslationRepository;
+import com.peecko.one.service.LanguageService;
 import com.peecko.one.service.specs.LabelTranslationSpecs;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -43,7 +43,10 @@ public class LabelTranslationResource {
 
     private final LabelTranslationRepository labelTranslationRepository;
 
-    public LabelTranslationResource(LabelTranslationRepository labelTranslationRepository) {
+    private final LanguageService languageService;
+
+    public LabelTranslationResource(LabelTranslationRepository labelTranslationRepository, LanguageService languageService) {
+        this.languageService = languageService;
         this.labelTranslationRepository = labelTranslationRepository;
     }
 
@@ -61,6 +64,7 @@ public class LabelTranslationResource {
         if (labelTranslation.getId() != null) {
             throw new BadRequestAlertException("A new labelTranslation cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        labelTranslation.setLang(languageService.validateCode(labelTranslation.getLang(), ENTITY_NAME));
         LabelTranslation result = labelTranslationRepository.save(labelTranslation);
         return ResponseEntity
             .created(new URI("/api/label-translations/" + result.getId()))
@@ -95,6 +99,7 @@ public class LabelTranslationResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        labelTranslation.setLang(languageService.validateCode(labelTranslation.getLang(), ENTITY_NAME));
         LabelTranslation result = labelTranslationRepository.save(labelTranslation);
         return ResponseEntity
             .ok()
@@ -137,7 +142,7 @@ public class LabelTranslationResource {
                     existingLabelTranslation.setCode(labelTranslation.getCode());
                 }
                 if (labelTranslation.getLang() != null) {
-                    existingLabelTranslation.setLang(labelTranslation.getLang());
+                    existingLabelTranslation.setLang(languageService.validateCode(labelTranslation.getLang(), ENTITY_NAME));
                 }
                 if (labelTranslation.getText() != null) {
                     existingLabelTranslation.setText(labelTranslation.getText());
@@ -165,12 +170,15 @@ public class LabelTranslationResource {
     @GetMapping("")
     public ResponseEntity<List<LabelTranslation>> getAllLabelTranslations(
         @RequestParam(required = false) String code,
-        @RequestParam(required = false) Language lang,
+        @RequestParam(required = false) String lang,
         @RequestParam(required = false) String text,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get a page of LabelTranslations, code: {}, lang: {}, text: {}", code, lang, text);
-        Page<LabelTranslation> page = labelTranslationRepository.findAll(LabelTranslationSpecs.filter(code, lang, text), pageable);
+        Page<LabelTranslation> page = labelTranslationRepository.findAll(
+            LabelTranslationSpecs.filter(code, LanguageService.normalize(lang), text),
+            pageable
+        );
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

@@ -1,7 +1,6 @@
 package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.peecko.one.domain.enumeration.Language;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -54,9 +53,8 @@ public class Agency implements Serializable {
     private String country;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "language", nullable = false)
-    private Language language;
+    private String language;
 
     @Column(name = "email")
     private String email;
@@ -218,16 +216,16 @@ public class Agency implements Serializable {
         this.country = country;
     }
 
-    public Language getLanguage() {
+    public String getLanguage() {
         return this.language;
     }
 
-    public Agency language(Language language) {
+    public Agency language(String language) {
         this.setLanguage(language);
         return this;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 

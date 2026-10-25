@@ -17,7 +17,7 @@ import { EntityArrayResponseType, ArticleService } from '../service/article.serv
 import { ArticleDeleteDialogComponent } from '../delete/article-delete-dialog.component';
 import { IArticleCategory } from 'app/entities/article-category/article-category.model';
 import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { NgIf } from '@angular/common';
 
 const ARTICLE_CATEGORY_ID_PARAM = 'articleCategoryId';
@@ -54,8 +54,8 @@ export class ArticleComponent implements OnInit {
 
   articleCategories: IArticleCategory[] = [];
   articleCategoryId: number | null = null;
-  languageValues = Object.keys(Language);
-  language: keyof typeof Language | null = null;
+  languages: string[] = [];
+  language: string | null = null;
 
   constructor(
     protected articleService: ArticleService,
@@ -63,12 +63,14 @@ export class ArticleComponent implements OnInit {
     public router: Router,
     protected modalService: NgbModal,
     protected articleCategoryService: ArticleCategoryService,
+    protected languageService: LanguageService,
   ) {}
 
   trackId = (_index: number, item: IArticle): number => this.articleService.getArticleIdentifier(item);
 
   ngOnInit(): void {
     this.loadArticleCategories();
+    this.loadLanguages();
     this.load();
   }
 
@@ -136,7 +138,7 @@ export class ArticleComponent implements OnInit {
     const articleCategoryId = params.get(ARTICLE_CATEGORY_ID_PARAM);
     this.articleCategoryId = articleCategoryId ? +articleCategoryId : null;
     const language = params.get(LANGUAGE_PARAM);
-    this.language = language && language in Language ? (language as keyof typeof Language) : null;
+    this.language = language ? language.toUpperCase() : null;
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {
@@ -202,6 +204,13 @@ export class ArticleComponent implements OnInit {
     this.articleCategoryService.query().subscribe(res => {
       this.articleCategories = (res.body ?? []).sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
     });
+  }
+
+  protected loadLanguages(): void {
+    // keep a language selected from the URL in the list, so the filter shows it
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languages = this.languageService.addLanguageCodeIfMissing(codes, this.language)));
   }
 
   protected getArticleAccess(): ArticleAccess {

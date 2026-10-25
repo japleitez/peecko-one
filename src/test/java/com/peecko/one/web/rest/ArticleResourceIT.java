@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.peecko.one.IntegrationTest;
 import com.peecko.one.domain.Article;
-import com.peecko.one.domain.enumeration.Language;
 import com.peecko.one.repository.ArticleRepository;
 import com.peecko.one.utils.HtmlSanitizer;
 import jakarta.persistence.EntityManager;
@@ -46,8 +45,8 @@ class ArticleResourceIT {
     private static final String DEFAULT_SUMMARY = "AAAAAAAAAA";
     private static final String UPDATED_SUMMARY = "BBBBBBBBBB";
 
-    private static final Language DEFAULT_LANGUAGE = Language.EN;
-    private static final Language UPDATED_LANGUAGE = Language.FR;
+    private static final String DEFAULT_LANGUAGE = "EN";
+    private static final String UPDATED_LANGUAGE = "FR";
 
     private static final String DEFAULT_TAGS = "AAAAAAAAAA";
     private static final String UPDATED_TAGS = "BBBBBBBBBB";
@@ -307,6 +306,21 @@ class ArticleResourceIT {
         article.setLanguage(null);
 
         // Create the Article, which fails.
+
+        restArticleMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(article)))
+            .andExpect(status().isBadRequest());
+
+        List<Article> articleList = articleRepository.findAll();
+        assertThat(articleList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void createArticleWithUnknownLanguageIsRejected() throws Exception {
+        int databaseSizeBeforeTest = articleRepository.findAll().size();
+        // a code that is not defined in the language table
+        article.setLanguage("ZZ");
 
         restArticleMockMvc
             .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(article)))

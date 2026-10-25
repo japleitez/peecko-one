@@ -1,7 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { IVideoCategory } from 'app/entities/video-category/video-category.model';
 import { ICoach } from 'app/entities/coach/coach.model';
-import { Language } from 'app/entities/enumerations/language.model';
 import { Player } from 'app/entities/enumerations/player.model';
 import { Intensity } from 'app/entities/enumerations/intensity.model';
 import { FieldAccess } from '../../shared/profile/view.models';
@@ -11,7 +10,7 @@ export interface IVideo {
   code?: string | null;
   title?: string | null;
   duration?: number | null;
-  language?: keyof typeof Language | null;
+  language?: string | null;
   tags?: string | null;
   player?: keyof typeof Player | null;
   thumbnail?: string | null;

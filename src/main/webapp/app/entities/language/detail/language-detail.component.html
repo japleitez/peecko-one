@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (language) {
+      <div>
+        <h2 data-cy="languageDetailsHeading"><span>Language</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt *ngIf="ua.id.visible"><span>ID</span></dt>
+          <dd *ngIf="ua.id.visible">
+            <span>{{ language.id }}</span>
+          </dd>
+          <dt *ngIf="ua.code.visible"><span>Code</span></dt>
+          <dd *ngIf="ua.code.visible">
+            <span>{{ language.code }}</span>
+          </dd>
+          <dt *ngIf="ua.name.visible"><span>Name</span></dt>
+          <dd *ngIf="ua.name.visible">
+            <span>{{ language.name }}</span>
+          </dd>
+          <dt *ngIf="ua.active.visible"><span>Active</span></dt>
+          <dd *ngIf="ua.active.visible">
+            <span>{{ language.active }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/language', language.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

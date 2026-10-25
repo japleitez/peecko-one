@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.ApsUser;
 import com.peecko.one.repository.ApsUserRepository;
+import com.peecko.one.service.LanguageService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +42,10 @@ public class ApsUserResource {
 
     private final ApsUserRepository apsUserRepository;
 
-    public ApsUserResource(ApsUserRepository apsUserRepository) {
+    private final LanguageService languageService;
+
+    public ApsUserResource(ApsUserRepository apsUserRepository, LanguageService languageService) {
+        this.languageService = languageService;
         this.apsUserRepository = apsUserRepository;
     }
 
@@ -58,6 +62,7 @@ public class ApsUserResource {
         if (apsUser.getId() != null) {
             throw new BadRequestAlertException("A new apsUser cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        apsUser.setLanguage(languageService.validateCode(apsUser.getLanguage(), ENTITY_NAME));
         ApsUser result = apsUserRepository.save(apsUser);
         return ResponseEntity
             .created(new URI("/api/aps-users/" + result.getId()))
@@ -92,6 +97,7 @@ public class ApsUserResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
+        apsUser.setLanguage(languageService.validateCode(apsUser.getLanguage(), ENTITY_NAME));
         ApsUser result = apsUserRepository.save(apsUser);
         return ResponseEntity
             .ok()
@@ -146,7 +152,7 @@ public class ApsUserResource {
                     existingApsUser.setPrivateVerified(apsUser.getPrivateVerified());
                 }
                 if (apsUser.getLanguage() != null) {
-                    existingApsUser.setLanguage(apsUser.getLanguage());
+                    existingApsUser.setLanguage(languageService.validateCode(apsUser.getLanguage(), ENTITY_NAME));
                 }
                 if (apsUser.getLicense() != null) {
                     existingApsUser.setLicense(apsUser.getLicense());

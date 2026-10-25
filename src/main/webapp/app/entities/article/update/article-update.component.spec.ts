@@ -10,6 +10,7 @@ import { IArticleCategory } from 'app/entities/article-category/article-category
 import { ArticleCategoryService } from 'app/entities/article-category/service/article-category.service';
 import { ICoach } from 'app/entities/coach/coach.model';
 import { CoachService } from 'app/entities/coach/service/coach.service';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { IArticle } from '../article.model';
 import { ArticleService } from '../service/article.service';
 import { ArticleFormService } from './article-form.service';
@@ -24,6 +25,7 @@ describe('Article Management Update Component', () => {
   let articleService: ArticleService;
   let articleCategoryService: ArticleCategoryService;
   let coachService: CoachService;
+  let languageService: LanguageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -47,6 +49,7 @@ describe('Article Management Update Component', () => {
     articleService = TestBed.inject(ArticleService);
     articleCategoryService = TestBed.inject(ArticleCategoryService);
     coachService = TestBed.inject(CoachService);
+    languageService = TestBed.inject(LanguageService);
 
     comp = fixture.componentInstance;
   });
@@ -94,6 +97,17 @@ describe('Article Management Update Component', () => {
         ...additionalCoaches.map(expect.objectContaining),
       );
       expect(comp.coachesSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should load the language codes from the backend and keep the current article language', () => {
+      const article: IArticle = { id: 456, language: 'IT' };
+      jest.spyOn(languageService, 'queryActiveCodes').mockReturnValue(of(['EN', 'FR']));
+
+      activatedRoute.data = of({ article });
+      comp.ngOnInit();
+
+      expect(languageService.queryActiveCodes).toHaveBeenCalled();
+      expect(comp.languageValues).toEqual(['EN', 'FR', 'IT']);
     });
 
     it('Should update editForm', () => {

@@ -15,7 +15,7 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { ILabelTranslation, LABEL_ACCESS, LabelAccess } from '../label-translation.model';
 import { EntityArrayResponseType, LabelTranslationService } from '../service/label-translation.service';
 import { LabelTranslationDeleteDialogComponent } from '../delete/label-translation-delete-dialog.component';
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 
 const CODE_PARAM = 'code';
 const LANG_PARAM = 'lang';
@@ -49,9 +49,9 @@ export class LabelTranslationComponent implements OnInit {
   totalItems = 0;
   page = 1;
 
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
   filterCode = '';
-  filterLang: keyof typeof Language | null = null;
+  filterLang: string | null = null;
   filterText = '';
 
   constructor(
@@ -59,11 +59,13 @@ export class LabelTranslationComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected modalService: NgbModal,
+    protected languageService: LanguageService,
   ) {}
 
   trackId = (_index: number, item: ILabelTranslation): number => this.labelTranslationService.getLabelTranslationIdentifier(item);
 
   ngOnInit(): void {
+    this.loadLanguageCodes();
     this.load();
   }
 
@@ -130,7 +132,7 @@ export class LabelTranslationComponent implements OnInit {
     this.ascending = sort[1] === ASC;
     this.filterCode = params.get(CODE_PARAM) ?? '';
     const lang = params.get(LANG_PARAM);
-    this.filterLang = lang && lang in Language ? (lang as keyof typeof Language) : null;
+    this.filterLang = lang ? lang.toUpperCase() : null;
     this.filterText = params.get(TEXT_PARAM) ?? '';
   }
 
@@ -197,6 +199,13 @@ export class LabelTranslationComponent implements OnInit {
       params[TEXT_PARAM] = text;
     }
     return params;
+  }
+
+  protected loadLanguageCodes(): void {
+    // keep a language selected from the URL in the list, so the filter shows it
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.filterLang)));
   }
 
   protected getLabelAccess(): LabelAccess {

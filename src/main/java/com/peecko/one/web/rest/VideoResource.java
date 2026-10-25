@@ -2,6 +2,7 @@ package com.peecko.one.web.rest;
 
 import com.peecko.one.domain.Video;
 import com.peecko.one.repository.VideoRepository;
+import com.peecko.one.service.LanguageService;
 import com.peecko.one.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -42,7 +43,10 @@ public class VideoResource {
 
     private final VideoRepository videoRepository;
 
-    public VideoResource(VideoRepository videoRepository) {
+    private final LanguageService languageService;
+
+    public VideoResource(VideoRepository videoRepository, LanguageService languageService) {
+        this.languageService = languageService;
         this.videoRepository = videoRepository;
     }
 
@@ -60,6 +64,7 @@ public class VideoResource {
             throw new BadRequestAlertException("A new video cannot already have an ID", ENTITY_NAME, "idexists");
         }
         video.setCreated(Instant.now());
+        video.setLanguage(languageService.validateCode(video.getLanguage(), ENTITY_NAME));
         Video result = videoRepository.save(video);
         return ResponseEntity
             .created(new URI("/api/videos/" + result.getId()))
@@ -91,6 +96,7 @@ public class VideoResource {
         if (!videoRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+        video.setLanguage(languageService.validateCode(video.getLanguage(), ENTITY_NAME));
         Video result = videoRepository.save(video);
         return ResponseEntity
             .ok()
@@ -139,7 +145,7 @@ public class VideoResource {
                     existingVideo.setDuration(video.getDuration());
                 }
                 if (video.getLanguage() != null) {
-                    existingVideo.setLanguage(video.getLanguage());
+                    existingVideo.setLanguage(languageService.validateCode(video.getLanguage(), ENTITY_NAME));
                 }
                 if (video.getTags() != null) {
                     existingVideo.setTags(video.getTags());

@@ -1,7 +1,6 @@
 package com.peecko.one.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.peecko.one.domain.enumeration.Language;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -35,9 +34,8 @@ public class Notification implements Serializable {
     private String message;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "language", nullable = false)
-    private Language language;
+    private String language;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -109,16 +107,16 @@ public class Notification implements Serializable {
         this.message = message;
     }
 
-    public Language getLanguage() {
+    public String getLanguage() {
         return this.language;
     }
 
-    public Notification language(Language language) {
+    public Notification language(String language) {
         this.setLanguage(language);
         return this;
     }
 
-    public void setLanguage(Language language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 

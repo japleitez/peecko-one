@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 
 import { ArticleService } from '../service/article.service';
+import { LanguageService } from 'app/entities/language/service/language.service';
 
 import { ArticleComponent } from './article.component';
 import SpyInstance = jest.SpyInstance;
@@ -14,6 +15,7 @@ describe('Article Management Component', () => {
   let comp: ArticleComponent;
   let fixture: ComponentFixture<ArticleComponent>;
   let service: ArticleService;
+  let languageService: LanguageService;
   let routerNavigateSpy: SpyInstance<Promise<boolean>>;
 
   beforeEach(() => {
@@ -48,6 +50,7 @@ describe('Article Management Component', () => {
     fixture = TestBed.createComponent(ArticleComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(ArticleService);
+    languageService = TestBed.inject(LanguageService);
     routerNavigateSpy = jest.spyOn(comp.router, 'navigate');
 
     const headers = new HttpHeaders();
@@ -183,5 +186,28 @@ describe('Article Management Component', () => {
         queryParams: expect.objectContaining({ page: 1, language: 'DE' }),
       }),
     );
+  });
+
+  it('should load the language filter options from the backend language codes', () => {
+    // GIVEN
+    jest.spyOn(languageService, 'queryActiveCodes').mockReturnValue(of(['EN', 'FR']));
+
+    // WHEN
+    comp.ngOnInit();
+
+    // THEN
+    expect(languageService.queryActiveCodes).toHaveBeenCalled();
+    expect(comp.languages).toEqual(['EN', 'FR']);
+  });
+
+  it('should have no language filter options when no language is available', () => {
+    // GIVEN
+    jest.spyOn(languageService, 'queryActiveCodes').mockReturnValue(of([]));
+
+    // WHEN
+    comp.ngOnInit();
+
+    // THEN
+    expect(comp.languages).toEqual([]);
   });
 });

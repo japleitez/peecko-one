@@ -111,6 +111,11 @@ const routes: Routes = [
     data: { pageTitle: 'TrialLicenses' },
     loadChildren: () => import('./trial-license/trial-license.routes'),
   },
+  {
+    path: 'language',
+    data: { pageTitle: 'Languages' },
+    loadChildren: () => import('./language/language.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

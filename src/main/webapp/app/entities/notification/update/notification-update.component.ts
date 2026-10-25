@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Language } from 'app/entities/enumerations/language.model';
+import { LanguageService } from 'app/entities/language/service/language.service';
 import { INotification, NOTIFICATION_ACCESS, NotificationAccess } from '../notification.model';
 import { NotificationService } from '../service/notification.service';
 import { NotificationFormService, NotificationFormGroup } from './notification-form.service';
@@ -25,13 +25,14 @@ export class NotificationUpdateComponent implements OnInit {
   ua: NotificationAccess = this.getNotificationAccess();
   isSaving = false;
   notification: INotification | null = null;
-  languageValues = Object.keys(Language);
+  languageValues: string[] = [];
 
   editForm: NotificationFormGroup = this.notificationFormService.createNotificationFormGroup(undefined, this.getNotificationAccess());
 
   constructor(
     protected notificationService: NotificationService,
     protected notificationFormService: NotificationFormService,
+    protected languageService: LanguageService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
@@ -41,6 +42,8 @@ export class NotificationUpdateComponent implements OnInit {
       if (notification) {
         this.updateForm(notification);
       }
+
+      this.loadLanguageCodes();
     });
   }
 
@@ -84,6 +87,12 @@ export class NotificationUpdateComponent implements OnInit {
   protected updateForm(notification: INotification): void {
     this.notification = notification;
     this.notificationFormService.resetForm(this.editForm, notification);
+  }
+
+  protected loadLanguageCodes(): void {
+    this.languageService
+      .queryActiveCodes()
+      .subscribe(codes => (this.languageValues = this.languageService.addLanguageCodeIfMissing(codes, this.notification?.language)));
   }
 
   protected getNotificationAccess(): NotificationAccess {

@@ -1,7 +1,6 @@
 import dayjs from 'dayjs/esm';
 import { ICustomer } from 'app/entities/customer/customer.model';
 import { IApsPricing } from 'app/entities/aps-pricing/aps-pricing.model';
-import { Language } from 'app/entities/enumerations/language.model';
 import { FieldAccess } from '../../shared/profile/view.models';
 
 export interface IAgency {
@@ -13,7 +12,7 @@ export interface IAgency {
   zip?: string | null;
   city?: string | null;
   country?: string | null;
-  language?: keyof typeof Language | null;
+  language?: string | null;
   email?: string | null;
   phone?: string | null;
   billingEmail?: string | null;
